@@ -13,7 +13,11 @@ class CreateTiposComprasTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('tipos_compras', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('nombre',45);
+            $table->timestamps();
+        });
     }
 
     /**
@@ -23,6 +27,6 @@ class CreateTiposComprasTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('tipos_compras');
     }
 }

@@ -13,7 +13,13 @@ class CreateAreasTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('areas', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('nombre',45);
+            $table->string('extencion_tel',45);
+            $table->tinyInteger('estado');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -23,6 +29,6 @@ class CreateAreasTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('areas');
     }
 }

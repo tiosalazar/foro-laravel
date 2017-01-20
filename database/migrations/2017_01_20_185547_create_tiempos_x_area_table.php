@@ -13,7 +13,15 @@ class CreateTiemposXAreaTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('tiempos_x_area', function (Blueprint $table) {
+            $table->increments('id');
+            $table->decimal('tiempo_estimado',5,3);
+            $table->decimal('tiempo_real',5,3);
+            $table->decimal('tiempo_extra',5,3)->nullable();
+            $table->integer('ots_id')->unsigned();
+            $table->integer('areas_id')->unsigned();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -23,6 +31,6 @@ class CreateTiemposXAreaTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('tiempos_x_area');
     }
 }

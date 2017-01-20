@@ -13,7 +13,17 @@ class CreateHistoricoTareasTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('historico_tareas', function (Blueprint $table) {
+            $table->increments('id');
+            $table->decimal('tiempo_estimado',5,3)->nullable();
+            $table->decimal('tiempo_real',5,3)->nullable();
+            $table->integer('comentarios_id');
+            $table->integer('encargado_id')->nullable();
+            $table->integer('estados_id')->nullable();
+            $table->integer('usuarios_id')->unsigned();
+            $table->integer('tareas_id')->unsigned();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -23,6 +33,6 @@ class CreateHistoricoTareasTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('historico_tareas');
     }
 }

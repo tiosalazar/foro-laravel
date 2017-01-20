@@ -13,7 +13,13 @@ class CreateComentariosTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('comentarios', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('comentarios',255);
+            $table->integer('usuarios_id')->unsigned();
+            $table->integer('tareas_id')->unsigned();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -23,6 +29,6 @@ class CreateComentariosTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('comentarios');
     }
 }

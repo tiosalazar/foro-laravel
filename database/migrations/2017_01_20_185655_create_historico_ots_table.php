@@ -13,7 +13,14 @@ class CreateHistoricoOtsTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('historicos_ots', function (Blueprint $table) {
+            $table->increments('id');
+            $table->dateTime('fecha_final')->nullable();
+            $table->integer('usuarios_id')->unsigned();
+            $table->integer('ots_id')->unsigned();
+            $table->integer('ots_estados_id')->unsigned();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -23,6 +30,6 @@ class CreateHistoricoOtsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('historicos_ots');
     }
 }

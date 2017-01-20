@@ -22,7 +22,7 @@ class CreateTraficoTareasTable extends Migration
             $table->decimal('tiempo_estimado',5,3)->nullable();
             $table->decimal('tiempo_real',5,3)->nullable();
             $table->dateTime('fecha_entrega_cliente');
-            $table->integer('estado_id')->nullable();
+            $table->integer('estados_id')->nullable();
             $table->integer('areas_id')->nullable();
             $table->integer('usuarios_id')->nullable();
             $table->integer('ots_id')->nullable();
@@ -38,6 +38,6 @@ class CreateTraficoTareasTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('trafico_tareas');
     }
 }
