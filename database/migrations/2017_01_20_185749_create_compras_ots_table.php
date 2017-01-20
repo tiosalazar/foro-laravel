@@ -13,7 +13,18 @@ class CreateComprasOtsTable extends Migration
      */
     public function up()
     {
-        //
+         Schema::create('compras_ots', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('nombre',110);
+            $table->string('descripcion',255);
+            $table->string('provedor',110);
+            $table->string('valor',110);
+            $table->integer('ots_id')->unsigned();
+            $table->integer('areas_id')->unsigned();
+            $table->integer('tipos_compras_id')->unsigned();
+            $table->integer('divisas_id')->unsigned();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -23,6 +34,6 @@ class CreateComprasOtsTable extends Migration
      */
     public function down()
     {
-        //
+         Schema::drop('compras_ots');
     }
 }
