@@ -10,6 +10,34 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
 
+### Installation
+
+Foro-laravel requires [Node.js](https://nodejs.org/) v4+ to run.
+
+You need Gulp installed globally and install all packages from project:
+
+```sh
+$ npm i -g gulp
+$ npm install
+```
+
+and Composer:
+
+```sh
+$ composer install
+```
+
+Copy file **.env.exmaple** and rename for **.env**
+
+Run the following commands
+```sh
+$ php artisan key:generate
+```
+
+
+
+----
+
 ## Official Documentation
 
 Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
