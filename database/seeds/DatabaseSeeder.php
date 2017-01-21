@@ -11,6 +11,78 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+     $this->call('RolesTableSeeder');
+     $this->command->info('Roles table seeded!');
+     $this->call('AreasTableSeeder');
+     $this->command->info('Areas table seeded!');
+     $this->call('DivisasTableSeeder');
+     $this->command->info('Divisas table seeded!');
+     $this->call('Tipos_estadosTableSeeder');
+     $this->command->info('Tipos de Estados table seeded!');
+     $this->call('UsuariosTableSeeder');
+     $this->command->info('Usuarios table seeded!');
     }
+}
+class RolesTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('roles')->delete();
+
+        App\Role::create(array('nombre' => 'Administrador'));
+        App\Role::create(array('nombre' => 'Cuentas'));
+        App\Role::create(array('nombre' => 'Coordinador'));
+        App\Role::create(array('nombre' => 'Esclavo') );
+    }
+
+}
+
+class AreasTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('areas')->delete();
+
+        App\Area::create(array('nombre' => 'Digital Performance','extencion_tel' => '0581','estado' => '1'));
+        App\Area::create(array('nombre' => 'Diseño','extencion_tel' => '0581','estado' => '1') );
+        App\Area::create(array('nombre' => 'Desarrollo','extencion_tel' => '0581','estado' => '1') );
+        App\Area::create(array('nombre' => 'Contenidos','extencion_tel' => '0581','estado' => '1') );
+    }
+
+}
+class DivisasTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('divisas')->delete();
+
+        App\Divisa::create(array('nombre' => 'Pesos'));
+        App\Divisa::create(array('nombre' => 'Dolares'));
+        App\Divisa::create(array('nombre' => 'Euros'));
+
+    }
+
+}
+class Tipos_estadosTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('tipos_estados')->delete();
+
+        App\Tipos_estado::create(array('nombre' => 'Realizado'));
+        App\Tipos_estado::create(array('nombre' => 'Espera') );
+        App\Tipos_estado::create(array('nombre' => 'Atención Cuentas') );
+    }
+
+}
+class UsuariosTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('users')->delete();
+
+        App\User::create(array('nombre' => 'Desarrollo','apellido' => 'Himalaya','cargo' => 'Tester','telefono' => '1111111','email' => 'desarrollo@himalayada.com',
+        'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','roles_id' => '1','areas_id' => '1'));
+    }
+
 }

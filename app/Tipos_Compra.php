@@ -14,4 +14,11 @@ class Tipos_Compra extends Model
   protected $fillable = [
       'nombre',
   ];
+  /**
+  * Obtiene los compras que posee El Tipo de Compra
+ */
+public function Compras_Ot()
+  {
+      return $this->hasMany('App\Compras_ot');
+  }
 }

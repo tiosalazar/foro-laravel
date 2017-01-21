@@ -14,4 +14,12 @@ class Cliente extends Model
   protected $fillable = [
       'nombre', 'nit', 'email', 'telefono', 'nombre_contacto', 'horas_disponible', 'estado',
   ];
+
+  /**
+  * Obtiene la OT que posee el cliente
+ */
+  public function OT()
+  {
+      return $this->hasMany('App\Ot');
+  }
 }

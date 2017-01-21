@@ -12,6 +12,22 @@ class Role extends Model
    * @var array
    */
   protected $fillable = [
-      'nombre', 
+      'nombre',
   ];
+
+  /**
+  * Obtiene el Usuario que posee el Rol
+ */
+  public function User()
+  {
+      return $this->hasMany('App\User');
+  }
+  /**
+  * Obtiene el Trafico que posee el Rol
+ */
+  public function Trafico()
+  {
+      return $this->hasMany('App\Trafico_tarea');
+  }
+
 }

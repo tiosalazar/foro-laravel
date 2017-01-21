@@ -14,4 +14,12 @@ class Tipos_estado extends Model
   protected $fillable = [
       'nombre', 'descripcion',
   ];
+
+  /**
+  * Obtiene los Estados que posee un Tipo de estado
+  */
+  public function Tarea()
+  {
+    return $this->hasMany('App\Estado');
+  }
 }

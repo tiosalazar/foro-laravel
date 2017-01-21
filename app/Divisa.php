@@ -12,6 +12,13 @@ class Divisa extends Model
    * @var array
    */
   protected $fillable = [
-      'nombre', 'tasa_conversion', 
+      'nombre', 'tasa_conversion',
   ];
+  /**
+  * Obtiene los compras que posee la Divisa
+ */
+public function Compras_Ot()
+  {
+      return $this->hasMany('App\Compras_ot');
+  }
 }
