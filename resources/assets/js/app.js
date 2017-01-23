@@ -14,7 +14,18 @@ require('./bootstrap');
  */
 
 Vue.component('example', require('./components/Example.vue'));
+Vue.component('select_clientes', require('./components/clientes.vue'));
+Vue.component('select_usuarios', require('./components/select_usuarios.vue'));
+Vue.component('select_estados', require('./components/select_estado.vue'));
+
+import Datepicker from 'vuejs-datepicker';
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    components: {
+      Datepicker
+    },
+    data:{
+      hDisponibles:0
+    }
 });

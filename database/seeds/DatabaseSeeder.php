@@ -21,6 +21,10 @@ class DatabaseSeeder extends Seeder
      $this->command->info('Tipos de Estados table seeded!');
      $this->call('UsuariosTableSeeder');
      $this->command->info('Usuarios table seeded!');
+     $this->call('ClientesTableSeeder');
+     $this->command->info('Clientes table seeded!');
+     $this->call('EstadosTableSeeder');
+     $this->command->info('Estados table seeded!');
     }
 }
 class RolesTableSeeder extends Seeder {
@@ -68,10 +72,9 @@ class Tipos_estadosTableSeeder extends Seeder {
     public function run()
     {
         DB::table('tipos_estados')->delete();
+        App\Tipos_estado::create(array('nombre' => 'Estados Tareas'));
+        App\Tipos_estado::create(array('nombre' => 'Estados OT') );
 
-        App\Tipos_estado::create(array('nombre' => 'Realizado'));
-        App\Tipos_estado::create(array('nombre' => 'Espera') );
-        App\Tipos_estado::create(array('nombre' => 'Atención Cuentas') );
     }
 
 }
@@ -83,6 +86,33 @@ class UsuariosTableSeeder extends Seeder {
 
         App\User::create(array('nombre' => 'Desarrollo','apellido' => 'Himalaya','cargo' => 'Tester','telefono' => '1111111','email' => 'desarrollo@himalayada.com',
         'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','roles_id' => '1','areas_id' => '1'));
+    }
+
+}
+class ClientesTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('clientes')->delete();
+
+        App\Cliente::create(array('nombre' => 'Electrojaponesa','nit'=>'12345678','nombre_contacto' =>'Victoria','estado'=>1));
+        App\Cliente::create(array('nombre' => 'Adeinco','nit'=>'12345678','nombre_contacto' =>'Pablo','estado'=>1) );
+        App\Cliente::create(array('nombre' => 'Calzatodo','nit'=>'12345678','nombre_contacto' =>'Santiago','estado'=>1) );
+    }
+
+}
+
+class EstadosTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('estados')->delete();
+
+          App\Estado::create(array('nombre' => 'Realizado','tipos_estados_id'=> 1));
+          App\Estado::create(array('nombre' => 'Espera','tipos_estados_id'=> 1) );
+          App\Estado::create(array('nombre' => 'Atención Cuentas','tipos_estados_id'=> 1 ));
+          App\Estado::create(array('nombre' => 'On Going','tipos_estados_id'=> 2) );
+          App\Estado::create(array('nombre' => 'En espera','tipos_estados_id'=> 2) );
     }
 
 }
