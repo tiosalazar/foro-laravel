@@ -1,6 +1,12 @@
 <template>
 
-  <multiselect  :options="clientes" :custom-label="nameWithLang"  placeholder="Seleccione un Cliente" label="nombre" track-by="nombre" :options-limit="300" :option-height="104">
+  <multiselect 
+   :options="clientes"
+   :custom-label="nameWithLang"  placeholder="Seleccione un Cliente" label="nombre" track-by="nombre" 
+   :close-on-select="true"
+   @update="updateSelected"
+   :options-limit="300" 
+   :option-height="104">
   </multiselect>
 </template>
 
@@ -13,6 +19,7 @@
       data () {
           return {
             clientes:[],
+            selected: null,
           }
       },
       created: function(){
@@ -20,14 +27,19 @@
       },
       methods:{
           fetchTips: function(){
-              $.getJSON("http://127.0.0.1:8000/api/v1/clientes", function(clientes) {
+           var URL=$('#url_path').val();
+              $.getJSON(URL+"/api/v1/clientes", function(clientes) {
                   //this.$set('clientes', clientes);
                   this.clientes=clientes;
               }.bind(this));
           },
         nameWithLang ({ nombre, nombre_contacto }) {
           return `${nombre} — ${nombre_contacto}`
-        }
+        },
+         updateSelected (newSelected) {
+            this.selected = newSelected
+            console.log(this.selected);
+          }
     }
   }
 </script>

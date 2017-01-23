@@ -1,6 +1,12 @@
 <template>
 
-  <multiselect  :options="estados"  :searchable="false" placeholder="Seleccione un Estado de OT" label="nombre" track-by="nombre" :options-limit="300" :option-height="104">
+  <multiselect  
+  :options="estados"  
+  :searchable="false" placeholder="Seleccione un Estado de OT" label="nombre" track-by="nombre" 
+  :close-on-select="true"
+  :allow-empty="false"
+  :options-limit="300" 
+  :option-height="104">
   </multiselect>
 </template>
 
@@ -20,7 +26,8 @@
       },
       methods:{
           fetchTips: function(){
-              $.getJSON("http://127.0.0.1:8000/api/v1/estados/2", function(estados) {
+               var URL=$('#url_path').val();
+              $.getJSON(URL+"/api/v1/estados/2", function(estados) {
                   //this.$set('clientes', clientes);
                   this.estados=estados;
               }.bind(this));

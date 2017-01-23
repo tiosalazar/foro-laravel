@@ -12,7 +12,8 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">Home</div>
 
-					<div class="panel-body"  id="app">
+					<div class="panel-body"  >
+						<input type="hidden" name="url_path" id="url_path" value="{{ url('/') }}">
 						<div class="box box-primary">
 							<div class="box-header with-border">
 								<div class="row">
@@ -147,7 +148,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="col-md-3">
-										<button type="button" class="btn btn-block btn-success col-sm-3">Añadir Tarea</button>
+										<button type="button"  class="btn btn-block btn-success col-sm-3">Añadir Tarea</button>
 									</div>
 
 								</div>
@@ -190,4 +191,5 @@
 			</div>
 		</div>
 	</div>
+
 @endsection

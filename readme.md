@@ -33,6 +33,11 @@ Run the following commands
 ```sh
 $ php artisan key:generate
 ```
+#crear Migraciones
+php artisan migrate
+
+#Poblar Bases de Datos
+php artisan db:seed
 
 
 

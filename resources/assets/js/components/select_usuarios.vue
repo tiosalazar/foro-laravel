@@ -20,7 +20,8 @@
       },
       methods:{
           fetchTips: function(){
-              $.getJSON("http://127.0.0.1:8000/api/v1/usuarios/1", function(usuarios) {
+               var URL=$('#url_path').val();
+              $.getJSON( URL+"/api/v1/usuarios/1", function(usuarios) {
                   //this.$set('clientes', clientes);
                   this.usuarios=usuarios;
               }.bind(this));

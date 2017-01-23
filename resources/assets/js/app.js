@@ -26,6 +26,7 @@ const app = new Vue({
       Datepicker
     },
     data:{
-      hDisponibles:0
+      hDisponibles:10,
+      url:''
     }
 });
