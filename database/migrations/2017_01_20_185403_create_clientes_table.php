@@ -20,7 +20,7 @@ class CreateClientesTable extends Migration
             $table->string('email',115)->nullable();
             $table->string('telefono',45)->nullable();
             $table->string('nombre_contacto',45)->nullable();
-            $table->tinyInteger('estado');
+            $table->tinyInteger('estado')->default(1);
             $table->timestamps();
         });
     }

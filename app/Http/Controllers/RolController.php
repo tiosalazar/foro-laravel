@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
+use App\Role;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
-use App\Http\Requests\StoreUsers;
 use Illuminate\Http\Response;
 use Exception;
 
-class UserController extends Controller
+
+
+
+class RolController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,10 +21,9 @@ class UserController extends Controller
      */
     public function index()
     {
-      $user= User::where('estado',1)->get();
-      return response()->json($user);
+       $roles= Role::all();
+      return response()->json($roles);
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -31,7 +32,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+       
     }
 
     /**
@@ -42,39 +43,34 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
-     $respuesta=[];
+         $respuesta=[];
        //Validaciòn de las entradas por el metodo POST
-        $vl=$this->validarCamposUsuario($request->all());
+        $vl=$this->validatorCrearRol($request->all());
       if ($vl->fails())
          {
-               return  response()->json( $vl->errors());        
+               return response()->json($request->all());        
          }else
              {        
-                $user=new User;  
-                $user->fill($request->all());
-                //Se encripta la contraseña del usuario.
-                $user->password=bcrypt($request->password);
+                    $roles=new Role;  
+                    $roles->fill($request->all());
                 try 
                 {
-                    $user->remember_token = str_random(60);
-                    $user->save();
+                     $roles->save();
                       return response([
                             'status' => Response::HTTP_OK,
                             'response_time' => microtime(true) - LARAVEL_START,
-                            'usuario' => $user
+                            'rol' => $roles
                         ],Response::HTTP_OK);
                 }catch(Exception $e){
                     return response([
                         'status' => Response::HTTP_BAD_REQUEST,
                         'response_time' => microtime(true) - LARAVEL_START,
-                        'error' => 'fallo_el_registro',
+                        'error' => 'fallo_en_la_creacion',
                         'consola' =>$e,
                         'request' => $request->all()
                     ],Response::HTTP_BAD_REQUEST);
                }
          }   
-
     }
 
     /**
@@ -85,9 +81,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user= User::where('roles_id',$id)->get();
-        return response()->json($user);
-    }
+        $rol = Role::findOrFail($id);
+        return response()->json($rol);
+    } 
 
     /**
      * Show the form for editing the specified resource.
@@ -97,8 +93,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-        return response()->json($user);
+        //
     }
 
     /**
@@ -110,34 +105,32 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-       $respuesta=[];
+          $respuesta=[];
                     try 
                     {       
                     //Validaciòn de las entradas por el metodo POST
-                    $vl=$this->validatorUpdateUsuario($request->all());
+                    $vl=$this->validatorCrearRol($request->all());
                          if ($vl->fails())
                             {
                                return response()->json($vl->errors());        
                             }else
                                 {
                                 //Busca el usuario en la BD
-                                 $user=  User::findOrFail($id);
+                                 $rol=  Role::findOrFail($id);
                                 // Si la data es valida se la asignamos al usuario
-                                $user->fill($request->all());
+                                $rol->fill($request->all());
                                 // Guardamos el usuario
-                                $user->update();
+                                $rol->update();
                                $respuesta["error"]=0;
                                $respuesta["mensaje"]="OK";                        
                              }
                     }catch(Exception $e){
-                       $respuesta["error"]="usuario_no_encontrado";
+                       $respuesta["error"]="rol_no_encontrado";
                        $respuesta["codigo_error"]="UC_Update_dontfind";
-                       $respuesta["mensaje"]="Usuario no encontrado";
+                       $respuesta["mensaje"]="Rol no encontrado";
                        $respuesta["consola"]=$e;
                    }
         return response()->json($respuesta);
-
     }
 
     /**
@@ -148,55 +141,17 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->estado=0;
-        $user->save();
-        return response()->json($user);
+        //
     }
 
-     /*DSO 24-01-2016 Funcion para validar los campos al crear un usuario 
+   /*DSO 24-01-2016 Funcion para validar los campos al ingreso de un usuario 
     * entra el arreglo de datos
     * Sale un arreglo con los errores.
     */   
-   protected function validarCamposUsuario(array $data)
+   protected function validatorCrearRol(array $data)
     {
         return Validator::make($data, [
-                'nombre' => 'required|min:4|max:45',
-                'apellido' => 'required|min:4|max:45',
-                'cargo' => 'required|min:4|max:45',
-                'email' => 'required|email|max:155|unique:users,email',
-                'horas_disponible' => 'required',
-                'password' => 'required',
-                'roles_id' => 'required',
-                'areas_id' => 'required'
-        ]);
-    }
-    
-    /*DSO 24-01-2016 Funcion para validar los campos al ingreso de un usuario 
-    * entra el arreglo de datos
-    * Sale un arreglo con los errores.
-    */   
-   protected function validatorIngresoUsuario(array $data)
-    {
-        return Validator::make($data, [
-            'email' => 'required|email|max:255',
-            'password' => 'required|min:6',
-        ]);
-    }
-    
-     /*DSO 24-01-2016 Funcion para validar los campos al actualizar un usuario 
-    * entra el arreglo de datos
-    * Sale un arreglo con los errores.
-    */ 
-    protected function validatorUpdateUsuario(array $data)
-    {
-       return Validator::make($data, [
-                'nombre' => 'required|min:4|max:45',
-                'apellido' => 'required|min:4|max:45',
-                'cargo' => 'required|min:4|max:45',
-                'email' => 'required|email|max:155|unique:users,email',
-                'roles_id' => 'required',
-                'areas_id' => 'required'
+            'nombre' => 'required|min:4',
         ]);
     }
 }

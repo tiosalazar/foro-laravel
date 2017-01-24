@@ -23,6 +23,10 @@
     </div>
 
   </div>
+  <vuetable
+            api-url="http://127.0.0.1:8000/api/v1/areas"
+            :fields="columns"
+        ></vuetable>
 </template>
 
 <script>
@@ -32,7 +36,17 @@
           return {
           requerimiento: [
               {nombre_requerimiento: 'requerimiento[0][nombre_requerimiento]', no_horas_req: 'requerimiento[0][no_horas_req]'}
-          ]
+          ],
+            columns: [
+                    'firstname',
+                    'lastname',
+                    'nickname',
+                    'birthdate',
+                    'group.name_en',
+                    'gender',
+                    'last_login',
+                    '__actions'
+                ]
         }
       },
       methods: {

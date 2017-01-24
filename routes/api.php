@@ -27,5 +27,7 @@ Route::group(['prefix' => 'v1','middleware' => 'cors'], function () {
      Route::resource('clientes', 'ClienteController');
      Route::resource('usuarios', 'UserController');
      Route::resource('estados', 'EstadoController');
+     Route::resource('areas', 'AreaController');
+     Route::resource('roles', 'RolController');
 
 });
