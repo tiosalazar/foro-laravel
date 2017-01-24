@@ -14,7 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+      $user= User::where('estado',1)->get();
+      return response()->json($user);
     }
 
 
@@ -34,9 +35,11 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUsers $request)
     {
-        //
+       $request->password=bcrypt($request->password);
+       $user= User::create($request->all());
+       return $user;
     }
 
     /**
@@ -59,7 +62,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return response()->json($user);
     }
 
     /**
@@ -71,7 +75,9 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+       $request->password=bcrypt($request->password);
+       $user = User::find($id)->fill($request->all());
+       return ($user->update())?$user:false; 
     }
 
     /**
@@ -82,6 +88,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->estado=0;
+        $user->save();
+        return response()->json($user);
     }
 }

@@ -85,7 +85,7 @@ class UsuariosTableSeeder extends Seeder {
         DB::table('users')->delete();
 
         App\User::create(array('nombre' => 'Desarrollo','apellido' => 'Himalaya','cargo' => 'Tester','telefono' => '1111111','email' => 'desarrollo@himalayada.com',
-        'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','roles_id' => '1','areas_id' => '1'));
+        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','roles_id' => '1','areas_id' => '1'));
     }
 
 }
