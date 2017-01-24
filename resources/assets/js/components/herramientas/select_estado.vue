@@ -1,6 +1,12 @@
 <template>
 
-  <multiselect  :options="usuarios" :custom-label="nameWithLang"  :searchable="false" placeholder="Seleccione un Usuario" label="nombre" track-by="nombre" :options-limit="300" :option-height="104">
+  <multiselect
+  :options="estados"
+  :searchable="false" placeholder="Seleccione un Estado de OT" label="nombre" track-by="nombre"
+  :close-on-select="true"
+  :allow-empty="false"
+  :options-limit="300"
+  :option-height="104">
   </multiselect>
 </template>
 
@@ -10,9 +16,10 @@
 
     export default {
        components: { Multiselect},
+       props: ['tipo_estado'],
       data () {
           return {
-            usuarios:[]
+            estados:[]
           }
       },
       created: function(){
@@ -21,14 +28,11 @@
       methods:{
           fetchTips: function(){
                var URL=$('#url_path').val();
-              $.getJSON( URL+"/api/v1/usuarios/1", function(usuarios) {
+              $.getJSON(URL+"/api/v1/estados/"+this.tipo_estado, function(estados) {
                   //this.$set('clientes', clientes);
-                  this.usuarios=usuarios;
+                  this.estados=estados;
               }.bind(this));
-          },
-        nameWithLang ({ nombre, apellido }) {
-          return `${nombre} — ${apellido}`
-        }
+          }
     }
   }
 </script>

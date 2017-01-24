@@ -41,7 +41,7 @@
 									<div class="form-group">
 									<label for="estado" class="col-sm-4 ">Estado : </label>
 											<div class="col-sm-8">
-												<select_estados></select_estados>
+												<select_estados tipo_estado="2"></select_estados>
 											</div>
 									</div>
 									<div class="form-group">
@@ -63,7 +63,7 @@
 												<div class="form-group">
 												<label for="ejecutivo" class="col-sm-4 ">Ejecutivo : </label>
 														<div class="col-sm-8">
-															<select_usuarios ></select_usuarios>
+															<select_usuarios  area="1" ></select_usuarios>
 														</div>
 												</div>
 											</div>
@@ -95,7 +95,7 @@
 									<div class="form-group ">
 									<label for="horas_disponibles" class="col-sm-4 ">Horas Disponibles</label>
 											<div class="col-sm-6">
-												<input type="text" class="form-control" id="horas_disponibles" v-model="hDisponibles" placeholder="Numero de Horas Disponibles">
+												<input type="text" class="form-control" id="horas_disponibles" :value="hDisponibles" v-model="hDisponibles" placeholder="Numero de Horas Disponibles">
 											</div>
 									</div>
 								</div>
@@ -139,19 +139,13 @@
 										<div class="form-group ">
 										<label for="horas_area" class="col-sm-4 ">Horas Area</label>
 												<div class="col-sm-4">
-
-													<input type="text" class="form-control" id="horas_area" :value="hDisponibles"  placeholder="Numero de Horas Disponibles">
+													<input type="text" class="form-control" id="horas_area" :value="hAreaDiseno"  placeholder="Numero de Horas Disponibles">
 												</div>
 										</div>
 									</div>
 							</div>
 							<div class="row">
-								<div class="col-md-12">
-									<div class="col-md-3">
-										<button type="button"  class="btn btn-block btn-success col-sm-3">Añadir Tarea</button>
-									</div>
-
-								</div>
+								<anadir_requerimiento></anadir_requerimiento>
 
 							</div>
 

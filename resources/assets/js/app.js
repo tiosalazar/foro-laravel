@@ -13,10 +13,11 @@ require('./bootstrap');
  * the application, or feel free to tweak this setup for your needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
-Vue.component('select_clientes', require('./components/clientes.vue'));
-Vue.component('select_usuarios', require('./components/select_usuarios.vue'));
-Vue.component('select_estados', require('./components/select_estado.vue'));
+
+Vue.component('select_clientes', require('./components/herramientas/select_clientes.vue'));
+Vue.component('select_usuarios', require('./components/herramientas/select_usuarios.vue'));
+Vue.component('select_estados', require('./components/herramientas/select_estado.vue'));
+Vue.component('anadir_requerimiento', require('./components/anadir_requerimiento.vue'));
 
 import Datepicker from 'vuejs-datepicker';
 
@@ -26,7 +27,8 @@ const app = new Vue({
       Datepicker
     },
     data:{
-      hDisponibles:10,
-      url:''
+      hDisponibles:0,
+      htotal:0,
+      hAreaDiseno:0
     }
 });
