@@ -13,12 +13,16 @@ require('./bootstrap');
  * the application, or feel free to tweak this setup for your needs.
  */
 
-
 Vue.component('select_clientes', require('./components/herramientas/select_clientes.vue'));
 Vue.component('select_usuarios', require('./components/herramientas/select_usuarios.vue'));
 Vue.component('select_estados', require('./components/herramientas/select_estado.vue'));
 Vue.component('anadir_requerimiento', require('./components/anadir_requerimiento.vue'));
 Vue.component('listar_clientes', require('./components/herramientas/listar_clientes.vue'));
+//Componentes Bcaldas
+Vue.component('form_usuarios', require('./components/usuarios/crear_usuario.vue'));
+Vue.component('roles', require('./components/roles/roles.vue'));
+Vue.component('areas', require('./components/areas/areas.vue'));
+//Fin Componentes Bcaldas
 
 import Datepicker from 'vuejs-datepicker';
 

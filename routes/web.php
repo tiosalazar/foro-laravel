@@ -34,6 +34,20 @@ Route::group(['middleware' => 'auth'], function () {
            return view('listar_clientes');
     });
 
+    Route::get('/usuarios', function () {
+           return view('admin.usuarios.usuarios');
+    });
+
+    Route::get('/crear_usuario', function () {
+           return view('admin.usuarios.crear_usuario');
+    });
+     Route::get('/roles', function () {
+           return view('admin.usuarios.crear_roles');
+    });
+      Route::get('/areas', function () {
+           return view('admin.usuarios.crear_areas');
+    });
+
 });
 
 Route::get('/p', function () {

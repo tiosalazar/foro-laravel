@@ -16,7 +16,7 @@
     "laravel-elixir": "^6.0.0-9",
     "laravel-elixir-browsersync-official": "^1.0.0",
     "laravel-elixir-vue-2": "^0.2.0",
-    "laravel-elixir-webpack-official": "^1.0.2",
+    "laravel-elixir-webpack-official": "^1.0.10",
     "lodash": "^4.16.2",
     "toastr": "^2.1.2",
     "vue": "^2.0.1",
@@ -25,6 +25,9 @@
   "dependencies": {
     "vue-multiselect": "^2.0.0-beta.13",
     "vue-search-select": "^2.3.3",
-    "vuejs-datepicker": "^0.5.4"
+    "vuejs-datepicker": "^0.5.4",
+    "vue-hot-reload-api": "^1.2.0",
+    "vue-html-loader": "^1.0.0",
+    "vue-loader": "^8.3.0"
   }
 }
