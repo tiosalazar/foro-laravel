@@ -19,6 +19,12 @@ class ClienteController extends Controller
       $clientes = Cliente::all()->toArray();
       return response()->json($clientes);
     }
+    /*public function index()
+    {
+        $clientes = Cliente::all();
+
+        return view('listar_clientes', ['clientes' => $clientes]);
+    }*/
 
     /**
      * Show the form for creating a new resource.

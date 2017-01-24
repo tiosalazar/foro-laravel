@@ -26,6 +26,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/crear_ot', function () {
            return view('crear_ot');
     });
+    // Clientes
+    Route::get('/crear_cliente', function () {
+           return view('crear_cliente');
+    });
+    Route::get('/listar_clientes', 'ClienteController@index');
+    Route::resource('clientes', 'ClienteController');
 
 });
 
