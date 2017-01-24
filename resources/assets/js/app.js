@@ -17,6 +17,11 @@ Vue.component('example', require('./components/Example.vue'));
 Vue.component('select_clientes', require('./components/clientes.vue'));
 Vue.component('select_usuarios', require('./components/select_usuarios.vue'));
 Vue.component('select_estados', require('./components/select_estado.vue'));
+//Componentes Bcaldas
+Vue.component('form_usuarios', require('./components/usuarios/crear_usuario.vue'));
+Vue.component('roles', require('./components/roles/roles.vue'));
+Vue.component('areas', require('./components/areas/areas.vue'));
+//Fin Componentes Bcaldas
 
 import Datepicker from 'vuejs-datepicker';
 

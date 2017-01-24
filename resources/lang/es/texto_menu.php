@@ -15,5 +15,11 @@ return [
 
     'ots'   => 'Menú OTS',
     'crear_ot' => 'Crear OT',
+    'usuarios' => 'Usuarios',
+    'listar_usuarios' => 'Listar Usuarios',
+    'crear_usuarios' => 'Crear Usuarios',
+    'crear_roles' => 'Crear Roles',
+    'crear_areas' => 'Crear Areas',
+    'organizacion' => 'Roles y Áreas',
 
 ];

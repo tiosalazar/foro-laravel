@@ -5,25 +5,28 @@
     "dev": "gulp watch"
   },
   "devDependencies": {
+    "admin-lte": "^2.3.6",
+    "bootstrap-less": "^3.3.8",
     "bootstrap-sass": "^3.3.7",
+    "font-awesome": "^4.6.3",
     "gulp": "^3.9.1",
+    "icheck": "^1.0.2",
+    "ionicons": "^3.0.0",
     "jquery": "^3.1.0",
     "laravel-elixir": "^6.0.0-9",
     "laravel-elixir-vue-2": "^0.2.0",
-    "laravel-elixir-webpack-official": "^1.0.2",
+    "laravel-elixir-webpack-official": "^1.0.10",
     "lodash": "^4.16.2",
+    "toastr": "^2.1.2",
     "vue": "^2.0.1",
-    "vue-resource": "^1.0.3",
-    "admin-lte": "^2.3.6",
-    "bootstrap-less": "^3.3.8",
-    "font-awesome": "^4.6.3",
-    "icheck": "^1.0.2",
-    "ionicons": "^3.0.0",
-    "toastr": "^2.1.2"
+    "vue-resource": "^1.0.3"
   },
   "dependencies": {
     "vue-multiselect": "^2.0.0-beta.13",
     "vue-search-select": "^2.3.3",
-    "vuejs-datepicker": "^0.5.4"
+    "vuejs-datepicker": "^0.5.4",
+    "vue-hot-reload-api": "^1.2.0",
+    "vue-html-loader": "^1.0.0",
+    "vue-loader": "^8.3.0"
   }
 }
