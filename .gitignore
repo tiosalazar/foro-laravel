@@ -7,3 +7,5 @@ Homestead.yaml
 .env
 composer.lock
 ftpsync.settings
+#ignorar recursos que genera gulp
+ public/plugins/
