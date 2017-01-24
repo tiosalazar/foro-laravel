@@ -22,6 +22,10 @@ Vue.component('listar_clientes', require('./components/herramientas/listar_clien
 
 import Datepicker from 'vuejs-datepicker';
 
+
+
+
+
 const app = new Vue({
     el: '#app',
     components: {

@@ -9,9 +9,9 @@
     <th></th>
     <th></th>
   </tr>
-  <a v-for="cliente in clientes" href="#" class="list-group-item clearfix">
+  <tr v-for="cliente in clientes" href="#" class="list-group-item clearfix">
      {{ cliente }}
-  </a>
+  </tr>
 </tbody></table>
 </template>
 <script>
@@ -20,13 +20,27 @@
     export default {
       data () {
           return {
-            clientes:[
-              'Vue.js: The Basics',
-                'Vue.js Components',
-                'Server Side Rendering with Vue',
-                'Vue + Firebase'
-              ]
+            clientes:[]
           }
-      }
+      },created: function(){
+          this.fetchTips();
+      },
+      methods:{
+          fetchTips: function(){
+           var URL='http://localhost/foro-laravel/public';
+              $.getJSON(URL+"/api/v1/clientes", function(clientes) {
+                  //this.$set('clientes', clientes);
+                  this.clientes=clientes;
+                  console.log(this.clientes)
+              }.bind(this));
+          },
+        nameWithLang ({ nombre, nombre_contacto }) {
+          return `${nombre} — ${nombre_contacto}`
+        },
+         updateSelected (newSelected) {
+            this.selected = newSelected
+            console.log(this.selected);
+          }
+    }
   }
 </script>

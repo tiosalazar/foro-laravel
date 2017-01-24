@@ -30,7 +30,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/crear_cliente', function () {
            return view('crear_cliente');
     });
-    Route::get('/listar_clientes', 'ClienteController@index');
+    Route::get('/listar_clientes', function () {
+           return view('listar_clientes');
+    });
 
 });
 

@@ -31,9 +31,10 @@ class ClienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $cliente = new Cliente;
+        $cliente->create($request->all());
     }
 
     /**
@@ -44,7 +45,10 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $cliente = new Cliente;
+        $cliente->name = $request->name;
+        $cliente->description = $request->description;
+        $cliente->save();
     }
 
     /**
@@ -55,7 +59,8 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        //
+        $user= Cliente::where('nit',$id)->get();
+        return response()->json($user);
     }
 
     /**

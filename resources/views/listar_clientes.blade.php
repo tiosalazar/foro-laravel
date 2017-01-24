@@ -34,24 +34,22 @@
                   <th></th>
                   <th></th>
                 </tr>
-                @foreach ($clientes as $cliente)
                 <tr>
-                  <td>{{ $cliente->nit }}</td>
-                  <td>{{ $cliente->nombre }}</td>
-                  <td>{{ $cliente-> nombre_contacto  }}</td>
-                  <td>{{ $cliente->email }}</td>
-                  <td>{{ $cliente->telefono }}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                   <td><button type="button" class="btn btn-block btn-warning btn-sm">Editar</button></td>
                   <td><button type="button" class="btn btn-block btn-danger btn-sm">Borrar</button></td>
                 </tr>
-                @endforeach
               </tbody></table>
             </div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
         </div> 
-        <listar_clientes ></listar_clientes>
+        <!-- <listar_clientes ></listar_clientes> -->
         
 </div>
 
