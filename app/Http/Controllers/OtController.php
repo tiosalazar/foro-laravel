@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Ot;
 
 class OtController extends Controller
 {
@@ -13,7 +14,8 @@ class OtController extends Controller
      */
     public function index()
     {
-        //
+        $ot= Ot::all();
+      return response()->json($ot);
     }
 
     /**
@@ -34,7 +36,34 @@ class OtController extends Controller
      */
     public function store(Request $request)
     {
-        //
+           $respuesta=[];
+       //Validaciòn de las entradas por el metodo POST
+        $vl=$this->validatorCrearOT($request->all());
+      if ($vl->fails())
+         {
+               return response()->json($request->all());        
+         }else
+             {        
+                    $ot=new Ot;  
+                    $ot->fill($request->all());
+                try 
+                {
+                     $ot->save();
+                      return response([
+                            'status' => Response::HTTP_OK,
+                            'response_time' => microtime(true) - LARAVEL_START,
+                            'rol' => $ot
+                        ],Response::HTTP_OK);
+                }catch(Exception $e){
+                    return response([
+                        'status' => Response::HTTP_BAD_REQUEST,
+                        'response_time' => microtime(true) - LARAVEL_START,
+                        'error' => 'fallo_en_la_creacion',
+                        'consola' =>$e,
+                        'request' => $request->all()
+                    ],Response::HTTP_BAD_REQUEST);
+               }
+         }   
     }
 
     /**
@@ -68,7 +97,32 @@ class OtController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+           $respuesta=[];
+                    try 
+                    {       
+                    //Validaciòn de las entradas por el metodo POST
+                    $vl=$this->validatorCrearOT($request->all());
+                         if ($vl->fails())
+                            {
+                               return response()->json($vl->errors());        
+                            }else
+                                {
+                                //Busca el usuario en la BD
+                                 $ot=  Ot::findOrFail($id);
+                                // Si la data es valida se la asignamos al usuario
+                                $ot->fill($request->all());
+                                // Guardamos el usuario
+                                $ot->update();
+                               $respuesta["error"]=0;
+                               $respuesta["mensaje"]="OK";                        
+                             }
+                    }catch(Exception $e){
+                       $respuesta["error"]="rol_no_encontrado";
+                       $respuesta["codigo_error"]="UC_Update_dontfind";
+                       $respuesta["mensaje"]="Rol no encontrado";
+                       $respuesta["consola"]=$e;
+                   }
+        return response()->json($respuesta);
     }
 
     /**
@@ -80,5 +134,23 @@ class OtController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+   /*DSO 24-01-2016 Funcion para validar los campos al crear un usuario 
+    * entra el arreglo de datos
+    * Sale un arreglo con los errores.
+    */   
+   protected function validatorCrearOT(array $data)
+    {
+        return Validator::make($data, [
+                'nombre' => 'required|min:4|max:45',
+                'valor' => 'required|min:4|max:45',
+                'observaciones' => 'required|max:255',
+                'fecha_inicio' => 'required|date',
+                'fecha_final' => 'required|date',
+                'clientes_id' => 'required',
+                'usuarios_id' => 'required',
+                'estados_id' => 'required',
+        ]);
     }
 }

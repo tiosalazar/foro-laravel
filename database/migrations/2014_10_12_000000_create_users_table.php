@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('cargo',55);
             $table->string('telefono',45);
             $table->string('email',85)->unique();
-            $table->tinyInteger('estado');
+            $table->tinyInteger('estado')->default(1);
             $table->decimal('horas_disponible',15,3);
             $table->string('password');
             $table->rememberToken();
