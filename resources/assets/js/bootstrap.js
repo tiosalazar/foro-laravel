@@ -22,7 +22,9 @@ require('icheck');
 
 window.Vue = require('vue');
 require('vue-resource');
-
+// var dt      = require( 'datatables.net' )();
+// Funciona instalando 'imports-loader'
+// window.dt      = require('imports?define=>false!datatables.net')(window, $);
 /**
  * We'll register a HTTP interceptor to attach the "CSRF" header to each of
  * the outgoing requests issued by this application. The CSRF middleware
