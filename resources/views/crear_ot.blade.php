@@ -145,7 +145,7 @@
 									</div>
 							</div>
 							<div class="row">
-								<anadir_requerimiento></anadir_requerimiento>
+								{{-- <anadir_requerimiento></anadir_requerimiento> --}}
 
 							</div>
 

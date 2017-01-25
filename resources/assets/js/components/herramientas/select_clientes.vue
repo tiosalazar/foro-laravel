@@ -1,20 +1,23 @@
 <template>
-
-  <multiselect 
+  
+  <Multiselect 
    :options="clientes"
    :custom-label="nameWithLang"  placeholder="Seleccione un Cliente" label="nombre" track-by="nombre" 
    :close-on-select="true"
    @update="updateSelected"
    :options-limit="300" 
    :option-height="104">
-  </multiselect>
+  </Multiselect>
+
 </template>
 
 <script>
 
   import Multiselect from 'vue-multiselect'
+  
 
-    export default {
+    module.exports= {
+
        components: { Multiselect},
       data () {
           return {
@@ -22,6 +25,7 @@
             selected: null,
           }
       },
+
       created: function(){
           this.fetchTips();
       },

@@ -14,7 +14,7 @@
 
   import Multiselect from 'vue-multiselect'
 
-    export default {
+    module.exports= {
        components: { Multiselect},
        props: ['tipo_estado'],
       data () {

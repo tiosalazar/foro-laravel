@@ -21,6 +21,7 @@
                    <button class="btn btn-primary">Guardar</button>
                 </div>     
             </form>
+            {{message}}
                
       </div>
       
@@ -31,6 +32,19 @@
 </template>
 
 <script>
+   module.exports= {
+    
+       created: function(){
+          this.fetchTips();
+      },
+        methods:{
+          
+          fetchTips: function(){
+             alert("aaa");
+          }
+        }
+
+    }
     Vue.component(
     'listar-roles',
     require('./listar_roles.vue')

@@ -26,10 +26,6 @@ Vue.component('areas', require('./components/areas/areas.vue'));
 
 import Datepicker from 'vuejs-datepicker';
 
-
-
-
-
 const app = new Vue({
     el: '#app',
     components: {
