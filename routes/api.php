@@ -30,4 +30,9 @@ Route::group(['prefix' => 'v1','middleware' => 'cors'], function () {
      Route::resource('areas', 'AreaController');
      Route::resource('roles', 'RolController');
 
+     Route::get('tipos_compra', function (Request $request) {
+                 $tipo_compra= App\Tipos_Compra::all();
+              return response()->json($tipo_compra);
+        });
+
 });

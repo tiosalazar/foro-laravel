@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Tipos_Compra extends Model
+class Tipos_compra extends Model
 {
   /**
    * The attributes that are mass assignable.

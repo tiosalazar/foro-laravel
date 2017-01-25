@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
      $this->command->info('Clientes table seeded!');
      $this->call('EstadosTableSeeder');
      $this->command->info('Estados table seeded!');
+     $this->call('TiposComprasTableSeeder');
+     $this->command->info('Tipos_Compra table seeded!');
     }
 }
 class RolesTableSeeder extends Seeder {
@@ -113,6 +115,19 @@ class EstadosTableSeeder extends Seeder {
           App\Estado::create(array('nombre' => 'Atención Cuentas','tipos_estados_id'=> 1 ));
           App\Estado::create(array('nombre' => 'On Going','tipos_estados_id'=> 2) );
           App\Estado::create(array('nombre' => 'En espera','tipos_estados_id'=> 2) );
+    }
+
+}
+
+class TiposComprasTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('tipos_compras')->delete();
+        App\Tipos_Compra::create(array('nombre' => 'Pauta'));
+        App\Tipos_Compra::create(array('nombre' => 'Hosting'));
+        App\Tipos_Compra::create(array('nombre' => 'Plugin'));
+        App\Tipos_Compra::create(array('nombre' => 'B. Imagenes') );
     }
 
 }
