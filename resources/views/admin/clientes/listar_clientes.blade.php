@@ -7,10 +7,29 @@
 
 @section('main-content')
 <div class="row">
+<section class="col-md-12">
+  <!-- <div class="row"> -->
+    <div class="box box-default collapsed-box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Agregar Cliente</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <crear_cliente_form></crear_cliente_form>
+        </div>
+        <!-- /.box-body -->
+      </div>
+  <!-- </div> -->
+  <!-- ./ row -->
+</section>
     <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Clientes - Himalaya</h3>
+              <h3 class="box-title">Clientes</h3>
 
               <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
@@ -24,32 +43,12 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-              <table class="table table-hover ">
-                <tbody><tr>
-                  <th>NIT</th>
-                  <th>Cliente</th>
-                  <th>Nombre de Contacto</th>
-                  <th>Correo</th>
-                  <th>Teléfono</th>
-                  <th></th>
-                  <th></th>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td><button type="button" class="btn btn-block btn-warning btn-sm">Editar</button></td>
-                  <td><button type="button" class="btn btn-block btn-danger btn-sm">Borrar</button></td>
-                </tr>
-              </tbody></table>
+              <listar_clientes ></listar_clientes>
             </div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
         </div> 
-        <listar_clientes ></listar_clientes>
         
 </div>
 

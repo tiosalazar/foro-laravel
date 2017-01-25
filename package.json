@@ -12,6 +12,8 @@
     "bootstrap-less": "^3.3.8",
     "bootstrap-sass": "^3.3.7",
     "buble": "^0.15.2",
+    "datatables.net": "^2.1.1",
+    "datatables.net-bs": "^2.1.1",
     "font-awesome": "^4.6.3",
     "gulp": "^3.9.1",
     "icheck": "^1.0.2",
