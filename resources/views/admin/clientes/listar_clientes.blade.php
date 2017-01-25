@@ -49,7 +49,7 @@
           </div>
           <!-- /.box -->
         </div> 
-        <!-- <listar_clientes ></listar_clientes> -->
+        <listar_clientes ></listar_clientes>
         
 </div>
 

@@ -28,10 +28,10 @@ Route::group(['middleware' => 'auth'], function () {
     });
     // Clientes
     Route::get('/crear_cliente', function () {
-           return view('crear_cliente');
+           return view('admin.clientes.crear_cliente');
     });
     Route::get('/listar_clientes', function () {
-           return view('listar_clientes');
+           return view('admin.clientes.listar_clientes');
     });
 
     Route::get('/usuarios', function () {
