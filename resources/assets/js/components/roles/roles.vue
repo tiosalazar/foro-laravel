@@ -1,4 +1,4 @@
-<template >
+<template id="rol_list">
    <div> 
       <div class="box box-default collapsed-box" id="main-app">
 
@@ -12,41 +12,63 @@
         </div>
     
       <div class="box-body">
-          <form  role="form" class="form-inline">
+          <div  role="form" class="form-inline" action="#">
                 <div class="form-group">
                     <label for="nombre_rol">Nombre</label>
-                    <input type="text" class="form-control" id="nombre_rol" placeholder="Nombre del rol">
+                    <input type="text" v-model="rolarray.nombre"  class="form-control" id="nombre_rol" placeholder="Nombre del rol" >
                 </div>
                 <div class="form-group">
-                   <button class="btn btn-primary">Guardar</button>
+                   <button class="btn btn-primary" v-on:click="crear_rol();">Guardar</button>
                 </div>     
-            </form>
-            {{message}}
-               
+            </div>
+                         
       </div>
       
     </div>
-      <listar-roles></listar-roles>
+      <listar-roles :rolname="rolarray"></listar-roles>
+     
     </div>
     
 </template>
 
 <script>
+
+
+
+     var nuevo = Vue.component(
+      'listar-roles',
+      require('./listar_roles.vue')
+      );
+
+  
    module.exports= {
+
+       // created: function(){
+       //    this.consumerApi_listRol();
+       // },
+       ready(){
     
-       created: function(){
-          this.fetchTips();
-      },
+       },
+       data(){
+        return{
+          rolarray: {},        
+        }
+        
+       },      
         methods:{
           
-          fetchTips: function(){
-             alert("aaa");
+          crear_rol: function(e){
+            
+             var input = this.rolarray;            
+            this.$http.post('api/v1/roles',input)
+            .then(function(respuesta){     
+                $("#listarol").append("<td class='col-md-2'>"+input+"</td><td class='col-md-9'><button class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModal_rol'>Editar</button></td>");                
+            });
           }
         }
 
     }
-    Vue.component(
-    'listar-roles',
-    require('./listar_roles.vue')
-    );
+
+      
+    
 </script>

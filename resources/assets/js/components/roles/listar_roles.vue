@@ -2,6 +2,7 @@
 
 <div>
   		<div class="box">
+      
             <div class="box-header">
               <h3 class="box-title">Listado de Roles</h3>
             </div>
@@ -10,20 +11,14 @@
               <table class="table table-striped" >
                 <tbody>
                 <tr>
-                  <th style="width: 10px" class="col-md-1">ID</th>
                   <th class="col-md-2">Nombre</th>
                   <th class="col-md-9">Edicion</th>                
                 </tr>
-                <tr>
-                  <td class="col-md-1">1.</td>
-                  <td class="col-md-2">Update software</td>
+                <tr v-for="listrol in listroles" id="listarol">
+                  <td class="col-md-2">{{listrol.nombre}}</td>
                   <td class="col-md-9"><button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal_rol">Editar</button></td>
                 </tr>
-                <tr>
-                  <td>2.</td>
-                  <td>Clean database</td>
-                  <td><button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal_rol">Editar</button></td>
-                </tr>
+              
               </tbody></table>
             </div>
             <!-- /.box-body -->
@@ -57,4 +52,32 @@
 
   </div>
 </template>
+
+<script>
+var eventHub = new Vue();
+  
+   module.exports= {
+
+       props: ['rolname'],
+
+       created: function(){
+          this.consumerApi_listRol();
+          
+       },
+       data(){
+          return{
+            listroles:[]
+          }
+       },
+        methods:{
+          consumerApi_listRol: function(){
+            this.$http.get('api/v1/roles')
+              .then(function(respuesta){
+                this.listroles=respuesta.body;
+              });
+          }        
+        }
+
+    }
+</script>
 
