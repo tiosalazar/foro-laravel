@@ -39,6 +39,11 @@ php artisan migrate
 #Poblar Bases de Datos
 php artisan db:seed
 
+# Correr serve en un puerto 
+Correr serve correctamente para que funcione el *gulp watch*
+```sh
+php artisan serve --host=127.0.0.1
+```
 
 
 ----
