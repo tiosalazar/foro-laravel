@@ -1,13 +1,16 @@
 <template>
-
-  <multiselect
-  :options="estados"
-  :searchable="false" placeholder="Seleccione un Estado de OT" label="nombre" track-by="nombre"
-  :close-on-select="true"
-  :allow-empty="false"
-  :options-limit="300"
-  :option-height="104">
-  </multiselect>
+  <div>
+    <multiselect
+    :options="estados"
+    :searchable="false" placeholder="Seleccione un Estado de OT" label="nombre" track-by="nombre"
+    :close-on-select="true"
+    :allow-empty="false"
+    :options-limit="300"
+    @input="updateSelected"
+    :option-height="104">
+    </multiselect>
+      <input type="hidden"  :value="id_estado" name="id_estado">
+    </div>
 </template>
 
 <script>
@@ -19,7 +22,8 @@
        props: ['tipo_estado'],
       data () {
           return {
-            estados:[]
+            estados:[],
+            id_estado:0
           }
       },
       created: function(){
@@ -27,12 +31,14 @@
       },
       methods:{
           fetchTips: function(){
-               var URL=$('#url_path').val();
-              $.getJSON(URL+"/api/v1/estados/"+this.tipo_estado, function(estados) {
-                  //this.$set('clientes', clientes);
-                  this.estados=estados;
-              }.bind(this));
-          }
+             this.$http.get('api/v1/estados/'+this.tipo_estado)
+             .then(function(respuesta){
+                     this.estados=respuesta.body;
+             }.bind(this));
+          },
+         updateSelected (newSelected) {
+            this.id_estado = newSelected.id;
+        }
     }
   }
 </script>

@@ -1,8 +1,8 @@
 <template>
 <div>
   <Multiselect 
-   :options="clientes"
-   :custom-label="nameWithLang"  placeholder="Seleccione un Cliente" label="nombre" track-by="nombre" 
+   :options="tipo_compra"
+    placeholder="Seleccione un Item" label="nombre" track-by="nombre" 
    :close-on-select="true"
    :options-limit="300"
    @input="updateSelected"
@@ -20,8 +20,8 @@
        components: { Multiselect},
       data () {
           return {
-            clientes:[],
-            id_cliente:0,
+            tipo_compra:[],
+            id_tipo_compra:0,
           }
       },
       created: function(){
@@ -29,16 +29,13 @@
       },
       methods:{
           fetchTips: function(){
-           this.$http.get('api/v1/clientes')
+           this.$http.get('api/v1/tipos_compra')
              .then(function(respuesta){
-                     this.clientes=respuesta.body;
+                     this.tipo_compra=respuesta.body;
              }.bind(this));
           },
-        nameWithLang ({ nombre, nombre_contacto }) {
-          return `${nombre} — ${nombre_contacto}`
-        },
          updateSelected (newSelected) {
-            this.id_cliente = newSelected.id;
+            this.id_tipo_compra = newSelected.id;
         }
     }
   }

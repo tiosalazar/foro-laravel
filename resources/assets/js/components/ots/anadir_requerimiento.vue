@@ -1,6 +1,18 @@
 <template>
   <div class="col-md-12">
-
+              <div class="row">
+                      <div class="col-md-6">
+                        <h2>Requerimiento</h2>
+                        </div>
+                        <div class="col-md-6">
+                        <div class="form-group ">
+                          <label for="horas_area" class="col-sm-4 "><h4>Horas Area</h4> </label>
+                          <div class="col-sm-4">
+                                <input type="text" class="form-control" id="horas_area" v-model="hAreaDiseno"  placeholder="Numero de Horas Disponibles">
+                          </div>
+                      </div>
+                    </div>
+                  </div>
     <div class="row">
       <section class="Form__section" v-for="ed in requerimiento">
               <div class="form-group col-md-8">
@@ -21,32 +33,17 @@
         <button type="button" @click="addRequerimiento" class="btn btn-block btn-success col-sm-3">Añadir Tarea</button>
       </div>
     </div>
-
   </div>
-  <vuetable
-            api-url="http://127.0.0.1:8000/api/v1/areas"
-            :fields="columns"
-        ></vuetable>
 </template>
 
 <script>
 
-    export default {
+     module.exports={
       data () {
           return {
           requerimiento: [
               {nombre_requerimiento: 'requerimiento[0][nombre_requerimiento]', no_horas_req: 'requerimiento[0][no_horas_req]'}
-          ],
-            columns: [
-                    'firstname',
-                    'lastname',
-                    'nickname',
-                    'birthdate',
-                    'group.name_en',
-                    'gender',
-                    'last_login',
-                    '__actions'
-                ]
+          ]
         }
       },
       methods: {

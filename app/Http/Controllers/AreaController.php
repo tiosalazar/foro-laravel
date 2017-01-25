@@ -45,7 +45,7 @@ class AreaController extends Controller
         $vl=$this->validatorCrearArea($request->all());
       if ($vl->fails())
          {
-               return response()->json($request->all());        
+               return response()->json($vl->errors());        
          }else
              {        
                     $area= new Area;  
