@@ -18,22 +18,32 @@
                     <input type="text" v-model="rolarray.nombre"  class="form-control" id="nombre_rol" placeholder="Nombre del rol" required="">
                 </div>
                 <div class="form-group">
-                   <button class="btn btn-primary" v-on:click="crear_rol();">Guardar</button>
+                   <button class="btn btn-primary" v-on:click="crear_rol()">Guardar</button>
                 </div>     
             </div>
                          
       </div>
       
     </div>
-      <listar-roles :rolname="rolarray" :id_parent="id_rol_passing" ></listar-roles>
-     
+   
+      <listar-roles  :id_parent="id_rol_passing" ></listar-roles>
+   
     </div>
     
 </template>
 
+<style>
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+    opacity: 0
+  }
+</style>
+
 <script>
 
-     Vue.component(
+      Vue.component(
         'listar-roles',
         require('./listar_roles.vue')
       );
@@ -41,9 +51,7 @@
   
    module.exports= {
   
-       ready(){
-    
-       },
+      
        data(){
         return{
           rolarray: {},
@@ -59,7 +67,8 @@
             this.$http.post('api/v1/roles',input)
             .then(function(respuesta){ 
                  console.log(respuesta);
-                this.id_rol_passing={'id':respuesta.body.rol.id,'nombre':respuesta.body.rol.nombre}           
+                this.id_rol_passing={'id':respuesta.body.rol.id,'nombre':respuesta.body.rol.nombre} 
+                        
             });
           }
         }

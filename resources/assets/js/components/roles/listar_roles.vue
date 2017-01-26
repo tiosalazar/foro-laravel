@@ -1,3 +1,4 @@
+
 <template>
 
 <div>
@@ -14,10 +15,14 @@
                   <th class="col-md-2">Nombre</th>
                   <th class="col-md-9">Edicion</th>                
                 </tr>
-                <tr v-for="listrol in listroles" id="listarol">
-                  <td class="col-md-2">{{listrol.nombre}}</td>
-                  <td class="col-md-9"><button class="btn btn-warning btn-xs edicion_rol" data-toggle="modal" data-target="#myModal_rol" :id_rol="listrol.id" @click="pasardatosmodal(listrol.id,listrol.nombre)">Editar</button></td>
-                </tr>
+                
+                  <tr v-for="listrol in listroles" >
+                   
+                      <td class="col-md-2">{{listrol.nombre}}</td>
+                      <td class="col-md-9"><button class="btn btn-warning btn-xs edicion_rol" data-toggle="modal" data-target="#myModal_rol" :id_rol="listrol.id" @click="pasardatosmodal(listrol.id,listrol.nombre)">Editar</button></td>
+                  
+                  </tr>
+              
               
               </tbody></table>
             </div>
@@ -106,8 +111,10 @@
     
             });
             
-          }       
+          }         
+
         }
+
 
     }
 </script>
