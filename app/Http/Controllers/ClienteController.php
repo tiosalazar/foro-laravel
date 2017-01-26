@@ -49,6 +49,7 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         $cliente = new Cliente;
+        $cliente->fill($request->all());
         //Validación de las entradas por el metodo POST
         $vl=$this->validatorCrearCliente($request->all());
         if ($vl->fails()){
@@ -62,7 +63,7 @@ class ClienteController extends Controller
                 ],Response::HTTP_BAD_REQUEST);
         }else{
             try {
-                $cliente->create($request->all());
+                $cliente->save();
                 return response([
                     'status' => Response::HTTP_OK,
                     'response_time' => microtime(true) - LARAVEL_START,

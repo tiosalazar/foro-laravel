@@ -10,29 +10,28 @@
     <th></th>
     <th></th>
   </tr>
-  <tr v-for="cliente in clientes" href="#" >
+  <tr v-for="cliente in clientes">
 
    <td>{{ cliente.nit }}</td>
    <td>{{ cliente.nombre }}</td>
    <td>{{ cliente.nombre_contacto }}</td>
-   <td>{{ cliente.correo }}</td>
+   <td>{{ cliente.email }}</td>
    <td>{{ cliente.telefono }}</td>
-   <td><button type="button" class="btn btn-block btn-warning btn-sm edit"  :id="cliente.id">Editar</button></td>
+   <td><button type="button" class="btn btn-block btn-warning btn-sm edit"  :id="cliente.id" v-on:click="editCliente(cliente)">Editar</button></td>
    <td><button type="button" class="btn btn-block btn-danger btn-sm edit" :id="cliente.id">Borrar</button></td>
  </tr>
 </tbody></table>
 </template>
 <script>
-    // var $ = require("jquery")(window);
-// import 'datatables.net-dt/css/jquery.datatables.css';
+
     module.exports =  {
+      // props: ['cliente'],
       data () {
           return {
             clientes:[]
           }
-      }
-      ,created: function(){
-          this.fetchTips();
+      },created:function () {
+        this.listarClientes();
       },
       /*,created: function(){
             this.$nextTick(function() {
@@ -40,12 +39,22 @@
             })
           },*/
       methods:{
-          fetchTips: function(){
+          listarClientes: function(){
              this.$http.get('api/v1/clientes')
              .then(function(respuesta){
                this.clientes=respuesta.body;
-               console.log(respuesta);
+               console.log(this.clientes);
              });
+          },
+          editCliente: function(id) {
+            console.log(id)
+            $('.editarModal').modal('show');
+
+          },
+          setCliente: function(client) {
+            console.log(client);
+            console.log(this.clientes);
+            // this.clientes.push(client);
           }
     }
   }

@@ -14,8 +14,7 @@ require('./bootstrap');
  * the application, or feel free to tweak this setup for your needs.
  */
 
-Vue.component('listar_clientes', require('./components/clientes/listar_clientes.vue'));
-Vue.component('crear_cliente_form', require('./components/clientes/crear_cliente_form.vue'));
+Vue.component('clientes', require('./components/clientes/clientes.vue'));
 
 //Componentes Dsalazar
 Vue.component('formulario_anadir_requerimiento', require('./components/ots/formulario_anadir_requerimiento.vue'));
