@@ -1,6 +1,7 @@
 
 // Fonts
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700);
 
 // Variables
 @import "variables";
@@ -10,3 +11,6 @@
 
 //Font awesome
 @import "node_modules/font-awesome/scss/font-awesome.scss";
+
+//transiciones tablas
+@import "transitions";

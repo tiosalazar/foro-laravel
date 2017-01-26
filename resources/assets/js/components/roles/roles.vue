@@ -15,43 +15,47 @@
           <div  role="form" class="form-inline" action="#">
                 <div class="form-group">
                     <label for="nombre_rol">Nombre</label>
-                    <input type="text" v-model="rolarray.nombre"  class="form-control" id="nombre_rol" placeholder="Nombre del rol" >
+                    <input type="text" v-model="rolarray.nombre"  class="form-control" id="nombre_rol" placeholder="Nombre del rol" required="">
                 </div>
                 <div class="form-group">
-                   <button class="btn btn-primary" v-on:click="crear_rol();">Guardar</button>
+                   <button class="btn btn-primary" v-on:click="crear_rol()">Guardar</button>
                 </div>     
             </div>
                          
       </div>
       
     </div>
-      <listar-roles :rolname="rolarray"></listar-roles>
-     
+   
+      <listar-roles  :id_parent="id_rol_passing" ></listar-roles>
+   
     </div>
     
 </template>
 
+<style>
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+    opacity: 0
+  }
+</style>
+
 <script>
 
-
-
-     var nuevo = Vue.component(
-      'listar-roles',
-      require('./listar_roles.vue')
+      Vue.component(
+        'listar-roles',
+        require('./listar_roles.vue')
       );
 
   
    module.exports= {
-
-       // created: function(){
-       //    this.consumerApi_listRol();
-       // },
-       ready(){
-    
-       },
+  
+      
        data(){
         return{
-          rolarray: {},        
+          rolarray: {},
+          id_rol_passing:{}        
         }
         
        },      
@@ -59,10 +63,12 @@
           
           crear_rol: function(e){
             
-             var input = this.rolarray;            
+          var input = this.rolarray;            
             this.$http.post('api/v1/roles',input)
-            .then(function(respuesta){     
-                $("#listarol").append("<td class='col-md-2'>"+input+"</td><td class='col-md-9'><button class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModal_rol'>Editar</button></td>");                
+            .then(function(respuesta){ 
+                 console.log(respuesta);
+                this.id_rol_passing={'id':respuesta.body.rol.id,'nombre':respuesta.body.rol.nombre} 
+                        
             });
           }
         }

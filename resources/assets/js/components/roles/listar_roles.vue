@@ -1,3 +1,4 @@
+
 <template>
 
 <div>
@@ -14,10 +15,14 @@
                   <th class="col-md-2">Nombre</th>
                   <th class="col-md-9">Edicion</th>                
                 </tr>
-                <tr v-for="listrol in listroles" id="listarol">
-                  <td class="col-md-2">{{listrol.nombre}}</td>
-                  <td class="col-md-9"><button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal_rol">Editar</button></td>
-                </tr>
+                
+                  <tr v-for="listrol in listroles" >
+                   
+                      <td class="col-md-2">{{listrol.nombre}}</td>
+                      <td class="col-md-9"><button class="btn btn-warning btn-xs edicion_rol" data-toggle="modal" data-target="#myModal_rol" :id_rol="listrol.id" @click="pasardatosmodal(listrol.id,listrol.nombre)">Editar</button></td>
+                  
+                  </tr>
+              
               
               </tbody></table>
             </div>
@@ -33,14 +38,17 @@
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">×</span></button>
-                        <h4 class="modal-title">Default Modal</h4>
+                        <h4 class="modal-title">Edición de Rol</h4>
                       </div>
                       <div class="modal-body">
-                        <p>One fine body…</p>
+                        <label for="id_rol_edit">ID</label>
+                        <input type="text" class="form-control" id="id_rol_edit" v-model="id_rol_edit" disabled>
+                        <label for="nombre_rol_edit">Editar nombre del rol</label>
+                        <input type="text" class="form-control" id="nombre_rol_edit" v-model="nombre_rol_edit.nombre" placeholder="Nuevo nombre">
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary " id="save_edit_rol" @click="updaterol" data-dismiss="modal">Guardar</button>
                       </div>
                     </div>
                     <!-- /.modal-content -->
@@ -54,29 +62,59 @@
 </template>
 
 <script>
-var eventHub = new Vue();
-  
+
    module.exports= {
 
-       props: ['rolname'],
+       props: ['rolname','id_parent'],
 
        created: function(){
-          this.consumerApi_listRol();
-          
+          this.consumerApi_listRol();    
        },
        data(){
           return{
-            listroles:[]
+            listroles:[],
+            id_rol_edit:[],
+            nombre_rol_edit:[]
           }
        },
+          watch : {
+            id_parent : function (value) {
+              this.listroles.push(value);
+            }
+          },
         methods:{
           consumerApi_listRol: function(){
             this.$http.get('api/v1/roles')
               .then(function(respuesta){
                 this.listroles=respuesta.body;
               });
-          }        
+          }, 
+          pasardatosmodal:function(id,nombre){
+            console.log(id);
+            this.id_rol_edit=id;
+            this.nombre_rol_edit.nombre=nombre;
+          }, 
+          updaterol:function(){
+
+            var idmodal=this.id_rol_edit;
+            var nombremodal=this.nombre_rol_edit.nombre;
+            
+            console.log(nombremodal);
+            this.$http.put('api/v1/roles/'+idmodal+'',{nombre: nombremodal})
+            .then(function(respuesta){
+
+                for (var i = 0; i < this.listroles.length; i++) { 
+                   if (this.listroles[i].id==respuesta.body.id) {
+                       this.listroles[i].nombre=respuesta.body.nombre.nombre;
+                  }
+                }
+    
+            });
+            
+          }         
+
         }
+
 
     }
 </script>

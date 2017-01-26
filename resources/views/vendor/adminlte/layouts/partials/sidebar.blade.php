@@ -39,19 +39,23 @@
                 <a href="#"><i class='fa fa-users'></i> <span>{{ trans('texto_menu.organizacion') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="{{ url('roles') }}">{{  trans('texto_menu.crear_roles') }}</a></li>
-                    <li><a href="{{ url('areas') }}">{{  trans('texto_menu.crear_areas') }}</a></li>
                 </ul>
             </li>
             <li class="treeview">
                 <a href="#"><i class='fa  fa-user'></i> <span>{{ trans('texto_menu.usuarios') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="{{ url('usuarios') }}">{{  trans('texto_menu.listar_usuarios') }}</a></li>
+                    <li><a href="{{ url('areas') }}">{{  trans('texto_menu.crear_areas') }}</a></li>
                     <li><a href="{{ url('crear_usuario') }}">{{  trans('texto_menu.crear_usuarios') }}</a></li>
+                    <li><a href="{{ url('usuarios') }}">{{  trans('texto_menu.listar_usuarios') }}</a></li>
+                    <li><a href="{{ url('areas') }}">{{  trans('texto_menu.listar_areas') }}</a></li>
                 </ul>
+
+             
             </li>
             <li class="treeview">
                 <a href="#"><i class='fa fa-link'></i> <span>Clientes</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
+
                     <li><a href="{{ url('crear_cliente') }}">Crear cliente</a></li>
                     <li><a href="{{ url('listar_clientes') }}">Listar clientes</a></li>
                 </ul>

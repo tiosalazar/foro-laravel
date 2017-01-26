@@ -35,17 +35,17 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::get('/usuarios', function () {
-           return view('admin.usuarios.usuarios');
+           return view('admin.equipo.usuarios');
     });
 
     Route::get('/crear_usuario', function () {
-           return view('admin.usuarios.crear_usuario');
+           return view('admin.equipo.crear_usuario');
     });
      Route::get('/roles', function () {
-           return view('admin.usuarios.crear_roles');
+           return view('admin.roles.crear_roles');
     });
       Route::get('/areas', function () {
-           return view('admin.usuarios.crear_areas');
+           return view('admin.areas.crear_areas');
     });
 
 });
