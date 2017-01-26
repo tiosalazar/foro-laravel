@@ -1,12 +1,15 @@
 <template>
-
-  <multiselect
-  :options="usuarios"
-  :custom-label="nameWithLang"
-  :searchable="false" placeholder="Seleccione un Usuario" label="nombre" track-by="nombre"
-  :options-limit="300"
-  :option-height="104">
-  </multiselect>
+  <div>
+      <multiselect
+      :options="usuarios"
+      :custom-label="nameWithLang"
+      :searchable="false" placeholder="Seleccione un Usuario" label="nombre" track-by="nombre"
+      :options-limit="300"
+      @input="updateSelected"
+      :option-height="104">
+      </multiselect>
+      <input type="hidden"  :value="id_ejecutivo" name="id_ejecutivo">
+  </div>
 </template>
 
 <script>
@@ -18,7 +21,8 @@
          props: ['area'],
       data () {
           return {
-            usuarios:[]
+            usuarios:[],
+            id_ejecutivo:0
           }
       },
       created: function(){
@@ -26,14 +30,16 @@
       },
       methods:{
           fetchTips: function(){
-               var URL=$('#url_path').val();
-              $.getJSON( URL+"/api/v1/usuarios/"+this.area, function(usuarios) {
-                  //this.$set('clientes', clientes);
-                  this.usuarios=usuarios;
-              }.bind(this));
+               this.$http.get('api/v1/usuarios/'+this.area)
+             .then(function(respuesta){
+                     this.usuarios=respuesta.body;
+             }.bind(this));
           },
         nameWithLang ({ nombre, apellido }) {
           return `${nombre} — ${apellido}`
+        },
+         updateSelected (newSelected) {
+            this.id_ejecutivo = newSelected.id;
         }
     }
   }
