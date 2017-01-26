@@ -1,14 +1,14 @@
 <template>
 <div>
-  <Multiselect 
+  <Multiselect
    :options="tipo_compra"
-    placeholder="Seleccione un Item" label="nombre" track-by="nombre" 
+    placeholder="Seleccione un Item" label="nombre" track-by="nombre"
    :close-on-select="true"
    :options-limit="300"
    @input="updateSelected"
    :option-height="104">
   </Multiselect>
-  <input type="hidden"  :value="id_cliente" name="cliente">
+  <input type="hidden"  :value="id_tipo_compra" name="cliente">
   </div>
 </template>
 

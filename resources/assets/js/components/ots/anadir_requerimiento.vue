@@ -8,7 +8,7 @@
                         <div class="form-group ">
                           <label for="horas_area" class="col-sm-4 "><h4>Horas Area</h4> </label>
                           <div class="col-sm-4">
-                                <input type="text" class="form-control" id="horas_area" v-model="hAreaDiseno"  placeholder="Numero de Horas Disponibles">
+                                <input type="text" class="form-control" id="horas_area"  placeholder="Numero de Horas Disponibles">
                           </div>
                       </div>
                     </div>
@@ -39,6 +39,7 @@
 <script>
 
      module.exports={
+       		props: ['hAreaDiseno'],
       data () {
           return {
           requerimiento: [

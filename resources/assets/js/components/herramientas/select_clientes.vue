@@ -1,45 +1,74 @@
 <template>
 <div>
-  <Multiselect 
+  <Multiselect
    :options="clientes"
-   :custom-label="nameWithLang"  placeholder="Seleccione un Cliente" label="nombre" track-by="nombre" 
+   :custom-label="nameWithLang"  placeholder="Seleccione un Cliente" label="nombre" track-by="nombre"
    :close-on-select="true"
+   :value="value"
    :options-limit="300"
    @input="updateSelected"
+   @remove="removeSelected"
    :option-height="104">
   </Multiselect>
   <input type="hidden"  :value="id_cliente" name="cliente">
   </div>
 </template>
-
 <script>
-
   import Multiselect from 'vue-multiselect'
+  import VueLocalStorage from 'vue-localstorage'
+  import VueSync from 'vue-sync'
+	Vue.use(VueLocalStorage)
+var localSync = VueSync.localStrategy()
     module.exports= {
-
-       components: { Multiselect},
+       components: { Multiselect,VueSync,VueLocalStorage},
+       localStorage: {
+               clientes: {
+                 type: Object,
+               }
+             },
       data () {
           return {
             clientes:[],
-            id_cliente:0,
+            id_cliente:0
           }
+      },
+      computed:{
+        value: function () {
+          return this.$localStorage.get('clientes')
+        }
+      },
+      sync: {
+        clientes: localSync('clientes') // in this example, app_data is the namespace
       },
       created: function(){
           this.fetchTips();
       },
       methods:{
           fetchTips: function(){
+
            this.$http.get('api/v1/clientes')
              .then(function(respuesta){
                      this.clientes=respuesta.body;
              }.bind(this));
+             console.log(this.$localStorage.get('clientes'));
           },
         nameWithLang ({ nombre, nombre_contacto }) {
           return `${nombre} — ${nombre_contacto}`
         },
          updateSelected (newSelected) {
-            this.id_cliente = newSelected.id;
-        }
+           if (newSelected != null && newSelected != undefined) {
+             this.id_cliente = newSelected.id;
+             this.$localStorage.set('clientes', newSelected);
+           }else {
+             this.id_cliente = 0;
+             this.$localStorage.remove('clientes');
+           }
+
+        },
+        removeSelected () {
+           this.id_cliente = 0;
+           this.$localStorage.remove('clientes');
+       }
     }
   }
 </script>

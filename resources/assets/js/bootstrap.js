@@ -24,6 +24,10 @@ window.Vue = require('vue');
 require('vue-resource');
 // var dt      = require( 'datatables.net' )();
 // Funciona instalando 'imports-loader'
+
+require('vue-sync')
+
+
 // window.dt      = require('imports?define=>false!datatables.net')(window, $);
 /**
  * We'll register a HTTP interceptor to attach the "CSRF" header to each of
