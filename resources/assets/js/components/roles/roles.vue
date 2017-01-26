@@ -61,8 +61,9 @@
             
              var input = this.rolarray;            
             this.$http.post('api/v1/roles',input)
-            .then(function(respuesta){     
-                $("#listarol").append("<td class='col-md-2'>"+input+"</td><td class='col-md-9'><button class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModal_rol'>Editar</button></td>");                
+            .then(function(respuesta){ 
+
+                $('#listarol td:last-child').before("<td class='col-md-2'>"+input+"</td><td class='col-md-9'><button class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModal_rol'>Editar</button></td>");                
             });
           }
         }
