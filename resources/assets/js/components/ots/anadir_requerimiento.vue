@@ -50,7 +50,7 @@
       methods: {
           addRequerimiento: function(e) {
               e.preventDefault();
-              console.log(this.requerimiento);
+              
               this.requerimiento.push(Vue.util.extend({}, this.requerimiento));
           },
           deleteRequerimiento: function(e) {

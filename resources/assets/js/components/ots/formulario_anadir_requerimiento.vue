@@ -78,7 +78,7 @@
           <div style="height:30px"></div>
           <div class="row">
             <div class=" pull-right  col-md-3">
-              <button type="button" class="btn btn-block btn-success col-sm-3">Guardar Datos Area</button>
+              <button type="button" class="btn btn-block btn-success col-sm-3">Guardar</button>
             </div>
           </div>
           <div style="height:20px"></div>
@@ -103,6 +103,7 @@
     </div>
   </template>
   <script>
+
   	import VueSync from 'vue-sync';
   //  var localSync = VueSync.localStrategy();
   module.exports= {
@@ -130,8 +131,8 @@
     methods:{
 
       fetchTips: function(){
-        var localSync = VueSync.localStrategy();
-        console.log(localSync('app_data'));
+        /*var localSync = VueSync.localStrategy();
+        console.log(localSync('app_data'));*/
         //alert("aaa");
       }
     }
