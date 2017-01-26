@@ -121,6 +121,8 @@ class RolController extends Controller
                                 $rol->fill($request->all());
                                 // Guardamos el usuario
                                 $rol->update();
+                               $respuesta["id"]=$id;
+                               $respuesta["nombre"]=$request->all();
                                $respuesta["error"]=0;
                                $respuesta["mensaje"]="OK";                        
                              }
