@@ -7748,6 +7748,7 @@
   clip: auto;
 }
 
+<<<<<<< HEAD
 .fade-enter-active, .fade-leave-active {
   -webkit-transition: opacity .5s;
   transition: opacity .5s;
@@ -7755,6 +7756,45 @@
 
 .fade-enter, .fade-leave-to {
   opacity: 0;
+=======
+.input-group.date .datepicker input {
+  width: 107%;
+  text-align: center;
+  margin-left: -4%;
+  height: 141%;
+  margin-top: -4%;
+  border: 0;
+}
+
+#encabezado_ot .form-group {
+  padding: 6px 0px 28px 0px;
+}
+
+.required sup {
+  color: red;
+  font-size: 13px;
+}
+
+sup {
+  top: -.5em;
+}
+
+.select-error {
+  border: 1px solid red;
+  border-radius: 6px;
+}
+
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+.nopadding {
+  padding: 0 !important;
+  margin: 0 !important;
+>>>>>>> origin/dsalazar
 }
 
 /*# sourceMappingURL=app.css.map */
