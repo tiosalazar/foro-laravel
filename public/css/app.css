@@ -7748,7 +7748,6 @@
   clip: auto;
 }
 
-<<<<<<< HEAD
 .fade-enter-active, .fade-leave-active {
   -webkit-transition: opacity .5s;
   transition: opacity .5s;
@@ -7756,7 +7755,8 @@
 
 .fade-enter, .fade-leave-to {
   opacity: 0;
-=======
+}
+
 .input-group.date .datepicker input {
   width: 107%;
   text-align: center;
@@ -7794,7 +7794,6 @@ sub, sup {
 .nopadding {
   padding: 0 !important;
   margin: 0 !important;
->>>>>>> origin/dsalazar
 }
 
 /*# sourceMappingURL=app.css.map */
