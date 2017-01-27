@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div :class="{ 'select-error': isInvalid }">
       <multiselect
       :options="usuarios"
@@ -12,8 +13,13 @@
       @close="onTouch"
       :option-height="104">
       </multiselect>
-        <span  class="help-block" v-show="isInvalid">El campo Usuarios es obligatorio</span>
       <input type="hidden"  :value="id_ejecutivo" name="id_ejecutivo">
+    </div>
+      <div style="padding:2px 0px;"  :class="{ 'has-error': isInvalid }" v-show="isInvalid">
+            <span  class="help-block">El campo Usuarios es obligatorio</span>
+      </div>
+  </div>
+
   </div>
 </template>
 
@@ -44,7 +50,7 @@
           return this.$localStorage.get('ejecutivo_seleccionado')
         },
         isInvalid () {
-          return this.isTouched && this.value.length === 0
+          return (this.isTouched &&  this.$localStorage.get('clientes')==null )?true:false
         }
       },/*
       sync: {
@@ -75,9 +81,9 @@
         removeSelected () {
            this.id_ejecutivo = 0;
            this.$localStorage.remove('ejecutivo_seleccionado');
-       }, 
+       },
        onTouch () {
-        this.isTouched = true
+        this.isTouched = (this.$localStorage.get('clientes')==null )?true:false ;
       }
     }
   }

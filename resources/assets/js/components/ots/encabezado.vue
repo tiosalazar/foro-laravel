@@ -18,7 +18,7 @@
 				<div class="form-group required">
 					<label for="name_proyecto" class="col-sm-4 ">Proyecto   <sup>*</sup></label>
 					<div class="col-sm-8"  v-bind:class="{ 'has-error': errors.has('name_proyect') }">
-						<input type="text" name="name_proyect" class="form-control" v-validate data-vv-rules="required|alpha_num|min:5" data-vv-as="Proyecto" required="required"  v-model="name_proyect" id="name_proyecto" placeholder="Nombre del Proyecto">
+						<input type="text" name="name_proyect" class="form-control" v-validate data-vv-rules="required|min:5" data-vv-as="Proyecto" required="required"  v-model="name_proyect" id="name_proyecto" placeholder="Nombre del Proyecto">
 						<span  class="help-block" v-show="errors.has('name_proyect')">{{ errors.first('name_proyect') }}</span>
 					</div>
 				</div>
@@ -78,10 +78,10 @@
 							<div class="input-group-addon" >
 								<i class="fa fa-calendar"></i>
 							</div>
-							<datepicker language="es"  id="fecha_fin" required="required"  v-validate data-vv-rules="required" data-vv-as="Fecha de finalización" placeholder="Fecha fin"  :disabled="state.disabled" v-model="fecha_fin" class="form-control"  name="fecha_fin" format="dd-MM-yyyy"></datepicker>
+							<datepicker language="es"  id="fecha_fin" required="required"  v-validate data-vv-rules="required" data-vv-as="Fecha fin" placeholder="Fecha fin"  :disabled="state.disabled" v-model="fecha_fin" class="form-control"  name="fecha_fin" format="dd-MM-yyyy"></datepicker>
 						</div>
 						<span  class="help-block" v-show="errors.has('fecha_fin')">{{ errors.first('fecha_fin') }}</span>
-					</div>					
+					</div>
 				</div>
 			</div>
 			<div class="col-md-6 ">
@@ -96,7 +96,7 @@
 		  <div style="height:15px"></div>
 		<div class="row ">
 		   <div class=" pull-right  col-md-3">
-              <button type="submit" @click="validateBeforeSubmit" class="btn btn-block btn-success col-sm-3">Guardar Avance</button> 
+              <button type="submit" @click="validateBeforeSubmit" class="btn btn-block btn-success col-sm-3">Guardar Avance</button>
             </div>
 		</div>
 	</div> <!-- /.box-header with-border -->
@@ -116,7 +116,7 @@
        //Realizando los Use
 
        //Uso LocalStorage para gardar la data.
-		Vue.use(VueLocalStorage);		
+		Vue.use(VueLocalStorage);
 		// Merge the locales.
 		Validator.updateDictionary({es: { messages }});
 		// Install the plugin and set the locale.
@@ -135,7 +135,7 @@
 					      type: Object,
 					    },
 					    num_ot: {
-					      type: Number
+					      type: String
 					    },
 					    h_Disponibles: {
 					      type: Number
@@ -145,17 +145,31 @@
 					    },
 					    valor_total: {
 					      type: String
-					    }
+					    },
+							horas_totales:{
+								  type: String
+							}
 					  },
 			data () {
 				return {
-                         h_Disponibles:'',
+             h_Disponibles:'',
 						 fecha_inicio:'',
 						 cliente:'',
 						 ejecutivo:'',
 						 htotal:'',
 						 estado:'',
-					     formSubmitted: false,
+						 num_ot:'',
+						 name_proyect:'',
+						 valor_total:'',
+						 horas_totales:'',
+						 fecha_fin:'',
+						 message :'',
+						 option_toast:{
+							 timeOut: 5000,
+							 "positionClass": "toast-top-center",
+							 "closeButton": true,
+						 },
+					  formSubmitted: false,
 						 state: {
 								   disabled: {
 								        to: new Date(), // Disable all dates up to specific date
@@ -165,9 +179,9 @@
 								}
 				}
 			},
-			computed:{
-				num_ot:function(){
-					return this.$localStorage.get('num_ot')
+		computed:{
+				/*	num_ot:function(){
+					return this.$localStorage.set('num_ot')
 				},
 				name_proyect:function(){
 					return this.$localStorage.get('name_proyect')
@@ -180,7 +194,7 @@
 				},
 				fecha_fin:function(){
 					return this.$localStorage.get('fecha_fin')
-				},
+				},*/
 				date: function () {
 					/*
 					var today = new Date();
@@ -190,10 +204,10 @@
 					var yyyy = today.getFullYear();
 					if(dd<10){
 					    dd='0'+dd;
-					} 
+					}
 					if(mm<10){
 					    mm='0'+mm;
-					} 
+					}
 					var today = dd+'-'+mm+'-'+yyyy;*/
 					return new Date()
 				}
@@ -203,15 +217,25 @@
 			},
 			methods:{
 				fetchTips: function(){
+					this.num_ot=this.$localStorage.get('num_ot');
+					this.name_proyect= this.$localStorage.get('name_proyect');
+				  this.valor_total	= this.$localStorage.get('valor_total');
+					this.horas_totales= this.$localStorage.get('horas_totales');
+					this.fecha_fin= this.$localStorage.get('fecha_fin');
 					/*let lsValue = this.$localStorage.get('someObject')
 						 this.$localStorage.set('someBoolean', true)
 						 this.$localStorage.remove('stringOne')*/
 				},
 				 validateBeforeSubmit(e) {
-				 	console.log(this.errors);
 			        this.$validator.validateAll();
 			        if (!this.errors.any()) {
-			            this.submitForm()
+								toastr.success("Datos Guadados Correctamente, puede seguir Editando la OT o Regresar más tarde para Continuar con la edición",'',this.option_toast);
+								 this.$localStorage.set('num_ot',this.num_ot);
+								 this.$localStorage.set('name_proyect',this.name_proyect);
+								 this.$localStorage.set('valor_total',this.valor_total);
+								 this.$localStorage.set('horas_totales',this.horas_totales);
+								 this.$localStorage.set('fecha_fin',this.fecha_fin);
+			            //this.submitForm()
 			        }
 			      },
 			    submitForm(){

@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div :class="{ 'select-error': isInvalid }">
     <multiselect
     :options="estados"
@@ -12,9 +13,10 @@
     @close="onTouch"
     :option-height="104">
     </multiselect>
-    <div style="height:15px"></div>
-      <span  class="help-block" v-show="isInvalid">El campo Estado es obligatorio</span>
-      <input type="hidden"  :value="id_estado" name="id_estado">
+          <input type="hidden"  :value="id_estado" name="id_estado">
+  </div>
+    <div style="padding:2px 0px;"  :class="{ 'has-error': isInvalid }" v-show="isInvalid">
+          <span  class="help-block">El campo Estado es obligatorio</span>
     </div>
 </template>
 
@@ -46,7 +48,7 @@
           return this.$localStorage.get('estado_ot')
         },
         isInvalid () {
-          return this.isTouched && this.value.length === 0
+          return (this.isTouched &&  this.$localStorage.get('clientes')==null )?true:false
         }
       },
       /*sync: {
@@ -74,9 +76,9 @@
         removeSelected () {
            this.id_estado = 0;
            this.$localStorage.remove('estado_ot');
-       }, 
+       },
        onTouch () {
-        this.isTouched = true
+        this.isTouched =(this.$localStorage.get('clientes')==null )?true:false ;
       }
     }
   }

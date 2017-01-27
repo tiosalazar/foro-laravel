@@ -17,7 +17,7 @@
     <div style="padding:2px 0px;"  :class="{ 'has-error': isInvalid }" v-show="isInvalid">
           <span  class="help-block">El campo Clientes es obligatorio</span>
     </div>
- </div> 
+ </div>
 </template>
 <script>
   import Multiselect from 'vue-multiselect'
@@ -26,7 +26,7 @@
   Vue.use(VueLocalStorage)
   //var localSync = VueSync.localStrategy()
     module.exports= {
-       components: { Multiselect,VueLocalStorage},
+       components: { Multiselect: Multiselect,VueLocalStorage: VueLocalStorage},
        localStorage: {
                clientes: {
                  type: Object,
@@ -44,7 +44,7 @@
           return this.$localStorage.get('clientes')
         },
         isInvalid () {
-          return this.isTouched && this.value == null
+          return (this.isTouched &&  this.$localStorage.get('clientes')==null )?true:false
         }
       },/*
       sync: {
@@ -55,7 +55,6 @@
       },
       methods:{
           fetchTips: function(){
-
            this.$http.get('api/v1/clientes')
              .then(function(respuesta){
                      this.clientes=respuesta.body;
@@ -67,27 +66,19 @@
          updateSelected (newSelected) {
            if (newSelected != null && newSelected != undefined) {
              this.id_cliente = newSelected.id;
-             this.isTouched = false;
-             this.value = newSelected;
-               console.log("entre22");
              this.$localStorage.set('clientes', newSelected);
            }else {
-             console.log("entre");
              this.id_cliente = 0;
              this.$localStorage.remove('clientes');
            }
 
         },
         removeSelected () {
-           this.isInvalid = false;
-             this.isTouched =false;
-             console.log("entre2");
            this.id_cliente = 0;
-            this.isInvalid = false;
            this.$localStorage.remove('clientes');
-       }, 
+       },
        onTouch () {
-        this.isTouched = true
+        this.isTouched =(this.$localStorage.get('clientes')==null )?true:false ;
       }
     }
   }
