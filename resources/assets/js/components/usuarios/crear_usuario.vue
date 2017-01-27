@@ -8,15 +8,15 @@
             <form  role="form">
                 <div class="form-group">
                     <label for="nombre_usuario">Nombre</label>
-                    <input type="text" class="form-control" id="nombre_usuario" placeholder="Nombres  usuario">
+                    <input type="text" class="form-control" id="nombre_usuario" placeholder="Nombre">
                 </div>
                 <div class="form-group">
                     <label for="apellidos_usuario">Apellidos</label>
-                    <input type="text" class="form-control" id="apellidos_usuario" placeholder="Apellidos usuario">
+                    <input type="text" class="form-control" id="apellidos_usuario" placeholder="Apellidos">
                 </div>
                 <div class="form-group">
                     <label for="email_usuario">Email</label>
-                    <input type="email" class="form-control" id="email_usuario" placeholder="Email usuario">
+                    <input type="email" class="form-control" id="email_usuario" placeholder="Email">
                 </div>
                  <div class="form-group">
                     <label for="contrasena_usuario">Contraseña</label>
@@ -24,7 +24,7 @@
                 </div>
                  <div class="form-group">
                     <label for="cargo_usuario">Cargo</label>
-                    <input type="text" class="form-control" id="cargo_usuario" placeholder="Cargo usuario">
+                    <input type="text" class="form-control" id="cargo_usuario" placeholder="Cargo">
                  </div>
                  <div class="form-group">
                     <label for="telefono_usuario">Teléfono</label>
@@ -32,15 +32,16 @@
                  </div>
                   <div class="form-group">
                     <label for="horas_usuario">Horas Disponibles</label>
-                    <input type="text" class="form-control" id="horas_usuario" placeholder="Horas Disponibles">
+                    <input type="number" class="form-control" id="horas_usuario" placeholder="Horas Disponibles">
                  </div>
                   <div class="form-group">
                     <label for="rol_usuario">Rol</label>
-                    <input type="text" class="form-control" id="rol_usuario" placeholder="Rol del usuario">
+                    <select_rol></select_rol>
+                    <!-- <input type="text" class="form-control" id="rol_usuario" placeholder="Rol del usuario"> -->
                  </div>
                   <div class="form-group">
                     <label for="area_usuario">Área</label>
-                    <input type="text" class="form-control" id="area_usuario" placeholder="Area">
+                    <select_area></select_area>
                  </div>
             </form> 
         </div>
@@ -52,9 +53,23 @@
 </template>
 
 <script>
+    import VeeValidate, { Validator } from 'vee-validate';
     export default {
+      components: {VeeValidate,Validator},
+      data(){
+        return{
+          usuarios:[],
+        }
+       },
+       methods:{
+        addUser:function(user) {
+          
+        },
+       },
         mounted() {
             console.log('Component ready.')
         }
     }
+    Vue.component('select_area',require('../herramientas/select_area.vue'));
+    Vue.component('select_rol',require('../herramientas/select_rol.vue'));
 </script>
