@@ -18,15 +18,17 @@
     <div style="padding:2px 0px;"  :class="{ 'has-error': isInvalid }" v-show="isInvalid">
           <span  class="help-block">El campo Estado es obligatorio</span>
     </div>
+    <div style="height:12px"></div>
+  </div>
 </template>
 
 <script>
 
   import Multiselect from 'vue-multiselect'
   import VueLocalStorage from 'vue-localstorage'
-  //import VueSync from 'vue-sync'
+
   Vue.use(VueLocalStorage)
-  //var localSync = VueSync.localStrategy()
+
 
     module.exports= {
        components: {Multiselect,VueLocalStorage},
@@ -51,9 +53,6 @@
           return (this.isTouched &&  this.$localStorage.get('clientes')==null )?true:false
         }
       },
-      /*sync: {
-        estados: localSync('estado_ot') // in this example, app_data is the namespace
-      },*/
       created: function(){
           this.fetchTips();
       },

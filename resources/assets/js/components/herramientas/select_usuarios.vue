@@ -16,10 +16,9 @@
       <input type="hidden"  :value="id_ejecutivo" name="id_ejecutivo">
     </div>
       <div style="padding:2px 0px;"  :class="{ 'has-error': isInvalid }" v-show="isInvalid">
-            <span  class="help-block">El campo Usuarios es obligatorio</span>
+            <span  class="help-block">El campo Ejecutivo es obligatorio</span>
       </div>
-  </div>
-
+      <div style="height:12px"></div>
   </div>
 </template>
 
@@ -27,9 +26,8 @@
 
   import Multiselect from 'vue-multiselect'
   import VueLocalStorage from 'vue-localstorage'
-  //import VueSync from 'vue-sync'
+
   Vue.use(VueLocalStorage)
-  //var localSync = VueSync.localStrategy()
 
     module.exports= {
        components: { Multiselect,VueLocalStorage},
@@ -42,7 +40,8 @@
       data () {
           return {
             usuarios:[],
-            id_ejecutivo:0
+            id_ejecutivo:0,
+            isTouched: false
           }
       },
       computed:{
@@ -50,12 +49,9 @@
           return this.$localStorage.get('ejecutivo_seleccionado')
         },
         isInvalid () {
-          return (this.isTouched &&  this.$localStorage.get('clientes')==null )?true:false
+          return (this.isTouched &&  this.$localStorage.get('ejecutivo_seleccionado')==null )?true:false
         }
-      },/*
-      sync: {
-        usuarios: localSync('ejecutivo_seleccionado') // in this example, app_data is the namespace
-      },*/
+      },
       created: function(){
           this.fetchTips();
       },
@@ -83,7 +79,7 @@
            this.$localStorage.remove('ejecutivo_seleccionado');
        },
        onTouch () {
-        this.isTouched = (this.$localStorage.get('clientes')==null )?true:false ;
+        this.isTouched = (this.$localStorage.get('ejecutivo_seleccionado')==null )?true:false ;
       }
     }
   }
