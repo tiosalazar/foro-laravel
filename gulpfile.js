@@ -36,7 +36,7 @@ elixir(function(mix) {
         .copy('node_modules/icheck/skins/square/blue.png','public/css')
         .copy('node_modules/icheck/skins/square/blue@2x.png','public/css')
         .webpack('app.js');
-    //    mix.browserSync({proxy: 'localhost:8000'});
+       mix.browserSync({proxy: 'localhost:8000'});
     // mix.browserSync([
     //     'app/**/*',
     //     'resources/views/**/*',

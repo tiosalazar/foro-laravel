@@ -19,7 +19,8 @@ class ClienteController extends Controller
      */
     public function index()
     {
-      $clientes = Cliente::all();
+      // $clientes = Cliente::all();
+      $clientes = Cliente::where('estado', 1)->get();
       return response()->json($clientes);
     }
     /*public function index()
@@ -120,7 +121,42 @@ class ClienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {       
+            //Validación de las entradas por el metodo POST
+            $vl=$this->validatorCrearCliente($request->all());
+            if ($vl->fails()){
+                return response([
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'response_time' => microtime(true) - LARAVEL_START,
+                    'msg' => 'Error al actualizar el cliente',
+                    'error' => 'ERR_02',
+                    'obj' =>$vl->errors()
+                ],Response::HTTP_BAD_REQUEST);  
+            }else{
+                //Busca el cliente en la BD
+                $cliente=  Cliente::findOrFail($id);
+                // Si la data es valida se la asignamos al cliente
+                $cliente->fill($request->all());
+                // Actualizamos el cliente
+                $cliente->save();
+                return response([
+                        'status' => Response::HTTP_OK,
+                        'response_time' => microtime(true) - LARAVEL_START,
+                        'obj' => $cliente,
+                        'error' => null,
+                        'msg' => 'Cliente actualizado con éxito',
+                    ],Response::HTTP_OK);                       
+            }
+        }catch(Exception $e){
+            return response([
+                'status' => Response::HTTP_BAD_REQUEST,
+                'response_time' => microtime(true) - LARAVEL_START,
+                'error' => 'ERR_04',
+                'msg' => 'excepcion, fallo la petición',
+                'consola' =>$e->getMessage(),
+                'obj' => $request->all()
+                ],Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
@@ -131,7 +167,43 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $vl= Validator::make(['id'=>$id], ['id' => 'required|integer']);
+        
+        try {
+            //Busca el cliente en la BD
+            $cliente=  Cliente::findOrFail($id);
+            if ($vl->fails()) {
+                return response([
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'response_time' => microtime(true) - LARAVEL_START,
+                    'msg' => 'Error al eliminar el cliente',
+                    'error' => 'ERR_03',
+                    'obj' =>$vl->errors()
+                ],Response::HTTP_BAD_REQUEST);
+            } else {
+                $cliente->estado = 0;
+                $cliente->save();
+                return response([
+                            'status' => Response::HTTP_OK,
+                            'response_time' => microtime(true) - LARAVEL_START,
+                            'obj' => $cliente,
+                            'error' => null,
+                            'msg' => 'Cliente borrado con éxito',
+                        ],Response::HTTP_OK);
+            }
+            
+            
+            
+        } catch (Exception $e) {
+            return response([
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'response_time' => microtime(true) - LARAVEL_START,
+                    'error' => 'ERR_04',
+                    'msg' => 'excepcion, fallo la petición',
+                    'consola' =>$e->getMessage(),
+                    'obj' => $request->all()
+                ],Response::HTTP_BAD_REQUEST);
+        }
     }
     /**
     *   
