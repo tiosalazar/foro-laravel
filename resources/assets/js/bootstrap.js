@@ -25,7 +25,7 @@ require('vue-resource');
 // var dt      = require( 'datatables.net' )();
 // Funciona instalando 'imports-loader'
 
-require('vue-sync')
+// require('vue-sync')
 
 
 // window.dt      = require('imports?define=>false!datatables.net')(window, $);

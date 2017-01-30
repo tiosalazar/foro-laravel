@@ -16,7 +16,7 @@
 <script>
   import Multiselect from 'vue-multiselect'
   import VueLocalStorage from 'vue-localstorage'
-  import VueSync from 'vue-sync'
+ 
 	Vue.use(VueLocalStorage)
 var localSync = VueSync.localStrategy()
     module.exports= {
