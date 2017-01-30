@@ -61,8 +61,11 @@
 
 <script>
 
+
+
    module.exports= {
 
+  
        props: ['rolname','id_parent'],
 
        created: function(){
@@ -72,8 +75,15 @@
           return{
             listroles:[],
             id_rol_edit:[],
-            nombre_rol_edit:[]
+            nombre_rol_edit:[],
+            option_toast:{
+              timeOut: 5000,
+              "positionClass": "toast-top-center",
+              "closeButton": true
+            } 
+         
           }
+          
        },
           watch : {
             id_parent : function (value) {
@@ -101,12 +111,32 @@
             this.$http.put('api/v1/roles/'+idmodal+'',{nombre: nombremodal})
             .then(function(respuesta){
 
-                for (var i = 0; i < this.listroles.length; i++) { 
-                   if (this.listroles[i].id==respuesta.body.id) {
-                       this.listroles[i].nombre=respuesta.body.nombre.nombre;
+               if (respuesta.status != '200') {
+                  if (Object.keys(respuesta.body.rol).length>0) {
+                    this.setErrors(respuesta.body.rol);
                   }
+                  console.log(respuesta);
+                  toastr.warning(this.message,respuesta.body.msg,this.option_toast);
+                }else{
+                  
+                  //Cambion el front con los datos editados
+                   for (var i = 0; i < this.listroles.length; i++) { 
+                      if (this.listroles[i].id==respuesta.body.id) {
+                         this.listroles[i].nombre=respuesta.body.nombre.nombre;
+                      }
+                    }
+                    console.log(respuesta);
+                    if (respuesta.body.error == 0) {
+                      toastr.success(respuesta.body.msg,'',this.option_toast);
+                    }else{
+                      toastr.error(respuesta.body.msg,'',this.option_toast);
+                    }
+                    
                 }
-    
+
+            },(response) => {
+              console.log(response);
+              toastr.error(this.message,response.body.error,this.option_toast);
             });
             
           }         

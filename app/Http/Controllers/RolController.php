@@ -48,7 +48,14 @@ class RolController extends Controller
         $vl=$this->validatorCrearRol($request->all());
       if ($vl->fails())
          {
-               return response()->json($request->all());        
+               // return response()->json($request->all());    
+            return response([
+                'status' => Response::HTTP_BAD_REQUEST,
+                'response_time' => microtime(true) - LARAVEL_START,
+                'msg' => 'Error al crear el Rol',
+                'error' => 'ERR_01',
+                'obj' =>$vl->errors()
+                ],Response::HTTP_BAD_REQUEST);       
          }else
              {        
                     $roles=new Role;  
@@ -59,14 +66,15 @@ class RolController extends Controller
                       return response([
                             'status' => Response::HTTP_OK,
                             'response_time' => microtime(true) - LARAVEL_START,
-                            'rol' => $roles
+                            'obj' => $roles,
+                            'msg' => 'Rol creado con exito',
                         ],Response::HTTP_OK);
                 }catch(Exception $e){
                     return response([
                         'status' => Response::HTTP_BAD_REQUEST,
                         'response_time' => microtime(true) - LARAVEL_START,
-                        'error' => 'fallo_en_la_creacion',
-                        'consola' =>$e,
+                        'error' => 'Fallo en la creacion del Rol',
+                        'consola' =>$e->getMessage(),
                         'request' => $request->all()
                     ],Response::HTTP_BAD_REQUEST);
                }
@@ -124,13 +132,16 @@ class RolController extends Controller
                                $respuesta["id"]=$id;
                                $respuesta["nombre"]=$request->all();
                                $respuesta["error"]=0;
-                               $respuesta["mensaje"]="OK";                        
+                               $respuesta["mensaje"]="OK";
+                               $respuesta["msg"]="Editado con exito";
+
                              }
                     }catch(Exception $e){
                        $respuesta["error"]="rol_no_encontrado";
                        $respuesta["codigo_error"]="UC_Update_dontfind";
                        $respuesta["mensaje"]="Rol no encontrado";
                        $respuesta["consola"]=$e;
+                       $respuesta["msg"]="Fallo al editar";
                    }
         return response()->json($respuesta);
     }
