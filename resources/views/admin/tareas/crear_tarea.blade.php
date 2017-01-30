@@ -8,6 +8,6 @@
 @section('main-content')
 
 	<section>
-		Crear tarea
+	   <tarea></tarea>
 	</section>
 @endsection

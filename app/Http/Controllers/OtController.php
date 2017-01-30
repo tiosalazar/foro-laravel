@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Ot;
+use Illuminate\Support\Facades\DB;
 
 class OtController extends Controller
 {
@@ -14,7 +15,12 @@ class OtController extends Controller
      */
     public function index()
     {
-        $ot= Ot::all();
+        // $ot= Ot::all();
+        $ot= DB::table('ots')
+            ->join('clientes', 'ots.clientes_id', '=', 'clientes.id')
+            ->join('users', 'ots.usuarios_id', '=', 'users.id')
+            ->select('ots.*', 'clientes.nombre as nombre_cli', 'users.nombre as nombre_ej')
+            ->get();
       return response()->json($ot);
     }
 

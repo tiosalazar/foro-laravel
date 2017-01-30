@@ -18,6 +18,9 @@ Vue.component('clientes', require('./components/clientes/clientes.vue'));
 Vue.component('crear_cliente_form', require('./components/clientes/crear_cliente_form.vue'));
 Vue.component('crear_listar_cliente', require('./components/clientes/crear_listar_cliente.vue'));
 
+// OT
+Vue.component('tarea', require('./components/tareas/tarea.vue'));
+
 //Componentes Dsalazar
 Vue.component('formulario_anadir_requerimiento', require('./components/ots/formulario_anadir_requerimiento.vue'));
 //Fin Componentes Dsalazar
