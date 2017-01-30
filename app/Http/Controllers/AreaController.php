@@ -56,13 +56,14 @@ class AreaController extends Controller
                       return response([
                             'status' => Response::HTTP_OK,
                             'response_time' => microtime(true) - LARAVEL_START,
-                            'area' => $area
+                            'area' => $area,
+                            'msg' => 'Área creada con éxito'
                         ],Response::HTTP_OK);
                 }catch(Exception $e){
                     return response([
                         'status' => Response::HTTP_BAD_REQUEST,
                         'response_time' => microtime(true) - LARAVEL_START,
-                        'error' => 'fallo_en_la_creacion',
+                        'error' => 'Fallo al crear el área',
                         'consola' =>$e,
                         'request' => $request->all()
                     ],Response::HTTP_BAD_REQUEST);
@@ -122,13 +123,15 @@ class AreaController extends Controller
                                //BC:  30/01/2017 Retorno la respuesta para actualizar la lista en el front
                                $respuesta["mensaje"]="OK"; 
                                $respuesta["id"]=$id;
+                               $respuesta["msg"]='Área editada con éxito';
                                $respuesta["datos"]=$request->all();                       
                              }
                     }catch(Exception $e){
-                       $respuesta["error"]="area_no_encontrado";
+                       $respuesta["error"]="Error Editando el área";
                        $respuesta["codigo_error"]="UC_Update_dontfind";
                        $respuesta["mensaje"]="Area no encontrada";
                        $respuesta["consola"]=$e;
+                       $respuesta["msg"]='Error Editando el área';
                    }
         return response()->json($respuesta);
     }

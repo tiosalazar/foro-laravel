@@ -91,7 +91,12 @@
      data(){
         return{
           list_areas:[],
-          areaedit:[]
+          areaedit:[],
+           option_toast:{
+              timeOut: 5000,
+              "positionClass": "toast-top-center",
+              "closeButton": true
+            } 
         }
      },
       watch : {
@@ -124,15 +129,37 @@
  
             this.$http.put('api/v1/areas/'+idmodal+'',{nombre: nombremodal, extencion_tel:extmodal,estado:estadomodal})
             .then(function(respuesta){
-               console.log(respuesta);
-                for (var i = 0; i < this.list_areas.length; i++) { 
-                   if (this.list_areas[i].id==respuesta.body.id) {
-                       this.list_areas[i].nombre=respuesta.body.datos.nombre;
-                       this.list_areas[i].extencion_tel=respuesta.body.datos.extencion_tel;
-                       this.list_areas[i].estado=respuesta.body.datos.estado;
+
+                if (respuesta.status != '200') {
+                  if (Object.keys(respuesta.body.datos).length>0) {
+                    this.setErrors(respuesta.body.datos);
                   }
+                 
+                  toastr.warning(this.message,respuesta.body.msg,this.option_toast);
+                }else{
+                  
+                  //Cambion el front con los datos editados
+                     for (var i = 0; i < this.list_areas.length; i++) { 
+                       if (this.list_areas[i].id==respuesta.body.id) {
+                           this.list_areas[i].nombre=respuesta.body.datos.nombre;
+                           this.list_areas[i].extencion_tel=respuesta.body.datos.extencion_tel;
+                           this.list_areas[i].estado=respuesta.body.datos.estado;
+                      }
+                    }
+
+                  
+                    if (respuesta.body.error == 0) {
+                      toastr.success(respuesta.body.msg,'',this.option_toast);
+                    }else{
+                      toastr.error(respuesta.body.msg,'',this.option_toast);
+                    }
+                    
                 }
-    
+
+      
+            },(response) => {
+              
+              toastr.error(this.message,response.body.error,this.option_toast);
             });
             
           }

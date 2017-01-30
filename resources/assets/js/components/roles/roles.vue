@@ -59,7 +59,7 @@ import VeeValidate, { Validator } from 'vee-validate';
 
   
    module.exports= {
- 
+      components: {VeeValidate,Validator},
        data(){
         return{
           rolarray: {},
