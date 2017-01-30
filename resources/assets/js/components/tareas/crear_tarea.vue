@@ -51,6 +51,10 @@
                 </div>
                 <!-- /.input group -->
               </div>
+              <div class="form-group">
+				<label for="ot">Prioridad</label>
+              	<select_prioridad></select_prioridad>
+              </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">Email address</label>
                   <input type="email" class="form-control"  id="exampleInputEmail1" v-model="tarea.name" name="name" placeholder="Enter email">
@@ -132,6 +136,7 @@
             console.log('Component ready.')
         }
     }
+    Vue.component('select_prioridad',require('../herramientas/select_prioridad.vue'));
     Vue.component('select_ot',require('../herramientas/select_ot.vue'));
     Vue.component('select_area',require('../herramientas/select_area.vue'));
     Vue.component('select_rol',require('../herramientas/select_rol.vue'));

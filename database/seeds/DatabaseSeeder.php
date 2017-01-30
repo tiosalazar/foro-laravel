@@ -79,6 +79,7 @@ class Tipos_estadosTableSeeder extends Seeder {
         DB::table('tipos_estados')->delete();
         App\Tipos_estado::create(array('nombre' => 'Estados Tareas'));
         App\Tipos_estado::create(array('nombre' => 'Estados OT') );
+        App\Tipos_estado::create(array('nombre' => 'Prioridad Tarea') );
 
     }
 
@@ -121,6 +122,9 @@ class EstadosTableSeeder extends Seeder {
           App\Estado::create(array('nombre' => 'Atención Cuentas','tipos_estados_id'=> 1 ));
           App\Estado::create(array('nombre' => 'On Going','tipos_estados_id'=> 2) );
           App\Estado::create(array('nombre' => 'En espera','tipos_estados_id'=> 2) );
+          App\Estado::create(array('nombre' => 'Alta','tipos_estados_id'=> 3) );
+          App\Estado::create(array('nombre' => 'Media','tipos_estados_id'=> 3) );
+          App\Estado::create(array('nombre' => 'Baja','tipos_estados_id'=> 3) );
     }
 
 }

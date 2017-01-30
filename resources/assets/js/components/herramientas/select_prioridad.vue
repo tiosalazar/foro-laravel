@@ -2,7 +2,7 @@
   <div>
   <div >
       <multiselect
-      :options="ots"
+      :options="estados"
       :searchable="true" placeholder="Seleccione la Prioridad" label="nombre" track-by="nombre"
       :options-limit="100"
       :allow-empty="false"
@@ -22,7 +22,7 @@
        components: { Multiselect},
       data () {
           return {
-            ots:[],
+            estados:[],
             id_prioridad: 0,
             isTouched: false
           }
@@ -33,9 +33,9 @@
       },
       methods:{
           fetchTips: function(){
-               this.$http.get('api/v1/ots/')
+               this.$http.get('api/v1/estados/3')
              .then(function(respuesta){
-                this.ots=respuesta.body;
+                this.estados=respuesta.body;
              }.bind(this));
           },
          updateSelected (newSelected) {
