@@ -1,23 +1,27 @@
 <template>
   <div class="col-md-12">
       <div class="row">
-      <section class="Form__section" v-for="ed in compra_asociada">
+      <section class="Form__section" v-for="(ed,index) in compra_asociada">
         <div style="    display: inline-block;">
               <div class="form-group col-md-3">
                 <label class="sr-only" for="nombre_requerimiento">Item</label>
                 <select_tipo_compra></select_tipo_compra>
               </div>
-              <div class="form-group  col-md-3">
-                <label class="sr-only" for="no_horas_req">Descripción</label>
-                <input type="text" name="compra_asociada[0][no_horas_req]"  class="form-control" id="no_horas_req" placeholder="Descripción">
+              <div class="form-group  col-md-3" v-bind:class="{ 'has-error': errors.has('descipcion_compra'+index) }">
+                <label class="sr-only" for="descipcion_compra">Descripción</label>
+                <input type="text" :name="'descipcion_compra'+index" v-validate data-vv-rules="required|min:4" data-vv-as="Descripción Compra" v-model="compra_asociada[index].model_desc" class="form-control" :id="'descipcion_compra'+index"  placeholder="Descripción">
+                <span  class="help-block" v-show="errors.has('descipcion_compra'+index)">{{ errors.first('descipcion_compra'+index) }}</span>
              </div>
-              <div class="form-group  col-md-2">
+              <div class="form-group  col-md-2"  v-bind:class="{ 'has-error': errors.has('provedor_compra'+index) }">
                 <label class="sr-only" for="no_horas_req">Provedor</label>
-                <input type="text" name="compra_asociada[0][no_horas_req]"  class="form-control" id="no_horas_req" placeholder="Provedor">
+                <input type="text"  :name="'provedor_compra'+index" v-validate data-vv-rules="required|min:4" data-vv-as="Provedor" v-model="compra_asociada[index].model_provedor" class="form-control" :id="'provedor_compra'+index"   placeholder="Provedor">
+                <span  class="help-block" v-show="errors.has('provedor_compra'+index)">{{ errors.first('descipcion_compra'+index) }}</span>
              </div>
-              <div class="form-group  col-md-2">
+              <div class="form-group  col-md-2"  v-bind:class="{ 'has-error': errors.has('valor_compra'+index) }">
                 <label class="sr-only" for="no_horas_req">Valor</label>
-                <input type="text" name="compra_asociada[0][no_horas_req]"  class="form-control" id="no_horas_req" placeholder="Valor">
+                <input type="text" :name="'valor_compra'+index" v-validate data-vv-rules="required" data-vv-as="Valor" v-model="compra_asociada[index].model_valor" class="form-control" :id="'valor_compra'+index"  placeholder="Valor">
+                <span  class="help-block" v-show="errors.has('valor_compra'+index)">{{ errors.first('descipcion_compra'+index) }}</span>
+
              </div>
              <div class="form-group  col-md-1">
                <button type="button" @click="deleteRequerimiento" class="btn btn-danger">Eliminar</button>
@@ -34,20 +38,32 @@
 </template>
 
 <script>
+import VeeValidate, { Validator } from 'vee-validate';
+//Traducciones del validador
+import messages from './es/es';
 
+//Realizando los Use
+// Merge the locales.
+Validator.updateDictionary({es: { messages }});
+// Install the plugin and set the locale.
+Vue.use(VeeValidate, { locale: 'es' });
      module.exports={
+        components: {VeeValidate,Validator},
       data () {
           return {
           compra_asociada: [
-              {nombre_requerimiento: 'compra_asociada[0][nombre_requerimiento]', no_horas_req: 'requerimiento[0][no_horas_req]'}
-          ]
+              {  model_desc:'', model_provedor:'',model_valor:''}
+          ],
+
         }
       },
       methods: {
           addRequerimiento: function(e) {
               e.preventDefault();
-              console.log(this.compra_asociada);
+              this.$validator.validateAll();
+              if (!this.errors.any()) {
               this.compra_asociada.push(Vue.util.extend({}, this.compra_asociada));
+            }
           },
           deleteRequerimiento: function(e) {
               e.preventDefault();

@@ -14,13 +14,13 @@
 						</ul>
 						<div class="tab-content" >
 							<div class="tab-pane"  v-for="area in listado_areas" :class="{ 'active': area.nombre=='Creatividad'  }"  :id="'tab_'+area.id">
-								<div class="row"> <anadir_requerimiento :area="area.nombre" id_area="area.id" ></anadir_requerimiento></div>
+								<div class="row"> <anadir_requerimiento :area="area.nombre" :id_area="area.id" ></anadir_requerimiento></div>
 								<div class="row">
 									<div class="col-md-6">
 										<h2>Compras relacionadas</h2>
 									</div>
 								</div>
-								<div class="row"><anadir_compra  :area="area.nombre" ></anadir_compra> </div>						
+								<div class="row"><anadir_compra  :area="area.nombre" ></anadir_compra> </div>
 								<div style="height:30px"></div>
 								<div class="row">
 									<div class=" pull-right  col-md-3">
@@ -95,11 +95,11 @@
 						this.$http.get('api/v1/areas/')
 						.then(function(respuesta){
 							this.listado_areas=this.$localStorage.set('listado_areas',respuesta.body);
-							console.log(respuesta.body);   
+							console.log(respuesta.body);
 						}.bind(this));
 					}else{
 						this.listado_areas=this.$localStorage.get('listado_areas');
-					}    
+					}
 				}
 			}
 		}
