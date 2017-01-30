@@ -8,36 +8,48 @@
               <div class="row">
                 <div class="col-sm-3 border-right">
                   <div class="description-block">
-                    <h5 class="description-header">3,200</h5>
-                    <span class="description-text"># {{ot.id}}</span>
+                    <h5 class="description-header">{{ot.referencia}}</h5>
+                    <span class="description-text">Referencia</span>
                   </div>
                   <!-- /.description-block -->
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-3 border-right">
                   <div class="description-block">
-                    <h5 class="description-header">13,000</h5>
-                    <span class="description-text">{{ot.nombre_cli}}</span>
+                    <h5 class="description-header">{{ot.nombre_cli}}</h5>
+                    <span class="description-text">Cliente</span>
                   </div>
                   <!-- /.description-block -->
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-3 border-right">
                   <div class="description-block">
-                    <h5 class="description-header">13,000</h5>
-                    <span class="description-text">{{ot.nombre}}</span>
+                    <h5 class="description-header">{{ot.nombre}}</h5>
+                    <span class="description-text">Proyecto</span>
                   </div>
                   <!-- /.description-block -->
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-3">
                   <div class="description-block">
-                    <h5 class="description-header">35</h5>
-                    <span class="description-text">{{ot.nombre_ej}}</span>
+                    <h5 class="description-header">{{ot.nombre_ej}}</h5>
+                    <span class="description-text">Ejecutiva</span>
                   </div>
                   <!-- /.description-block -->
                 </div>
                 <!-- /.col -->
+              </div>
+              <!-- /.row -->
+              <div class="form-group">
+                <label>Date masks:</label>
+
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" v-model="current_date" disabled="disabled">
+                </div>
+                <!-- /.input group -->
               </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">Email address</label>
@@ -67,16 +79,19 @@
           // usuarios:[],
           tarea:{},
           ot:{},
+          current_date:'',
         }
        },
         created: function() {
-        	console.log('holamundo')
         	this.$on('send-ot', function(obj) { 
         		console.log('Work',obj); 
         		this.ot= obj;
         	});
+        	this.current_date=this.getCurrentDate();
+
     	},
        computed:{
+
        },
        watch: {
 
@@ -85,6 +100,33 @@
         addUser:function(user) {
           
         },
+        getCurrentDate:function() {
+
+        	var today = new Date();
+        	var dd = today.getDate();
+			var mm = today.getMonth()+1; //January is 0!
+			var yyyy = today.getFullYear();
+			var HH = today.getHours(); 
+            var MM = today.getMinutes(); 
+            var ss = today.getSeconds();
+			if(dd<10) {
+				dd='0'+dd
+			} 
+			if(mm<10) {
+				mm='0'+mm
+			} 
+			if(HH<10) {
+				HH='0'+HH
+			} 
+			if(MM<10) {
+				MM='0'+MM
+			}
+			if(ss<10) {
+				ss='0'+ss
+			} 
+			today = yyyy +'-' + dd+'-'+ mm +' '+ HH + ':' + MM + ':' + ss;
+			return today;
+			}
        },
         mounted() {
             console.log('Component ready.')
