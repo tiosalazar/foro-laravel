@@ -143,7 +143,7 @@ class OTs extends Seeder {
     public function run()
     {
         DB::table('ots')->delete();
-        App\OT::create(array('nombre' => 'Himalaya Pag. Web','valor'=>'10000000','fecha_inicio' =>'2017-01-30 12:55:22','fecha_final'=>'2017-03-30 12:55:22', 'clientes_id' => '4', 'usuarios_id' => '2', 'estados_id' => '4'));
+        App\OT::create(array('nombre' => 'Himalaya Pag. Web','referencia'=>'567','valor'=>'10000000','fecha_inicio' =>'2017-01-30 12:55:22','fecha_final'=>'2017-03-30 12:55:22', 'clientes_id' => '4', 'usuarios_id' => '2', 'estados_id' => '4'));
     }
 
 }
