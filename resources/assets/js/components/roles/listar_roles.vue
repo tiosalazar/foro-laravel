@@ -56,9 +56,7 @@
                   <!-- /.modal-dialog -->
                 </div>
                 <!-- /.modal -->
-
-
-  </div>
+             </div>
 </template>
 
 <script>

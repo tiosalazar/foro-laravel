@@ -119,7 +119,10 @@ class AreaController extends Controller
                                 // Guardamos el usuario
                                 $area->update();
                                $respuesta["error"]=0;
-                               $respuesta["mensaje"]="OK";                        
+                               //BC:  30/01/2017 Retorno la respuesta para actualizar la lista en el front
+                               $respuesta["mensaje"]="OK"; 
+                               $respuesta["id"]=$id;
+                               $respuesta["datos"]=$request->all();                       
                              }
                     }catch(Exception $e){
                        $respuesta["error"]="area_no_encontrado";
