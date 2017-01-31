@@ -173,10 +173,10 @@ class Planeacion_tipos extends Seeder {
     public function run()
     {
         DB::table('planeacion_tipos')->delete();
-        App\Planeacion_fase::create(array('nombre' => 'Planeacion'));
-        App\Planeacion_fase::create(array('nombre' => 'Desarrollo'));
-        App\Planeacion_fase::create(array('nombre' => 'Calidad'));
-        App\Planeacion_fase::create(array('nombre' => 'Publicacion'));
+        App\Planeacion_tipo::create(array('nombre' => 'Planeacion'));
+        App\Planeacion_tipo::create(array('nombre' => 'Desarrollo'));
+        App\Planeacion_tipo::create(array('nombre' => 'Calidad'));
+        App\Planeacion_tipo::create(array('nombre' => 'Publicacion'));
     }
 
 }
