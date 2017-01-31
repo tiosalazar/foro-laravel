@@ -9,7 +9,7 @@
       @input="updateSelected"
       :option-height="104">
       </multiselect>
-      <input type="hidden"  :value="id_rol" name="id_rol">
+      <input type="hidden"  :value="id_rol" name="id_rol" >
     </div>
       <div style="height:12px"></div>
   </div>
@@ -18,6 +18,9 @@
 <script>
 
   import Multiselect from 'vue-multiselect'
+
+
+ 
     module.exports= {
        components: { Multiselect},
       data () {
@@ -38,9 +41,11 @@
                      this.roles=respuesta.body;
              }.bind(this));
           },
+         
          updateSelected (newSelected) {
             if (newSelected != null && newSelected != undefined) {
              this.id_rol = newSelected.id;
+              this.$parent.$emit('rol_option',newSelected);
            }else {
              this.id_rol = 0;
            }

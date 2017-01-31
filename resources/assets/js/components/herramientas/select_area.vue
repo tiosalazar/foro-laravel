@@ -49,7 +49,7 @@
          updateSelected (newSelected) {
             if (newSelected != null && newSelected != undefined) {
              this.id_area = newSelected.id;
-             console.log(newSelected.id)
+              this.$parent.$emit('area_option',newSelected);
            }else {
              this.id_area = 0;
            }
