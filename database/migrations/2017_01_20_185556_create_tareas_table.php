@@ -26,6 +26,7 @@ class CreateTareasTable extends Migration
             $table->integer('areas_id')->unsigned();
             $table->integer('usuarios_id')->unsigned();
             $table->integer('ots_id')->unsigned();
+            $table->integer('planeacion_fases_id')->unsigned();
             $table->timestamps();
         });
     }

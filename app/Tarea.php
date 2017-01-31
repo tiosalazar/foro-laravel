@@ -13,7 +13,7 @@ class Tarea extends Model
   */
   protected $fillable = [
     'nombre_tarea', 'fecha_entrega_estimada', 'descripcion', 'enlaces_externos', 'tiempo_estimado', 'tiempo_real', 'fecha_entrega_cliente', 'estados_id', 'areas_id',
-    'usuarios_id', 'ots_id',
+    'usuarios_id', 'ots_id', 'fases_planeacion_id',
   ];
 
 
@@ -44,6 +44,13 @@ class Tarea extends Model
   public function Ot()
   {
     return $this->belongsTo('App\Ot');
+  }
+  /**
+  * Obtiene la Fase de Planeacion que esta asociado a una Tarea
+  */
+  public function Planeacion_fase()
+  {
+    return $this->belongsTo('App\Planeacion_fase');
   }
 
   /**

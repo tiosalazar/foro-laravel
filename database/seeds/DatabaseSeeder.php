@@ -29,6 +29,10 @@ class DatabaseSeeder extends Seeder
      $this->command->info('Tipos_Compra table seeded!');
      $this->call('OTs');
      $this->command->info('OTs table seeded!');
+     $this->call('Planeacion_fases');
+     $this->command->info('Planeacion_fases table seeded!');
+     $this->call('Planeacion_tipos');
+     $this->command->info('Planeacion_tipos table seeded!');
     }
 }
 class RolesTableSeeder extends Seeder {
@@ -148,6 +152,31 @@ class OTs extends Seeder {
     {
         DB::table('ots')->delete();
         App\OT::create(array('nombre' => 'Himalaya Pag. Web','referencia'=>'567','valor'=>'10000000','fecha_inicio' =>'2017-01-30 12:55:22','fecha_final'=>'2017-03-30 12:55:22', 'clientes_id' => '4', 'usuarios_id' => '2', 'estados_id' => '4'));
+    }
+
+}
+
+class Planeacion_fases extends Seeder {
+
+    public function run()
+    {
+        DB::table('planeacion_fases')->delete();
+        App\Planeacion_fase::create(array('nombre' => 'Levantamiento Requerimientos','planeacion_tipos_id' => '1'));
+        App\Planeacion_fase::create(array('nombre' => 'Desarrollo/Maquetado','planeacion_tipos_id' => '2'));
+        App\Planeacion_fase::create(array('nombre' => 'Calidad y pruebas Desarrollo','planeacion_tipos_id' => '3'));
+        App\Planeacion_fase::create(array('nombre' => 'Publicacion','planeacion_tipos_id' => '4'));
+    }
+
+}
+class Planeacion_tipos extends Seeder {
+
+    public function run()
+    {
+        DB::table('planeacion_tipos')->delete();
+        App\Planeacion_fase::create(array('nombre' => 'Planeacion'));
+        App\Planeacion_fase::create(array('nombre' => 'Desarrollo'));
+        App\Planeacion_fase::create(array('nombre' => 'Calidad'));
+        App\Planeacion_fase::create(array('nombre' => 'Publicacion'));
     }
 
 }
