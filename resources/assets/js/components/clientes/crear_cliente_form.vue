@@ -47,8 +47,15 @@
 
 <script>
 	import VeeValidate, { Validator } from 'vee-validate';
+	import messages from '../../es/es';
 
-	Vue.use(VeeValidate);
+       //Realizando los Use
+	
+		// Merge the locales.
+		Validator.updateDictionary({es: { messages }});
+		// Install the plugin and set the locale.
+		Vue.use(VeeValidate, { locale: 'es' });
+
 	module.exports =  {
 		components: {VeeValidate,Validator},
 		data () {

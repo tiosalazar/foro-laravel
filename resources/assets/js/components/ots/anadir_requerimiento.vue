@@ -49,7 +49,7 @@
 <script>
  import VeeValidate, { Validator } from 'vee-validate';
  //Traducciones del validador
- import messages from './es/es';
+import messages from '../../es/es';
 
 //Realizando los Use
 // Merge the locales.

@@ -85,14 +85,14 @@
 								<datepicker language="es"  id="fecha_fin" required="required"  v-validate data-vv-rules="required" data-vv-as="Fecha de finalización" placeholder="Fecha fin"  :disabled="state.disabled" v-model="fecha_fin" class="form-control"  name="fecha_fin" format="dd-MM-yyyy"></datepicker>
 							</div>
 							<span  class="help-block" v-show="errors.has('fecha_fin')">{{ errors.first('fecha_fin') }}</span>
-						</div>
+						</div>					
 					</div>
 				</div>
 				<div class="col-md-6 col-xs-5">
 					<div class="form-group required">
 						<label for="horas_disponibles" class="col-sm-4 ">Horas Disponibles <sup>*</sup></label>
 						<div class="col-sm-6">
-							<input type="text" class="form-control" required="required"  id="horas_disponibles" :value="horas_totales" disabled placeholder="Numero de Horas Disponibles">
+							<input type="text" class="form-control" required="required"  id="horas_disponibles" :value="h_Disponibles" disabled placeholder="Numero de Horas Disponibles">
 						</div>
 					</div>
 				</div>
@@ -100,7 +100,7 @@
 			<div style="height:15px"></div>
 			<div class="row ">
 				<div class=" pull-right  col-md-3">
-					<button type="submit" @click="validateBeforeSubmit" class="btn btn-block btn-success col-sm-3">Guardar Avance</button>
+					<button type="submit" @click="validateBeforeSubmit" class="btn btn-block btn-success col-sm-3">Guardar Avance</button> 
 				</div>
 			</div>
 		</div>
@@ -113,21 +113,22 @@
           */
           import Datepicker from 'vuejs-datepicker';
           import VueLocalStorage from 'vue-localstorage'
+          import VueSync from 'vue-sync';
           import VeeValidate, { Validator } from 'vee-validate';
 		//Traducciones del validador
-		import messages from './es/es';
+		import messages from '../../es/es';
 
        //Realizando los Use
 
        //Uso LocalStorage para gardar la data.
-       Vue.use(VueLocalStorage);
+       Vue.use(VueLocalStorage);		
 		// Merge the locales.
 		Validator.updateDictionary({es: { messages }});
 		// Install the plugin and set the locale.
 		Vue.use(VeeValidate, { locale: 'es' });
 
 		module.exports= {
-			components: {Datepicker,VueLocalStorage,VeeValidate,Validator},
+			components: {Datepicker,VueSync,VueLocalStorage,VeeValidate,Validator},
 			localStorage: {
 				clientes: {
 					type: Object,
@@ -156,7 +157,6 @@
 			},
 			data () {
 				return {
-					h_Disponibles:'',
 					fecha_inicio:'',
 					cliente:'',
 					ejecutivo:'',
@@ -184,9 +184,12 @@
 							}
 						},
 						computed:{
-				/*num_ot:function(){
+				h_Disponibles:function(){
+
+					this.horas_totales - this.$localStorage.get('htotales');
+
 					return this.$localStorage.get('num_ot')
-				},
+				},/*
 				name_proyect:function(){
 					return this.$localStorage.get('name_proyect')
 				},
@@ -208,10 +211,10 @@
 					var yyyy = today.getFullYear();
 					if(dd<10){
 					    dd='0'+dd;
-					}
+					} 
 					if(mm<10){
 					    mm='0'+mm;
-					}
+					} 
 					var today = dd+'-'+mm+'-'+yyyy;*/
 					return new Date()
 				}
@@ -249,7 +252,7 @@
 						 		}
 			            //this.submitForm()
 			        }
-
+			        
 			    },
 			    submitForm(){
 			    	this.formSubmitted = true
