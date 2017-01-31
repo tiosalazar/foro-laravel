@@ -132,8 +132,9 @@ class AreaController extends Controller
                        $respuesta["mensaje"]="Area no encontrada";
                        $respuesta["consola"]=$e;
                        $respuesta["msg"]='Error Editando el área';
+                       $respuesta["request"]=$request->all();
                    }
-        return response()->json($respuesta);
+        return response()->json($respuesta,Response::HTTP_BAD_REQUEST);
     }
 
     /**

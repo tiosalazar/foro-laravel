@@ -142,8 +142,10 @@ class RolController extends Controller
                        $respuesta["mensaje"]="Rol no encontrado";
                        $respuesta["consola"]=$e;
                        $respuesta["msg"]="Fallo al editar";
+                       $respuesta["request"]=$request->all();
+                       
                    }
-        return response()->json($respuesta);
+        return response()->json($respuesta,Response::HTTP_BAD_REQUEST);
     }
 
     /**

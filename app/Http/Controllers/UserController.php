@@ -48,7 +48,14 @@ class UserController extends Controller
         $vl=$this->validarCamposUsuario($request->all());
       if ($vl->fails())
          {
-               return  response()->json( $vl->errors());        
+               // return  response()->json( $vl->errors(),Response::HTTP_BAD_REQUEST); 
+                return response([
+                'status' => Response::HTTP_BAD_REQUEST,
+                'response_time' => microtime(true) - LARAVEL_START,
+                'msg' => 'Error al crear el usuario',
+                'error' => 'ERR_01',
+                'obj' =>$vl->errors()
+                ],Response::HTTP_BAD_REQUEST);        
          }else
              {        
                 $user=new User;  
@@ -62,7 +69,9 @@ class UserController extends Controller
                       return response([
                             'status' => Response::HTTP_OK,
                             'response_time' => microtime(true) - LARAVEL_START,
-                            'usuario' => $user
+                            'usuario' => $user,
+                            'msg' => 'Usuario creado con éxito',
+                            'request' => $request->all()
                         ],Response::HTTP_OK);
                 }catch(Exception $e){
                     return response([

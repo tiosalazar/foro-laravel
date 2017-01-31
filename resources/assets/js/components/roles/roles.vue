@@ -85,28 +85,45 @@ import VeeValidate, { Validator } from 'vee-validate';
             that.errors_return[index] = 'has-warning';
           });
         },    
-          crear_rol: function(e){            
+          crear_rol: function(e){   
+           this.$validator.validateAll();
+            if (this.errors.any()) {
+              return false
+            }         
           var input = this.rolarray;            
             this.$http.post('api/v1/roles',input)
             .then(function(respuesta){ 
+                var that = this;
+                that.message ='';
                 if (respuesta.status != '200') {
-                  if (Object.keys(respuesta.body.rol).length>0) {
-                    this.setErrors(respuesta.body.rol);
+                   if (Object.keys(respuesta.body.request).length>0) {
+                   
+                    $.each(respuesta.body.request, function(index, value) {
+                      that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+                      that.errors_return[index] = 'has-warning';
+                    });
                   }
-                  toastr.warning(this.message,respuesta.body.msg,this.option_toast);
+                  toastr.warning(that.message,respuesta.body.msg,this.option_toast);
                 }else{
+                  console.log(respuesta)
                   toastr.success(respuesta.body.msg,'',this.option_toast);
-                  this.id_rol_passing={'id':respuesta.body.rol.id,'nombre':respuesta.body.rol.nombre}; 
+                  this.id_rol_passing={'id':respuesta.body.obj.id,'nombre':respuesta.body.obj.nombre}; 
                 }           
             },(response) => {
-                
                 console.log(response);
-                toastr.error(this.message,response.body.error,this.option_toast);
+                console.log('error');
+                var that = this;
+                that.message = '';
+                if (Object.keys(response.body.request).length>0) {
+                  $.each(response.body.request, function(index, value) {
+                    that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+                    that.errors_return[index] = 'has-error';
+                    });
+                }
+                toastr.error(that.message,response.body.msg,this.option_toast);
               });
-          },
-          prueba:function(){
-            alert("aqaaa");
           }
+        
         }
 
     }
