@@ -14,7 +14,7 @@
 						</ul>
 						<div class="tab-content" >
 							<div class="tab-pane"  v-for="area in listado_areas" :class="{ 'active': area.nombre=='Creatividad'  }"  :id="'tab_'+area.id">
-								<div class="row"> <anadir_requerimiento :area="area.nombre" :id_area="area.id" ></anadir_requerimiento></div>
+								<div class="row"> <anadir_requerimiento :area="area.nombre" :id_area="area.id"  :realizar_validado="'validar'+area.id" ></anadir_requerimiento></div>
 								<div class="row">
 									<div class="col-md-6">
 										<h2>Compras relacionadas</h2>
@@ -24,7 +24,7 @@
 								<div style="height:30px"></div>
 								<div class="row">
 									<div class=" pull-right  col-md-3">
-										<button type="button" class="btn btn-block btn-success col-sm-3">Guardar</button>
+										<button type="button" @click="guardarDatos(area.id)" class="btn btn-block btn-success col-sm-3">Guardar</button>
 									</div>
 								</div>
 							</div>
@@ -57,6 +57,15 @@
 
 		import VueLocalStorage from 'vue-localstorage'
 		Vue.use(VueLocalStorage);
+		 import VeeValidate, { Validator } from 'vee-validate';
+		 //Traducciones del validador
+		import messages from '../../es/es';
+
+		//Realizando los Use
+		// Merge the locales.
+		Validator.updateDictionary({es: { messages }});
+		// Install the plugin and set the locale.
+		Vue.use(VeeValidate, { locale: 'es' });
 
 		module.exports= {
 			localStorage: {
@@ -64,7 +73,7 @@
 					type: Object,
 				}
 			},
-			components: { VueLocalStorage},
+			components: { VueLocalStorage,VeeValidate,Validator},
 			data () {
 				return {
 					h_Disponibles:50,
@@ -100,6 +109,11 @@
 					}else{
 						this.listado_areas=this.$localStorage.get('listado_areas');
 					}
+				},
+				guardarDatos: function(id){					 
+					console.log(id);
+					var prefijo='validar'+id;
+					this.prefijo=true;						
 				}
 			}
 		}

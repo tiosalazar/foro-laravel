@@ -5,10 +5,11 @@
                         <h2>Requerimiento</h2>
                         </div>
                         <div class="col-md-8">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-6" v-bind:class="{ 'has-error': errors.has('horas_area'+id_area) }">
                           <label for="horas_area" class="col-sm-6 "><h5>Horas Area {{ area }}</h5> </label>
                           <div class="col-sm-6">
-                                <input type="text" class="form-control" :id="'horas_area'+id_area" v-model="nhoras" :placeholder="'Numero de Horas '+area">
+                                <input type="text" :name="'horas_area'+id_area"  v-validate data-vv-rules="required|numeric " data-vv-as="Horas Area" class="form-control" :id="'horas_area'+id_area" v-model="nhoras" :placeholder="'Numero de Horas '+area">
+                                  <span  class="help-block" v-show="errors.has('horas_area'+id_area)">{{ errors.first('horas_area'+id_area) }}</span>
                           </div>
                       </div>
                        <div class="form-group col-md-6"  v-bind:class="{ 'has-error': h_pasadas }">
@@ -75,7 +76,7 @@ validator.attach('password', 'required|min:8|verify_password');*/
 
      module.exports={
        components: {VeeValidate,Validator},
-       		props: ['htotales','area','id_area'],
+       		props: ['htotales','area','id_area','realizar_validado'],
       data () {
           return {
           hdisponibles:'',
@@ -89,11 +90,29 @@ validator.attach('password', 'required|min:8|verify_password');*/
           value:{}
         }
       },
+      computed:{
+        realizar_validado2: function(){
+             
+             if ( this.realizar_validado) {
+              this.$validator.validateAll();
+              if (!this.errors.any()) {
+             console.$log("hola 222");
+               }
+             } 
+           console.$log("hola");
+        }
+         
+      },
       watch: {
         nhoras: function (val) {
           this.realizarCalculo();
           }
 
+      },
+      created: function(){
+        this.$on('validar_requerimiento', function(b) {
+            console.$log(b);
+          });   
       },
       methods: {
           vueSet (obj, path, val) {
