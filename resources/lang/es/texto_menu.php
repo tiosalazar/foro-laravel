@@ -22,5 +22,8 @@ return [
     'crear_areas' => 'Crear Areas',
     'listar_areas' => 'Listado de Areas',
     'organizacion' => 'Roles',
+    'foro' => 'Foro',
+    'areas' => '&Aacute;reas',
+    'creacion_tareas' => 'Creaci&oacute;n de Tareas',
 
 ];

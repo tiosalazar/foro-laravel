@@ -12,7 +12,7 @@ class Ot extends Model
   * @var array
   */
   protected $fillable = [
-    'nombre', 'valor', 'observaciones', 'fecha_inicio', 'fecha_final', 'clientes_id', 'usuarios_id','estados_id',
+    'nombre','referencia', 'valor', 'observaciones', 'fecha_inicio', 'fecha_final', 'clientes_id', 'usuarios_id','estados_id',
   ];
 
 

@@ -29,6 +29,8 @@ Route::group(['prefix' => 'v1','middleware' => 'cors'], function () {
      Route::resource('estados', 'EstadoController');
      Route::resource('areas', 'AreaController');
      Route::resource('roles', 'RolController');
+     // OTs
+     Route::resource('ots', 'OtController');
 
      Route::get('tipos_compra', function (Request $request) {
                  $tipo_compra= App\Tipos_Compra::all();
