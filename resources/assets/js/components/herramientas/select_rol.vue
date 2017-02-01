@@ -46,7 +46,7 @@
       },
       methods:{
           fetchTips: function(){
-               this.$http.get('api/v1/roles/')
+               this.$http.get('/api/v1/roles/')
              .then(function(respuesta){
                      this.roles=respuesta.body;
              }.bind(this));

@@ -34,4 +34,5 @@ Vue.component('areas', require('./components/areas/areas.vue'));
 
 const app = new Vue({
     el: '#app',
+    
 });

@@ -19,7 +19,9 @@ class UserController extends Controller
      */
     public function index()
     {
-      $user= User::where('estado',1)->get();
+      // $user= User::where('estado',1)->get();
+       $user = User::
+            select('users.id','users.nombre','users.apellido','users.cargo','users.telefono','users.email','users.horas_disponible','roles.nombre as roles_id','areas.nombre as areas_id','users.estado','areas.id as id_area','roles.id as id_rol')->join('roles','roles.id','=','users.roles_id')->join('areas','areas.id','=','users.areas_id')->get();
       // return response()->json($user);
       return array('recordsTotal'=>count($user),'recordsFiltered'=>count($user),'data'=>$user);
     }
@@ -108,8 +110,24 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        return response()->json($user);
+         return response()->json($user);
+        // return view('admin.equipo.editar_usuarios', array('usuarios' =>$user);
     }
+
+     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function editar_usuario($id)
+    {
+        $user = User::findOrFail($id);
+         //return response()->json($user);
+         return view('admin.equipo.editar_usuario', array('usuarios' =>$user));
+    }
+
+
 
     /**
      * Update the specified resource in storage.
