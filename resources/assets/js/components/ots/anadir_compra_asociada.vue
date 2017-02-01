@@ -9,17 +9,17 @@
               </div>
               <div class="form-group  col-md-3" v-bind:class="{ 'has-error': errors.has('descipcion_compra'+index) }">
                 <label class="sr-only" for="descipcion_compra">Descripción</label>
-                <input type="text" :name="'descipcion_compra'+index" v-validate data-vv-rules="required|min:4" data-vv-as="Descripción" v-model="compra_asociada[index].model_desc" class="form-control" :id="'descipcion_compra'+index"  placeholder="Descripción">
+                <input type="text" :name="'descipcion_compra'+index" v-validate data-vv-rules="required|min:4" data-vv-as="Descripción" v-model="ed.model_desc" class="form-control" :id="'descipcion_compra'+index"  placeholder="Descripción">
                 <span  class="help-block" v-show="errors.has('descipcion_compra'+index)">{{ errors.first('descipcion_compra'+index) }}</span>
              </div>
               <div class="form-group  col-md-2"  v-bind:class="{ 'has-error': errors.has('provedor_compra'+index) }">
                 <label class="sr-only" for="no_horas_req">Provedor</label>
-                <input type="text"  :name="'provedor_compra'+index" v-validate data-vv-rules="required|min:4" data-vv-as="Provedor" v-model="compra_asociada[index].model_provedor" class="form-control" :id="'provedor_compra'+index"   placeholder="Provedor">
+                <input type="text"  :name="'provedor_compra'+index" v-validate data-vv-rules="required|min:4" data-vv-as="Provedor" v-model="ed.model_provedor" class="form-control" :id="'provedor_compra'+index"   placeholder="Provedor">
                 <span  class="help-block" v-show="errors.has('provedor_compra'+index)">{{ errors.first('provedor_compra'+index) }}</span>
              </div>
               <div class="form-group  col-md-2"  v-bind:class="{ 'has-error': errors.has('valor_compra'+index) }">
                 <label class="sr-only" for="no_horas_req">Valor</label>
-                <input type="text" :name="'valor_compra'+index" v-validate data-vv-rules="required" data-vv-as="Valor" v-model="compra_asociada[index].model_valor" class="form-control" :id="'valor_compra'+index"  placeholder="Valor">
+                <input type="text" :name="'valor_compra'+index" v-validate data-vv-rules="required" data-vv-as="Valor" v-model="ed.model_valor" class="form-control" :id="'valor_compra'+index"  placeholder="Valor">
                 <span  class="help-block" v-show="errors.has('valor_compra'+index)">{{ errors.first('valor_compra'+index) }}</span>
 
              </div>

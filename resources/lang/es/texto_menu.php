@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'ots'   => 'Menú OTS',
+    'ots'   => 'OTS',
     'crear_ot' => 'Crear OT',
     'usuarios' => 'Equipo',
     'listar_usuarios' => 'Listar Usuarios',

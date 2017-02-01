@@ -4,7 +4,7 @@
       <multiselect
       :options="usuarios"
       :custom-label="nameWithLang"
-      :searchable="true" placeholder="Seleccione un Usuario" label="nombre" track-by="nombre"
+      :searchable="true" placeholder="Seleccione un Usuario" select-label="" label="nombre" track-by="nombre"
       :options-limit="300"
       :allow-empty="false"
       :value="value"

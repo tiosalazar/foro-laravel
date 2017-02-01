@@ -2,13 +2,13 @@
   <div class="col-md-12">
               <div class="row">
                       <div class="col-md-4">
-                        <h2>Requerimiento</h2>
+                        <h2>Requerimiento</h2>{{ cosa2}}
                         </div>
                         <div class="col-md-8">
                         <div class="form-group col-md-6" v-bind:class="{ 'has-error': errors.has('horas_area'+id_area) }">
                           <label for="horas_area" class="col-sm-6 "><h5>Horas Area {{ area }}</h5> </label>
                           <div class="col-sm-6">
-                                <input type="text" :name="'horas_area'+id_area"  v-validate data-vv-rules="required|numeric " data-vv-as="Horas Area" class="form-control" :id="'horas_area'+id_area" v-model="nhoras" :placeholder="'Numero de Horas '+area">
+                                <input type="text" :name="'horas_area'+id_area"   v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control" :id="'horas_area'+id_area" v-model="nhoras" :placeholder="'Numero de Horas '+area">
                                   <span  class="help-block" v-show="errors.has('horas_area'+id_area)">{{ errors.first('horas_area'+id_area) }}</span>
                           </div>
                       </div>
@@ -26,12 +26,12 @@
       <section class="Form__section" v-for="(ed,index) in requerimiento">
               <div class="form-group col-md-8" v-bind:class="{ 'has-error': errors.has('nombre_requerimiento'+index) }">
                 <label class="sr-only" for="nombre_requerimiento">Nombre Requerimiento</label>
-                <input type="text" :name="'nombre_requerimiento'+index" v-validate data-vv-rules="required|min:4" data-vv-as="Nombre Requerimiento" v-model="requerimiento[index].model_nom" class="form-control" :id="'nombre_requerimiento'+index" placeholder="Nombre Requerimiento">
+                <input type="text" @mouseover="guardarDatos" :name="'nombre_requerimiento'+index" v-validate data-vv-rules="required|min:4" data-vv-as="Nombre Requerimiento" v-model="ed.model_nom" class="form-control" :id="'nombre_requerimiento'+index" placeholder="Nombre Requerimiento">
                  <span  class="help-block" v-show="errors.has('nombre_requerimiento'+index)">{{ errors.first('nombre_requerimiento'+index) }}</span>
               </div>
               <div class="form-group  col-md-2"  v-bind:class="{ 'has-error': errors.has('no_horas_req'+index) }">
                 <label class="sr-only" for="no_horas_req">N° Horas</label>
-                <input type="text" @input="realizarCalculo" :name="'no_horas_req'+index" v-validate data-vv-rules="required|numeric" data-vv-as="Nombre Requerimiento"  v-model="requerimiento[index].model_horas" class="form-control" :id="'no_horas_req'+index" placeholder="No. Horas">
+                <input type="text" @input="realizarCalculo" @mouseover="guardarDatos" :name="'no_horas_req'+index" v-validate data-vv-rules="required|numeric" data-vv-as="No horas"  v-model="ed.model_horas" class="form-control" :id="'no_horas_req'+index" placeholder="No. Horas">
                 <span  class="help-block" v-show="errors.has('no_horas_req'+index)">{{ errors.first('no_horas_req'+index) }}</span>
              </div>
              <div class="form-group  col-md-2">
@@ -73,9 +73,15 @@ Validator.extend('verify_password', {
 let validator = new Validator();
 
 validator.attach('password', 'required|min:8|verify_password');*/
-
+import VueLocalStorage from 'vue-localstorage'
+    Vue.use(VueLocalStorage);
      module.exports={
-       components: {VeeValidate,Validator},
+      localStorage: {
+        datos_tabs: {
+          type: Object,
+        }
+      },
+       components: {VeeValidate,Validator,VueLocalStorage},
        		props: ['htotales','area','id_area','realizar_validado'],
       data () {
           return {
@@ -87,32 +93,26 @@ validator.attach('password', 'required|min:8|verify_password');*/
           hTarea:'',
           v_resta:'',
           h_pasadas:false,
-          value:{}
+          value:{},
+          cosa2:''
         }
       },
       computed:{
-        realizar_validado2: function(){
-             
-             if ( this.realizar_validado) {
-              this.$validator.validateAll();
-              if (!this.errors.any()) {
-             console.$log("hola 222");
-               }
-             } 
-           console.$log("hola");
-        }
+
          
       },
       watch: {
         nhoras: function (val) {
           this.realizarCalculo();
+          
           }
 
       },
       created: function(){
-        this.$on('validar_requerimiento', function(b) {
-            console.$log(b);
-          });   
+        /*this.$on('validar_requerimiento', function(b) {
+            console.log(b);
+            console.log("hola");
+          });  */
       },
       methods: {
           vueSet (obj, path, val) {
@@ -127,11 +127,33 @@ validator.attach('password', 'required|min:8|verify_password');*/
                  value = value[p]
                }
           },
+          guardarDatos: function(){
+            //console.log(this.requerimiento[0]);
+            var nombre ='datos_requerimiento_'+this.id_area
+
+            var datos = [{              
+                  'requerimientos': this.requerimiento,
+                  'horas': this.nhoras,
+            }];
+            var data=[];
+
+            data.push(nombre)
+             data.datos_requerimiento_+this.id_area.push("hola");
+            console.log(data);
+           // var requerimientos=[{'requerimientos': this.requerimientos}];
+            //datos.push(requerimientos);
+            //datos.push(new Array('horas',this.nhoras);
+            
+             this.$localStorage.set('datos_tabs',datos);
+            // this.$localStorage.set('horas_'+this.area,this.nhoras);
+
+          },
           addRequerimiento: function(e) {
               e.preventDefault();
               this.$validator.validateAll();
               if (!this.errors.any()) {
               this.requerimiento.push(Vue.util.extend({}, this.requerimiento));
+              //this.$parent.$emit('arreglo_requerimientos', this.requerimiento);
                }
           },
           deleteRequerimiento: function(e) {

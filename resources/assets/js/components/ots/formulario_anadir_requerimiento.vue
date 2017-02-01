@@ -14,7 +14,7 @@
 						</ul>
 						<div class="tab-content" >
 							<div class="tab-pane"  v-for="area in listado_areas" :class="{ 'active': area.nombre=='Creatividad'  }"  :id="'tab_'+area.id">
-								<div class="row"> <anadir_requerimiento :area="area.nombre" :id_area="area.id"  :realizar_validado="'validar'+area.id" ></anadir_requerimiento></div>
+								<div class="row"> <anadir_requerimiento :area="area.nombre" :id_area="area.id"  :realizar_validado="'validar_area_'+area.id" ></anadir_requerimiento></div>
 								<div class="row">
 									<div class="col-md-6">
 										<h2>Compras relacionadas</h2>
@@ -39,7 +39,7 @@
 						</div>
 						<div class="box-body">
 							<div class="form-group">
-								<textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+								<textarea class="form-control" rows="3" placeholder="Si tiene alguna observación puede colocarla, de lo contrario puede dejarlo en blanco"></textarea>
 							</div>
 						</div>
 					</div>
@@ -94,9 +94,13 @@
 				htotales:function(){
 					return this.$localStorage.get('horas_totales')
 				},
+				validar:function(){
+					return this.area;
+				}
 			},
 			created: function(){
 				this.fetchTips();
+
 			},
 			methods:{
 				fetchTips: function(){
@@ -109,11 +113,31 @@
 					}else{
 						this.listado_areas=this.$localStorage.get('listado_areas');
 					}
+
+					/*for (let f in this.listado_areas) {
+			              let idx = Number(f)
+			              let p = this.listado_areas[idx]
+			             this.$set(p, 'validar_area_'+p.id, 'lllll')
+			             console.log(this.validar_area_17)
+
+			            //this.$set(this.someObject, 'b', 2)
+			            // Vue.set('validar_area_'+p.id,'','');
+			        }*/
+            
 				},
-				guardarDatos: function(id){					 
-					console.log(id);
-					var prefijo='validar'+id;
-					this.prefijo=true;						
+				guardarDatos: function(id){	
+
+					var data=this.$localStorage.get('datos_requerimiento_'+id);
+
+					var arreglo= JSON.parse(data);
+					console.log(arreglo);
+
+					/*			 
+					//console.log(id);
+					this.$emit('validar_requerimiento',id);
+					var nombre= 'cosa'+id;
+					this.nombre=true;*/	
+
 				}
 			}
 		}

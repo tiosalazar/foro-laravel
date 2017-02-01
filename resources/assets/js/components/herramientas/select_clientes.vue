@@ -4,6 +4,7 @@
     <Multiselect
     :options="clientes"
     :custom-label="nameWithLang"  placeholder="Seleccione un Cliente" label="nombre" track-by="nombre"
+    select-label=""
     :close-on-select="true"
     :value="value"
     :options-limit="300"

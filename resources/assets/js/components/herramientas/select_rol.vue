@@ -3,7 +3,7 @@
   <div >
       <multiselect
       :options="roles"
-      :searchable="true" placeholder="Seleccione un Rol" label="nombre" track-by="nombre"
+      :searchable="true" placeholder="Seleccione un Rol" select-label="" label="nombre" track-by="nombre"
       :options-limit="100"
       :allow-empty="false"
       @input="updateSelected"
@@ -33,7 +33,9 @@
             value:{}
           }
       },
-      computed:{},
+      computed:{
+        
+      },
       created: function(){
           this.fetchTips();
       },
