@@ -17,7 +17,7 @@
 					<h3 class="box-title">Listado de Usuarios</h3>
 				</div>
 				<div class="box-body">
-					{{-- <crear_cliente_form></crear_cliente_form> --}}
+					<list_usuarios></list_usuarios>
 				</div>
 			</div>
 			<!-- ./ box -->

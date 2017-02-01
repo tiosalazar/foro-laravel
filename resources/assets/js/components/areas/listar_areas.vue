@@ -33,7 +33,8 @@
                 </tr>
                 <tr>
               
-              </tbody></table>
+              </tbody>
+              </table>
             </div>
             <!-- /.box-body -->
           </div>

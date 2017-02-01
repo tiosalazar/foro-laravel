@@ -20,7 +20,8 @@ class UserController extends Controller
     public function index()
     {
       $user= User::where('estado',1)->get();
-      return response()->json($user);
+      // return response()->json($user);
+      return array('recordsTotal'=>count($user),'recordsFiltered'=>count($user),'data'=>$user);
     }
 
 

@@ -26,7 +26,7 @@ require('vue-resource');
 // Funciona instalando 'imports-loader'
 
 // require('vue-sync')
-
+import table from 'datatables.net-bs/js/dataTables.bootstrap.js';
 
 // window.dt      = require('imports?define=>false!datatables.net')(window, $);
 /**
