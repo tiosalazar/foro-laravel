@@ -10,7 +10,7 @@
 	 <div class="container">
         <div class="row">
             <div class="col-md-12 ">  
-             <form_usuarios></form_usuarios>
+             <form_usuarios titulor="Crear Usuario" comando="1"></form_usuarios>
             </div>
         </div>
     </div>

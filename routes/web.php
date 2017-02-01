@@ -57,6 +57,8 @@ Route::group(['middleware' => 'auth'], function () {
            return view('admin.areas.listar_areas');
     });
 
+    Route::get('editar_usuario/{id}','UserController@editar_usuario');
+
 });
 
 Route::get('/p', function () {

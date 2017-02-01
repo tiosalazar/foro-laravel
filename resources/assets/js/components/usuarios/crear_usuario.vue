@@ -1,7 +1,8 @@
 <template >
       <div class="box box-primary" id="crear_user">
         <div class="box-header">
-            <h3>Crear nuevo Usuario</h3>
+            <h3>{{titulo}}</h3>
+          
         </div>
         
         <div class="box-body">
@@ -54,7 +55,10 @@
         </div>
 
         <div class="box-footer">
-           <button class="btn btn-primary" @click="addUser">Guardar</button>  
+         
+           <button class="btn btn-primary" v-bind:class="{ 'hidden': valorboton }" @click="addUser">Guardar</button>
+           <button class="btn btn-primary" v-bind:class="{ 'hidden': valorboton2 }" @click="updateaddUser">Actualizar</button>
+          
         </div>
     </div>
 </template>
@@ -71,11 +75,14 @@
 
     module.exports={
       components: {VeeValidate,Validator},
-      
+      props: ['titulor','comando'],
       data(){
         return{
           usuarios:{},
            message :'',
+           titulo:'',
+           valorboton:'',
+           valorboton2:'',
            dato_refres:'',
            option_toast:{
             timeOut: 5000,
@@ -100,7 +107,16 @@
           });
           this.$on('area_option', function(b) {
             this.usuarios.areas_id=b.id;
-          });    
+          });
+          console.log(this.comando);
+          if (this.comando==1) {
+            this.valorboton2=true;
+          }else if(this.comando==2){
+            
+             this.valorboton=true;
+          }
+          
+          this.titulo=this.titulor;   
       },
        methods:{
         addUser:function(user) {
@@ -140,11 +156,13 @@
 
                     toastr.error(that.message,response.body.msg,this.option_toast);
                   });
+        },
+        updateaddUser:function(){
+          console.log('Actualizar');
         }
-       },
-        mounted() {
-            console.log('Component ready.')
-        }
+       }
+       
+        
     }
    
 </script>

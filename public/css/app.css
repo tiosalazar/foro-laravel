@@ -7796,4 +7796,8 @@ sub, sup {
   margin: 0 !important;
 }
 
+.boton_hidden {
+  display: none;
+}
+
 /*# sourceMappingURL=app.css.map */
