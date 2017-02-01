@@ -49,8 +49,12 @@ Route::group(['middleware' => 'auth'], function () {
      Route::get('/roles', function () {
            return view('admin.roles.crear_roles');
     });
-      Route::get('/areas', function () {
+     Route::get('/areas', function () {
            return view('admin.areas.crear_areas');
+    });
+
+     Route::get('/listar_areas', function () {
+           return view('admin.areas.listar_areas');
     });
 
 });

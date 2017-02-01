@@ -113,7 +113,7 @@
           */
           import Datepicker from 'vuejs-datepicker';
           import VueLocalStorage from 'vue-localstorage'
-          import VueSync from 'vue-sync';
+
           import VeeValidate, { Validator } from 'vee-validate';
 		//Traducciones del validador
 		import messages from '../../es/es';
@@ -128,7 +128,7 @@
 		Vue.use(VeeValidate, { locale: 'es' });
 
 		module.exports= {
-			components: {Datepicker,VueSync,VueLocalStorage,VeeValidate,Validator},
+			components: {Datepicker,VueLocalStorage,VeeValidate,Validator},
 			localStorage: {
 				clientes: {
 					type: Object,

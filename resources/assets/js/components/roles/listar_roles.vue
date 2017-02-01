@@ -34,6 +34,7 @@
               <div class="example-modal">
                 <div class="modal fade" id="myModal_rol">
                   <div class="modal-dialog">
+                   <form action="">
                     <div class="modal-content">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -41,16 +42,24 @@
                         <h4 class="modal-title">Edición de Rol</h4>
                       </div>
                       <div class="modal-body">
+                     
                         <label for="id_rol_edit">ID</label>
                         <input type="text" class="form-control" id="id_rol_edit" v-model="id_rol_edit" disabled>
+
+                        <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]">
                         <label for="nombre_rol_edit">Editar nombre del rol</label>
-                        <input type="text" class="form-control" id="nombre_rol_edit" v-model="nombre_rol_edit.nombre" placeholder="Nuevo nombre">
+                        <input type="text" class="form-control" id="nombre_rol_edit" name="nombre"v-model="nombre_rol_edit.nombre" placeholder="Nuevo nombre" v-validate data-vv-rules="required|alpha_num|min:5">
+                        </div>
+
+                        <span  class="has-error" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span> 
                       </div>
+                       
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary " id="save_edit_rol" @click="updaterol" data-dismiss="modal">Guardar</button>
+                        <button type="submit" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary " id="save_edit_rol" @click="updaterol" >Guardar</button>
                       </div>
                     </div>
+                    </form>
                     <!-- /.modal-content -->
                   </div>
                   <!-- /.modal-dialog -->
@@ -62,10 +71,13 @@
 <script>
 
 
+import VeeValidate, { Validator } from 'vee-validate';
+
+  Vue.use(VeeValidate);
 
    module.exports= {
 
-  
+       components: {VeeValidate,Validator},
        props: ['rolname','id_parent'],
 
        created: function(){
@@ -80,7 +92,10 @@
               timeOut: 5000,
               "positionClass": "toast-top-center",
               "closeButton": true
-            } 
+            },
+            errors_return:{
+            'nombre':''
+            }
          
           }
           
@@ -98,25 +113,36 @@
               });
           }, 
           pasardatosmodal:function(id,nombre){
-            console.log(id);
+            
             this.id_rol_edit=id;
             this.nombre_rol_edit.nombre=nombre;
           }, 
           updaterol:function(){
+              
+              this.$validator.validateAll();
+              if (this.errors.any()) {
+                return false
+              }
 
+             
             var idmodal=this.id_rol_edit;
             var nombremodal=this.nombre_rol_edit.nombre;
             
-            console.log(nombremodal);
+          
             this.$http.put('api/v1/roles/'+idmodal+'',{nombre: nombremodal})
             .then(function(respuesta){
-
+                var that = this;
+                that.message ='';
                if (respuesta.status != '200') {
-                  if (Object.keys(respuesta.body.rol).length>0) {
-                    this.setErrors(respuesta.body.rol);
+                  if (Object.keys(respuesta.body.request).length>0) {
+                   
+                    $.each(respuesta.body.request, function(index, value) {
+                      that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+                      that.errors_return[index] = 'has-warning';
+                    });
                   }
-                  console.log(respuesta);
-                  toastr.warning(this.message,respuesta.body.msg,this.option_toast);
+                 
+                  toastr.warning(that.message,respuesta.body.msg,this.option_toast);
                 }else{
                   
                   //Cambion el front con los datos editados
@@ -128,15 +154,25 @@
                     console.log(respuesta);
                     if (respuesta.body.error == 0) {
                       toastr.success(respuesta.body.msg,'',this.option_toast);
+                      $('#myModal_rol').modal().hide();
                     }else{
-                      toastr.error(respuesta.body.msg,'',this.option_toast);
+                      console.log('pruena')
+                      toastr.error(respuesta.body.nombre,'',this.option_toast);
                     }
                     
                 }
 
             },(response) => {
               console.log(response);
-              toastr.error(this.message,response.body.error,this.option_toast);
+                var that = this;
+                that.message = '';
+                if (Object.keys(response.body.request).length>0) {
+                  $.each(response.body.request, function(index, value) {
+                    that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+                    that.errors_return[index] = 'has-error';
+                    });
+                }
+              toastr.error(that.message,response.body.msg,this.option_toast);
             });
             
           }         

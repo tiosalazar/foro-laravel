@@ -12,10 +12,10 @@
         </div>
     
       <div class="box-body">
-          <div  role="form" class="form-area" action="#">
+          <div   role="form" class="form-area"  >
                 <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]">
                     <label for="nombre_area">Nombre</label>
-                    <input type="text" v-model="areaarray.nombre" class="form-control" id="nombre_area" name="nombre" placeholder="Nombre area" v-validate data-vv-rules="required|alpha_num|min:30">
+                    <input type="text" v-model="areaarray.nombre" class="form-control" id="nombre_area" name="nombre" placeholder="Nombre area" v-validate data-vv-rules="required|alpha_num|max:30">
                     <span  class="has-error error_absolute" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
                 </div>
                
@@ -81,16 +81,25 @@
             });
           },
           crear_area: function(e){
+             this.$validator.validateAll();
+              if (this.errors.any()) {
+                return false
+              }  
             this.areaarray.estado=1;
             var input = this.areaarray;
             this.$http.post('api/v1/areas',input)
             .then(function(respuesta){ 
-                
+                var that = this;
+                that.message ='';
                 if (respuesta.status != '200') {
-                  if (Object.keys(respuesta.body.rol).length>0) {
-                    this.setErrors(respuesta.body.area);
+                   if (Object.keys(respuesta.body.request).length>0) {
+                   
+                    $.each(respuesta.body.request, function(index, value) {
+                      that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+                      that.errors_return[index] = 'has-warning';
+                    });
                   }
-                  toastr.warning(this.message,respuesta.body.msg,this.option_toast);
+                  toastr.warning(that.message,respuesta.body.msg,this.option_toast);
                 }else{
                   toastr.success(respuesta.body.msg,'',this.option_toast);
                   this.id_area_passing={'id':respuesta.body.area.id,'nombre':respuesta.body.area.nombre,'extencion_tel':respuesta.body.area.extencion_tel,'estado':respuesta.body.area.estado} 
@@ -98,9 +107,19 @@
                 
                         
             },(response) => {
+               var that = this;
+                that.message ='';
                 
                 console.log(response);
-                toastr.error(this.message,response.body.error,this.option_toast);
+                  if (Object.keys(response.body.request).length>0) {
+                   
+                    $.each(response.body.request, function(index, value) {
+                      that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+                      that.errors_return[index] = 'has-warning';
+                    });
+                  }
+
+                toastr.error(that.message,response.body.error,this.option_toast);
               });
           }
         }

@@ -7,6 +7,7 @@
       :options-limit="100"
       :allow-empty="false"
       @input="updateSelected"
+      :value="value"
       :option-height="104">
       </multiselect>
       <input type="hidden"  :value="id_rol" name="id_rol" >
@@ -23,16 +24,23 @@
  
     module.exports= {
        components: { Multiselect},
+       props: ['refresh'],
       data () {
           return {
             roles:[],
             id_rol: 0,
-            isTouched: false
+            isTouched: false,
+            value:{}
           }
       },
       computed:{},
       created: function(){
           this.fetchTips();
+      },
+      watch : {
+        refresh : function (value) {
+           this.value=0;
+        }
       },
       methods:{
           fetchTips: function(){
@@ -45,7 +53,8 @@
          updateSelected (newSelected) {
             if (newSelected != null && newSelected != undefined) {
              this.id_rol = newSelected.id;
-              this.$parent.$emit('rol_option',newSelected);
+             this.$parent.$emit('rol_option',newSelected);
+
            }else {
              this.id_rol = 0;
            }

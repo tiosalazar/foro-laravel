@@ -54,7 +54,7 @@
                     <li><a href="{{ url('areas') }}">{{  trans('texto_menu.crear_areas') }}</a></li>
                     <li><a href="{{ url('crear_usuario') }}">{{  trans('texto_menu.crear_usuarios') }}</a></li>
                     <li><a href="{{ url('usuarios') }}">{{  trans('texto_menu.listar_usuarios') }}</a></li>
-                    <li><a href="{{ url('areas') }}">{{  trans('texto_menu.listar_areas') }}</a></li>
+                    <li><a href="{{ url('listar_areas') }}">{{  trans('texto_menu.listar_areas') }}</a></li>
                 </ul>
 
              

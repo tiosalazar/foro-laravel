@@ -6,7 +6,7 @@
       :searchable="true" placeholder="Seleccione un Área" label="nombre" track-by="nombre"
       :options-limit="100"
       :allow-empty="false"
-      :value="value"
+      :value="value2"
       @input="updateSelected"
       :option-height="104">
       </multiselect>
@@ -21,13 +21,14 @@
   import Multiselect from 'vue-multiselect'
     module.exports= {
        components: { Multiselect},
-         // props: ['area'],
+          props: ['refresh'],
       data () {
           return {
             areas:[],
             id_area: 0,
             area:{},
-            isTouched: false
+            isTouched: false,
+            value2:{}
           }
       },
       computed:{
@@ -38,6 +39,11 @@
       },
       created: function(){
           this.fetchTips();
+      },
+      watch : {
+        refresh : function (value) {
+           this.value2=0;
+        }
       },
       methods:{
           fetchTips: function(){
