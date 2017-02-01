@@ -14,13 +14,13 @@
 						</ul>
 						<div class="tab-content" >
 							<div class="tab-pane"  v-for="area in listado_areas" :class="{ 'active': area.nombre=='Creatividad'  }"  :id="'tab_'+area.id">
-								<div class="row"> <anadir_requerimiento :area="area.nombre" :id_area="area.id"  :realizar_validado="'validar_area_'+area.id" ></anadir_requerimiento></div>
+								<div class="row"> <anadir_requerimiento :area="area.nombre" :id_area="area.id"  ></anadir_requerimiento></div>
 								<div class="row">
 									<div class="col-md-6">
 										<h2>Compras relacionadas</h2>
 									</div>
 								</div>
-								<div class="row"><anadir_compra  :area="area.nombre" ></anadir_compra> </div>
+								<div class="row"><anadir_compra  :area="area.nombre" :id_area="area.id"  ></anadir_compra> </div>
 								<div style="height:30px"></div>
 								<div class="row">
 									<div class=" pull-right  col-md-3">
@@ -87,7 +87,12 @@
 					ejecutivo:'',
 					fecha_fin:'',
 					fecha_inicio:'',
-					cliente:[]
+					cliente:[],
+					option_toast:{
+					timeOut: 5000,
+					"positionClass": "toast-top-center",
+					"closeButton": true,
+				     }
 				}
 			},
 			computed: {
@@ -127,10 +132,34 @@
 				},
 				guardarDatos: function(id){	
 
-					var data=this.$localStorage.get('datos_requerimiento_'+id);
+					var data_req=this.$localStorage.get('datos_requerimiento_'+id);
+					var data_compra=this.$localStorage.get('datos_compra_'+id);
+					var data_req = JSON.parse(data_req);
+					var data_compra = JSON.parse(data_compra);
+					var arreglo_requerimientos = data_req[0].requerimientos;
+					var arreglo_compras = data_compra[0].compras;
+					console.log(arreglo_requerimientos);
+					if (data_req == null && data_compra == null) {
+						toastr.error("Todos los campos son obligatorios","Error al Guardar Requerimientos y Compras",this.option_toast);
+						return false;
+					}else if( data_req[0].requerimientos.model_nom == '' ){
+						console.log("entro al 2");
+						toastr.error("Todos los campos son obligatorios","Error al Guardar Requerimientos y Compras",this.option_toast);
+						return false;
 
-					var arreglo= JSON.parse(data);
-					console.log(arreglo);
+					} 
+
+					
+
+					/*if (arreglo_requerimientos.length > 0 && arreglo_compras.length > 0) {
+
+						console.log("Vamos por buen camino");
+
+					} else {
+						console.log("ERROR");
+						toastr.error("Todos los campos son obligatorios","Error al Guardar",this.option_toast);
+					}*/
+					
 
 					/*			 
 					//console.log(id);

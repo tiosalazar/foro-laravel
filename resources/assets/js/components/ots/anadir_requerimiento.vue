@@ -8,7 +8,7 @@
                         <div class="form-group col-md-6" v-bind:class="{ 'has-error': errors.has('horas_area'+id_area) }">
                           <label for="horas_area" class="col-sm-6 "><h5>Horas Area {{ area }}</h5> </label>
                           <div class="col-sm-6">
-                                <input type="text" :name="'horas_area'+id_area"   v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control" :id="'horas_area'+id_area" v-model="nhoras" :placeholder="'Numero de Horas '+area">
+                                <input type="text" :name="'horas_area'+id_area" @mouseover="guardarDatos"  v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control" :id="'horas_area'+id_area" v-model="nhoras" :placeholder="'Numero de Horas '+area">
                                   <span  class="help-block" v-show="errors.has('horas_area'+id_area)">{{ errors.first('horas_area'+id_area) }}</span>
                           </div>
                       </div>
@@ -76,13 +76,8 @@ validator.attach('password', 'required|min:8|verify_password');*/
 import VueLocalStorage from 'vue-localstorage'
     Vue.use(VueLocalStorage);
      module.exports={
-      localStorage: {
-        datos_tabs: {
-          type: Object,
-        }
-      },
        components: {VeeValidate,Validator,VueLocalStorage},
-       		props: ['htotales','area','id_area','realizar_validado'],
+       		props: ['htotales','area','id_area'],
       data () {
           return {
           hdisponibles:'',
@@ -128,25 +123,11 @@ import VueLocalStorage from 'vue-localstorage'
                }
           },
           guardarDatos: function(){
-            //console.log(this.requerimiento[0]);
-            var nombre ='datos_requerimiento_'+this.id_area
-
-            var datos = [{              
-                  'requerimientos': this.requerimiento,
-                  'horas': this.nhoras,
-            }];
-            var data=[];
-
-            data.push(nombre)
-             data.datos_requerimiento_+this.id_area.push("hola");
-            console.log(data);
-           // var requerimientos=[{'requerimientos': this.requerimientos}];
-            //datos.push(requerimientos);
-            //datos.push(new Array('horas',this.nhoras);
-            
-             this.$localStorage.set('datos_tabs',datos);
-            // this.$localStorage.set('horas_'+this.area,this.nhoras);
-
+            var datos=[{  
+                requerimientos:this.requerimiento, 
+                horas:this.nhoras
+              }];
+             this.$localStorage.set('datos_requerimiento_'+this.id_area,JSON.stringify(datos) );
           },
           addRequerimiento: function(e) {
               e.preventDefault();

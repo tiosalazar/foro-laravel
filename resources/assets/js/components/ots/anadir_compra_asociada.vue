@@ -9,17 +9,17 @@
               </div>
               <div class="form-group  col-md-3" v-bind:class="{ 'has-error': errors.has('descipcion_compra'+index) }">
                 <label class="sr-only" for="descipcion_compra">Descripción</label>
-                <input type="text" :name="'descipcion_compra'+index" v-validate data-vv-rules="required|min:4" data-vv-as="Descripción" v-model="ed.model_desc" class="form-control" :id="'descipcion_compra'+index"  placeholder="Descripción">
+                <input type="text" :name="'descipcion_compra'+index"  @mouseover="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Descripción" v-model="ed.model_desc" class="form-control" :id="'descipcion_compra'+index"  placeholder="Descripción">
                 <span  class="help-block" v-show="errors.has('descipcion_compra'+index)">{{ errors.first('descipcion_compra'+index) }}</span>
              </div>
               <div class="form-group  col-md-2"  v-bind:class="{ 'has-error': errors.has('provedor_compra'+index) }">
                 <label class="sr-only" for="no_horas_req">Provedor</label>
-                <input type="text"  :name="'provedor_compra'+index" v-validate data-vv-rules="required|min:4" data-vv-as="Provedor" v-model="ed.model_provedor" class="form-control" :id="'provedor_compra'+index"   placeholder="Provedor">
+                <input type="text"  :name="'provedor_compra'+index"  @mouseover="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Provedor" v-model="ed.model_provedor" class="form-control" :id="'provedor_compra'+index"   placeholder="Provedor">
                 <span  class="help-block" v-show="errors.has('provedor_compra'+index)">{{ errors.first('provedor_compra'+index) }}</span>
              </div>
               <div class="form-group  col-md-2"  v-bind:class="{ 'has-error': errors.has('valor_compra'+index) }">
                 <label class="sr-only" for="no_horas_req">Valor</label>
-                <input type="text" :name="'valor_compra'+index" v-validate data-vv-rules="required" data-vv-as="Valor" v-model="ed.model_valor" class="form-control" :id="'valor_compra'+index"  placeholder="Valor">
+                <input type="text" :name="'valor_compra'+index"  @mouseover="guardarDatos" v-validate data-vv-rules="required" data-vv-as="Valor" v-model="ed.model_valor" class="form-control" :id="'valor_compra'+index"  placeholder="Valor">
                 <span  class="help-block" v-show="errors.has('valor_compra'+index)">{{ errors.first('valor_compra'+index) }}</span>
 
              </div>
@@ -47,8 +47,11 @@ import messages from '../../es/es';
 Validator.updateDictionary({es: { messages }});
 // Install the plugin and set the locale.
 Vue.use(VeeValidate, { locale: 'es' });
+import VueLocalStorage from 'vue-localstorage'
+    Vue.use(VueLocalStorage);
      module.exports={
-        components: {VeeValidate,Validator},
+        components: {VeeValidate,Validator,VueLocalStorage},
+          props: ['area','id_area'],
       data () {
           return {
           compra_asociada: [
@@ -70,7 +73,13 @@ Vue.use(VeeValidate, { locale: 'es' });
               var index = this.compra_asociada.indexOf(Vue.util.extend({}, this.compra_asociada));
                 this.compra_asociada.splice(index, 1);
 
-          }
+          },
+          guardarDatos: function(){
+            var datos=[{  
+                compras:this.compra_asociada, 
+              }];
+             this.$localStorage.set('datos_compra_'+this.id_area,JSON.stringify(datos) );
+          },
      }
    }
        Vue.component('select_tipo_compra',require('../herramientas/select_tipo_compra.vue'));
