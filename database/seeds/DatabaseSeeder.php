@@ -13,6 +13,8 @@ class DatabaseSeeder extends Seeder
     {
      $this->call('RolesTableSeeder');
      $this->command->info('Roles table seeded!');
+     $this->call('PermisosTableSeeder');
+     $this->command->info('Permisos table seeded!');
      $this->call('AreasTableSeeder');
      $this->command->info('Areas table seeded!');
      $this->call('DivisasTableSeeder');
@@ -41,10 +43,57 @@ class RolesTableSeeder extends Seeder {
     {
         DB::table('roles')->delete();
 
-        App\Role::create(array('nombre' => 'Administrador'));
-        App\Role::create(array('nombre' => 'Cuentas'));
-        App\Role::create(array('nombre' => 'Coordinador'));
-        App\Role::create(array('nombre' => 'Esclavo') );
+        App\Role::create(array('name' => 'owner','display_name'=>'Proyect Owner','description'=>'Usuario con todos los privilegios de la aplicación' ));
+        App\Role::create(array('name' => 'desarrollo','display_name'=>'Test Profile','description'=>'Usuario con Privilegios para poder testear la Aplicación' ));
+        App\Role::create(array('name' => 'cuentas','display_name'=>'Cuentas','description'=>'Usuario con algunos permisos especiales, pero con restricciones' ));
+        App\Role::create(array('name' => 'coordinador','display_name'=>'Coordinador','description'=>'Usuario con los permisos de asignar tareas' ));
+        App\Role::create(array('name' => 'colaborador','display_name'=>'Colaborador','description'=>'Usuario sin permisos, solo puede cambiar estados de tareas' ));
+
+    }
+
+}
+class PermisosTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('permissions')->delete();
+          //Permisos Sobre OTS
+        App\Permission::create(array('name' => 'ver_ots','display_name'=>'Ver OTS','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'crear_ots','display_name'=>'Crear OTS','description'=>'Puede Crear' ));
+        App\Permission::create(array('name' => 'editar_ots','display_name'=>'Editar OTS','description'=>'Puede Editar' ));
+         //Permisos Sobre Clientes
+        App\Permission::create(array('name' => 'ver_clientes','display_name'=>'Ver Clientes','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'crear_clientes','display_name'=>'Crear Clientes','description'=>'Puede Crear' ));
+        App\Permission::create(array('name' => 'editar_clientes','display_name'=>'Editar Clientes','description'=>'Puede Editar' ));
+         //Permisos Sobre Usuarios
+        App\Permission::create(array('name' => 'ver_listado_usuarios','display_name'=>'Ver Listado de Usuarios','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'crear_usuarios','display_name'=>'Crear Usuarios','description'=>'Puede Crear' ));
+        App\Permission::create(array('name' => 'editar_usuarios','display_name'=>'Editar Usuarios','description'=>'Puede Editar' ));
+         //Permisos Sobre Foros
+        App\Permission::create(array('name' => 'ver_foro_creatividad','display_name'=>'Ver Foro de Creatividad','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'ver_foro_diseno','display_name'=>'Ver Foro de Diseño','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'ver_foro_desarrollo','display_name'=>'Ver Foro de Desarrollo','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'ver_foro_contenidos','display_name'=>'Ver Foro de Contenidos','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'ver_foro_digital','display_name'=>'Ver Foro de Digital','description'=>'Puede Ver' ));
+        //Permisos Sobre Areas
+        App\Permission::create(array('name' => 'ver_listado_areas','display_name'=>'Ver Areas','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'crear_areas','display_name'=>'Crear Areas','description'=>'Puede crear' ));
+        App\Permission::create(array('name' => 'editar_areas','display_name'=>'Editar Areas','description'=>'Puede Editar' ));
+        //Permisos Sobre Tareas
+        App\Permission::create(array('name' => 'crear_areas','display_name'=>'Crear Tareas','description'=>'Puede crear' ));
+        App\Permission::create(array('name' => 'editar_areas','display_name'=>'Editar Tareas','description'=>'Puede Editar' ));
+
+      /*
+        App\Permission::create(array('name' => 'todos','display_name'=>'Permisos Totales','description'=>'Tiene Acceso a todas las vistas de la aplicación' ));
+        App\Permission::create(array('name' => 'desarrollo','display_name'=>'Permisos de Desarrollo','description'=>'Tiene Acceso a la mayoria de las funcionalidades' ));
+        App\Permission::create(array('name' => 'cuentas','display_name'=>'Cuentas','description'=>'Permisos restringidos, en la edición de OTS ' ));
+        App\Permission::create(array('name' => 'coordinador','display_name'=>'Coordinador','description'=>'Permisos para asignar Tareas' ));
+        App\Permission::create(array('name' => 'colaborador','display_name'=>'Colaborador','description'=>'Usuario con restricciones' ));
+        App\Permission::create(array('name' => 'todos','display_name'=>'Permisos Totales','description'=>'Tiene Acceso a todas las vistas de la aplicación' ));
+        App\Permission::create(array('name' => 'desarrollo','display_name'=>'Permisos de Desarrollo','description'=>'Tiene Acceso a la mayoria de las funcionalidades' ));
+        App\Permission::create(array('name' => 'cuentas','display_name'=>'Cuentas','description'=>'Permisos restringidos, en la edición de OTS ' ));
+        App\Permission::create(array('name' => 'coordinador','display_name'=>'Coordinador','description'=>'Permisos para asignar Tareas' ));
+        App\Permission::create(array('name' => 'colaborador','display_name'=>'Colaborador','description'=>'Usuario con restricciones' ));*/
     }
 
 }

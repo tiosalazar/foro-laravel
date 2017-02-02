@@ -252,11 +252,16 @@
 
 			},
 			llenar_horas_totales:function () {
-					 this.$localStorage.set('horas_totales',this.horas_totales);
+					/// this.$localStorage.set('horas_totales',this.horas_totales);
+					 this.$parent.$emit('horas_totales',this.horas_totales);
+					 console.log(this.horas_totales);
+
 			},
 			realizarCalculoHoras:function () {
 				var total_areas  =this.$localStorage.get('listado_areas');
-				var size = Object.keys(total_areas).length;
+
+				if (total_areas != null || total_areas != undefined ) {
+					var size = Object.keys(total_areas).length;
 				var hora_a=0;
 				var total_a_restar=0;
 
@@ -272,6 +277,11 @@
 					this.h_pasadas= (this.$localStorage.get('h_Disponibles') > total)?true:false;
 				console.log(this.h_pasadas);
 				this.$localStorage.set('h_Disponibles',total);
+
+					
+				} 
+
+				
 			},
 						 validateBeforeSubmit(e) {
 						 	this.$validator.validateAll();
@@ -293,6 +303,7 @@
 						 		}
 			            //this.submitForm()
 			        }
+			        
 
 			    },
 			    submitForm(){

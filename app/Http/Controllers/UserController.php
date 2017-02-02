@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Role;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
 use App\Http\Requests\StoreUsers;
@@ -233,5 +234,24 @@ class UserController extends Controller
                 'roles_id' => 'required',
                 'areas_id' => 'required'
         ]);
+    }
+
+     public function AgregarRoll()
+    {
+        $user =  User::find(1)->roles;
+        //$role_id= Role::where('name','owner')->first();
+
+       // $user->roles()->attach($role_id);
+        // role attach alias
+        //$user->attachRole(2); // parameter can be an Role object, array, or id
+
+        // or eloquent's original technique
+        //$user->roles()->attach(2); // id only
+
+        //var_dump($user->role());
+       // $rol = Role::findOrfail(12);
+       //var_dump($rol->User);
+        var_dump($user[0]->display_name);
+        //return view('adminlte::home',array('usuario' =>$user));
     }
 }

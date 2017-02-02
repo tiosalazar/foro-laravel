@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<encabezado ></encabezado>
+		<encabezado :horas_disponibles="h_Disponibles"></encabezado>
 		<div class="box box-primary">
 			<div class="box-header with-border">
 				<h3 class="box-title">Requerimientos y Compras</h3>
@@ -14,7 +14,7 @@
 						</ul>
 						<div class="tab-content" >
 							<div class="tab-pane"  v-for="area in listado_areas" :class="{ 'active': area.nombre=='Creatividad'  }"  :id="'tab_'+area.id">
-								<div class="row"> <anadir_requerimiento :area="area.nombre" :id_area="area.id"  ></anadir_requerimiento></div>
+								<div class="row"> <anadir_requerimiento :area="area.nombre" :id_area="area.id" :horas_disponibles="h_Disponibles" ></anadir_requerimiento></div>
 								<div class="row">
 									<div class="col-md-6">
 										<h2>Compras relacionadas</h2>
@@ -76,14 +76,14 @@
 			components: { VueLocalStorage,VeeValidate,Validator},
 			data () {
 				return {
-					h_Disponibles:50,
+					h_Disponibles:0,
 					h_AreaDiseno:0,
 					num_ot:0,
 					listado_areas:[],
 					name_proyect:'',
 					estado:'',
 					valor_total:'',
-					horas_totales:'',
+					horas_totales:0,
 					ejecutivo:'',
 					fecha_fin:'',
 					fecha_inicio:'',
@@ -105,19 +105,30 @@
 			},
 			created: function(){
 				this.fetchTips();
+				this.$on('horas_totales', function(v) {
+		            this.horas_totales=v;
+		            this.h_Disponibles=v-this.h_Disponibles;
+		          });
+				this.$on('horas_area', function(v) {
+					var total_resta= parseInt(this.horas_totales) +v;
+					console.log(total_resta);
+		           this.h_Disponibles=total_resta-this.h_Disponibles;
+		            console.log(this.h_Disponibles);
+		          });
 
 			},
 			methods:{
 				fetchTips: function(){
-					if(this.$localStorage.get('listado_areas') ==null){
+					//if(this.$localStorage.get('listado_areas') ==null){
 						this.$http.get('api/v1/areas/')
 						.then(function(respuesta){
-							this.listado_areas=this.$localStorage.set('listado_areas',respuesta.body);
-							console.log(respuesta.body);
+							this.listado_areas=respuesta.body;
+							this.$localStorage.set('listado_areas',respuesta.body);
+							//console.log(respuesta.body);
 						}.bind(this));
-					}else{
+					/*}else{
 						this.listado_areas=this.$localStorage.get('listado_areas');
-					}
+					}*/
 
 					/*for (let f in this.listado_areas) {
 			              let idx = Number(f)

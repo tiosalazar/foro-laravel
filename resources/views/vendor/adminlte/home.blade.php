@@ -57,6 +57,8 @@
 					                <hr>
 					              <strong><i class="fa fa-user margin-r-5"></i> Perfil</strong>
 					               <p class="text-muted">{{ Auth::user()->roles_id }}</p>
+					               <p class="text-muted">{{ var_dump(Auth::user()->Rol->nombre) }}</p>
+					               <p class="text-muted">{{ var_dump($usuario->Rol->nombre )  }}</p>
 					                <hr>
 					              <strong><i class="fa fa-pencil margin-r-5"></i> Area</strong>
 					               <p class="text-muted">{{Auth::user()->areas_id }}</p>
