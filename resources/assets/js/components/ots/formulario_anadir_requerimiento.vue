@@ -128,28 +128,62 @@
 			            //this.$set(this.someObject, 'b', 2)
 			            // Vue.set('validar_area_'+p.id,'','');
 			        }*/
-            
-				},
-				guardarDatos: function(id){	
 
+				},
+				guardarDatos: function(id){
 					var data_req=this.$localStorage.get('datos_requerimiento_'+id);
 					var data_compra=this.$localStorage.get('datos_compra_'+id);
 					var data_req = JSON.parse(data_req);
 					var data_compra = JSON.parse(data_compra);
 					var arreglo_requerimientos = data_req[0].requerimientos;
 					var arreglo_compras = data_compra[0].compras;
-					console.log(arreglo_requerimientos);
+				//	console.log(arreglo_requerimientos[0].model_nom);
 					if (data_req == null && data_compra == null) {
 						toastr.error("Todos los campos son obligatorios","Error al Guardar Requerimientos y Compras",this.option_toast);
 						return false;
-					}else if( data_req[0].requerimientos.model_nom == '' ){
+					}else if( !this.comprobarRequerimientos(arreglo_requerimientos) ){
+						toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Requerimientos",this.option_toast);
+						return false;
+					}else if( !this.comprobarCompras(arreglo_compras) ){
+							toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Compras Relacionadas",this.option_toast);
+							return false;
+					}else{
+						toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
+						console.log(data_req);
+						console.log(data_compra);
+					}
+
+					},
+					comprobarRequerimientos: function (arreglo) {
+						for (let f in arreglo) {
+				              let idx = Number(f)
+				              let p = arreglo[idx]
+											if (p.model_nom =="" || p.model_horas== " ") {
+												return false;
+												break;
+											}
+				        }
+									return true;
+					},
+					comprobarCompras: function (arreglo) {
+						for (let f in arreglo) {
+				              let idx = Number(f)
+				              let p = arreglo[idx]
+											if (p.model_desc =="" || p.model_provedor== "" || p.model_valor== "" ) {
+												return false;
+												break;
+											}
+				        }
+									return true;
+					}
+				/*	else if( arreglo_requerimientos.model_nom == '' && arreglo_requerimientos.model_horas == 0){
 						console.log("entro al 2");
 						toastr.error("Todos los campos son obligatorios","Error al Guardar Requerimientos y Compras",this.option_toast);
 						return false;
 
-					} 
+					}*/
 
-					
+
 
 					/*if (arreglo_requerimientos.length > 0 && arreglo_compras.length > 0) {
 
@@ -159,15 +193,15 @@
 						console.log("ERROR");
 						toastr.error("Todos los campos son obligatorios","Error al Guardar",this.option_toast);
 					}*/
-					
 
-					/*			 
+
+					/*
 					//console.log(id);
 					this.$emit('validar_requerimiento',id);
 					var nombre= 'cosa'+id;
-					this.nombre=true;*/	
+					this.nombre=true;*/
 
-				}
+
 			}
 		}
 

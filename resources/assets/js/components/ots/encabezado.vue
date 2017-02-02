@@ -45,7 +45,7 @@
 					<div class="form-group required">
 						<label for="horas_totales" class="col-sm-4 ">Horas Totales  <sup>*</sup></label>
 						<div class="col-sm-8" v-bind:class="{ 'has-error': errors.has('horas_totales') }">
-							<input type="text" class="form-control" required="required" name="horas_totales"  v-validate data-vv-rules="required|decimal:1|max:10|min:1" data-vv-as="Horas Totales" v-model="horas_totales"  id="horas_totales" placeholder="Numero de Totales">
+							<input type="text" class="form-control" @input="llenar_horas_totales" required="required" name="horas_totales"  v-validate data-vv-rules="required|decimal:1|max:10|min:1" data-vv-as="Horas Totales" v-model="horas_totales"  id="horas_totales" placeholder="Numero de Totales">
 							<span  class="help-block" v-show="errors.has('horas_totales')">{{ errors.first('horas_totales') }}</span>
 						</div>
 					</div>
@@ -85,14 +85,15 @@
 								<datepicker language="es"  id="fecha_fin" required="required"  v-validate data-vv-rules="required" data-vv-as="Fecha de finalización" placeholder="Fecha fin"  :disabled="state.disabled" v-model="fecha_fin" class="form-control"  name="fecha_fin" format="dd-MM-yyyy"></datepicker>
 							</div>
 							<span  class="help-block" v-show="errors.has('fecha_fin')">{{ errors.first('fecha_fin') }}</span>
-						</div>					
+						</div>
 					</div>
 				</div>
 				<div class="col-md-6 col-xs-5">
-					<div class="form-group required">
-						<label for="horas_disponibles" class="col-sm-4 ">Horas Disponibles <sup>*</sup></label>
+					<div class="form-group required" v-bind:class="{ 'has-error': h_pasadas }">
+						<label for="horas_disponibles" class="col-sm-4 " >Horas Disponibles <sup>*</sup></label>
 						<div class="col-sm-6">
 							<input type="text" class="form-control" required="required"  id="horas_disponibles" :value="h_Disponibles" disabled placeholder="Numero de Horas Disponibles">
+							  <span  class="help-block" v-show="h_pasadas">Se ha pasado del numero de horas permitidas para el Area</span>
 						</div>
 					</div>
 				</div>
@@ -100,7 +101,7 @@
 			<div style="height:15px"></div>
 			<div class="row ">
 				<div class=" pull-right  col-md-3">
-					<button type="submit" @click="validateBeforeSubmit" class="btn btn-block btn-success col-sm-3">Guardar Avance</button> 
+					<button type="submit" @click="validateBeforeSubmit" class="btn btn-block btn-success col-sm-3">Guardar Avance</button>
 				</div>
 			</div>
 		</div>
@@ -121,7 +122,7 @@
        //Realizando los Use
 
        //Uso LocalStorage para gardar la data.
-       Vue.use(VueLocalStorage);		
+       Vue.use(VueLocalStorage);
 		// Merge the locales.
 		Validator.updateDictionary({es: { messages }});
 		// Install the plugin and set the locale.
@@ -140,7 +141,7 @@
 					type: Object,
 				},
 				num_ot: {
-					type: Number
+					type: String
 				},
 				h_Disponibles: {
 					type: Number
@@ -153,6 +154,10 @@
 				},
 				horas_totales:{
 					type: String
+				}
+				,
+				h_Disponibles:{
+					type: Number
 				}
 			},
 			data () {
@@ -167,6 +172,7 @@
 					valor_total:'',
 					horas_totales:'',
 					fecha_fin:'',
+					h_pasadas:false,
 					message :'',
 					option_toast:{
 						timeOut: 5000,
@@ -183,24 +189,37 @@
 								}
 							}
 						},
+					/*	watch:{
+							 h_pasadas:function(){
+								 this.h_pasadas= (this.$localStorage.get('h_Disponibles') > 20)?true:false;
+							 console.log(this.h_pasadas);
+							 }
+						},*/
 						computed:{
+							h_Disponibles:function(){
+							//	this.horas_totales - this.$localStorage.get('htotales');
+							this.realizarCalculoHoras();
+								return this.$localStorage.get('h_Disponibles');
+							},
+
+							/*
 				h_Disponibles:function(){
+				//	this.horas_totales - this.$localStorage.get('htotales');
+					var total_areas  =this.$localStorage.get('listado_areas');
+					var size = Object.keys(total_areas).length;
+					var hora_a=0;
+					var total_a_restar=0;
 
-					this.horas_totales - this.$localStorage.get('htotales');
-
-					return this.$localStorage.get('num_ot')
-				},/*
-				name_proyect:function(){
-					return this.$localStorage.get('name_proyect')
-				},
-				valor_total:function(){
-					return this.$localStorage.get('valor_total')
-				},
-				horas_totales:function(){
-					return this.$localStorage.get('horas_totales')
-				},
-				fecha_fin:function(){
-					return this.$localStorage.get('fecha_fin')
+					for (let f in total_areas) {
+										let idx = Number(f)
+										let p = total_areas[idx]
+							hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
+							  if (hora_a !=null && hora_a[0].horas !="") {
+										total_a_restar +=parseInt(hora_a[0].horas);
+							  }
+							}
+							console.log(total_a_restar);
+					return this.horas_totales- total_a_restar
 				},*/
 				date: function () {
 					/*
@@ -211,31 +230,53 @@
 					var yyyy = today.getFullYear();
 					if(dd<10){
 					    dd='0'+dd;
-					} 
+					}
 					if(mm<10){
 					    mm='0'+mm;
-					} 
+					}
 					var today = dd+'-'+mm+'-'+yyyy;*/
 					return new Date()
 				}
 			},
+			created: function(){
+				this.fetchTips();
+			},
 			methods:{
                 fetchTips: function(){
-				this.num_ot=this.$localStorage.get('num_ot');
-				this.name_proyect= this.$localStorage.get('name_proyect');
+
+				this.name_proyect= this.$localStorage.get('num_ot');
 				this.valor_total	= this.$localStorage.get('valor_total');
 				this.horas_totales= this.$localStorage.get('horas_totales');
+				this.num_ot=this.$localStorage.get('num_ot');
 				this.fecha_fin= this.$localStorage.get('fecha_fin');
 
 			},
+			llenar_horas_totales:function () {
+					 this.$localStorage.set('horas_totales',this.horas_totales);
+			},
+			realizarCalculoHoras:function () {
+				var total_areas  =this.$localStorage.get('listado_areas');
+				var size = Object.keys(total_areas).length;
+				var hora_a=0;
+				var total_a_restar=0;
 
-					/*let lsValue = this.$localStorage.get('someObject')
-						 this.$localStorage.set('someBoolean', true)
-						 this.$localStorage.remove('stringOne')*/
+				for (let f in total_areas) {
+									let idx = Number(f)
+									let p = total_areas[idx]
+						hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
+							if (hora_a !=null && hora_a[0].horas !="") {
+									total_a_restar +=parseInt(hora_a[0].horas);
+							}
+						}
+					var total=	this.horas_totales -total_a_restar;
+					this.h_pasadas= (this.$localStorage.get('h_Disponibles') > total)?true:false;
+				console.log(this.h_pasadas);
+				this.$localStorage.set('h_Disponibles',total);
+			},
 						 validateBeforeSubmit(e) {
-
 						 	this.$validator.validateAll();
 						 	if (!this.errors.any()) {
+								console.log("entreee");
 						 		if(this.$localStorage.get('clientes') == null){
 						 			toastr.error('No se olvide de elegir al cliente',"Error al guardar los datos",this.option_toast);
 						 		}else if(this.$localStorage.get('estado_ot') == null){
@@ -252,7 +293,7 @@
 						 		}
 			            //this.submitForm()
 			        }
-			        
+
 			    },
 			    submitForm(){
 			    	this.formSubmitted = true

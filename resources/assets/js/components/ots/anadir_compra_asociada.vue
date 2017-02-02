@@ -19,7 +19,7 @@
              </div>
               <div class="form-group  col-md-2"  v-bind:class="{ 'has-error': errors.has('valor_compra'+index) }">
                 <label class="sr-only" for="no_horas_req">Valor</label>
-                <input type="text" :name="'valor_compra'+index"  @mouseover="guardarDatos" v-validate data-vv-rules="required" data-vv-as="Valor" v-model="ed.model_valor" class="form-control" :id="'valor_compra'+index"  placeholder="Valor">
+                <input type="text" :name="'valor_compra'+index"  @mouseover="guardarDatos" v-validate data-vv-rules="required|numeric" data-vv-as="Valor" v-model="ed.model_valor" class="form-control" :id="'valor_compra'+index"  placeholder="Valor">
                 <span  class="help-block" v-show="errors.has('valor_compra'+index)">{{ errors.first('valor_compra'+index) }}</span>
 
              </div>
@@ -57,8 +57,12 @@ import VueLocalStorage from 'vue-localstorage'
           compra_asociada: [
               {  model_desc:'', model_provedor:'',model_valor:''}
           ],
+          tipo_compra:[]
 
         }
+      },
+      created: function(){
+          this.llenarCampos();
       },
       methods: {
           addRequerimiento: function(e) {
@@ -68,15 +72,26 @@ import VueLocalStorage from 'vue-localstorage'
               this.compra_asociada.push(Vue.util.extend({}, this.compra_asociada));
             }
           },
+          llenarCampos:function () {
+            var data_req= JSON.parse(this.$localStorage.get('datos_compra_'+this.id_area));
+              if (data_req != null) {
+            var arreglo_requerimientos = data_req[0].compras;
+               this.compra_asociada= arreglo_requerimientos;
+             }
+          },
           deleteRequerimiento: function(e) {
               e.preventDefault();
               var index = this.compra_asociada.indexOf(Vue.util.extend({}, this.compra_asociada));
                 this.compra_asociada.splice(index, 1);
-
           },
           guardarDatos: function(){
-            var datos=[{  
-                compras:this.compra_asociada, 
+            var ingreso= this.compra_asociada;
+            var index = Object.keys(ingreso).length;
+            //console.log(ingreso[index-1]);
+            ingreso[index-1].tipo_compra=this.$localStorage.get('tipo_compra');
+            console.log(ingreso);
+            var datos=[{
+                compras:ingreso
               }];
              this.$localStorage.set('datos_compra_'+this.id_area,JSON.stringify(datos) );
           },

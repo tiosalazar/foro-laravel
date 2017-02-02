@@ -2,13 +2,13 @@
   <div class="col-md-12">
               <div class="row">
                       <div class="col-md-4">
-                        <h2>Requerimiento</h2>{{ cosa2}}
+                        <h2>Requerimiento</h2>
                         </div>
                         <div class="col-md-8">
                         <div class="form-group col-md-6" v-bind:class="{ 'has-error': errors.has('horas_area'+id_area) }">
                           <label for="horas_area" class="col-sm-6 "><h5>Horas Area {{ area }}</h5> </label>
                           <div class="col-sm-6">
-                                <input type="text" :name="'horas_area'+id_area" @mouseover="guardarDatos"  v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control" :id="'horas_area'+id_area" v-model="nhoras" :placeholder="'Numero de Horas '+area">
+                                <input type="text" :name="'horas_area'+id_area" @mouseout="guardarDatos"  v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control" :id="'horas_area'+id_area" v-model="nhoras" :placeholder="'Numero de Horas '+area">
                                   <span  class="help-block" v-show="errors.has('horas_area'+id_area)">{{ errors.first('horas_area'+id_area) }}</span>
                           </div>
                       </div>
@@ -26,12 +26,12 @@
       <section class="Form__section" v-for="(ed,index) in requerimiento">
               <div class="form-group col-md-8" v-bind:class="{ 'has-error': errors.has('nombre_requerimiento'+index) }">
                 <label class="sr-only" for="nombre_requerimiento">Nombre Requerimiento</label>
-                <input type="text" @mouseover="guardarDatos" :name="'nombre_requerimiento'+index" v-validate data-vv-rules="required|min:4" data-vv-as="Nombre Requerimiento" v-model="ed.model_nom" class="form-control" :id="'nombre_requerimiento'+index" placeholder="Nombre Requerimiento">
+                <input type="text" @mouseout="guardarDatos" :name="'nombre_requerimiento'+index" v-validate data-vv-rules="required|min:4" data-vv-as="Nombre Requerimiento" v-model="ed.model_nom" class="form-control" :id="'nombre_requerimiento'+index" placeholder="Nombre Requerimiento">
                  <span  class="help-block" v-show="errors.has('nombre_requerimiento'+index)">{{ errors.first('nombre_requerimiento'+index) }}</span>
               </div>
               <div class="form-group  col-md-2"  v-bind:class="{ 'has-error': errors.has('no_horas_req'+index) }">
                 <label class="sr-only" for="no_horas_req">N° Horas</label>
-                <input type="text" @input="realizarCalculo" @mouseover="guardarDatos" :name="'no_horas_req'+index" v-validate data-vv-rules="required|numeric" data-vv-as="No horas"  v-model="ed.model_horas" class="form-control" :id="'no_horas_req'+index" placeholder="No. Horas">
+                <input type="text" @input="realizarCalculo" @mouseout="guardarDatos" :name="'no_horas_req'+index" v-validate data-vv-rules="required|numeric" data-vv-as="No horas"  v-model="ed.model_horas" class="form-control" :id="'no_horas_req'+index" placeholder="No. Horas">
                 <span  class="help-block" v-show="errors.has('no_horas_req'+index)">{{ errors.first('no_horas_req'+index) }}</span>
              </div>
              <div class="form-group  col-md-2">
@@ -88,18 +88,17 @@ import VueLocalStorage from 'vue-localstorage'
           hTarea:'',
           v_resta:'',
           h_pasadas:false,
-          value:{},
-          cosa2:''
+          value:{}
         }
       },
       computed:{
 
-         
+
       },
       watch: {
         nhoras: function (val) {
           this.realizarCalculo();
-          
+          this.realizarCalculoHoras();
           }
 
       },
@@ -108,6 +107,7 @@ import VueLocalStorage from 'vue-localstorage'
             console.log(b);
             console.log("hola");
           });  */
+          this.llenarCampos();
       },
       methods: {
           vueSet (obj, path, val) {
@@ -122,9 +122,25 @@ import VueLocalStorage from 'vue-localstorage'
                  value = value[p]
                }
           },
+          llenarCampos:function () {
+            var data_req= JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.id_area));
+            if (data_req != null) {
+              var arreglo_requerimientos = data_req[0].requerimientos;
+              this.requerimiento= arreglo_requerimientos;
+              console.log(this.requerimiento);
+              this.nhoras	= this.$localStorage.get('horas_totales');
+            }
+
+          },
+          realizarCalculoHoras:function(){
+          //var horas_disponibles= this.$localStorage.get('h_Disponibles');
+                var horas_disponibles= this.$localStorage.get('horas_totales')
+              var total= horas_disponibles-this.nhoras;
+            this.$localStorage.set('h_Disponibles',total);
+          },
           guardarDatos: function(){
-            var datos=[{  
-                requerimientos:this.requerimiento, 
+            var datos=[{
+                requerimientos:this.requerimiento,
                 horas:this.nhoras
               }];
              this.$localStorage.set('datos_requerimiento_'+this.id_area,JSON.stringify(datos) );
