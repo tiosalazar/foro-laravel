@@ -7796,6 +7796,39 @@ sub, sup {
   margin: 0 !important;
 }
 
+.skin-blue .main-header .navbar {
+  background-color: #004EA4;
+}
+
+.skin-blue .main-header .logo {
+  background-color: #003A81;
+}
+
+.skin-blue .main-sidebar {
+  background-color: #002E60;
+  color: white;
+}
+
+.skin-blue .main-sidebar .sidebar-menu li:hover > a {
+  background-color: #002143;
+  color: white;
+}
+
+.skin-blue .main-sidebar .sidebar-menu li:active > a {
+  background-color: #002143;
+  color: white;
+}
+
+.skin-blue .main-footer {
+  background-color: #15BAEE;
+  color: white;
+  font-weight: normal;
+}
+
+.skin-blue .main-footer a {
+  color: white;
+}
+
 .boton_hidden {
   display: none;
 }

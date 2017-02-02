@@ -50,15 +50,22 @@
                         <h4 class="modal-title">Edición de Área</h4>
                       </div>
                       <div class="modal-body">
-                        <label for="id_area_edit">ID</label>
-                        <input type="text" class="form-control" id="id_area_edit" v-model="areaedit.id_area_edit" disabled>
-
-                        <label for="nombre_area_edit">Editar nombre del área</label>
-                        <input type="text" class="form-control" id="nombre_area_edit" v-model="areaedit.nombre" placeholder="Editar nombre">
-
-                        <label for="area_ext_edit">Editar extención</label>
-                        <input type="text" class="form-control" id="area_ext_edit" v-model="areaedit.extencion" placeholder="Editar extención">
+                       
+                          <label for="id_area_edit">ID</label>
+                          <input type="text" class="form-control" id="id_area_edit" v-model="areaedit.id_area_edit" disabled>
+                       
                         
+                        <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]">
+                          <label for="nombre_area_edit">Editar nombre del área</label>
+                          <input type="text" class="form-control" id="nombre_area_edit" name="nombre" v-model="areaedit.nombre" placeholder="Editar nombre" v-validate data-vv-rules="required|alpha_num|max:30">
+                          <span  class="help-block error_absolute" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
+                        </div>
+                        
+                       <div class="form-group" v-bind:class="[errors_return.extencion_tel,{ 'has-error': errors.has('extencion_tel') }]">
+                        <label for="area_ext_edit">Editar extención</label>
+                        <input type="text" class="form-control" id="area_ext_edit" name="extencion_tel" v-model="areaedit.extencion" placeholder="Editar extención" v-validate data-vv-rules="required|numeric|min:2">
+                       </div>
+
                          <label for="estado_area" >Estado</label>
                         <select name="" id="estado_area" v-model="areaedit.estado" class="form-control">
                           <option value="1">Activo</option>
@@ -68,7 +75,7 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary " id="save_edit_rol" @click="updatearea" data-dismiss="modal">Guardar</button>
+                        <button type="button" class="btn btn-primary " id="save_edit_rol" @click="updatearea">Guardar</button>
                       </div>
                     </div>
                     <!-- /.modal-content -->
@@ -83,6 +90,10 @@
 
 <script>
 
+import VeeValidate, { Validator } from 'vee-validate';
+
+    Vue.use(VeeValidate);
+
   module.exports={
     props:['id_parent_area'],
      created: function(){
@@ -93,6 +104,10 @@
         return{
           list_areas:[],
           areaedit:[],
+           errors_return:{
+            'nombre':'',
+            'extencion_tel':''
+          },
            option_toast:{
               timeOut: 5000,
               "positionClass": "toast-top-center",
@@ -123,6 +138,11 @@
           }, 
            updatearea:function(){
 
+            this.$validator.validateAll();
+              if (this.errors.any()) {
+                return false
+              }  
+
             var idmodal=this.areaedit.id_area_edit;
             var nombremodal=this.areaedit.nombre;
             var extmodal=this.areaedit.extencion;
@@ -151,6 +171,7 @@
                   
                     if (respuesta.body.error == 0) {
                       toastr.success(respuesta.body.msg,'',this.option_toast);
+                        $('#myModal_area').modal().hide();
                     }else{
                       toastr.error(respuesta.body.msg,'',this.option_toast);
                     }

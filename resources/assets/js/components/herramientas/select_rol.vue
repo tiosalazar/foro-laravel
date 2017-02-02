@@ -39,7 +39,7 @@
       created: function(){
           this.fetchTips();
         console.log(this.refresh);
-        this.value={id: this.refresh.id, nombre: this.refresh.roles_id};
+        this.value={id: this.refresh.id, nombre: this.refresh.id_rol};
         this.id_rol=this.refresh.id;
        
       },

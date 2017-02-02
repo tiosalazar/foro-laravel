@@ -39,7 +39,7 @@
       },
       created: function(){
         this.fetchTips();
-        this.value2={id: this.refresha.id, nombre: this.refresha.areas_id};
+        this.value2={id: this.refresha.id, nombre: this.refresha.id_area};
         this.id_rol=this.refresha.id;
       },
       watch : {

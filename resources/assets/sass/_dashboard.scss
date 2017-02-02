@@ -1,0 +1,40 @@
+.skin-blue{
+	.main-header{
+		.navbar{
+			background-color: #004EA4;
+		}
+		.logo{
+			background-color: #003A81;
+		}
+	}
+
+
+	.main-sidebar{
+		background-color: #002E60;
+		color: white;
+		.sidebar-menu {
+			li{
+				&:hover > a{
+				background-color: #002143;
+				color: white;
+				}
+				&:active > a{
+					background-color: #002143;
+					color: white;
+				}
+
+			}
+			
+		}
+		
+	}
+	.main-footer{
+		background-color: #15BAEE;
+		color: white;
+		font-weight: normal;
+		a{
+			color: white;	
+		}
+	}
+
+}  

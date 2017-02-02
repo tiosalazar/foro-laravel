@@ -4,7 +4,7 @@
               <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]" >
                 <label>Nombre</label>
                 <input type="text" v-model="cliente.nombre" v-validate data-vv-rules="required|alpha_num|min:3" name="nombre" id="nombre" class="form-control" required="required">
-                <span  class="has-error" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
+                <span  class="help-block" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
               </div>
               <!-- /.form-group -->
               <div class="form-group" v-bind:class="[errors_return.nombre_contacto,{ 'has-error': errors.has('nombre_contacto') }]">
