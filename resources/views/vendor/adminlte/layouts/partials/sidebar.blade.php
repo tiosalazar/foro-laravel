@@ -34,7 +34,7 @@
         <ul class="sidebar-menu">
             {{-- <li class="header">Menú</li> --}}
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="{{ url('home') }}"><i class='fa fa-home'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>
+            <li class="active"><a href="{{ url('home') }}"><i class='fa fa-home'></i> <span>{{ trans('texto_menu.perfil') }}</span></a></li>
             <li class="treeview">
                 <a href="#"><i class='fa fa-table'></i> <span>{{ trans('texto_menu.foro') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">

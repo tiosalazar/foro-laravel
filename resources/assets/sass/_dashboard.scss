@@ -1,3 +1,7 @@
+.iconos-foro{
+	font-family: icon-foro;
+}
+
 .skin-blue{
 	.main-header{
 		.navbar{
@@ -6,12 +10,23 @@
 		.logo{
 			background-color: #003A81;
 		}
+		.logo-lg{
+			padding-right: 16%;
+			img{
+				width: 107px;
+
+			}
+		}
 	}
 
 
 	.main-sidebar{
 		background-color: #002E60;
 		color: white;
+		.user-panel{
+			margin-top: 15%;
+			margin-bottom: 10%;
+		}
 		.sidebar-menu {
 			li{
 				&:hover > a{
