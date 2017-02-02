@@ -33,11 +33,15 @@
             value:{}
           }
       },
-      computed:{
-        
+      computed: function(){
+       
       },
       created: function(){
           this.fetchTips();
+        console.log(this.refresh);
+        this.value={id: this.refresh.id, nombre: this.refresh.roles_id};
+        this.id_rol=this.refresh.id;
+       
       },
       watch : {
         refresh : function (value) {
@@ -48,14 +52,15 @@
           fetchTips: function(){
                this.$http.get('/api/v1/roles/')
              .then(function(respuesta){
-                     this.roles=respuesta.body;
+                 this.roles=respuesta.body;
              }.bind(this));
           },
-         
+
          updateSelected (newSelected) {
             if (newSelected != null && newSelected != undefined) {
              this.id_rol = newSelected.id;
              this.$parent.$emit('rol_option',newSelected);
+             console.log(newSelected);
 
            }else {
              this.id_rol = 0;

@@ -145,7 +145,7 @@ class RolController extends Controller
                        $respuesta["request"]=$request->all();
                        
                    }
-        return response()->json($respuesta,Response::HTTP_BAD_REQUEST);
+        return response()->json($respuesta);
     }
 
     /**

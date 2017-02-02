@@ -21,7 +21,7 @@
   import Multiselect from 'vue-multiselect'
     module.exports= {
        components: { Multiselect},
-          props: ['refresh'],
+          props: ['refresha'],
       data () {
           return {
             areas:[],
@@ -38,10 +38,12 @@
         },
       },
       created: function(){
-          this.fetchTips();
+        this.fetchTips();
+        this.value2={id: this.refresha.id, nombre: this.refresha.areas_id};
+        this.id_rol=this.refresha.id;
       },
       watch : {
-        refresh : function (value) {
+        refresha : function (value) {
            this.value2=0;
         }
       },
@@ -54,6 +56,7 @@
           },
          updateSelected (newSelected) {
             if (newSelected != null && newSelected != undefined) {
+
              this.id_area = newSelected.id;
               this.$parent.$emit('area_option',newSelected);
            }else {

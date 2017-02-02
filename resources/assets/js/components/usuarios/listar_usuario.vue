@@ -52,20 +52,14 @@
 
     	},  
 		methods:{
-			 compile: function(content, refs){ 
-		        var tmp = Vue.extend({
-		          template: content
-		        }); 
-		        new tmp().$mount(this.$refs[refs]);
-		      },
-			
+			 			
 			list_usuarios_api: function(){
 
                  setTimeout(function(){
                  	
                  	$('#tabla_usuarios').DataTable({
                  	   processing: true,
-				       serverSide: true,
+				       serverSide: false,
 				       ajax: "/api/v1/usuarios",
 						   columns: [
 						   	   

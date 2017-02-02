@@ -9,8 +9,8 @@
 	
 	 <div class="container">
         <div class="row">
-            <div class="col-md-12 ">  
-             <form_usuarios titulor="Editar Usuario" comando="2"></form_usuarios>
+            <div class="col-md-12 "> 
+             <form_usuarios titulor="Editar Usuario" comando="2" edituserdata="{{$usuarioslist}}"></form_usuarios>
             </div>
         </div>
     </div>

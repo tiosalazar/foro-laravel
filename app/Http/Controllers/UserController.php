@@ -122,9 +122,11 @@ class UserController extends Controller
      */
     public function editar_usuario($id)
     {
-        $user = User::findOrFail($id);
+         // Retorno consulta de join con la tabla areeas y roles para traer los nombres
+         $user = User::
+            select('users.id','users.nombre','users.apellido','users.cargo','users.telefono','users.email','users.horas_disponible','roles.nombre as roles_id','areas.nombre as areas_id','users.estado','areas.id as id_area','roles.id as id_rol')->join('roles','roles.id','=','users.roles_id')->join('areas','areas.id','=','users.areas_id')->findOrFail($id);
          //return response()->json($user);
-         return view('admin.equipo.editar_usuario', array('usuarios' =>$user));
+         return view('admin.equipo.editar_usuario')->with('usuarioslist',$user);
     }
 
 

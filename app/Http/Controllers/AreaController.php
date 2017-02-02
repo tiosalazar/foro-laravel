@@ -134,7 +134,7 @@ class AreaController extends Controller
                        $respuesta["msg"]='Error Editando el área';
                        $respuesta["request"]=$request->all();
                    }
-        return response()->json($respuesta,Response::HTTP_BAD_REQUEST);
+        return response()->json($respuesta);
     }
 
     /**

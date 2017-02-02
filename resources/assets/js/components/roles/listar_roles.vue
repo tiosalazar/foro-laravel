@@ -129,8 +129,9 @@ import VeeValidate, { Validator } from 'vee-validate';
             var nombremodal=this.nombre_rol_edit.nombre;
             
           
-            this.$http.put('api/v1/roles/'+idmodal+'',{nombre: nombremodal})
+            this.$http.put('/api/v1/roles/'+idmodal+'',{nombre: nombremodal})
             .then(function(respuesta){
+             
                 var that = this;
                 that.message ='';
                if (respuesta.status != '200') {

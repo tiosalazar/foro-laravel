@@ -25,6 +25,7 @@
                  <div class="form-group" v-bind:class="[errors_return.password,{ 'has-error': errors.has('password') }]">
                     <label for="contrasena_usuario">Contraseña</label>
                     <input type="text" class="form-control" id="contrasena_usuario" name="password" v-model="usuarios.password"  placeholder="Contraseña" v-validate data-vv-rules="required">
+                    
                      <span  class="has-error error_absolute" v-show="errors.has('password')">{{ errors.first('password') }}</span>
                 </div>
                  <div class="form-group" v-bind:class="[errors_return.cargo,{ 'has-error': errors.has('cargo') }]">
@@ -49,7 +50,7 @@
                  </div>
                   <div class="form-group">
                     <label for="area_usuario">Área</label>
-                    <select_area  :refresh="dato_refres"></select_area>
+                    <select_area  :refresha="dato_refres2"></select_area>
                  </div>
             </form> 
         </div>
@@ -75,15 +76,17 @@
 
     module.exports={
       components: {VeeValidate,Validator},
-      props: ['titulor','comando'],
+      props: ['titulor','comando','edituserdata'],
       data(){
         return{
           usuarios:{},
            message :'',
            titulo:'',
+           validacioncontrasena:'required',
            valorboton:'',
            valorboton2:'',
            dato_refres:'',
+           dato_refres2:'',
            option_toast:{
             timeOut: 5000,
             "positionClass": "toast-top-center",
@@ -108,13 +111,25 @@
           this.$on('area_option', function(b) {
             this.usuarios.areas_id=b.id;
           });
-          console.log(this.comando);
+          
+          //Valido la opcion de editar o guardar para mostrar el boto correspondiente con su función
           if (this.comando==1) {
             this.valorboton2=true;
           }else if(this.comando==2){
             
              this.valorboton=true;
           }
+          //Valido que recibo los datos para editar, si es el caso lleno el componente del formulario
+          
+          if (this.edituserdata!=undefined) {
+            console.log(this.edituserdata);
+            var obj = JSON.parse(this.edituserdata);
+            
+             this.usuarios=obj;
+             this.dato_refres=obj;
+              this.dato_refres2=obj;
+            }
+          
           
           this.titulo=this.titulor;   
       },
@@ -140,6 +155,7 @@
                     toastr.success(response.body.msg,'',this.option_toast);
                    this.usuarios={};
                     this.dato_refres=0;
+                    this.dato_refres2=0;
                 }
                 },(response) => {
                    var that = this;
@@ -159,6 +175,17 @@
         },
         updateaddUser:function(){
           console.log('Actualizar');
+           this.$validator.validateAll();
+            if (this.errors.any()) {
+              return false
+            } 
+            console.log(this.usuarios);
+            var iduser=this.usuarios.id;
+            // var datosuserupdate={nombre:this.usuarios.nombre, apellido:this.usuarios.apellido,cargo:this.usuarios.cargo, telefono:this.usuarios.telefono, email:this.usuarios.email,estado:this.usuarios.estado,horas_disponible:this.usuarios.horas_disponible,estado:this.usuarios.estado,roles_id:this.usuarios.roles_id,areas_id:this.usuarios.areas_id}
+
+            this.$http.put('api/v1/usuarios/'+iduser+'', this.usuarios).then(function(respuesta){
+              console.log(respuesta);
+            });
         }
        }
        
