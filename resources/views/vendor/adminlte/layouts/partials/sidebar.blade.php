@@ -59,20 +59,27 @@
 
              
             </li>
+            @can('ver_clientes')
             <li class="treeview">
                 <a href="#"><i class='fa fa-address-card'></i> <span>Clientes</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-
+                    @can('crear_clientes')
                     <li><a href="{{ url('crear_cliente') }}">Crear cliente</a></li>
+                    @endcan
                     <li><a href="{{ url('listar_clientes') }}">Listar clientes</a></li>
                 </ul>
             </li>
+            @endcan
+            @can('ver_ots')
             <li class="treeview">
                 <a href="#"><i class='fa fa-folder-open'></i> <span>{{ trans('texto_menu.ots') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
+                   @can('crear_ots')
                     <li><a href="{{ url('crear_ot') }}">{{  trans('texto_menu.crear_ot') }}</a></li>
+                    @endcan
                 </ul>
             </li>
+            @endcan
         </ul><!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->

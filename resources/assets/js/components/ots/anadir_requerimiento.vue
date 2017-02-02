@@ -8,7 +8,7 @@
                         <div class="form-group col-md-6" v-bind:class="{ 'has-error': errors.has('horas_area'+id_area) }">
                           <label for="horas_area" class="col-sm-6 "><h5>Horas Area {{ area }}</h5> </label>
                           <div class="col-sm-6">
-                                <input type="text" :name="'horas_area'+id_area" @mouseout="guardarDatos"  v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control" :id="'horas_area'+id_area" v-model="nhoras" :placeholder="'Numero de Horas '+area">
+                                <input type="text" @input="emitirData"  :name="'horas_area'+id_area" @mouseout="guardarDatos"  v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control" :id="'horas_area'+id_area" v-model="nhoras" :placeholder="'Numero de Horas '+area">
                                   <span  class="help-block" v-show="errors.has('horas_area'+id_area)">{{ errors.first('horas_area'+id_area) }}</span>
                           </div>
                       </div>
@@ -121,6 +121,10 @@ import VueLocalStorage from 'vue-localstorage'
                  else if (!value[p]) Vue.set(value, p, _.isNumber(p) ? [] : {})
                  value = value[p]
                }
+          },
+          emitirData:function(){
+               this.$parent.$emit('horas_area',this.nhoras);
+               console.log(this.horas_totales);
           },
           llenarCampos:function () {
             var data_req= JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.id_area));

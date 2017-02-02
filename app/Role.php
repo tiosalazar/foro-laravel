@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Role extends Model
+//use Illuminate\Database\Eloquent\Model;
+use Zizaco\Entrust\EntrustRole;
+class Role extends EntrustRole
 {
   /**
    * The attributes that are mass assignable.
@@ -12,12 +12,13 @@ class Role extends Model
    * @var array
    */
   protected $fillable = [
-      'nombre',
+      'name','display_name','description',
   ];
 
   /**
   * Obtiene el Usuario que posee el Rol
  */
+  /*
   public function User()
   {
       return $this->hasMany('App\User','id');
