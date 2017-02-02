@@ -51,7 +51,7 @@
                         <input type="text" class="form-control" id="nombre_rol_edit" name="nombre"v-model="nombre_rol_edit.nombre" placeholder="Nuevo nombre" v-validate data-vv-rules="required|alpha_num|min:5">
                         </div>
 
-                        <span  class="has-error" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span> 
+                        <span  class="help-block" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span> 
                       </div>
                        
                       <div class="modal-footer">

@@ -1,6 +1,12 @@
 @charset "UTF-8";
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
 @import url(https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700);
+@font-face {
+  font-family: 'iconforo';
+  src: url("/fonts/icon-foro.ttf");
+  /* IE9 Compat Modes */
+}
+
 /*!
   Ionicons, v3.0.0-alpha.3
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/
@@ -7794,6 +7800,56 @@ sub, sup {
 .nopadding {
   padding: 0 !important;
   margin: 0 !important;
+}
+
+.iconos-foro {
+  font-family: icon-foro;
+}
+
+.skin-blue .main-header .navbar {
+  background-color: #004EA4;
+}
+
+.skin-blue .main-header .logo {
+  background-color: #003A81;
+}
+
+.skin-blue .main-header .logo-lg {
+  padding-right: 16%;
+}
+
+.skin-blue .main-header .logo-lg img {
+  width: 107px;
+}
+
+.skin-blue .main-sidebar {
+  background-color: #002E60;
+  color: white;
+}
+
+.skin-blue .main-sidebar .user-panel {
+  margin-top: 15%;
+  margin-bottom: 10%;
+}
+
+.skin-blue .main-sidebar .sidebar-menu li:hover > a {
+  background-color: #002143;
+  color: white;
+}
+
+.skin-blue .main-sidebar .sidebar-menu li:active > a {
+  background-color: #002143;
+  color: white;
+}
+
+.skin-blue .main-footer {
+  background-color: #15BAEE;
+  color: white;
+  font-weight: normal;
+}
+
+.skin-blue .main-footer a {
+  color: white;
 }
 
 .boton_hidden {

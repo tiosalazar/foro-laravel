@@ -124,7 +124,7 @@ class UserController extends Controller
     {
          // Retorno consulta de join con la tabla areeas y roles para traer los nombres
          $user = User::
-            select('users.id','users.nombre','users.apellido','users.cargo','users.telefono','users.email','users.horas_disponible','roles.nombre as roles_id','areas.nombre as areas_id','users.estado','areas.id as id_area','roles.id as id_rol')->join('roles','roles.id','=','users.roles_id')->join('areas','areas.id','=','users.areas_id')->findOrFail($id);
+            select('users.id','users.nombre','users.apellido','users.cargo','users.telefono','users.email','users.horas_disponible','roles.nombre as id_rol','areas.nombre as id_area','users.estado','areas.id as areas_id','roles.id as roles_id')->join('roles','roles.id','=','users.roles_id')->join('areas','areas.id','=','users.areas_id')->findOrFail($id);
          //return response()->json($user);
          return view('admin.equipo.editar_usuario')->with('usuarioslist',$user);
     }
@@ -151,12 +151,17 @@ class UserController extends Controller
                                return response()->json($vl->errors());        
                             }else
                                 {
+                               
                                 //Busca el usuario en la BD
-                                 $user=  User::findOrFail($id);
+                                $user=  User::findOrFail($id);
+                                
                                 // Si la data es valida se la asignamos al usuario
                                 $user->fill($request->all());
                                 // Guardamos el usuario
+                                $respuesta["obj"]=$request;
                                 $user->update();
+                                $respuesta["msg"]='Editado con exito';
+                               
                                $respuesta["error"]=0;
                                $respuesta["mensaje"]="OK";                        
                              }
@@ -224,7 +229,7 @@ class UserController extends Controller
                 'nombre' => 'required|min:4|max:45',
                 'apellido' => 'required|min:4|max:45',
                 'cargo' => 'required|min:4|max:45',
-                'email' => 'required|email|max:155|unique:users,email',
+                'email' => 'required|email|max:155',
                 'roles_id' => 'required',
                 'areas_id' => 'required'
         ]);

@@ -16,13 +16,13 @@
                 <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]">
                     <label for="nombre_area">Nombre</label>
                     <input type="text" v-model="areaarray.nombre" class="form-control" id="nombre_area" name="nombre" placeholder="Nombre area" v-validate data-vv-rules="required|alpha_num|max:30">
-                    <span  class="has-error error_absolute" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
+                    <span  class="help-block error_absolute" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
                 </div>
                
                  <div class="form-group" v-bind:class="[errors_return.extencion_tel,{ 'has-error': errors.has('extencion_tel') }]">
                     <label for="nombre_ext">Extención</label>
                     <input type="text" v-model="areaarray.extencion_tel" class="form-control" id="nombre_ext" name="extencion_tel" placeholder="Extención" v-validate data-vv-rules="required|numeric|min:5"> 
-                     <span  class="has-error" v-show="errors.has('extencion_tel')">{{ errors.first('extencion_tel') }}</span>  
+                     <span  class="help-block" v-show="errors.has('extencion_tel')">{{ errors.first('extencion_tel') }}</span>  
                 </div>
                       
                 <div class="form-group">
