@@ -1,8 +1,8 @@
 @extends('adminlte::layouts.app')
 
-@section('htmlheader_title')
+<!--@section('htmlheader_title')
 	{{ trans('adminlte_lang::message.home') }}
-@endsection
+@endsection-->
 
 
 @section('main-content')
@@ -10,7 +10,7 @@
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
 				<div class="panel panel-default">
-					<div class="panel-heading">Home</div>
+					<div class="panel-heading">Creación de OTS</div>
 
 					<div class="panel-body"  >
 						<formulario_anadir_requerimiento></formulario_anadir_requerimiento>

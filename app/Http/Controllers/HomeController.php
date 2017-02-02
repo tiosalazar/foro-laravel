@@ -9,7 +9,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use App\User;
 /**
  * Class HomeController
  * @package App\Http\Controllers
@@ -33,6 +34,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('adminlte::home');
+        $user =  User::findOrfail( Auth::user()->id);
+        //var_dump($user);
+        return view('adminlte::home',array('usuario' =>$user));
     }
 }

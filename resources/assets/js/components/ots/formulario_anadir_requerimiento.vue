@@ -14,13 +14,13 @@
 						</ul>
 						<div class="tab-content" >
 							<div class="tab-pane"  v-for="area in listado_areas" :class="{ 'active': area.nombre=='Creatividad'  }"  :id="'tab_'+area.id">
-								<div class="row"> <anadir_requerimiento :area="area.nombre" :id_area="area.id"  :realizar_validado="'validar_area_'+area.id" ></anadir_requerimiento></div>
+								<div class="row"> <anadir_requerimiento :area="area.nombre" :id_area="area.id"  ></anadir_requerimiento></div>
 								<div class="row">
 									<div class="col-md-6">
 										<h2>Compras relacionadas</h2>
 									</div>
 								</div>
-								<div class="row"><anadir_compra  :area="area.nombre" ></anadir_compra> </div>
+								<div class="row"><anadir_compra  :area="area.nombre" :id_area="area.id"  ></anadir_compra> </div>
 								<div style="height:30px"></div>
 								<div class="row">
 									<div class=" pull-right  col-md-3">
@@ -87,7 +87,12 @@
 					ejecutivo:'',
 					fecha_fin:'',
 					fecha_inicio:'',
-					cliente:[]
+					cliente:[],
+					option_toast:{
+					timeOut: 5000,
+					"positionClass": "toast-top-center",
+					"closeButton": true,
+				     }
 				}
 			},
 			computed: {
@@ -123,22 +128,80 @@
 			            //this.$set(this.someObject, 'b', 2)
 			            // Vue.set('validar_area_'+p.id,'','');
 			        }*/
-            
+
 				},
-				guardarDatos: function(id){	
+				guardarDatos: function(id){
+					var data_req=this.$localStorage.get('datos_requerimiento_'+id);
+					var data_compra=this.$localStorage.get('datos_compra_'+id);
+					var data_req = JSON.parse(data_req);
+					var data_compra = JSON.parse(data_compra);
+					var arreglo_requerimientos = data_req[0].requerimientos;
+					var arreglo_compras = data_compra[0].compras;
+				//	console.log(arreglo_requerimientos[0].model_nom);
+					if (data_req == null && data_compra == null) {
+						toastr.error("Todos los campos son obligatorios","Error al Guardar Requerimientos y Compras",this.option_toast);
+						return false;
+					}else if( !this.comprobarRequerimientos(arreglo_requerimientos) ){
+						toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Requerimientos",this.option_toast);
+						return false;
+					}else if( !this.comprobarCompras(arreglo_compras) ){
+							toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Compras Relacionadas",this.option_toast);
+							return false;
+					}else{
+						toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
+						console.log(data_req);
+						console.log(data_compra);
+					}
 
-					var data=this.$localStorage.get('datos_requerimiento_'+id);
+					},
+					comprobarRequerimientos: function (arreglo) {
+						for (let f in arreglo) {
+				              let idx = Number(f)
+				              let p = arreglo[idx]
+											if (p.model_nom =="" || p.model_horas== " ") {
+												return false;
+												break;
+											}
+				        }
+									return true;
+					},
+					comprobarCompras: function (arreglo) {
+						for (let f in arreglo) {
+				              let idx = Number(f)
+				              let p = arreglo[idx]
+											if (p.model_desc =="" || p.model_provedor== "" || p.model_valor== "" ) {
+												return false;
+												break;
+											}
+				        }
+									return true;
+					}
+				/*	else if( arreglo_requerimientos.model_nom == '' && arreglo_requerimientos.model_horas == 0){
+						console.log("entro al 2");
+						toastr.error("Todos los campos son obligatorios","Error al Guardar Requerimientos y Compras",this.option_toast);
+						return false;
 
-					var arreglo= JSON.parse(data);
-					console.log(arreglo);
+					}*/
 
-					/*			 
+
+
+					/*if (arreglo_requerimientos.length > 0 && arreglo_compras.length > 0) {
+
+						console.log("Vamos por buen camino");
+
+					} else {
+						console.log("ERROR");
+						toastr.error("Todos los campos son obligatorios","Error al Guardar",this.option_toast);
+					}*/
+
+
+					/*
 					//console.log(id);
 					this.$emit('validar_requerimiento',id);
 					var nombre= 'cosa'+id;
-					this.nombre=true;*/	
+					this.nombre=true;*/
 
-				}
+
 			}
 		}
 
