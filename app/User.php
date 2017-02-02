@@ -33,8 +33,9 @@ class User extends Authenticatable
   */
   public function Rol()
   {
-    return $this->belongsTo('App\Role');
+    return $this->belongsTo('App\Role','id');
   }
+  
   /**
   * Obtiene el Area que esta asociada a un Usuario
   */

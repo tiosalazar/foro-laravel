@@ -20,9 +20,9 @@ class Role extends Model
  */
   public function User()
   {
-      return $this->hasMany('App\User');
+      return $this->hasMany('App\User','id');
   }
-  /**
+   /**
   * Obtiene el Trafico que posee el Rol
  */
   public function Trafico()
