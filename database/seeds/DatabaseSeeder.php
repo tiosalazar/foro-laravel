@@ -80,8 +80,8 @@ class PermisosTableSeeder extends Seeder {
         App\Permission::create(array('name' => 'crear_areas','display_name'=>'Crear Areas','description'=>'Puede crear' ));
         App\Permission::create(array('name' => 'editar_areas','display_name'=>'Editar Areas','description'=>'Puede Editar' ));
         //Permisos Sobre Tareas
-        App\Permission::create(array('name' => 'crear_areas','display_name'=>'Crear Tareas','description'=>'Puede crear' ));
-        App\Permission::create(array('name' => 'editar_areas','display_name'=>'Editar Tareas','description'=>'Puede Editar' ));
+        App\Permission::create(array('name' => 'crear_tareas','display_name'=>'Crear Tareas','description'=>'Puede crear' ));
+        App\Permission::create(array('name' => 'editar_tareas','display_name'=>'Editar Tareas','description'=>'Puede Editar' ));
 
       /*
         App\Permission::create(array('name' => 'todos','display_name'=>'Permisos Totales','description'=>'Tiene Acceso a todas las vistas de la aplicación' ));

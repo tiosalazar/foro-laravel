@@ -38,17 +38,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user =  User::findOrfail(1);
+      //  $user =  User::findOrfail(1);
         // role attach alias
         //$user->attachRole(2); // parameter can be an Role object, array, or id
 
         // or eloquent's original technique
         //$user->roles()->attach(2); // id only
 
-        var_dump($user->role());
+       // var_dump($user->role());
        // $rol = Role::findOrfail(12);
        //var_dump($rol->User);
-        var_dump($user);
-        //return view('adminlte::home',array('usuario' =>$user));
+      //  var_dump($user);
+        return view('adminlte::home');
     }
 }
