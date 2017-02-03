@@ -53,7 +53,17 @@ class HomeController extends Controller
         //var_dump($area->nombre);
 
       //  var_dump($user);
+        $userauth = Auth::user()->area->id;
+        $role=Role::where('name','coordinador')->get();
+        $userdata= User::where('roles_id',$role[0]->id)
+                    ->where('areas_id', $userauth)->get();
+       
+        if ( isset($userdata[0])) {
+             $user=$userdata[0]->nombre;
+        }else{
+            $user='No asignado';
+        }
 
-        return view('adminlte::home');
+        return view('adminlte::home')->with('user_encargado',$user);
     }
 }

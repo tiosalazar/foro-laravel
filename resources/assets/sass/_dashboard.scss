@@ -1,5 +1,12 @@
-.iconos-foro{
-	font-family: icon-foro;
+body{
+	font-family: 'Ubuntu', sans-serif;
+
+}
+
+.fuente-icon{
+	font-family: 'iconforo';
+	font-size: 18px;
+	font-style: normal;
 }
 
 .skin-blue{
@@ -19,10 +26,10 @@
 		}
 	}
 
-
 	.main-sidebar{
 		background-color: #002E60;
 		color: white;
+		font-size: 14px;
 		.user-panel{
 			margin-top: 15%;
 			margin-bottom: 10%;
@@ -38,6 +45,11 @@
 					color: white;
 				}
 
+			}
+			.treeview{
+				span{
+					margin-left: 5%;
+				}
 			}
 			
 		}

@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->decimal('horas_disponible',15,3);
             $table->string('password');
             $table->rememberToken();
+            $table->date('fecha_nacimiento');
             $table->integer('roles_id')->unsigned();
             $table->integer('areas_id')->unsigned();
             $table->timestamps();

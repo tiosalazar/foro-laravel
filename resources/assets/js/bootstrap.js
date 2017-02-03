@@ -53,3 +53,8 @@ next();
 //     broadcaster: 'pusher',
 //     key: 'your-pusher-key'
 // });
+
+$(document).ready(function(){
+    $('[data-toggle="modal"]').tooltip(); 
+});
+

@@ -52,24 +52,27 @@ class UserController extends Controller
         $vl=$this->validarCamposUsuario($request->all());
       if ($vl->fails())
          {
-               // return  response()->json( $vl->errors(),Response::HTTP_BAD_REQUEST); 
+               // return  response()->json( $vl->errors(),Response::HTTP_BAD_REQUEST);
                 return response([
                 'status' => Response::HTTP_BAD_REQUEST,
                 'response_time' => microtime(true) - LARAVEL_START,
                 'msg' => 'Error al crear el usuario',
                 'error' => 'ERR_01',
                 'obj' =>$vl->errors()
-                ],Response::HTTP_BAD_REQUEST);        
+                ],Response::HTTP_BAD_REQUEST);
          }else
-             {        
-                $user=new User;  
+             {
+                $user=new User;
                 $user->fill($request->all());
                 //Se encripta la contraseña del usuario.
                 $user->password=bcrypt($request->password);
-                try 
+                try
                 {
                     $user->remember_token = str_random(60);
+
                     $user->save();
+                    $user->attachRole($request->roles_id);
+
                       return response([
                             'status' => Response::HTTP_OK,
                             'response_time' => microtime(true) - LARAVEL_START,
@@ -86,7 +89,7 @@ class UserController extends Controller
                         'request' => $request->all()
                     ],Response::HTTP_BAD_REQUEST);
                }
-         }   
+         }
 
     }
 
@@ -143,28 +146,28 @@ class UserController extends Controller
     {
 
        $respuesta=[];
-                    try 
-                    {       
+                    try
+                    {
                     //Validaciòn de las entradas por el metodo POST
                     $vl=$this->validatorUpdateUsuario($request->all());
                          if ($vl->fails())
                             {
-                               return response()->json($vl->errors());        
+                               return response()->json($vl->errors());
                             }else
                                 {
-                               
+
                                 //Busca el usuario en la BD
                                 $user=  User::findOrFail($id);
-                                
+
                                 // Si la data es valida se la asignamos al usuario
                                 $user->fill($request->all());
                                 // Guardamos el usuario
                                 $respuesta["obj"]=$request;
                                 $user->update();
                                 $respuesta["msg"]='Editado con exito';
-                               
+
                                $respuesta["error"]=0;
-                               $respuesta["mensaje"]="OK";                        
+                               $respuesta["mensaje"]="OK";
                              }
                     }catch(Exception $e){
                        $respuesta["error"]="usuario_no_encontrado";
@@ -190,10 +193,10 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-     /*DSO 24-01-2016 Funcion para validar los campos al crear un usuario 
+     /*DSO 24-01-2016 Funcion para validar los campos al crear un usuario
     * entra el arreglo de datos
     * Sale un arreglo con los errores.
-    */   
+    */
    protected function validarCamposUsuario(array $data)
     {
         return Validator::make($data, [
@@ -207,11 +210,11 @@ class UserController extends Controller
                 'areas_id' => 'required'
         ]);
     }
-    
-    /*DSO 24-01-2016 Funcion para validar los campos al ingreso de un usuario 
+
+    /*DSO 24-01-2016 Funcion para validar los campos al ingreso de un usuario
     * entra el arreglo de datos
     * Sale un arreglo con los errores.
-    */   
+    */
    protected function validatorIngresoUsuario(array $data)
     {
         return Validator::make($data, [
@@ -219,11 +222,11 @@ class UserController extends Controller
             'password' => 'required|min:6',
         ]);
     }
-    
-     /*DSO 24-01-2016 Funcion para validar los campos al actualizar un usuario 
+
+     /*DSO 24-01-2016 Funcion para validar los campos al actualizar un usuario
     * entra el arreglo de datos
     * Sale un arreglo con los errores.
-    */ 
+    */
     protected function validatorUpdateUsuario(array $data)
     {
        return Validator::make($data, [

@@ -144,9 +144,9 @@ class UsuariosTableSeeder extends Seeder {
         DB::table('users')->delete();
 
         App\User::create(array('nombre' => 'Desarrollo','apellido' => 'Himalaya','cargo' => 'Tester','telefono' => '1111111','email' => 'desarrollo@himalayada.com',
-        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','roles_id' => '1','areas_id' => '1'));
+        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => '1','areas_id' => '1'));
         App\User::create(array('nombre' => 'Ejecutiva 1','apellido' => 'Himalaya','cargo' => 'Ejecutiva','telefono' => '22222222','email' => 'ejecutiva@himalayada.com',
-        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','roles_id' => '1','areas_id' => '2'));
+        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => '1','areas_id' => '2'));
     }
 
 }
