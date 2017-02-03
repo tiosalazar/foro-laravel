@@ -7852,6 +7852,22 @@ sub, sup {
   color: white;
 }
 
+.perfil-box {
+  border: none;
+}
+
+.info_perfil {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+}
+
+.info_perfil strong {
+  margin-bottom: 10px;
+}
+
 .boton_hidden {
   display: none;
 }

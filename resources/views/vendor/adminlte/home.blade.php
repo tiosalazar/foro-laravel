@@ -9,13 +9,13 @@
 	<div class="container-fluid spark-screen">
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
-				<div class="panel panel-default">
-					<div class="panel-heading">Perfil</div>
+				<div class="">
+					<div class=""></div>
 
 					<div class="panel-body">
-					<div class="box box-primary">
-						<div class="box-header with-border">
-							<h3 class="box-title"> {{Auth::user()->nombre}} {{Auth::user()->apellido}}  </h3>
+					<div class="box perfil-box">
+						<div class="box-header">
+							{{-- <h3 class="box-title"> {{Auth::user()->nombre}} {{Auth::user()->apellido}}  </h3> --}}
 						</div>
 						<div class="box-body">
 							<div class="col-md-12">
@@ -32,25 +32,23 @@
 
 					              <p class="text-muted text-center">{{Auth::user()->cargo}}</p>
 
-					              <a href="#" class="btn btn-primary btn-block"><b>Cambiar Imagen </b></a>
 					            </div>
 							</div>
 							<div class="col-md-6">
 					            <!-- /.box-header -->
+					            <div class="box-header">
+									<h3>{{Auth::user()->nombre}}</h3>
+									<h4>Area | {{Auth::user()->areas_id}}</h4>
+									<h5>Cargo |{{Auth::User()->cargo}}</h5>									
+								</div>
 					            <div class="box-body">
-					                <div class="col-md-6">
-					               <strong><i class="fa fa-book margin-r-5"></i> Cargo</strong>
-					                <p class="text-muted">
-					               {{Auth::user()->cargo}}
-					                </p>
-					                <hr>
-					              <strong><i class="fa fa fa-phone margin-r-5"></i> Teléfono</strong>
-					              <p class="text-muted">{{Auth::user()->telefono}}</p>
-					               <hr>
-					              <strong><i class="fa fa-clock-o margin-r-5"></i> Horas Disponilbes</strong>
-					               <p class="text-muted">{{Auth::user()->horas_disponible}}</p>
-					                <hr>
+					               <div class="info_perfil">
+					              	 <strong><i class="fa fa-book margin-r-5"></i> Encargado |  </strong>
+					              	 <strong><i class="fa fa-book margin-r-5"></i> Correo | {{Auth::user()->email}} </strong>
+					              	 <strong><i class="fa fa-book margin-r-5"></i> Teléfono |  {{Auth::user()->telefono}}</strong>
+					              	 <strong><i class="fa fa-book margin-r-5"></i> Cumpleaños |  </strong>			
 					               </div>
+<<<<<<< HEAD
 					                <div class="col-md-6">
 					               <strong><i class="fa fa-user margin-r-5"></i> Email</strong>
 					               <p class="text-muted">{{ Auth::user()->email }}</p>
@@ -62,6 +60,9 @@
 					               <p class="text-muted">{{Auth::user()->area->nombre }}</p>
 					                <hr>
 					                </div>
+=======
+					           
+>>>>>>> origin/bcaldas
 
 					            </div>
 					            <!-- /.box-body -->
@@ -69,20 +70,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="box box-primary">
-						<div class="box-header with-border">
-							<h3 class="box-title"> Notificaciones </h3>
-						</div>
-						<div class="box-body">
-							<div class="col-md-12">
-
-							</div>
-
-							</div>
-
-
-
-						</div>	
+					
 
 						<!--{{ trans('adminlte_lang::message.logged') }}-->
 					</div>
