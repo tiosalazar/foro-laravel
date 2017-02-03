@@ -71,7 +71,7 @@ public function Historico_Ot()
    /**
   * Obtiene los requerimientos que posee la OT
  */
-public function Historico_Ot()
+public function Requerimiento_Ot()
   {
       return $this->hasMany('App\Requerimientos_Ot');
   }
