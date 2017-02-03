@@ -7802,6 +7802,13 @@ sub, sup {
   margin: 0 !important;
 }
 
+@media screen and (max-width: 768px) {
+  .nopadding {
+    padding: auto !important;
+    margin: auto !important;
+  }
+}
+
 .iconos-foro {
   font-family: icon-foro;
 }

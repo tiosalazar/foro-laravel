@@ -3,27 +3,27 @@
       <div class="row">
       <section class="Form__section" v-for="(ed,index) in compra_asociada">
         <div style="    display: inline-block;">
-              <div class="form-group col-md-3">
+              <div class="form-group col-md-2 col-xs-12">
                 <label class="sr-only" for="nombre_requerimiento">Item</label>
                 <select_tipo_compra></select_tipo_compra>
               </div>
-              <div class="form-group  col-md-3" v-bind:class="{ 'has-error': errors.has('descipcion_compra'+index) }">
+              <div class="form-group  col-md-3 col-xs-12" v-bind:class="{ 'has-error': errors.has('descipcion_compra'+index) }">
                 <label class="sr-only" for="descipcion_compra">Descripción</label>
-                <input type="text" :name="'descipcion_compra'+index"  @mouseover="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Descripción" v-model="ed.model_desc" class="form-control" :id="'descipcion_compra'+index"  placeholder="Descripción">
+                <input type="text" :name="'descipcion_compra'+index"  @mouseover="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Descripción" v-model="ed.model_desc" class="form-control"   placeholder="Descripción">
                 <span  class="help-block" v-show="errors.has('descipcion_compra'+index)">{{ errors.first('descipcion_compra'+index) }}</span>
              </div>
-              <div class="form-group  col-md-2"  v-bind:class="{ 'has-error': errors.has('provedor_compra'+index) }">
+              <div class="form-group  col-md-2 col-xs-12"  v-bind:class="{ 'has-error': errors.has('provedor_compra'+index) }">
                 <label class="sr-only" for="no_horas_req">Provedor</label>
                 <input type="text"  :name="'provedor_compra'+index"  @mouseover="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Provedor" v-model="ed.model_provedor" class="form-control" :id="'provedor_compra'+index"   placeholder="Provedor">
                 <span  class="help-block" v-show="errors.has('provedor_compra'+index)">{{ errors.first('provedor_compra'+index) }}</span>
              </div>
-              <div class="form-group  col-md-2"  v-bind:class="{ 'has-error': errors.has('valor_compra'+index) }">
+              <div class="form-group  col-md-2 col-xs-6"  v-bind:class="{ 'has-error': errors.has('valor_compra'+index) }">
                 <label class="sr-only" for="no_horas_req">Valor</label>
                 <input type="text" :name="'valor_compra'+index"  @mouseover="guardarDatos" v-validate data-vv-rules="required|numeric" data-vv-as="Valor" v-model="ed.model_valor" class="form-control" :id="'valor_compra'+index"  placeholder="Valor">
                 <span  class="help-block" v-show="errors.has('valor_compra'+index)">{{ errors.first('valor_compra'+index) }}</span>
-
              </div>
-             <div class="form-group  col-md-1">
+             <div class="form-group col-md-1 nopadding col-xs-6"><select class="form-control select2 "> <option value="1">PS</option> <option value="2">US</option></select> </div>
+             <div class="form-group  col-md-1 col-xs-12">
                <button type="button" @click="deleteRequerimiento" class="btn btn-danger">Eliminar</button>
             </div>
           </div>
@@ -63,6 +63,9 @@ import VueLocalStorage from 'vue-localstorage'
       },
       created: function(){
           this.llenarCampos();
+          this.$on('tipo_compra', function(v) {
+                this.tipo_compra=v;
+          });
       },
       methods: {
           addRequerimiento: function(e) {
@@ -85,15 +88,15 @@ import VueLocalStorage from 'vue-localstorage'
                 this.compra_asociada.splice(index, 1);
           },
           guardarDatos: function(){
-            var ingreso= this.compra_asociada;
-            var index = Object.keys(ingreso).length;
+           // var index = Object.keys(ingreso).length;
             //console.log(ingreso[index-1]);
-            ingreso[index-1].tipo_compra=this.$localStorage.get('tipo_compra');
-            console.log(ingreso);
+           // ingreso[index-1].tipo_compra=this.$localStorage.get('tipo_compra');
             var datos=[{
-                compras:ingreso
+                compras:this.compra_asociada,
+                tipo_compra:this.tipo_compra//this.$localStorage.get('tipo_compra')
               }];
-             this.$localStorage.set('datos_compra_'+this.id_area,JSON.stringify(datos) );
+             //this.$localStorage.set('datos_compra_'+this.id_area,JSON.stringify(datos) );
+              this.$parent.$emit('datos_compras',datos);
           },
      }
    }

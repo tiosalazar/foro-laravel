@@ -164,7 +164,7 @@
 			data () {
 				return {
 					fecha_inicio:'',
-					cliente:'',
+					cliente:{},
 					ejecutivo:'',
 					htotal:'',
 					estado:'',
@@ -244,10 +244,12 @@
 			},
 			created: function(){
 				this.fetchTips();
+				/*this.$on('select_clientes', function(v) {
+		           this.cliente=v;
+		          });*/
 			},
 			methods:{
                 fetchTips: function(){
-
 				this.name_proyect= this.$localStorage.get('num_ot');
 				this.valor_total	= this.$localStorage.get('valor_total');
 				this.horas_totales= this.$localStorage.get('horas_totales');
@@ -283,10 +285,9 @@
 
 				
 			},
-						 validateBeforeSubmit(e) {
+				 validateBeforeSubmit(e) {
 						 	this.$validator.validateAll();
 						 	if (!this.errors.any()) {
-								console.log("entreee");
 						 		if(this.$localStorage.get('clientes') == null){
 						 			toastr.error('No se olvide de elegir al cliente',"Error al guardar los datos",this.option_toast);
 						 		}else if(this.$localStorage.get('estado_ot') == null){

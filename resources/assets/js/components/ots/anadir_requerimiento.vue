@@ -44,25 +44,7 @@
         <button type="button" @click="addRequerimiento" class="btn btn-block btn-success col-sm-3">Añadir Tarea</button>
       </div>
     </div>
-          <!--Modal -->
-         <div class="modal editarModal" >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">×</span></button>
-                  <h4 class="modal-title">Seguto que desea cambiar de pestaña</h4>
-                </div>
-                <div class="modal-body">
-                     Se perderán los cambios que no haya guardado
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No guargar</button>
-                  <button type="button" class="btn btn-primary" @click="seguir">Guardar Datos</button>
-                </div>
-                </div>
-              </div>
-         </div> 
+
   </div>
 </template>
 
@@ -96,7 +78,7 @@ import VueLocalStorage from 'vue-localstorage'
     Vue.use(VueLocalStorage);
      module.exports={
        components: {VeeValidate,Validator,VueLocalStorage},
-       		props: ['htotales','area','id_area'],
+       		props: ['htotales','area','id_area','realizar_validado'],
       data () {
           return {
           hdisponibles:'',
@@ -117,7 +99,19 @@ import VueLocalStorage from 'vue-localstorage'
       watch: {
         nhoras: function (val) {
           this.realizarCalculo();
-          this.realizarCalculoHoras();
+          //this.realizarCalculoHoras();
+          },
+          realizar_validado:function(){
+            if (this.realizar_validado==true) {
+               this.$validator.validateAll();
+               console.log("Entro a validar");
+              if (!this.errors.any()) {
+                this.$parent.$emit('form_requerimiento_validado',true); 
+              }else{
+                this.$parent.$emit('form_requerimiento_validado',false); 
+              }
+            }
+
           }
 
       },
@@ -146,7 +140,7 @@ import VueLocalStorage from 'vue-localstorage'
               var arreglo_requerimientos = data_req[0].requerimientos;
               this.requerimiento= arreglo_requerimientos;
             //  console.log(this.requerimiento);
-              this.nhoras	= this.$localStorage.get('horas_totales');
+              this.nhoras	= data_req[0].horas;
             }
 
           },
@@ -161,17 +155,14 @@ import VueLocalStorage from 'vue-localstorage'
                 requerimientos:this.requerimiento,
                 horas:this.nhoras
               }];
-             this.$localStorage.set('datos_requerimiento_'+this.id_area,JSON.stringify(datos) );
-          },
-          seguir:function(e){
-           e.close();
+            // this.$localStorage.set('datos_requerimiento_'+this.id_area,JSON.stringify(datos) );
+              this.$parent.$emit('datos_requerimiento',datos);
           },
           addRequerimiento: function(e) {
               e.preventDefault();
               this.$validator.validateAll();
               if (!this.errors.any()) {
               this.requerimiento.push(Vue.util.extend({}, this.requerimiento));
-              //this.$parent.$emit('arreglo_requerimientos', this.requerimiento);
                }
           },
           deleteRequerimiento: function(e) {

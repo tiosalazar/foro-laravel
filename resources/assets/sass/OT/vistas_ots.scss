@@ -35,3 +35,11 @@ sub, sup {
    padding: 0 !important;
    margin: 0 !important;
 }
+
+@media screen and (max-width: 768px) {
+  .nopadding {
+   padding: auto !important;
+   margin: auto !important;
+}
+
+}

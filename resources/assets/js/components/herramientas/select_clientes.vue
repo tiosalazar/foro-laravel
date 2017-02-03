@@ -65,15 +65,18 @@
   updateSelected (newSelected) {
    if (newSelected != null && newSelected != undefined) {
      this.id_cliente = newSelected.id;
-     this.$localStorage.set('clientes', newSelected);
+    //this.$parent.$emit('select_clientes',this.newSelected);
+     //this.$localStorage.set('clientes', newSelected);
    }else {
      this.id_cliente = 0;
-     this.$localStorage.remove('clientes');
+     //this.$parent.$emit('select_clientes','');
+     //this.$localStorage.remove('clientes');
    }
 
  },
  removeSelected () {
    this.id_cliente = 0;
+   //this.$parent.$emit('select_clientes','');
    this.$localStorage.remove('clientes');
  },
  onTouch () {

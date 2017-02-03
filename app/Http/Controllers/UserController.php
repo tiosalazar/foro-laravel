@@ -22,7 +22,7 @@ class UserController extends Controller
     {
       // $user= User::where('estado',1)->get();
        $user = User::
-            select('users.id','users.nombre','users.apellido','users.cargo','users.telefono','users.email','users.horas_disponible','roles.nombre as roles_id','areas.nombre as areas_id','users.estado','areas.id as id_area','roles.id as id_rol')->join('roles','roles.id','=','users.roles_id')->join('areas','areas.id','=','users.areas_id')->get();
+            select('users.id','users.nombre','users.apellido','users.cargo','users.telefono','users.email','users.horas_disponible','roles.display_name as roles_id','areas.nombre as areas_id','users.estado','areas.id as id_area','roles.id as id_rol')->join('roles','roles.id','=','users.roles_id')->join('areas','areas.id','=','users.areas_id')->get();
       // return response()->json($user);
       return array('recordsTotal'=>count($user),'recordsFiltered'=>count($user),'data'=>$user);
     }

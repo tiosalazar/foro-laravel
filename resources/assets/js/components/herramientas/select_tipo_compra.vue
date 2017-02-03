@@ -3,7 +3,7 @@
    <div :class="{ 'select-error': isInvalid }">
   <Multiselect
    :options="tipo_compra"
-    placeholder="Seleccione un Item" label="nombre" track-by="nombre"
+    placeholder="Seleccione un Item" label="nombre" select-label="" track-by="nombre"
    :close-on-select="true"
    :options-limit="300"
    :value="value"
@@ -59,10 +59,12 @@
           updateSelected (newSelected) {
            if (newSelected != null && newSelected != undefined) {
              this.id_tipo_compra = newSelected.id;
-             this.$localStorage.set('tipo_compra', newSelected);
+             this.$parent.$emit('tipo_compra',newSelected);
+            // this.$localStorage.set('tipo_compra', newSelected);
            }else {
              this.id_tipo_compra = 0;
-             this.$localStorage.remove('tipo_compra');
+            this.$parent.$emit('tipo_compra','');
+            // this.$localStorage.remove('tipo_compra');
            }
 
          },

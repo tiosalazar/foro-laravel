@@ -10,11 +10,11 @@
 					<!-- Custom Tabs -->
 					<div class="nav-tabs-custom">
 						<ul class="nav nav-tabs" >
-							<li v-for="area in listado_areas"  :class="{'active': area.nombre=='Creatividad' } " ><a @click="tabs_areas" :href="'#tab_'+area.id" data-toggle="tab">{{area.nombre}}</a></li>
+							<li v-for="area in listado_areas"  :class="{'active': area.nombre=='Creatividad' } " ><a @click="tabs_areas($event,area.id)" :data-id="'tab_'+area.id" :href="'#tab_'+area.id" data-toggle="tab">{{area.nombre}}</a></li>
 						</ul>
 						<div class="tab-content" >
 							<div class="tab-pane"  v-for="area in listado_areas" :class="{ 'active': area.nombre=='Creatividad'  }"  :id="'tab_'+area.id">
-								<div class="row"> <anadir_requerimiento :area="area.nombre" :id_area="area.id" :horas_disponibles="h_Disponibles" ></anadir_requerimiento></div>
+								<div class="row"> <anadir_requerimiento :area="area.nombre" :id_area="area.id" :realizar_validado="validar_requerimientos" :horas_disponibles="h_Disponibles" ></anadir_requerimiento></div>
 								<div class="row">
 									<div class="col-md-6">
 										<h2>Compras relacionadas</h2>
@@ -50,6 +50,26 @@
 						</div>
 					</div>
 				</div>
+				          <!--Modal -->
+         <div class="modal editarModal" >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                  <h4 class="modal-title">Seguro que desea cambiar de pestaña</h4>
+                </div>
+                <div class="modal-body">
+                     Se perderán los cambios que no haya guardado
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Espera!! voy a guardar</button>
+                  <button type="button" class="btn btn-primary" @click="seguir">Ok, quiero continuar</button>
+                </div>
+                </div>
+              </div>
+         </div> 
+
 			</div>
 		</div>
 	</template>
@@ -77,23 +97,23 @@
 			data () {
 				return {
 					h_Disponibles:0,
-					num_ot:0,
 					listado_areas:[],
-					name_proyect:'',
-					estado:'',
-					valor_total:'',
 					horas_totales:0,
-					ejecutivo:'',
-					fecha_fin:'',
-					fecha_inicio:'',
-					cliente:[],
+					datos_requerimiento:[],
+					datos_compras:[],
 					h_area:0,
+					id_tab:'',
+					form_requerimiento_validado:false,
+					validar_requerimientos:false,
 					option_toast:{
 					timeOut: 5000,
 					"positionClass": "toast-top-center",
 					"closeButton": true,
-				     }
+				     },
 				}
+			},
+			watch:{
+
 			},
 			computed: {
 				htotales:function(){
@@ -102,21 +122,36 @@
 				validar:function(){
 					return this.area;
 				}
+
 			},
 			created: function(){
 				this.fetchTips();
 				this.$on('horas_totales', function(v) {
 		            this.horas_totales=parseInt(v);
-		            this.h_Disponibles=this.horas_totales- this.h_area;
+		            var resta_anterior=0;
+		            resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras();
+		            console.log(resta_anterior);
+		            this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
 		          });
 				this.$on('horas_area', function(v) {
                      /* var total= horas_disponibles-this.nhoras;
                     this.$localStorage.set('h_Disponibles',total);*/
 				   this.h_area=parseInt(v); 
-		           this.h_Disponibles=this.horas_totales-this.h_area;
-		            console.log("Horas disponibles pA : "+this.h_Disponibles);
+				      var resta_anterior=0;
+		            resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras();
+		            console.log(resta_anterior);
+		            this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
 		          });
-
+				this.$on('datos_requerimiento', function(v) {
+		           this.datos_requerimiento=v;
+		          });
+				this.$on('datos_compras', function(v) {
+		            this.datos_compras=v;
+		            console.log(this.datos_compras);
+		          });
+			  this.$on('form_requerimiento_validado', function(v) {
+		            this.form_requerimiento_validado=v;
+		          });	
 			},
 			methods:{
 				fetchTips: function(){
@@ -142,13 +177,65 @@
 			        }*/
 
 				},
-					tabs_areas:function(e){
+				realizarCalculoHoras:function () {
+				var total_areas  =this.$localStorage.get('listado_areas');
+				if (total_areas != null || total_areas != undefined ) {
+					var size = Object.keys(total_areas).length;
+				var hora_a=0;
+				var total_a_restar=0;
+				for (let f in total_areas) {
+									let idx = Number(f)
+									let p = total_areas[idx]
+						hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
+							if (hora_a !=null && hora_a[0].horas !="") {
+									total_a_restar +=parseInt(hora_a[0].horas);
+							}
+						}
+					//var total=	this.horas_totales -total_a_restar;
+					return total_a_restar;
+					//this.h_pasadas= (this.$localStorage.get('h_Disponibles') > total)?true:false;
+				} 
+
+				return false;	
+			   },
+					tabs_areas:function(e,id){
 						e.stopPropagation()
-						//e.preventDefault();
+						this.id_tab=id;
 						$('.editarModal').modal('show');
-					},
+					},				
+			          seguir:function(e){
+			          	console.log("entre : "+this.id_tab);
+			          	$('[data-id~="tab_'+this.id_tab+'"]').trigger('click')
+			            $('.editarModal').modal('toggle');
+			          },
 				guardarDatos: function(id){
-					var data_req=this.$localStorage.get('datos_requerimiento_'+id);
+
+                   var index = Object.keys(this.datos_requerimiento).length;
+                   var requerimientos =this.datos_requerimiento;
+                 
+                  
+					if ( index == 0) {
+						toastr.error("Todos los campos son obligatorios","Error al Guardar Requerimientos",this.option_toast);
+						return false;
+					}else if( requerimientos[0].horas ==""){
+						toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Horas Area",this.option_toast);
+						return false;
+					}else if( !this.comprobarRequerimientos(requerimientos[0].requerimientos) ){
+						toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Requerimientos",this.option_toast);
+						return false;
+					}else{
+						console.log("entro a guardar");
+						  this.validar_requerimientos=true;
+	                   // if(this.form_requerimiento_validado ==true ){
+							toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
+							this.$localStorage.set('datos_requerimiento_'+id,JSON.stringify(requerimientos) );
+							   this.validar_requerimientos=false;
+						//}
+					}
+				
+
+
+					/*var data_req=this.$localStorage.get('datos_requerimiento_'+id);
 					var data_compra=this.$localStorage.get('datos_compra_'+id);
 					var data_req = JSON.parse(data_req);
 					var data_compra = JSON.parse(data_compra);
@@ -168,14 +255,15 @@
 						toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
 						console.log(data_req);
 						console.log(data_compra);
-					}
+					}*/
+
 
 					},
 					comprobarRequerimientos: function (arreglo) {
 						for (let f in arreglo) {
 				              let idx = Number(f)
 				              let p = arreglo[idx]
-											if (p.model_nom =="" || p.model_horas== " ") {
+										if (p.model_nom =="" ||  p.model_horas== "") {
 												return false;
 												break;
 											}
