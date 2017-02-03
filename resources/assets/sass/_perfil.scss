@@ -1,3 +1,12 @@
-.form-area{
+.perfil-box{
+	border:  none;
+}
 
+.info_perfil{
+	display: flex;
+	flex-direction: column;
+
+	strong{
+		margin-bottom: 10px;
+	}
 }

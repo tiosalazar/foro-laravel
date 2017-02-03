@@ -44,6 +44,25 @@
         <button type="button" @click="addRequerimiento" class="btn btn-block btn-success col-sm-3">Añadir Tarea</button>
       </div>
     </div>
+          <!--Modal -->
+         <div class="modal editarModal" >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                  <h4 class="modal-title">Seguto que desea cambiar de pestaña</h4>
+                </div>
+                <div class="modal-body">
+                     Se perderán los cambios que no haya guardado
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No guargar</button>
+                  <button type="button" class="btn btn-primary" @click="seguir">Guardar Datos</button>
+                </div>
+                </div>
+              </div>
+         </div> 
   </div>
 </template>
 
@@ -143,6 +162,9 @@ import VueLocalStorage from 'vue-localstorage'
                 horas:this.nhoras
               }];
              this.$localStorage.set('datos_requerimiento_'+this.id_area,JSON.stringify(datos) );
+          },
+          seguir:function(e){
+           e.close();
           },
           addRequerimiento: function(e) {
               e.preventDefault();
