@@ -42,7 +42,7 @@ class User extends Authenticatable
   */
   public function Area()
   {
-    return $this->belongsTo('App\Area');
+    return $this->belongsTo('App\Area','areas_id','id');
   }
 
   /**

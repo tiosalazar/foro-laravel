@@ -92,7 +92,7 @@
 					<div class="form-group required" v-bind:class="{ 'has-error': h_pasadas }">
 						<label for="horas_disponibles" class="col-sm-4 " >Horas Disponibles <sup>*</sup></label>
 						<div class="col-sm-6">
-							<input type="text" class="form-control" required="required"  id="horas_disponibles" :value="h_Disponibles" disabled placeholder="Numero de Horas Disponibles">
+							<input type="text" class="form-control" required="required"  id="horas_disponibles" v-model="horas_disponibles" disabled placeholder="Numero de Horas Disponibles">
 							  <span  class="help-block" v-show="h_pasadas">Se ha pasado del numero de horas permitidas para el Area</span>
 						</div>
 					</div>
@@ -130,6 +130,7 @@
 
 		module.exports= {
 			components: {Datepicker,VueLocalStorage,VeeValidate,Validator},
+			props: ['horas_disponibles'],
 			localStorage: {
 				clientes: {
 					type: Object,
@@ -172,6 +173,7 @@
 					valor_total:'',
 					horas_totales:'',
 					fecha_fin:'',
+					h_Disponibles2:0,
 					h_pasadas:false,
 					message :'',
 					option_toast:{
@@ -189,18 +191,20 @@
 								}
 							}
 						},
-					/*	watch:{
-							 h_pasadas:function(){
-								 this.h_pasadas= (this.$localStorage.get('h_Disponibles') > 20)?true:false;
-							 console.log(this.h_pasadas);
+						watch:{
+							 horas_disponibles:function(){
+							 	  this.h_pasadas= (this.horas_disponibles < 0 )?true:false;
+							 	  console.log( this.h_pasadas);
+								 //this.realizarCalculoHoras();
 							 }
-						},*/
+						},
 						computed:{
-							h_Disponibles:function(){
+
+							/*h_Disponibles2:function(){
 							//	this.horas_totales - this.$localStorage.get('htotales');
 							this.realizarCalculoHoras();
-								return this.$localStorage.get('h_Disponibles');
-							},
+								return this.h_Disponibles;
+							},*/
 
 							/*
 				h_Disponibles:function(){
@@ -253,9 +257,7 @@
 			},
 			llenar_horas_totales:function () {
 					/// this.$localStorage.set('horas_totales',this.horas_totales);
-					 this.$parent.$emit('horas_totales',this.horas_totales);
-					 console.log(this.horas_totales);
-
+			    this.$parent.$emit('horas_totales',this.horas_totales);
 			},
 			realizarCalculoHoras:function () {
 				var total_areas  =this.$localStorage.get('listado_areas');
@@ -276,9 +278,7 @@
 					var total=	this.horas_totales -total_a_restar;
 					this.h_pasadas= (this.$localStorage.get('h_Disponibles') > total)?true:false;
 				console.log(this.h_pasadas);
-				this.$localStorage.set('h_Disponibles',total);
-
-					
+				this.$localStorage.set('h_Disponibles',total);	
 				} 
 
 				

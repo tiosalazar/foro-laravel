@@ -10,7 +10,7 @@
 					<!-- Custom Tabs -->
 					<div class="nav-tabs-custom">
 						<ul class="nav nav-tabs" >
-							<li v-for="area in listado_areas" :class="{'active': area.nombre=='Creatividad' } " ><a :href="'#tab_'+area.id" data-toggle="tab">{{area.nombre}}</a></li>
+							<li v-for="area in listado_areas"  :class="{'active': area.nombre=='Creatividad' } " ><a @click="tabs_areas" :href="'#tab_'+area.id" data-toggle="tab">{{area.nombre}}</a></li>
 						</ul>
 						<div class="tab-content" >
 							<div class="tab-pane"  v-for="area in listado_areas" :class="{ 'active': area.nombre=='Creatividad'  }"  :id="'tab_'+area.id">
@@ -51,6 +51,29 @@
 					</div>
 				</div>
 			</div>
+			<!--Modal -->
+			  
+    <div class="modal modal-danger editarModal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Danger Modal</h4>
+              </div>
+              <div class="modal-body">
+                <p>One fine body…</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline">Save changes</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+
 		</div>
 	</template>
 	<script>
@@ -77,7 +100,6 @@
 			data () {
 				return {
 					h_Disponibles:0,
-					h_AreaDiseno:0,
 					num_ot:0,
 					listado_areas:[],
 					name_proyect:'',
@@ -88,6 +110,7 @@
 					fecha_fin:'',
 					fecha_inicio:'',
 					cliente:[],
+					h_area:0,
 					option_toast:{
 					timeOut: 5000,
 					"positionClass": "toast-top-center",
@@ -106,14 +129,15 @@
 			created: function(){
 				this.fetchTips();
 				this.$on('horas_totales', function(v) {
-		            this.horas_totales=v;
-		            this.h_Disponibles=v-this.h_Disponibles;
+		            this.horas_totales=parseInt(v);
+		            this.h_Disponibles=this.horas_totales- this.h_area;
 		          });
 				this.$on('horas_area', function(v) {
-					var total_resta= parseInt(this.horas_totales) +v;
-					console.log(total_resta);
-		           this.h_Disponibles=total_resta-this.h_Disponibles;
-		            console.log(this.h_Disponibles);
+                     /* var total= horas_disponibles-this.nhoras;
+                    this.$localStorage.set('h_Disponibles',total);*/
+				   this.h_area=parseInt(v); 
+		           this.h_Disponibles=this.horas_totales-this.h_area;
+		            console.log("Horas disponibles pA : "+this.h_Disponibles);
 		          });
 
 			},
@@ -141,6 +165,13 @@
 			        }*/
 
 				},
+					tabs_areas:function(e){
+						e.preventDefault();
+						e.stopPropagation()
+						console.log("entre");
+						$('.editarModal').modal('show');
+
+					},
 				guardarDatos: function(id){
 					var data_req=this.$localStorage.get('datos_requerimiento_'+id);
 					var data_compra=this.$localStorage.get('datos_compra_'+id);

@@ -103,10 +103,6 @@ import VueLocalStorage from 'vue-localstorage'
 
       },
       created: function(){
-        /*this.$on('validar_requerimiento', function(b) {
-            console.log(b);
-            console.log("hola");
-          });  */
           this.llenarCampos();
       },
       methods: {
@@ -124,14 +120,13 @@ import VueLocalStorage from 'vue-localstorage'
           },
           emitirData:function(){
                this.$parent.$emit('horas_area',this.nhoras);
-               console.log(this.horas_totales);
           },
           llenarCampos:function () {
             var data_req= JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.id_area));
             if (data_req != null) {
               var arreglo_requerimientos = data_req[0].requerimientos;
               this.requerimiento= arreglo_requerimientos;
-              console.log(this.requerimiento);
+            //  console.log(this.requerimiento);
               this.nhoras	= this.$localStorage.get('horas_totales');
             }
 

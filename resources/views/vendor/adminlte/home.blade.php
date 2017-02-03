@@ -59,8 +59,7 @@
 					               <p class="text-muted">{{ Auth::user()->roles[0]->display_name }} </p>
 					                <hr>
 					              <strong><i class="fa fa-pencil margin-r-5"></i> Area</strong>
-					               <p class="text-muted">{{Auth::user()->areas_id }}</p>
-					               <p class="text-muted">{{Auth::user()->Area[0] }}</p>
+					               <p class="text-muted">{{Auth::user()->area->nombre }}</p>
 					                <hr>
 					                </div>
 
