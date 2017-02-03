@@ -34,22 +34,48 @@
         <ul class="sidebar-menu">
           <!-- <li class="header">Menú</li> -->
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="{{ url('home') }}"><i class='fa fa-home'></i> <span>{{ trans('texto_menu.perfil') }}</span></a></li>
+
+            <!--Home -->
+            <li class="active treeview"><a href="{{ url('home') }}"><i class='fuente-icon'>p</i> <span>{{ trans('texto_menu.perfil') }}</span></a></li>
+
+            <!--Roles -->    
+            <li class="treeview"><a href="{{ url('roles') }}"><i class='fuente-icon'>c</i><span>{{  trans('texto_menu.crear_roles') }}</span></a></li>
+
+            <!--Foro -->
             <li class="treeview">
-                <a href="#"><i class='fa fa-table'></i> <span>{{ trans('texto_menu.foro') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <a href="#"><i class='fuente-icon'>f</i> <span>{{ trans('texto_menu.foro') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="#">{{ trans('texto_menu.areas') }}</a></li>
                     <li><a href="{{ url('crear_tarea') }}">{{ trans('texto_menu.creacion_tareas') }}</a></li>
                 </ul>
             </li>
+
+            <!--Ots-->
+            @can('ver_ots')
+                <li class="treeview">
+                    <a href="#"><i class='fuente-icon'>o</i> <span>{{ trans('texto_menu.ots') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                       @can('crear_ots')
+                        <li><a href="{{ url('crear_ot') }}">{{  trans('texto_menu.crear_ot') }}</a></li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcan
+
+            @can('ver_clientes')
+                <li class="treeview">
+                    <a href="#"><i class='fuente-icon'>a</i> <span>Clientes</span> <i class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        @can('crear_clientes')
+                        <li><a href="{{ url('crear_cliente') }}">Crear cliente</a></li>
+                        @endcan
+                        <li><a href="{{ url('listar_clientes') }}">Listar clientes</a></li>
+                    </ul>
+                </li>
+            @endcan
+            
             <li class="treeview">
-                <a href="#"><i class='fa fa-users'></i> <span>{{ trans('texto_menu.organizacion') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                    <li><a href="{{ url('roles') }}">{{  trans('texto_menu.crear_roles') }}</a></li>
-                </ul>
-            </li>
-            <li class="treeview">
-                <a href="#"><i class='fa  fa-user'></i> <span>{{ trans('texto_menu.usuarios') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <a href="#"><i class='fuente-icon'>e</i> <span>{{ trans('texto_menu.usuarios') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="{{ url('areas') }}">{{  trans('texto_menu.crear_areas') }}</a></li>
                     <li><a href="{{ url('crear_usuario') }}">{{  trans('texto_menu.crear_usuarios') }}</a></li>
@@ -59,27 +85,8 @@
 
              
             </li>
-            @can('ver_clientes')
-            <li class="treeview">
-                <a href="#"><i class='fa fa-address-card'></i> <span>Clientes</span> <i class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                    @can('crear_clientes')
-                    <li><a href="{{ url('crear_cliente') }}">Crear cliente</a></li>
-                    @endcan
-                    <li><a href="{{ url('listar_clientes') }}">Listar clientes</a></li>
-                </ul>
-            </li>
-            @endcan
-            @can('ver_ots')
-            <li class="treeview">
-                <a href="#"><i class='fa fa-folder-open'></i> <span>{{ trans('texto_menu.ots') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                   @can('crear_ots')
-                    <li><a href="{{ url('crear_ot') }}">{{  trans('texto_menu.crear_ot') }}</a></li>
-                    @endcan
-                </ul>
-            </li>
-            @endcan
+          
+         
         </ul><!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->

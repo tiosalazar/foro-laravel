@@ -3,7 +3,7 @@
   <div >
       <multiselect
       :options="roles"
-      :searchable="true" placeholder="Seleccione un Rol" select-label="" label="nombre" track-by="nombre"
+      :searchable="true" placeholder="Seleccione un Rol" select-label="" label="display_name" track-by="display_name"
       :options-limit="100"
       :allow-empty="false"
       @input="updateSelected"
@@ -39,7 +39,7 @@
       created: function(){
           this.fetchTips();
         console.log(this.refresh);
-        this.value={id: this.refresh.id, nombre: this.refresh.id_rol};
+        this.value={id: this.refresh.id, name: this.refresh.id_rol};
         this.id_rol=this.refresh.id;
        
       },

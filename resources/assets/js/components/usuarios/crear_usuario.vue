@@ -43,6 +43,11 @@
                     <input type="number" class="form-control" id="horas_usuario" name="horas_disponible" v-model="usuarios.horas_disponible"  placeholder="Horas Disponibles" v-validate data-vv-rules="required|decimal|max:30">
                      <span  class="help-block error_absolute" v-show="errors.has('horas_disponible')">{{ errors.first('horas_disponible') }}</span>
                  </div>
+                  <div class="form-group" v-bind:class="[errors_return.fecha_nacimiento,{ 'has-error': errors.has('fecha_nacimiento') }]">
+                    <label for="fecha_nacimiento">Fecha Nacimiento</label>
+                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" v-model="usuarios.fecha_nacimiento"  placeholder="Fecha nacimiento" v-validate data-vv-rules="required">
+                     <span  class="help-block error_absolute" v-show="errors.has('fecha_nacimiento')">{{ errors.first('fecha_nacimiento') }}</span>
+                 </div>
                   <div class="form-group" >
                     <label for="rol_usuario">Rol</label>
                     <select_rol :refresh="dato_refres"></select_rol>
@@ -108,7 +113,8 @@
             'password':'',
             'cargo':'',
             'telefono':'',
-            'horas_disponible':''
+            'horas_disponible':'',
+            'fecha_nacimiento':''
 
           },
         }

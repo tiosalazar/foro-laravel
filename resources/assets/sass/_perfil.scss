@@ -1,12 +1,64 @@
 .perfil-box{
+	.box_perfil{
+		padding-left: 0;
+		.box_perfil_foto{
+			padding-left: 0;
+			.box_perfil_foto_img{
+				padding-left: 0;
+			}
+			.box_perfil_foto_img-2{
+				height: 240px; 
+				width: 230px;
+				.editar_foto{
+				    float: right;
+					top: -30px;
+					right: 0px;
+					background-color: #15BAEE;
+					color: white;
+					margin: 5;
+					padding: 8px;
+					cursor: pointer;
+				}
+			}
+			
+		}
+		.header_perfil{
+			padding-top: 0;
+			padding-bottom: 4px;
+		}
+	}
 	border:  none;
-}
-
-.info_perfil{
+	padding: 4% 0 4% 0;
+	.nombre_user{
+		font-weight: bold;
+		margin-top: 0;
+	}
+	.area_user{
+		margin-top: 15px;
+	}
+	.cargo_user{
+		color: #BEBEBE;
+	}
+	.img_perfil{
+		height: 100%;
+	}
+	.info_perfil{
 	display: flex;
 	flex-direction: column;
-
-	strong{
-		margin-bottom: 10px;
+		strong{
+			margin-bottom: 8px;
+			color: #DCDCDC;
+			font-weight: normal;
+			i{
+				color: #06ACE2;
+			}
+			span{
+				color: black;
+				margin-left: 2%;
+			}
+		}
 	}
+
+	
 }
+

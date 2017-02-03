@@ -69,7 +69,10 @@ class UserController extends Controller
                 try 
                 {
                     $user->remember_token = str_random(60);
+
                     $user->save();
+                    $user->attachRole($request->roles_id); 
+
                       return response([
                             'status' => Response::HTTP_OK,
                             'response_time' => microtime(true) - LARAVEL_START,

@@ -3,7 +3,7 @@
 @import url(https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700);
 @font-face {
   font-family: 'iconforo';
-  src: url("/fonts/icon-foro.ttf");
+  src: url("/fonts/icon-foro.woff");
   /* IE9 Compat Modes */
 }
 
@@ -7802,8 +7802,14 @@ sub, sup {
   margin: 0 !important;
 }
 
-.iconos-foro {
-  font-family: icon-foro;
+body {
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.fuente-icon {
+  font-family: 'iconforo';
+  font-size: 18px;
+  font-style: normal;
 }
 
 .skin-blue .main-header .navbar {
@@ -7825,6 +7831,7 @@ sub, sup {
 .skin-blue .main-sidebar {
   background-color: #002E60;
   color: white;
+  font-size: 14px;
 }
 
 .skin-blue .main-sidebar .user-panel {
@@ -7842,6 +7849,10 @@ sub, sup {
   color: white;
 }
 
+.skin-blue .main-sidebar .sidebar-menu .treeview span {
+  margin-left: 5%;
+}
+
 .skin-blue .main-footer {
   background-color: #15BAEE;
   color: white;
@@ -7854,9 +7865,60 @@ sub, sup {
 
 .perfil-box {
   border: none;
+  padding: 4% 0 4% 0;
 }
 
-.info_perfil {
+.perfil-box .box_perfil {
+  padding-left: 0;
+}
+
+.perfil-box .box_perfil .box_perfil_foto {
+  padding-left: 0;
+}
+
+.perfil-box .box_perfil .box_perfil_foto .box_perfil_foto_img {
+  padding-left: 0;
+}
+
+.perfil-box .box_perfil .box_perfil_foto .box_perfil_foto_img-2 {
+  height: 240px;
+  width: 230px;
+}
+
+.perfil-box .box_perfil .box_perfil_foto .box_perfil_foto_img-2 .editar_foto {
+  float: right;
+  top: -30px;
+  right: 0px;
+  background-color: #15BAEE;
+  color: white;
+  margin: 5;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.perfil-box .box_perfil .header_perfil {
+  padding-top: 0;
+  padding-bottom: 4px;
+}
+
+.perfil-box .nombre_user {
+  font-weight: bold;
+  margin-top: 0;
+}
+
+.perfil-box .area_user {
+  margin-top: 15px;
+}
+
+.perfil-box .cargo_user {
+  color: #BEBEBE;
+}
+
+.perfil-box .img_perfil {
+  height: 100%;
+}
+
+.perfil-box .info_perfil {
   display: -webkit-box;
   display: flex;
   -webkit-box-orient: vertical;
@@ -7864,8 +7926,19 @@ sub, sup {
   flex-direction: column;
 }
 
-.info_perfil strong {
-  margin-bottom: 10px;
+.perfil-box .info_perfil strong {
+  margin-bottom: 8px;
+  color: #DCDCDC;
+  font-weight: normal;
+}
+
+.perfil-box .info_perfil strong i {
+  color: #06ACE2;
+}
+
+.perfil-box .info_perfil strong span {
+  color: black;
+  margin-left: 2%;
 }
 
 .boton_hidden {
