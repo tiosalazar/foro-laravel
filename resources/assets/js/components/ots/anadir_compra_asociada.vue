@@ -5,7 +5,7 @@
         <div style="    display: inline-block;">
               <div class="form-group col-md-2 col-xs-12">
                 <label class="sr-only" for="nombre_requerimiento">Item</label>
-                <select_tipo_compra></select_tipo_compra>
+                <select_tipo_compra  :index="index" :select="ed.tipo_compra"></select_tipo_compra>
               </div>
               <div class="form-group  col-md-3 col-xs-12" v-bind:class="{ 'has-error': errors.has('descipcion_compra'+index) }">
                 <label class="sr-only" for="descipcion_compra">Descripción</label>
@@ -22,7 +22,7 @@
                 <input type="text" :name="'valor_compra'+index"  @mouseover="guardarDatos" v-validate data-vv-rules="required|numeric" data-vv-as="Valor" v-model="ed.model_valor" class="form-control" :id="'valor_compra'+index"  placeholder="Valor">
                 <span  class="help-block" v-show="errors.has('valor_compra'+index)">{{ errors.first('valor_compra'+index) }}</span>
              </div>
-             <div class="form-group col-md-1 nopadding col-xs-6"><select class="form-control select2 "> <option value="1">PS</option> <option value="2">US</option></select> </div>
+             <div class="form-group col-md-1 nopadding col-xs-6"><select_divisa :index="index" :select="ed.divisa"></select_divisa> </div>
              <div class="form-group  col-md-1 col-xs-12">
                <button type="button" @click="deleteRequerimiento" class="btn btn-danger">Eliminar</button>
             </div>
@@ -55,8 +55,9 @@ import VueLocalStorage from 'vue-localstorage'
       data () {
           return {
           compra_asociada: [
-              {  model_desc:'', model_provedor:'',model_valor:''}
+              { tipo_compra:{id:'',nombre:'' }, model_desc:'', model_provedor:'',model_valor:'', divisa:{id:'',nombre:''}}
           ],
+          value:'',
           tipo_compra:[]
 
         }
@@ -64,7 +65,10 @@ import VueLocalStorage from 'vue-localstorage'
       created: function(){
           this.llenarCampos();
           this.$on('tipo_compra', function(v) {
-                this.tipo_compra=v;
+                  this.compra_asociada[v.index].tipo_compra=v.tipo_compra;
+          });
+          this.$on('divisa', function(v) {
+                  this.compra_asociada[v.index].divisa=v.divisa;
           });
       },
       methods: {
@@ -91,9 +95,9 @@ import VueLocalStorage from 'vue-localstorage'
            // var index = Object.keys(ingreso).length;
             //console.log(ingreso[index-1]);
            // ingreso[index-1].tipo_compra=this.$localStorage.get('tipo_compra');
+        //   console.log(this.compra_asociada);
             var datos=[{
-                compras:this.compra_asociada,
-                tipo_compra:this.tipo_compra//this.$localStorage.get('tipo_compra')
+                compras:this.compra_asociada
               }];
              //this.$localStorage.set('datos_compra_'+this.id_area,JSON.stringify(datos) );
               this.$parent.$emit('datos_compras',datos);
@@ -101,4 +105,5 @@ import VueLocalStorage from 'vue-localstorage'
      }
    }
        Vue.component('select_tipo_compra',require('../herramientas/select_tipo_compra.vue'));
+       Vue.component('select_divisa',require('../herramientas/select_divisas.vue'));
 </script>

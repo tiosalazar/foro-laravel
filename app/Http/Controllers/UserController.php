@@ -128,7 +128,7 @@ class UserController extends Controller
     {
          // Retorno consulta de join con la tabla areeas y roles para traer los nombres
          $user = User::
-            select('users.id','users.nombre','users.apellido','users.cargo','users.telefono','users.email','users.horas_disponible','roles.nombre as id_rol','areas.nombre as id_area','users.estado','areas.id as areas_id','roles.id as roles_id')->join('roles','roles.id','=','users.roles_id')->join('areas','areas.id','=','users.areas_id')->findOrFail($id);
+            select('users.id','users.nombre','users.apellido','users.cargo','users.telefono','users.email','users.horas_disponible','roles.name as id_rol','areas.nombre as id_area','users.estado','areas.id as areas_id','roles.id as roles_id')->join('roles','roles.id','=','users.roles_id')->join('areas','areas.id','=','users.areas_id')->findOrFail($id);
          //return response()->json($user);
          return view('admin.equipo.editar_usuario')->with('usuarioslist',$user);
     }

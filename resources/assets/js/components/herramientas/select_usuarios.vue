@@ -1,3 +1,6 @@
+<!--Componente para Seleccionar Usuarios  -->
+<!-- Autor: David Salazar  -->
+<!-- Fecha : Enero 2017  -->
 <template>
   <div>
   <div :class="{ 'select-error': isInvalid }">
@@ -13,6 +16,7 @@
       @close="onTouch"
       :option-height="104">
       </multiselect>
+        <!--Se deja un Hidden por si se va a implementar en un form no tener que hacer emits -->
       <input type="hidden"  :value="id_ejecutivo" name="id_ejecutivo">
     </div>
       <div style="padding:2px 0px;"  :class="{ 'has-error': isInvalid }" v-show="isInvalid">
@@ -25,13 +29,11 @@
 <script>
 
   import Multiselect from 'vue-multiselect'
-  import VueLocalStorage from 'vue-localstorage'
 
-  Vue.use(VueLocalStorage)
 
     module.exports= {
-       components: { Multiselect,VueLocalStorage},
-         props: ['area'],
+       components: { Multiselect},
+         props: ['area','select'], //en la propiedad select se va a meter la opción por defecto
            localStorage: {
                ejecutivo_seleccionado: {
                  type: Object,
@@ -46,10 +48,10 @@
       },
       computed:{
         value: function () {
-          return this.$localStorage.get('ejecutivo_seleccionado')
+          return this.select;
         },
         isInvalid () {
-          return (this.isTouched &&  this.$localStorage.get('ejecutivo_seleccionado')==null )?true:false
+          return (this.isTouched &&  this.value=="" )?true:false //Compruebo de que haya selecionado algo
         }
       },
       created: function(){
@@ -57,29 +59,45 @@
       },
       methods:{
           fetchTips: function(){
-               this.$http.get('api/v1/usuarios/'+this.area)
+            /*Si se necesita agregar más opciones de busqueda agregar un switch aquí */
+
+               this.$http.get('api/v1/usuarios/'+this.area) //Consulta a la Base de datos por GET
              .then(function(respuesta){
                      this.usuarios=respuesta.body;
              }.bind(this));
+
           },
+          /*
+           Funcion para organizar la visualización del select
+          */
         nameWithLang ({ nombre, apellido }) {
           return `${nombre} — ${apellido}`
         },
+        /*
+           Cuando se selecione algo se realiza la siguiente función
+         */
          updateSelected (newSelected) {
             if (newSelected != null && newSelected != undefined) {
              this.id_ejecutivo = newSelected.id;
-             this.$localStorage.set('ejecutivo_seleccionado', newSelected);
+             this.value=newSelected;
+            this.$parent.$emit('select_ejecutivo',newSelected);
            }else {
              this.id_ejecutivo = 0;
-             this.$localStorage.remove('ejecutivo_seleccionado');
+             this.$parent.$emit('select_clientes','');//emito la variable vasia para comprobar en el padre
            }
         },
+        /*
+          esta función se ejecuta cuando se remueve un tag
+        */
         removeSelected () {
            this.id_ejecutivo = 0;
-           this.$localStorage.remove('ejecutivo_seleccionado');
+           this.$parent.$emit('select_clientes','');//emito la variable vasia para comprobar en el padre
        },
+       /*
+         esta función se ejecuta cuando se da click fuera del cuadro de Dialogo
+       */
        onTouch () {
-        this.isTouched = (this.$localStorage.get('ejecutivo_seleccionado')==null )?true:false ;
+        this.isTouched = (this.value=="" )?true:false ;
       }
     }
   }

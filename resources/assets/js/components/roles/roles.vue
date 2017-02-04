@@ -1,5 +1,5 @@
 <template id="rol_list">
-   <div> 
+   <div>
       <div class="box box-default collapsed-box" id="main-app">
 
         <div class="box-header with-border">
@@ -10,31 +10,40 @@
            </div>
 
         </div>
-    
-      <div class="box-body">
-          <div  role="form" class="form-inline" action="#">
-                <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]">
-                    <label for="nombre_rol">Nombre</label>
-                    <input type="text" v-model="rolarray.nombre"  class="form-control" name="nombre" id="nombre_rol" placeholder="Nombre del rol"  v-validate data-vv-rules="required|alpha_num|min:5" >
-                   
-                </div>
 
+      <div class="box-body">
+          <div  role="form"  action="#">
+                <div class="form-group required" v-bind:class="[errors_return.name,{ 'has-error': errors.has('name') }]">
+                    <label for="nombre_rol">Nombre  <sup>*</sup> </label>
+                    <input type="text" v-model="rolarray.name"  class="form-control" name="name" id="nombre_rol" placeholder="Nombre logico del rol" data-vv-as="Nombre Logico" v-validate data-vv-rules="required|alpha_num|min:5" >
+                      <span  class="help-block" v-show="errors.has('name')">{{ errors.first('name') }}</span>
+                </div>
+                <div class="form-group required" v-bind:class="[errors_return.display_name,{ 'has-error': errors.has('display_name') }]">
+                    <label for="nombre_rol">Nombre a Mostrar   <sup>*</sup> </label>
+                    <input type="text" v-model="rolarray.display_name"  class="form-control" name="display_name" id="display_name_rol" data-vv-as="Nombre a mostrar" placeholder="Nombre del rol"  v-validate data-vv-rules="required|min:5" >
+                     <span  class="help-block" v-show="errors.has('display_name')">{{ errors.first('display_name') }}</span>
+                </div>
+                <div class="form-group required" v-bind:class="[errors_return.description,{ 'has-error': errors.has('description') }]">
+                    <label for="nombre_rol">Descripción </label>
+                    <textarea v-model="rolarray.description"  class="form-control" name="description" id="description_rol" placeholder="Descripción del rol"  >
+                      </textarea>
+                        <span  class="help-block" v-show="errors.has('description')">{{ errors.first('description') }}</span>
+                </div>
                 <div class="form-group">
                    <button class="btn btn-primary" v-on:click="crear_rol()">Guardar</button>
-                </div> 
-                <span  class="has-error" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span> 
+                </div>
 
             </div>
-                
-                         
+
+
       </div>
-      
+
     </div>
-   
+
       <listar-roles  :id_parent="id_rol_passing" ></listar-roles>
-   
+
     </div>
-    
+
 </template>
 
 <style>
@@ -57,7 +66,7 @@ import VeeValidate, { Validator } from 'vee-validate';
         require('./listar_roles.vue')
       );
 
-  
+
    module.exports= {
       components: {VeeValidate,Validator},
        data(){
@@ -72,11 +81,11 @@ import VeeValidate, { Validator } from 'vee-validate';
             timeOut: 5000,
             "positionClass": "toast-top-center",
             "closeButton": true
-          }        
+          }
         }
-        
-       },     
-        methods:{      
+
+       },
+        methods:{
          setErrors:function(object) {
           this.message='';
           var that = this;
@@ -84,20 +93,20 @@ import VeeValidate, { Validator } from 'vee-validate';
             that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
             that.errors_return[index] = 'has-warning';
           });
-        },    
-          crear_rol: function(e){   
+        },
+          crear_rol: function(e){
            this.$validator.validateAll();
             if (this.errors.any()) {
               return false
-            }         
-          var input = this.rolarray;            
+            }
+          var input = this.rolarray;
             this.$http.post('api/v1/roles',input)
-            .then(function(respuesta){ 
+            .then(function(respuesta){
                 var that = this;
                 that.message ='';
                 if (respuesta.status != '200') {
                    if (Object.keys(respuesta.body.request).length>0) {
-                   
+
                     $.each(respuesta.body.request, function(index, value) {
                       that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
                       that.errors_return[index] = 'has-warning';
@@ -107,8 +116,9 @@ import VeeValidate, { Validator } from 'vee-validate';
                 }else{
                   console.log(respuesta)
                   toastr.success(respuesta.body.msg,'',this.option_toast);
-                  this.id_rol_passing={'id':respuesta.body.obj.id,'nombre':respuesta.body.obj.nombre}; 
-                }           
+                  this.id_rol_passing={'id':respuesta.body.obj.id,'name':respuesta.body.obj.name,'display_name':respuesta.body.obj.display_name,'description':respuesta.body.obj.description};
+                  this.rolarray={};
+                }
             },(response) => {
                 console.log(response);
                 console.log('error');
@@ -123,11 +133,11 @@ import VeeValidate, { Validator } from 'vee-validate';
                 toastr.error(that.message,response.body.msg,this.option_toast);
               });
           }
-        
+
         }
 
     }
 
-      
-    
+
+
 </script>

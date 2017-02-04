@@ -36,5 +36,9 @@ Route::group(['prefix' => 'v1','middleware' => 'cors'], function () {
                  $tipo_compra= App\Tipos_Compra::all();
               return response()->json($tipo_compra);
         });
+    Route::get('divisas', function (Request $request) {
+                    $divisas= App\Divisa::all();
+                 return response()->json($divisas);
+           });
 
 });

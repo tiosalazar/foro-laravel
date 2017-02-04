@@ -7802,7 +7802,6 @@ sub, sup {
   margin: 0 !important;
 }
 
-<<<<<<< HEAD
 @media screen and (max-width: 768px) {
   .nopadding {
     padding: auto !important;
@@ -7810,9 +7809,6 @@ sub, sup {
   }
 }
 
-.iconos-foro {
-  font-family: icon-foro;
-=======
 body {
   font-family: 'Ubuntu', sans-serif;
 }
@@ -7821,7 +7817,6 @@ body {
   font-family: 'iconforo';
   font-size: 18px;
   font-style: normal;
->>>>>>> origin/bcaldas
 }
 
 .skin-blue .main-header .navbar {

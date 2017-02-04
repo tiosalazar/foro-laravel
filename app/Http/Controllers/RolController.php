@@ -32,7 +32,7 @@ class RolController extends Controller
      */
     public function create()
     {
-       
+
     }
 
     /**
@@ -48,19 +48,19 @@ class RolController extends Controller
         $vl=$this->validatorCrearRol($request->all());
       if ($vl->fails())
          {
-               // return response()->json($request->all());    
+               // return response()->json($request->all());
             return response([
                 'status' => Response::HTTP_BAD_REQUEST,
                 'response_time' => microtime(true) - LARAVEL_START,
                 'msg' => 'Error al crear el Rol',
                 'error' => 'ERR_01',
                 'obj' =>$vl->errors()
-                ],Response::HTTP_BAD_REQUEST);       
+                ],Response::HTTP_BAD_REQUEST);
          }else
-             {        
-                    $roles=new Role;  
+             {
+                    $roles=new Role;
                     $roles->fill($request->all());
-                try 
+                try
                 {
                      $roles->save();
                       return response([
@@ -78,7 +78,7 @@ class RolController extends Controller
                         'request' => $request->all()
                     ],Response::HTTP_BAD_REQUEST);
                }
-         }   
+         }
     }
 
     /**
@@ -91,7 +91,7 @@ class RolController extends Controller
     {
         $rol = Role::findOrFail($id);
         return response()->json($rol);
-    } 
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -114,13 +114,13 @@ class RolController extends Controller
     public function update(Request $request, $id)
     {
           $respuesta=[];
-                    try 
-                    {       
+                    try
+                    {
                     //Validaciòn de las entradas por el metodo POST
-                    $vl=$this->validatorCrearRol($request->all());
+                    $vl=$this->validatorUpdateRol($request->all());
                          if ($vl->fails())
                             {
-                               return response()->json($vl->errors());        
+                               return response()->json($vl->errors());
                             }else
                                 {
                                 //Busca el usuario en la BD
@@ -143,7 +143,7 @@ class RolController extends Controller
                        $respuesta["consola"]=$e;
                        $respuesta["msg"]="Fallo al editar";
                        $respuesta["request"]=$request->all();
-                       
+
                    }
         return response()->json($respuesta);
     }
@@ -159,14 +159,25 @@ class RolController extends Controller
         //
     }
 
-   /*DSO 24-01-2016 Funcion para validar los campos al ingreso de un usuario 
+   /*DSO 24-01-2016 Funcion para validar los campos al ingreso de un usuario
     * entra el arreglo de datos
     * Sale un arreglo con los errores.
-    */   
+    */
    protected function validatorCrearRol(array $data)
     {
         return Validator::make($data, [
-            'nombre' => 'required|min:4',
+            'name' => 'required|min:4',
+            'display_name' => 'required|min:4',
         ]);
     }
+    /*DSO 24-01-2016 Funcion para validar los campos al ingreso de un usuario
+     * entra el arreglo de datos
+     * Sale un arreglo con los errores.
+     */
+    protected function validatorUpdateRol(array $data)
+     {
+         return Validator::make($data, [
+             'display_name' => 'required|min:4',
+         ]);
+     }
 }

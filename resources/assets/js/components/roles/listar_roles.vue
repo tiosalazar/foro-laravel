@@ -3,7 +3,7 @@
 
 <div>
   		<div class="box">
-      
+
             <div class="box-header">
               <h3 class="box-title">Listado de Roles</h3>
             </div>
@@ -12,18 +12,21 @@
               <table class="table table-striped" >
                 <tbody>
                 <tr>
-                  <th class="col-md-2">Nombre</th>
-                  <th class="col-md-9">Edicion</th>                
+                  <th class="col-md-3">Nombre lógico</th>
+                  <th class="col-md-3">Nombre a Mostrar</th>
+                  <th class="col-md-3">Descripción</th>
+                  <th class="col-md-3 text-center">Edicion</th>
                 </tr>
-                
+
                   <tr v-for="listrol in listroles" >
-                   
-                      <td class="col-md-2">{{listrol.nombre}}</td>
-                      <td class="col-md-9"><button class="btn btn-warning btn-xs edicion_rol" data-toggle="modal" data-target="#myModal_rol" :id_rol="listrol.id" @click="pasardatosmodal(listrol.id,listrol.nombre)">Editar</button></td>
-                  
+                      <td class="col-md-3">{{listrol.name}}</td>
+                      <td class="col-md-3">{{listrol.display_name}}</td>
+                      <td class="col-md-3">{{listrol.description}}</td>
+                      <td class="col-md-5 text-center"><button class="btn  btn-warning btn-xs edicion_rol" data-toggle="modal" data-target="#myModal_rol" :id_rol="listrol.id" @click="pasardatosmodal(listrol.id,listrol.name,listrol.display_name,listrol.description)">Editar</button></td>
+
                   </tr>
-              
-              
+
+
               </tbody></table>
             </div>
             <!-- /.box-body -->
@@ -42,18 +45,24 @@
                         <h4 class="modal-title">Edición de Rol</h4>
                       </div>
                       <div class="modal-body">
-                     
+                          <div class="form-group">
                         <label for="id_rol_edit">ID</label>
                         <input type="text" class="form-control" id="id_rol_edit" v-model="id_rol_edit" disabled>
-
-                        <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]">
-                        <label for="nombre_rol_edit">Editar nombre del rol</label>
-                        <input type="text" class="form-control" id="nombre_rol_edit" name="nombre"v-model="nombre_rol_edit.nombre" placeholder="Nuevo nombre" v-validate data-vv-rules="required|alpha_num|min:5">
+                          </div>
+                        <div class="form-group required" v-bind:class="[errors_return.display_name,{ 'has-error': errors.has('display_name') }]">
+                        <label for="nombre_rol_edit">Editar nombre del rol <sup>*</sup></label>
+                        <input type="text" class="form-control" id="nombre_rol_edit" name="display_name" v-model="nombre_rol_edit.display_name" placeholder="Nuevo nombre" v-validate data-vv-rules="required|alpha_num|min:5">
+                          <span  class="help-block" v-show="errors.has('display_name')">{{ errors.first('display_name') }}</span>
                         </div>
 
-                        <span  class="help-block" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span> 
+                        <div class="form-group required" v-bind:class="[errors_return.description,{ 'has-error': errors.has('description') }]">
+                            <label for="nombre_rol">Descripción </label>
+                            <textarea v-model="nombre_rol_edit.description" class="form-control" name="description" id="description_rol" placeholder="Descripción del rol"  >
+                              </textarea>
+                                <span  class="help-block" v-show="errors.has('description')">{{ errors.first('description') }}</span>
                       </div>
-                       
+                      </div>
+
                       <div class="modal-footer">
                         <button type="submit" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
                         <button type="button" class="btn btn-primary " id="save_edit_rol" @click="updaterol" >Guardar</button>
@@ -81,7 +90,7 @@ import VeeValidate, { Validator } from 'vee-validate';
        props: ['rolname','id_parent'],
 
        created: function(){
-          this.consumerApi_listRol();    
+          this.consumerApi_listRol();
        },
        data(){
           return{
@@ -96,9 +105,9 @@ import VeeValidate, { Validator } from 'vee-validate';
             errors_return:{
             'nombre':''
             }
-         
+
           }
-          
+
        },
           watch : {
             id_parent : function (value) {
@@ -111,45 +120,52 @@ import VeeValidate, { Validator } from 'vee-validate';
               .then(function(respuesta){
                 this.listroles=respuesta.body;
               });
-          }, 
-          pasardatosmodal:function(id,nombre){
-            
+          },
+          pasardatosmodal:function(id,name,display_name,description){
+
             this.id_rol_edit=id;
-            this.nombre_rol_edit.nombre=nombre;
-          }, 
+            this.nombre_rol_edit.name=name;
+            this.nombre_rol_edit.display_name=display_name;
+            this.nombre_rol_edit.description=description;
+          },
           updaterol:function(){
-              
+
               this.$validator.validateAll();
               if (this.errors.any()) {
                 return false
               }
 
-             
+
             var idmodal=this.id_rol_edit;
             var nombremodal=this.nombre_rol_edit.nombre;
-            
-          
-            this.$http.put('/api/v1/roles/'+idmodal+'',{nombre: nombremodal})
+            var display_namemodal=this.nombre_rol_edit.display_name;
+            var descriptionmodal=this.nombre_rol_edit.description;
+
+
+            this.$http.put('/api/v1/roles/'+idmodal+'',{display_name:  display_namemodal,description: descriptionmodal})
             .then(function(respuesta){
-             
+
                 var that = this;
                 that.message ='';
                if (respuesta.status != '200') {
                   if (Object.keys(respuesta.body.request).length>0) {
-                   
+
                     $.each(respuesta.body.request, function(index, value) {
                       that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
                       that.errors_return[index] = 'has-warning';
                     });
                   }
-                 
+
                   toastr.warning(that.message,respuesta.body.msg,this.option_toast);
                 }else{
-                  
+
                   //Cambion el front con los datos editados
-                   for (var i = 0; i < this.listroles.length; i++) { 
+                   for (var i = 0; i < this.listroles.length; i++) {
                       if (this.listroles[i].id==respuesta.body.id) {
-                         this.listroles[i].nombre=respuesta.body.nombre.nombre;
+                        console.log(respuesta.body);
+                         //this.listroles[i].name=respuesta.body.name.name;
+                         this.listroles[i].display_name=respuesta.body.nombre.display_name;
+                         this.listroles[i].description=respuesta.body.nombre.description;
                       }
                     }
                     console.log(respuesta);
@@ -160,7 +176,7 @@ import VeeValidate, { Validator } from 'vee-validate';
                       console.log('pruena')
                       toastr.error(respuesta.body.nombre,'',this.option_toast);
                     }
-                    
+
                 }
 
             },(response) => {
@@ -175,12 +191,11 @@ import VeeValidate, { Validator } from 'vee-validate';
                 }
               toastr.error(that.message,response.body.msg,this.option_toast);
             });
-            
-          }         
+
+          }
 
         }
 
 
     }
 </script>
-

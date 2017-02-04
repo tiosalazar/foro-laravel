@@ -68,7 +68,7 @@
                 </div>
                 </div>
               </div>
-         </div> 
+         </div>
 
 			</div>
 		</div>
@@ -130,13 +130,13 @@
 		            this.horas_totales=parseInt(v);
 		            var resta_anterior=0;
 		            resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras();
-		            console.log(resta_anterior);
+		          //  console.log(resta_anterior);
 		            this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
 		          });
 				this.$on('horas_area', function(v) {
                      /* var total= horas_disponibles-this.nhoras;
                     this.$localStorage.set('h_Disponibles',total);*/
-				   this.h_area=parseInt(v); 
+				   this.h_area=parseInt(v);
 				      var resta_anterior=0;
 		            resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras();
 		            console.log(resta_anterior);
@@ -147,11 +147,11 @@
 		          });
 				this.$on('datos_compras', function(v) {
 		            this.datos_compras=v;
-		            console.log(this.datos_compras);
+		          //  console.log(this.datos_compras);
 		          });
 			  this.$on('form_requerimiento_validado', function(v) {
 		            this.form_requerimiento_validado=v;
-		          });	
+		          });
 			},
 			methods:{
 				fetchTips: function(){
@@ -194,15 +194,15 @@
 					//var total=	this.horas_totales -total_a_restar;
 					return total_a_restar;
 					//this.h_pasadas= (this.$localStorage.get('h_Disponibles') > total)?true:false;
-				} 
+				}
 
-				return false;	
+				return false;
 			   },
 					tabs_areas:function(e,id){
 						e.stopPropagation()
 						this.id_tab=id;
 						$('.editarModal').modal('show');
-					},				
+					},
 			          seguir:function(e){
 			          	console.log("entre : "+this.id_tab);
 			          	$('[data-id~="tab_'+this.id_tab+'"]').trigger('click')
@@ -212,8 +212,8 @@
 
                    var index = Object.keys(this.datos_requerimiento).length;
                    var requerimientos =this.datos_requerimiento;
-                 
-                  
+
+
 					if ( index == 0) {
 						toastr.error("Todos los campos son obligatorios","Error al Guardar Requerimientos",this.option_toast);
 						return false;
@@ -232,7 +232,7 @@
 							   this.validar_requerimientos=false;
 						//}
 					}
-				
+
 
 
 					/*var data_req=this.$localStorage.get('datos_requerimiento_'+id);
