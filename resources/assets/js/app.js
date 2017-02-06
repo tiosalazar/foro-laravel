@@ -26,7 +26,6 @@ Vue.component('formulario_anadir_requerimiento', require('./components/ots/formu
 //Fin Componentes Dsalazar
 //Componentes Bcaldas
 Vue.component('form_usuarios', require('./components/usuarios/crear_usuario.vue'));
-Vue.component('cambiar_foto_usuario', require('./components/usuarios/cambiar_foto_usuario.vue'));
 Vue.component('list_usuarios', require('./components/usuarios/listar_usuario.vue'));
 Vue.component('roles', require('./components/roles/roles.vue'));
 Vue.component('areas', require('./components/areas/areas.vue'));

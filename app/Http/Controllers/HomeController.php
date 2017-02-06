@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Role;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Illuminate\Support\Facades\Input;
+use Intervention\Image\ImageManager;
+use Storage;
+
+
 
 /**
  * Class HomeController
@@ -28,7 +33,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -38,22 +43,18 @@ class HomeController extends Controller
      */
     public function index()
     {
-      //  $user =  User::findOrfail(1);
-        // role attach alias
-        //$user->attachRole(2); // parameter can be an Role object, array, or id
-
-        // or eloquent's original technique
-        //$user->roles()->attach(2); // id only
-
-       // var_dump($user->role());
-       // $rol = Role::findOrfail(12);
-       //var_dump($rol->User);
-        
-        //$area= $user->area;
-        //var_dump($area->nombre);
-
+     
       //  var_dump($user);
+       // $imgperfil = Storage::get('public/avatars/Desarrollo1.png');
+
+      if (isset($imgperfil)) {
+        $imgperfil_url='esta';
+      }else{
+       $imgperfil_url='no está';
+      }
+  
         $userauth = Auth::user()->area->id;
+      
         $role=Role::where('name','coordinador')->get();
         $userdata= User::where('roles_id',$role[0]->id)
                     ->where('areas_id', $userauth)->get();
@@ -64,6 +65,38 @@ class HomeController extends Controller
             $user='No asignado';
         }
 
-        return view('adminlte::home')->with('user_encargado',$user);
+        return view('adminlte::home')->with('user_encargado',$user)->with('img',$imgperfil_url);
+    }
+
+      public function SubirImagen(Request $request)
+    {
+
+      $user_actual=Auth::user()->nombre;
+      $user_id_actual=Auth::user()->id;
+
+      //NOmbre
+       $nombre= $user_actual. $user_id_actual;
+
+      //Archivo
+      $file= request()->file('image');
+
+      //Extension
+      $ext=$file->guessClientExtension();
+
+      //Guardar
+      $file->storeAs('/avatars/',$nombre.'.'.$ext,'public');
+     // request()->file('image')->store('avatars'); 
+      
+
+
+        // $path=public_path('uploads/'.$nombre);
+       // $url='/uploads/'.$nombre;
+       // $image=Image::make($file->getRealPatch());
+       // $image->save($path);
+       // return back(); 
+       // return '<img> srce="'.$url.'"/> ';
+
+      return back(); 
+
     }
 }

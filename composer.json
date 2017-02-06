@@ -10,7 +10,9 @@
         "acacha/admin-lte-template-laravel": "3.*",
         "caouecs/laravel-lang": "~3.0",
         "barryvdh/laravel-cors": "^0.8.2",
-         "tymon/jwt-auth": "dev-develop",
+        "tymon/jwt-auth": "dev-develop",
+        "laravelcollective/html":"^5.3.0",
+        "intervention/image":"^2.3.11",
         "laravel/passport": "^1.0",
         "zizaco/entrust": "dev-master#6a0fd8c3b73037b4855c6c4eaf1060788c0df1e9"
     },

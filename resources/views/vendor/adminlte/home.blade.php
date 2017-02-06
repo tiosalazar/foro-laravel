@@ -6,8 +6,24 @@
 
 
 @section('main-content')
-	
-	<cambiar_foto_usuario></cambiar_foto_usuario>
+
+
+	   <div class="modal fade" id="image_upload">
+	   {!! Form::open(['url' => 'usuariosuploadimagen', 'method' => 'POST' ,'files' => true]) !!}
+		    {{ Form::file('image', ['class' => 'field']) }}
+		    {{ Form::submit('Cambiar Imagen') }}
+		 {!! Form::close() !!} 
+	  </div>
+
+<?php 
+
+	echo $img;
+?>
+{{-- @if(file_exists(storage_path('avatars/Desarrollo1.png'))) --}}
+	<img src="{{ Storage::url('avatars/Desarrollo1.png') }}" alt="">
+{{-- @else --}}
+	{{-- <img src="{{asset('images/perfil.jpg')}}" alt=""> --}}
+{{-- @endif --}}
 
 
 	<div class="container-fluid spark-screen">
@@ -25,7 +41,7 @@
 							<div class="col-md-5 box_perfil_foto_img">
 					            <div class="box_perfil_foto_img-2" >
 					            	<img src="{{asset('images/perfil.jpg')}}" class="img-responsive img_perfil">
-					            	<i class="glyphicon glyphicon-pencil editar_foto"  data-target="#myModal_perfil" data-toggle="modal"  title="Cambiar Imagen"></i>
+					            	<i class="glyphicon glyphicon-pencil editar_foto"  data-target="#image_upload" data-toggle="modal"  title="Cambiar Imagen"></i>
 					            </div>
 							</div>
 							<div class="col-md-7">
