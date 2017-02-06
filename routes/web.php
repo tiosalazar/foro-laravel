@@ -18,6 +18,8 @@ Route::get('/', function () {
 
 Route::get('/console','UserController@AgregarRoll');
 
+
+
 Route::group(['middleware' => 'auth'], function () {
     //    Route::get('/link1', function ()    {
 //        // Uses Auth Middleware
@@ -25,6 +27,11 @@ Route::group(['middleware' => 'auth'], function () {
  
 
    Route::get('/','HomeController@index');
+
+   //Ruta para cargar imagen de perfil
+  Route::post('/usuariosuploadimagen','HomeController@SubirImagen');
+
+   
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
@@ -67,6 +74,8 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::get('editar_usuario/{id}','UserController@editar_usuario');
+
+    
 
 });
 

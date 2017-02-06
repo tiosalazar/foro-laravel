@@ -11,6 +11,7 @@ use App\Http\Requests\StoreUsers;
 use Illuminate\Http\Response;
 use Exception;
 
+
 class UserController extends Controller
 {
     /**
@@ -257,4 +258,8 @@ class UserController extends Controller
         var_dump($user[0]->display_name);
         //return view('adminlte::home',array('usuario' =>$user));
     }
+
+    
+
+   
 }
