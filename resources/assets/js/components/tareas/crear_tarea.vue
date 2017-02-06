@@ -56,17 +56,35 @@
               	<select_prioridad></select_prioridad>
               </div>
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Email address</label>
-                  <input type="email" class="form-control"  id="exampleInputEmail1" v-model="tarea.name" name="name" placeholder="Enter email">
+					<label for="ot">Fase del Projecto</label>
+                	<select_fase></select_fase>
+	            </div>
+	            <div class="form-group">
+					<label for="ot">Área</label>
+                	<select_area  :refresha="refresh"></select_area>
+	            </div>
+				<label for="ot">Fecha entrega cliente</label>
+				<div class="input-group date">
+					<div class="input-group-addon">
+						<i class="fa fa-calendar"></i>
+					</div>
+					<datepicker language="es"  id="fecha_fin" required="required" placeholder="Fecha fin" v-model="fecha_fin" class="form-control"  name="fecha_fin" format="dd-MM-yyyy"></datepicker>
+				</div>
+				<div class="form-group">
+                  <label for="nombre_solicitud">Nombre de la Solicitud</label>
+                  <input type="text" class="form-control"  id="nombre_solicitud" v-model="tarea.name" name="name" placeholder="Solicitud">
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputPassword1">Password</label>
-                  <input type="password" class="form-control"  name="password"  id="exampleInputPassword1" placeholder="Password">
+                  <label for="descripcion">Descripción</label>
+                  <textarea class="form-control" rows="3"  name="descripcion"  id="descripcion" v-model="tarea.descripcion" placeholder="Descripción"></textarea>
                 </div>
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox"> Check me out
-                  </label>
+                <div class="form-group">
+                  <label for="ruta_serve">Ruta del server</label>
+                  <textarea class="form-control" rows="3" name="ruta_serve"  id="ruta_serve" v-model="tarea.ruta_serve" placeholder="Ruta del server"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="ruta_serve">Ruta del server</label>
+                  <select_estados tipo_estado="1"  :select="tarea.estado" ></select_estados>
                 </div>
               </div>
               <!-- /.box-body -->
@@ -77,13 +95,17 @@
             </form>
 </template>
 <script>
+import Datepicker from 'vuejs-datepicker';
     module.exports = {
+    components: {Datepicker},
       data(){
         return{
           // usuarios:[],
           tarea:{},
           ot:{},
           current_date:'',
+          refresh:'',
+          fecha_fin:''
         }
        },
         created: function() {
@@ -136,6 +158,9 @@
             console.log('Component ready.')
         }
     }
+    Vue.component('select_estados',require('../herramientas/select_estado.vue'));
+    Vue.component('select_area',require('../herramientas/select_area.vue'));
+    Vue.component('select_fase',require('../herramientas/select_fase.vue'));
     Vue.component('select_prioridad',require('../herramientas/select_prioridad.vue'));
     Vue.component('select_ot',require('../herramientas/select_ot.vue'));
     Vue.component('select_area',require('../herramientas/select_area.vue'));

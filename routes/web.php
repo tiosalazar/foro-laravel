@@ -44,6 +44,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/crear_tarea', function () {
            return view('admin.tareas.crear_tarea');
     });
+    Route::get('/list_fases','FaseController@listFases');
+
+    // Usuarios
 
     Route::get('/usuarios', function () {
            return view('admin.equipo.usuarios');

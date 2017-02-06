@@ -20,7 +20,7 @@ class Planeacion_fase extends Model
   */
   public function Tipos_planeacion()
   {
-    return $this->belongsTo('App\Planeacion_tipo');
+    return $this->belongsTo('App\Planeacion_tipo','planeacion_tipos_id','id');
   }
   /**
   * Obtiene las Tareas que posee un Estado
