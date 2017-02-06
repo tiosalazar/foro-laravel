@@ -20,6 +20,6 @@ class Planeacion_tipo extends Model
   */
   public function Fases_planeacion()
   {
-    return $this->hasMany('App\Planeacion_fase');
+    return $this->hasMany('App\Planeacion_fase','planeacion_tipos_id','id');
   }
 }
