@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Ot;
+use App\Tiempos_x_Area;
+use App\Requerimientos_Ot;
+use App\Compras_Ot;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -49,22 +52,43 @@ class OtController extends Controller
     {
            $respuesta=[];
        //Validaciòn de las entradas por el metodo POST
-        $vl=$this->validatorCrearOT($request->all());
+        $data= $request->all();
+        
+        $vl=$this->validatorCrearOT($data['datos_encabezado']);
       if ($vl->fails())
          {
-               return response()->json($request->all());
+                return response()->json($vl->errors());
          }else
-             {
-                    $ot=new Ot;
-                    $ot->fill($request->all());
+             {    
+ 
                 try
                 {
-                     $ot->save();
+                    /*DB::transaction(function()
+                      {*/
+                       $ot=new Ot;
+
+                         $ot->fill($data['datos_encabezado']);
+                         $ot->save();
+
+                         $tiempos_x_area= new Tiempos_x_Area;
+                         $requerimientos = new Requerimientos_Ot;
+                          $requerimientos=$data['requerimientos'][0];
+                         foreach ($requerimientos['requerimientos'] as  $value) {
+                            $requerimientos->nombre=$value['model_nom'];
+                            $requerimientos->horas=$value['horas'];
+                            $requerimientos->ots_id= $ot->id;
+                            $requerimientos->save();
+
+                         }
+                    // });
+
                       return response([
                             'status' => Response::HTTP_OK,
                             'response_time' => microtime(true) - LARAVEL_START,
-                            'rol' => $ot
+                            'debug' => "hola",
+                            //'ot' => $ot
                         ],Response::HTTP_OK);
+
                 }catch(Exception $e){
                     return response([
                         'status' => Response::HTTP_BAD_REQUEST,
@@ -75,6 +99,7 @@ class OtController extends Controller
                     ],Response::HTTP_BAD_REQUEST);
                }
          }
+         
     }
 
     /**

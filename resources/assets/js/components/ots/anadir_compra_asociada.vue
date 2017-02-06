@@ -45,12 +45,24 @@
 <script>
 
 module.exports={
-  props: ['area','id_area'],
+  props: ['area','id_area','realizar_validado'],
   data () {
     return {
       compra_asociada: [
         { tipo_compra:{id:'',nombre:'' }, model_desc:'', model_provedor:'',model_valor:'', divisa:{id:'',nombre:''}}
       ]
+    }
+  },
+  watch: {
+      realizar_validado:function(){
+      if (this.realizar_validado==true) {
+        this.$validator.validateAll();
+        if (!this.errors.any()) {
+          this.$parent.$emit('form_compras_validado',true);
+        }else{
+          this.$parent.$emit('form_compras_validado',false);
+        }
+      }
     }
   },
   created: function(){
