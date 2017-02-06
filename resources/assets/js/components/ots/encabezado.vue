@@ -14,7 +14,7 @@
 					<div class="form-group required ">
 						<label for="num_ot" class="col-sm-4 control-label "># OT  <sup>*</sup></label>
 						<div class="col-sm-8" v-bind:class="{ 'has-error': errors.has('num_ot') }">
-							<input type="text"  name="num_ot" v-validate data-vv-rules="required|alpha_num|min:3" data-vv-as="# OT" v-model="datos_encabezado.num_ot" class="form-control" id="num_ot" placeholder="Numero OT">
+							<input type="text"  name="referencia" v-validate data-vv-rules="required|alpha_num|min:3" data-vv-as="# OT" @mouseout="guardarDatos" v-model="datos_encabezado.num_ot" class="form-control" id="num_ot" placeholder="Numero OT">
 							<span  class="help-block" v-show="errors.has('num_ot')">{{ errors.first('num_ot') }}</span>
 						</div>
 					</div>
@@ -27,7 +27,7 @@
 					<div class="form-group required">
 						<label for="name_proyecto" class="col-sm-4 ">Proyecto   <sup>*</sup></label>
 						<div class="col-sm-8"  v-bind:class="{ 'has-error': errors.has('name_proyect') }">
-							<input type="text" name="name_proyect" class="form-control" v-validate data-vv-rules="required|min:5" data-vv-as="Proyecto" required="required"  v-model="datos_encabezado.name_proyect" id="name_proyecto" placeholder="Nombre del Proyecto">
+							<input type="text" name="name_proyect" class="form-control" v-validate data-vv-rules="required|min:5"  @mouseout="guardarDatos" data-vv-as="Proyecto" required="required"  v-model="datos_encabezado.name_proyect" id="name_proyecto" placeholder="Nombre del Proyecto">
 							<span  class="help-block" v-show="errors.has('name_proyect')">{{ errors.first('name_proyect') }}</span>
 						</div>
 					</div>
@@ -43,14 +43,14 @@
 					<div class="form-group required">
 						<label for="valor_total" class="col-sm-4 ">Valor Total <sup>*</sup></label>
 						<div class="col-sm-8" v-bind:class="{ 'has-error': errors.has('valor_total') }">
-							<input type="text" name="valor_total" v-validate data-vv-rules="required|numeric|min:4" data-vv-as="Valor Total" class="form-control" required="required"  v-model="datos_encabezado.valor_total" id="valor_total" placeholder="Valor Total">
+							<input type="text" name="valor_total" v-validate data-vv-rules="required|numeric|min:4"  @mouseout="guardarDatos" data-vv-as="Valor Total" class="form-control" required="required"  v-model="datos_encabezado.valor_total" id="valor_total" placeholder="Valor Total">
 							<span  class="help-block" v-show="errors.has('valor_total')">{{ errors.first('valor_total') }}</span>
 						</div>
 					</div>
 					<div class="form-group required">
 						<label for="horas_totales" class="col-sm-4 ">Horas Totales  <sup>*</sup></label>
 						<div class="col-sm-8" v-bind:class="{ 'has-error': errors.has('horas_totales') }">
-							<input type="text" class="form-control" @input="llenar_horas_totales" required="required" name="horas_totales"  v-validate data-vv-rules="required|decimal:1|max:10|min:1" data-vv-as="Horas Totales" v-model="datos_encabezado.horas_totales"  id="horas_totales" placeholder="Numero de Totales">
+							<input type="text" class="form-control" @input="llenar_horas_totales" required="required"  @mouseout="guardarDatos" name="horas_totales"  v-validate data-vv-rules="required|decimal:1|max:10|min:1" data-vv-as="Horas Totales" v-model="datos_encabezado.horas_totales"  id="horas_totales" placeholder="Numero de Totales">
 							<span  class="help-block" v-show="errors.has('horas_totales')">{{ errors.first('horas_totales') }}</span>
 						</div>
 					</div>
@@ -76,7 +76,7 @@
 								<div class="input-group-addon">
 									<i class="fa fa-calendar"></i>
 								</div>
-								<datepicker language="es" id="fecha_inicio" required="required" v-validate data-vv-rules="required" data-vv-as="Fecha de Inicio" placeholder="Fecha inicio"  :disabled="state.disabled" v-model="datos_encabezado.fecha_inicio" name="fecha_inicio" class="form-control"  format="dd-MM-yyyy"></datepicker>
+								<datepicker language="es" id="fecha_inicio" required="required" v-validate data-vv-rules="required"  @mouseout="guardarDatos" data-vv-as="Fecha de Inicio" placeholder="Fecha inicio"  :disabled="state.disabled" v-model="datos_encabezado.fecha_inicio" name="fecha_inicio" class="form-control"  format="dd-MM-yyyy"></datepicker>
 							</div>
 								<span  class="help-block" v-show="errors.has('fecha_inicio')">{{ errors.first('fecha_inicio') }}</span>
 						</div>
@@ -88,18 +88,18 @@
 								<div class="input-group-addon" >
 									<i class="fa fa-calendar"></i>
 								</div>
-								<datepicker language="es"  id="fecha_fin" required="required"  v-validate data-vv-rules="required" data-vv-as="Fecha de finalización" placeholder="Fecha fin"  :disabled="state.disabled" v-model="datos_encabezado.fecha_fin" class="form-control"  name="fecha_fin" format="dd-MM-yyyy"></datepicker>
+								<datepicker language="es"  id="fecha_fin" required="required"  @mouseout="guardarDatos"  v-validate data-vv-rules="required" data-vv-as="Fecha de finalización" placeholder="Fecha fin"  :disabled="state.disabled" v-model="datos_encabezado.fecha_fin" class="form-control"  name="fecha_fin" format="dd-MM-yyyy"></datepicker>
 							</div>
 							<span  class="help-block" v-show="errors.has('fecha_fin')">{{ errors.first('fecha_fin') }}</span>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-6 col-xs-5">
-					<div class="form-group required" v-bind:class="{ 'has-error': h_pasadas }">
+					<div class="form-group required" v-bind:class="{ 'has-error': datos_encabezado.h_pasadas }">
 						<label for="horas_disponibles" class="col-sm-4 " >Horas Disponibles <sup>*</sup></label>
 						<div class="col-sm-6">
 							<input type="text" class="form-control" required="required"  id="horas_disponibles" v-model="horas_disponibles" disabled placeholder="Numero de Horas Disponibles">
-							<span  class="help-block" v-show="h_pasadas">Se ha pasado del numero de horas permitidas para el Area</span>
+							<span  class="help-block" v-show="datos_encabezado.h_pasadas">Se ha pasado del numero de horas permitidas para el Area</span>
 						</div>
 					</div>
 				</div>
@@ -142,8 +142,8 @@ module.exports= {
 				valor_total:'',
 				horas_totales:'',
 				fecha_fin:'',
+				h_pasadas:false,
 			},
-			h_pasadas:false,
 			option_toast:{
 				timeOut: 5000,
 				"positionClass": "toast-top-center",
@@ -160,7 +160,7 @@ module.exports= {
 	},
 	watch:{
 		horas_disponibles:function(){
-			this.h_pasadas= (this.horas_disponibles < 0 )?true:false;
+			this.datos_encabezado.h_pasadas= (this.horas_disponibles < 0 )?true:false;
 		}
 	},
 	created: function(){
@@ -200,6 +200,7 @@ module.exports= {
 				}
 				this.datos_encabezado=arreglo_Datos;
 				this.$parent.$emit('horas_totales',this.datos_encabezado.horas_totales);//Envio de total de Horas
+				this.$parent.$emit('datos_encabezado',arreglo);//Emite los datos al padre
 			}
 
 		},
@@ -208,6 +209,24 @@ module.exports= {
 		*/
 		llenar_horas_totales:function () {
 			this.$parent.$emit('horas_totales',this.datos_encabezado.horas_totales);
+		},
+		/*
+     Le envia constantemente los datos al padre, por si la persona no le da en guardar Avance
+		 */
+		guardarDatos: function () {
+			var datos_encabezado={
+				num_ot:this.datos_encabezado.num_ot,
+				name_proyect:this.datos_encabezado.name_proyect,
+				valor_total:this.datos_encabezado.valor_total,
+				horas_totales:this.datos_encabezado.horas_totales,
+				fecha_fin:this.datos_encabezado.fecha_fin,
+				fecha_inicio:this.datos_encabezado.fecha_inicio,
+				cliente:this.datos_encabezado.cliente,
+				estado:this.datos_encabezado.estado,
+				ejecutivo:this.datos_encabezado.ejecutivo,
+				h_pasadas:this.datos_encabezado.h_pasadas
+			};
+			  this.$parent.$emit('datos_encabezado',datos_encabezado);//Emite los datos al padre
 		},
 		/*
     Función Submit de guardar el formulario
@@ -224,13 +243,20 @@ module.exports= {
 						fecha_fin:this.datos_encabezado.fecha_fin,
 						fecha_inicio:this.datos_encabezado.fecha_inicio,
 						cliente:this.datos_encabezado.cliente,
-						estado:this.datos_encabezado.ejecutivo,
-						ejecutivo:this.datos_encabezado.estado
+						estado:this.datos_encabezado.estado,
+						ejecutivo:this.datos_encabezado.ejecutivo,
+						h_pasadas:this.datos_encabezado.h_pasadas
 					};
+					/*Compruebo que no se haya pasado de las horas*/
+					if(datos_encabezado.h_pasadas ==true){
+						toastr.error('El Resúmen de horas no puede dar negativo',"Error al guardar los datos",this.option_toast);
+						return false;
+					}
 					/*Compruebo los datos, si todo esta bien se guardan en LocalStorage*/
-					if(this.validarDatos(datos_encabezado) ==true){
+					else if (this.validarDatos(datos_encabezado) ==true){
 						toastr.success('Puede seguir Editando la OT o Regresar más tarde para Continuar con la edición',"Datos Guadados Correctamente",this.option_toast);
 						this.$localStorage.set('datos_encabezado',datos_encabezado);
+						this.$parent.$emit('datos_encabezado',datos_encabezado);//Emite los datos al padre
 					}
 
 				}
@@ -254,7 +280,7 @@ module.exports= {
 		/*Función la cual valida los datos del arreglo de datos, comprueba que ningun campo este vacio*/
 		validarDatos: function(arreglo){
 			for (var k in arreglo){
-				if (typeof arreglo[k] === '') {
+				if (typeof arreglo[k] == '') {
 					return false;
 					 break;
 				}
@@ -263,6 +289,51 @@ module.exports= {
 		}
 
 	}
+
+	/*
+	DSO Crea una validación personalizada
+	Validator.extend('verify_password', {
+	    getMessage: field => `The password must contain at least: 1 uppercase letter, 1 lowercase letter, 1 number, and one special character (E.g. , . _ & ? etc)`,
+	    validate: value => {
+	        var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+	        return strongRegex.test(value);
+	    }
+	});
+
+	/*,
+	 created () {
+	_.forEach(this.requerimiento, (form) => {
+				Object.defineProperty(this.requerimiento, form.model, {
+					get: () => _.get(this.value, form.model),
+					set: (v) => this.vueSet(this.value, form.model, v)
+				})
+			})
+		}
+		vueSet (obj, path, val) {
+      let value = obj
+      console.log(val);
+      let fields = _.isArray(path) ? path : _.toPath(path)
+      for (let f in fields) {
+        let idx = Number(f)
+        let p = fields[idx]
+        if (idx === fields.length - 1) Vue.set(value, p, val)
+        else if (!value[p]) Vue.set(value, p, _.isNumber(p) ? [] : {})
+        value = value[p]
+      }
+    },
+
+    realizarCalculoHoras:function(){
+      //var horas_disponibles= this.$localStorage.get('h_Disponibles');
+      var horas_disponibles= this.$localStorage.get('horas_totales')
+      var total= horas_disponibles-this.nhoras;
+      this.$localStorage.set('h_Disponibles',total);
+    },
+
+	// with either of the two lines I get the same error.
+	// const validator = new Validator();
+	let validator = new Validator();
+
+	validator.attach('password', 'required|min:8|verify_password');*/
 
 	/*DS POR SI NECECITO ESTAS FUNCIONES
 	AREA IMPORTS
@@ -282,6 +353,39 @@ module.exports= {
 	Vue.use(VeeValidate, { locale: 'es' });
 	components: {Datepicker,VueLocalStorage,VeeValidate,Validator},
 
+
+	/*var data_req=this.$localStorage.get('datos_requerimiento_'+id);
+	var data_compra=this.$localStorage.get('datos_compra_'+id);
+	var data_req = JSON.parse(data_req);
+	var data_compra = JSON.parse(data_compra);
+	var arreglo_requerimientos = data_req[0].requerimientos;
+	var arreglo_compras = data_compra[0].compras;
+	//	console.log(arreglo_requerimientos[0].model_nom);
+	if (data_req == null && data_compra == null) {
+	toastr.error("Todos los campos son obligatorios","Error al Guardar Requerimientos y Compras",this.option_toast);
+	return false;
+}else if( !this.comprobarRequerimientos(arreglo_requerimientos) ){
+toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Requerimientos",this.option_toast);
+return false;
+}else if( !this.comprobarCompras(arreglo_compras) ){
+toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Compras Relacionadas",this.option_toast);
+return false;
+}else{
+toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
+console.log(data_req);
+console.log(data_compra);
+}*/
+
+				/*for (let f in this.listado_areas) {
+				let idx = Number(f)
+				let p = this.listado_areas[idx]
+				this.$set(p, 'validar_area_'+p.id, 'lllll')
+				console.log(this.validar_area_17)
+
+				//this.$set(this.someObject, 'b', 2)
+				// Vue.set('validar_area_'+p.id,'','');
+			}*/
+/*
 	COMPUTED
 
 	date: function () {

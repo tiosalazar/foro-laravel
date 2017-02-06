@@ -6,11 +6,12 @@
     <div :class="{ 'select-error': isInvalid }">
       <Multiselect
       :options="tipo_compra"
-      placeholder="Item" label="nombre" select-label="" track-by="nombre"
+      placeholder="Item" select-label="" label="nombre" track-by="nombre"
       :close-on-select="true"
       :options-limit="300"
       :value="value"
       @input="updateSelected"
+      @remove="removeSelected"
       @close="onTouch"
       :option-height="104">
     </Multiselect>
@@ -35,7 +36,8 @@ module.exports= {
     return {
       tipo_compra:[],
       id_tipo_compra:0,
-      isTouched: false,
+      seleccionado:'',
+      isTouched: false
     }
   },
   computed:{
@@ -43,7 +45,7 @@ module.exports= {
       return this.select;
     },
     isInvalid () {
-      return (this.isTouched &&  this.value=="" )?true:false//Compruebo de que haya selecionado algo
+      return (this.isTouched &&  this.seleccionado=="" )?true:false//Compruebo de que haya selecionado algo
     }
   },
   created: function(){
@@ -59,18 +61,28 @@ module.exports= {
     updateSelected (newSelected) {
       if (newSelected != null && newSelected != undefined) {
         this.id_tipo_compra = newSelected.id;
+        console.log("selecciono");
         this.value=newSelected;
+        this.seleccionado=newSelected;
         var respuesta = {index: this.index, tipo_compra: newSelected } //Devuelvo el Index en el que se encuentra junto con el arreglo de datos, para saber en que posición
         this.$parent.$emit('tipo_compra',respuesta);                   //debe de ir.
       }else {
         this.id_tipo_compra = 0;
-        this.value='';
+        this.seleccionado='';
         this.$parent.$emit('tipo_compra','');//emito la variable vasia para comprobar en el padre
       }
 
     },
+    /*
+      esta función se ejecuta cuando se remueve un tag
+    */
+    removeSelected () {
+      this.id_tipo_compra = 0;
+      this.seleccionado='';
+      this.$parent.$emit('select_clientes','');//emito la variable vasia para comprobar en el padre
+    },
     onTouch () {
-      this.isTouched =(this.value=="" )?true:false ;//Compruebo de que haya selecionado algo
+      this.isTouched =(this.seleccionado=="" )?true:false ;//Compruebo de que haya selecionado algo
     }
 
   }

@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use App\Ot;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Validator;
+use Illuminate\Http\Response;
+use Exception;
+
 class OtController extends Controller
 {
     /**
@@ -47,12 +52,12 @@ class OtController extends Controller
         $vl=$this->validatorCrearOT($request->all());
       if ($vl->fails())
          {
-               return response()->json($request->all());        
+               return response()->json($request->all());
          }else
-             {        
-                    $ot=new Ot;  
+             {
+                    $ot=new Ot;
                     $ot->fill($request->all());
-                try 
+                try
                 {
                      $ot->save();
                       return response([
@@ -69,7 +74,7 @@ class OtController extends Controller
                         'request' => $request->all()
                     ],Response::HTTP_BAD_REQUEST);
                }
-         }   
+         }
     }
 
     /**
@@ -104,13 +109,13 @@ class OtController extends Controller
     public function update(Request $request, $id)
     {
            $respuesta=[];
-                    try 
-                    {       
+                    try
+                    {
                     //Validaciòn de las entradas por el metodo POST
                     $vl=$this->validatorCrearOT($request->all());
                          if ($vl->fails())
                             {
-                               return response()->json($vl->errors());        
+                               return response()->json($vl->errors());
                             }else
                                 {
                                 //Busca el usuario en la BD
@@ -120,7 +125,7 @@ class OtController extends Controller
                                 // Guardamos el usuario
                                 $ot->update();
                                $respuesta["error"]=0;
-                               $respuesta["mensaje"]="OK";                        
+                               $respuesta["mensaje"]="OK";
                              }
                     }catch(Exception $e){
                        $respuesta["error"]="rol_no_encontrado";
@@ -142,16 +147,16 @@ class OtController extends Controller
         //
     }
 
-   /*DSO 24-01-2016 Funcion para validar los campos al crear un usuario 
+   /*DSO 24-01-2016 Funcion para validar los campos al crear un usuario
     * entra el arreglo de datos
     * Sale un arreglo con los errores.
-    */   
+    */
    protected function validatorCrearOT(array $data)
     {
         return Validator::make($data, [
                 'nombre' => 'required|min:4|max:45',
+                'referencia' => 'required',
                 'valor' => 'required|min:4|max:45',
-                'observaciones' => 'required|max:255',
                 'fecha_inicio' => 'required|date',
                 'fecha_final' => 'required|date',
                 'clientes_id' => 'required',

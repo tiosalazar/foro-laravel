@@ -9,6 +9,7 @@
       placeholder="Moneda" label="nombre" select-label="" track-by="nombre"
       :close-on-select="true"
       :options-limit="300"
+      :allow-empty="false"
       :value="value"
       @input="updateSelected"
       @close="onTouch"
@@ -35,6 +36,7 @@ module.exports= {
     return {
       divisa:[],
       id_divisa:0,
+      seleccionado:'',
       isTouched: false,
     }
   },
@@ -43,7 +45,7 @@ module.exports= {
       return this.select;
     },
     isInvalid () {
-      return (this.isTouched &&  this.value=="" )?true:false//Compruebo de que haya selecionado algo
+      return (this.isTouched &&  this.seleccionado=="" )?true:false//Compruebo de que haya selecionado algo
     }
   },
   created: function(){
@@ -63,11 +65,13 @@ module.exports= {
       if (newSelected != null && newSelected != undefined) {
         this.id_divisa = newSelected.id;
         this.value=newSelected;
+          this.seleccionado=newSelected;
         var respuesta = {index: this.index, divisa: newSelected }//Devuelvo el Index en el que se encuentra junto con el arreglo de datos, para saber en que posición
         this.$parent.$emit('divisa',respuesta);                  //debe de ir.
       }else {
         this.id_divisa = 0;
         this.value='';
+        this.seleccionado='';
         this.$parent.$emit('divisa',''); //emito la variable vasia para comprobar en el padre
       }
 
@@ -76,7 +80,7 @@ module.exports= {
     esta función se ejecuta cuando se da click fuera del cuadro de Dialogo
     */
     onTouch () {
-      this.isTouched =(this.value=="" )?true:false ; //Compruebo de que haya selecionado algo
+      this.isTouched =(this.seleccionado=="" )?true:false ; //Compruebo de que haya selecionado algo
     }
 
   }
