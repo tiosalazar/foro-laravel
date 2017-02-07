@@ -7922,7 +7922,148 @@ body {
 }
 
 .listar_areas_modulo {
-  width: 80%;
+  width: 90%;
+  /* mixin centrado, fuente y alto titulo de las columnas */
+}
+
+.listar_areas_modulo .columnas_listar_tareas {
+  padding-right: 0;
+  padding-left: 0;
+  height: 400px;
+  background-color: #EDEDED;
+}
+
+.listar_areas_modulo .columnas_listar_tareas:nth-child(1) ul {
+  margin-top: 15%;
+  list-style: none;
+  padding: 0;
+  text-align: center;
+}
+
+.listar_areas_modulo .columnas_listar_tareas:nth-child(1) ul li {
+  height: 35px;
+  padding-top: 7px;
+  cursor: pointer;
+}
+
+.listar_areas_modulo .columnas_listar_tareas:nth-child(1) ul li:hover {
+  background-color: #15BAEE;
+  color: white;
+}
+
+.listar_areas_modulo .columnas_listar_tareas:nth-child(2) {
+  background-color: #E8E8E8;
+}
+
+.listar_areas_modulo .columnas_listar_tareas:nth-child(2) ul {
+  margin-top: 5%;
+  list-style: none;
+  list-style: none;
+  padding: 0;
+  overflow: auto;
+  height: 325px;
+}
+
+.listar_areas_modulo .columnas_listar_tareas:nth-child(2) ul::-webkit-scrollbar {
+  width: 10px;
+  background-color: #8c8c8c;
+}
+
+.listar_areas_modulo .columnas_listar_tareas:nth-child(2) ul::-webkit-scrollbar-thumb {
+  background-color: #003A81;
+  outline: 1px solid #003A81;
+}
+
+.listar_areas_modulo .columnas_listar_tareas:nth-child(2) ul li {
+  height: 80px;
+  border-top: 1px dotted;
+  display: -webkit-box;
+  display: flex;
+  line-height: 8px;
+}
+
+.listar_areas_modulo .columnas_listar_tareas:nth-child(2) ul li .text_user_listado {
+  padding-top: 17px;
+  padding-left: 5%;
+}
+
+.listar_areas_modulo .columnas_listar_tareas:nth-child(2) ul li:last-child {
+  border-bottom: 1px dotted;
+}
+
+.listar_areas_modulo .columnas_listar_tareas:nth-child(2) ul li img {
+  width: 60px;
+  height: 60px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.listar_areas_modulo .columnas_listar_tareas:nth-child(2) ul li:hover {
+  background-color: #15BAEE;
+  color: white;
+  cursor: pointer;
+}
+
+.listar_areas_modulo .columnas_listar_tareas .info_content {
+  width: 300px;
+  margin: 0 auto;
+}
+
+.listar_areas_modulo .columnas_listar_tareas .info_content h3 {
+  color: #15BAEE;
+  font-weight: bold;
+}
+
+.listar_areas_modulo .titulo_listar_area {
+  background-color: #003A81;
+  color: white;
+  -ms-display: flex;
+  display: -webkit-box;
+  display: flex;
+  /* alineacion vertical */
+  -webkit-box-align: center;
+  align-items: center;
+  /* alineacion horizontal */
+  -webkit-box-pack: center;
+  justify-content: center;
+  height: 50px;
+  font-size: 14px;
+  margin-top: 0;
+}
+
+.listar_areas_modulo .titulo_listar_user {
+  background-color: #0053A8;
+  color: white;
+  -ms-display: flex;
+  display: -webkit-box;
+  display: flex;
+  /* alineacion vertical */
+  -webkit-box-align: center;
+  align-items: center;
+  /* alineacion horizontal */
+  -webkit-box-pack: center;
+  justify-content: center;
+  height: 50px;
+  font-size: 14px;
+  margin-top: 0;
+}
+
+.listar_areas_modulo .titulo_listar_info {
+  background-color: #006ED4;
+  color: white;
+  margin-bottom: 8%;
+  -ms-display: flex;
+  display: -webkit-box;
+  display: flex;
+  /* alineacion vertical */
+  -webkit-box-align: center;
+  align-items: center;
+  /* alineacion horizontal */
+  -webkit-box-pack: center;
+  justify-content: center;
+  height: 50px;
+  font-size: 14px;
+  margin-top: 0;
 }
 
 .perfil-box {
