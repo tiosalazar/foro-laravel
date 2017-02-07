@@ -1,0 +1,114 @@
+.listar_areas_modulo{
+	width: 90%;
+	
+	/* mixin centrado, fuente y alto titulo de las columnas */
+	@mixin center_text() {
+		-ms-display: flex;
+		display: flex;
+		/* alineacion vertical */
+		align-items: center;
+		/* alineacion horizontal */
+		justify-content: center;
+		height: 50px;
+		font-size: 14px;
+		margin-top: 0;
+	}
+
+	.columnas_listar_tareas{
+		padding-right: 0;
+		padding-left: 0;
+		height: 400px;
+		background-color: #EDEDED;
+
+		//ul areas
+		&:nth-child(1){
+			ul{
+				margin-top: 15%;
+			    list-style: none;
+			    padding: 0;
+			    text-align: center;
+			    li{
+			    	height: 35px;
+			    	padding-top: 7px;
+			    	cursor: pointer;
+			    	&:hover{
+			    		background-color: #15BAEE;
+			    		color: white;
+			    	}
+			    }
+			}
+		}
+		//ul usuarios
+		&:nth-child(2){
+			background-color: #E8E8E8;
+			ul{
+				margin-top: 5%;
+				list-style: none;
+				list-style: none;
+			    padding: 0;
+			    overflow: auto;
+			    height: 325px;
+				&::-webkit-scrollbar {
+				   width: 10px;
+				   background-color: #8c8c8c;
+				}
+				&::-webkit-scrollbar-thumb {
+				  background-color: #003A81;
+				  outline: 1px solid #003A81;
+				}
+
+			    li{
+			    	height: 80px;
+			    	border-top: 1px dotted;
+			    	display: flex;
+			    	line-height: 8px;
+			    	.text_user_listado{
+			    		padding-top: 17px;
+    					padding-left: 5%;
+			    	}
+			    	&:last-child(){
+						border-bottom: 1px dotted;
+			    	}
+			    	img{
+			    		width: 60px;
+			    		height: 60px;
+			    		margin-top: 10px;
+			    		margin-left: 10px;
+			    	}
+			    	&:hover{
+			    		background-color: #15BAEE;
+			    		color: white;
+			    		cursor:pointer;
+			    	}			    	
+    			
+			    }
+			}
+		}
+		.info_content{
+			width: 300px;
+			margin: 0 auto;
+			h3{
+				color: #15BAEE;
+				font-weight: bold;
+			}
+		}
+		
+	}
+	.titulo_listar_area{
+		background-color: #003A81;
+		color: white;
+		@include center_text();
+
+	}
+	.titulo_listar_user{
+		background-color: #0053A8;
+		color: white;
+		@include center_text();
+	}
+	.titulo_listar_info{
+		background-color: #006ED4;
+		color: white;
+		margin-bottom: 8%;
+		@include center_text();
+	}
+}

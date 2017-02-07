@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->date('fecha_nacimiento');
+            $table->string('img_perfil',300)->nullable();
             $table->integer('roles_id')->unsigned();
             $table->integer('areas_id')->unsigned();
             $table->timestamps();

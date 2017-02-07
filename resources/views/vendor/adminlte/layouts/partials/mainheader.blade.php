@@ -19,7 +19,7 @@
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 <!-- Messages: style can be found in dropdown.less-->
-                <li class="dropdown messages-menu">
+                {{-- <li class="dropdown messages-menu">
                     <!-- Menu toggle button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-envelope-o"></i>
@@ -33,8 +33,12 @@
                                 <li><!-- start message -->
                                     <a href="#">
                                         <div class="pull-left">
-                                            <!-- User Image -->
-                                            <img src="{{ Gravatar::get($user->email) }}" class="img-circle" alt="User Image"/>
+                                             <!-- Mostrar imagen de perfil si la ruta existe en la base de datos--> 
+                                              @if(Auth::user()->img_perfil!=null) 
+                                                <img src="{{Auth::user()->img_perfil}}" class="img-circle" alt="User Image" >
+                                              @else 
+                                                <img src="{{asset('images/perfil.jpg')}}" class="img-circle" alt="User Image"> 
+                                              @endif 
                                         </div>
                                         <!-- Message title and timestamp -->
                                         <h4>
@@ -49,14 +53,14 @@
                         </li>
                         <li class="footer"><a href="#">c</a></li>
                     </ul>
-                </li><!-- /.messages-menu -->
+                </li><!-- /.messages-menu --> --}}
 
                 <!-- Notifications Menu -->
                 <li class="dropdown notifications-menu">
                     <!-- Menu toggle button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-bell-o"></i>
-                        <span class="label label-warning">10</span>
+                        <span class="label label-danger">5</span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="header">{{ trans('adminlte_lang::message.notifications') }}</li>
@@ -117,17 +121,28 @@
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
-                            <img src="{{ Gravatar::get($user->email) }}" class="user-image" alt="User Image"/>
+                             <!-- Mostrar imagen de perfil si la ruta existe en la base de datos--> 
+                                @if(Auth::user()->img_perfil!=null) 
+                                    <img src="{{Auth::user()->img_perfil}}" class="user-image" alt="User Image" >
+                                  @else 
+                                    <img src="{{asset('images/perfil.jpg')}}" class="user-image" alt="User Image"> 
+                                  @endif 
+                          
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
                             <span class="hidden-xs">{{ Auth::user()->nombre }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
                             <li class="user-header">
-                                <img src="{{ Gravatar::get($user->email) }}" class="img-circle" alt="User Image" />
+                             <!-- Mostrar imagen de perfil si la ruta existe en la base de datos--> 
+                                  @if(Auth::user()->img_perfil!=null) 
+                                    <img src="{{Auth::user()->img_perfil}}" class="img-circle" alt="User Image" >
+                                  @else 
+                                    <img src="{{asset('images/perfil.jpg')}}" class="img-circle" alt="User Image"> 
+                                  @endif 
                                 <p>
                                     {{ Auth::user()->nombre }}
-                                    <small>{{ trans('adminlte_lang::message.login') }} Nov. 2012</small>
+                                    <small>{{ Auth::user()->rol->name}}</small>
                                 </p>
                             </li>
                             <!-- Menu Body -->
@@ -145,7 +160,7 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="{{ url('/settings') }}" class="btn btn-default btn-flat">{{ trans('adminlte_lang::message.profile') }}</a>
+                                    {{-- <a href="{{ url('/settings') }}" class="btn btn-default btn-flat">{{ trans('adminlte_lang::message.profile') }}</a> --}}
                                 </div>
                                 <div class="pull-right">
                                     <a href="{{ url('/logout') }}" class="btn btn-default btn-flat"
@@ -165,10 +180,10 @@
                     </li>
                 @endif
 
-                <!-- Control Sidebar Toggle Button -->
+            {{--     <!-- Control Sidebar Toggle Button -->
                 <li>
                     <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                </li>
+                </li> --}}
             </ul>
         </div>
     </nav>

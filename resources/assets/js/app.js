@@ -29,6 +29,7 @@ Vue.component('form_usuarios', require('./components/usuarios/crear_usuario.vue'
 Vue.component('list_usuarios', require('./components/usuarios/listar_usuario.vue'));
 Vue.component('roles', require('./components/roles/roles.vue'));
 Vue.component('areas', require('./components/areas/areas.vue'));
+Vue.component('listado_areas', require('./components/areas/listado_areas.vue'));
 //Fin Componentes Bcaldas
 
 
