@@ -117,10 +117,6 @@ class FaseController extends Controller
     {
 
         try {
-            /*$fases= DB::table('planeacion_fases')
-                ->select('planeacion_fases.*', 'planeacion_tipos.nombre as nombre_tipo')
-                ->join('planeacion_tipos', 'planeacion_fases.planeacion_tipos_id', '=', 'planeacion_tipos.id')
-                ->get();*/
             $fases = Planeacion_tipo::all();
             $output = array();
             foreach ($fases as $key => $value) {

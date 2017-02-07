@@ -44,7 +44,7 @@
          updateSelected (newSelected) {
             if (newSelected != null && newSelected != undefined) {
              this.id_fase = newSelected.id;
-             console.log(newSelected.id);
+             this.$parent.$emit('fase_option',newSelected);
              // Creo un evento para enviar el item seleccionado al padre.
               // this.$parent.$emit('send-prioridad', newSelected)
            }else {
