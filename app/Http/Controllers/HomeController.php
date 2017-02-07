@@ -15,7 +15,7 @@ use App\Role;
 use Validator;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Illuminate\Support\Facades\Input;
-use Intervention\Image\ImageManager;
+use Intervention\Image\ImageManagerStatic as Image;
 use Storage;
 
 
@@ -65,33 +65,38 @@ class HomeController extends Controller
       public function SubirImagen(Request $request)
     {
 
-      $user_actual=Auth::user()->nombre;
-      $user_id_actual=Auth::user()->id;
-      //NOmbre
-      $nombre= $user_actual. $user_id_actual;
-      //Archivo
-      $file= request()->file('image');
-      //Extension
-      $ext=$file->guessClientExtension();
 
-      if ($ext=='jpg' OR $ext=='png' OR $ext=='jpeg' OR $ext=='gif' ) {
+       $user_actual=Auth::user()->nombre;
+       $user_id_actual=Auth::user()->id;
+      //NOmbre
+       $nombre= $user_actual. $user_id_actual;
+      //Archivo
+      $archivo= request()->file('image');
+      //Creo la imagen y la redimensiono
+      $make_image = Image::make($archivo);
+       $make_image->resize(230, 240,function ($constraint) {
+        $constraint->aspectRatio();
+        });
+      $file = $make_image->resizeCanvas(230, 240);
+      //Extension
+      $ext=$archivo->guessClientExtension();
+
+      if (($ext=='jpg') OR ($ext=='png') OR ($ext=='jpeg') OR( $ext=='gif') ) {
         //Guardar imagen
        $ext='png';
-       $file->storeAs('/avatars/',$nombre.'.'.$ext,'public');
-       return back(); 
+
+       $path = public_path("images\avatars\\");
+       $userauth = Auth::user()->id;
+       $user= User::findOrFail($userauth);
+       $user->fill(['img_perfil'=>'/images/avatars/'.$nombre.'.'.$ext]);
+       $user->save();
+       $file->save($path.$nombre.'.'.$ext);
+       // $file->storeAs('/avatars/',$nombre.'.'.$ext,'public');
+        return back(); 
       }else{
         
          return back(); 
       }
-
-       // $path=public_path('uploads/'.$nombre);
-       // $url='/uploads/'.$nombre;
-       // $image=Image::make($file->getRealPatch());
-       // $image->save($path);
-       // return back(); 
-       // return '<img> srce="'.$url.'"/> ';
-
-      
 
     }
 }

@@ -7,5 +7,5 @@
 
 @section('main-content')
 	<h3>Listar areas</h3>
-	{{-- <areas></areas> --}}
+	<listado_areas></listado_areas>
 @endsection

@@ -8,7 +8,12 @@
         @if (! Auth::guest())
         <div class="user-panel">
           <div class="pull-left image">
-            <img src="{{ Gravatar::get($user->email) }}" class="img-circle" alt="User Image" />
+                 <!-- Mostrar imagen de perfil si la ruta existe en la base de datos--> 
+                  @if(Auth::user()->img_perfil!=null) 
+                    <img src="{{Auth::user()->img_perfil}}" class="img-circle" alt="User Image" >
+                  @else 
+                    <img src="{{asset('images/perfil.jpg')}}" class="img-circle" alt="User Image"> 
+                  @endif 
           </div>
           <div class="pull-left info">
             <p>{{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</p>

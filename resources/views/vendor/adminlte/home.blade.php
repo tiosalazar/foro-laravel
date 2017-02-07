@@ -27,14 +27,6 @@
 		 </div>
 	  </div>
 
-{{-- @if(file_exists(storage_path('avatars/Desarrollo1.png'))) --}}
-	<img src="{{ Storage::url('avatars/Desarrollo1.png') }}" alt="">
-
-{{-- @else --}}
-	{{-- <img src="{{asset('images/perfil.jpg')}}" alt=""> --}}
-{{-- @endif --}}
-
-
 	<div class="container-fluid spark-screen">
 		<div class="row">
 			<div class="col-md-7 col-md-offset-2">
@@ -49,7 +41,13 @@
 
 							<div class="col-md-5 box_perfil_foto_img">
 					            <div class="box_perfil_foto_img-2" >
-					            	<img src="{{asset('images/perfil.jpg')}}" class="img-responsive img_perfil">
+
+									@if(Auth::user()->img_perfil!=null) 
+										<img src="{{Auth::user()->img_perfil}}" alt="imagen perfil" class="img-responsive img_perfil" >
+									@else 
+										<img src="{{asset('images/perfil.jpg')}}" alt="imagen perfil" class="img-responsive img_perfil"> 
+									@endif 
+					            	
 					            	<i class="glyphicon glyphicon-pencil editar_foto"  data-target="#image_upload" data-toggle="modal"  title="Cambiar Imagen"></i>
 					            </div>
 							</div>
@@ -81,6 +79,36 @@
 						<!--{{ trans('adminlte_lang::message.logged') }}-->
 					</div>
 				</div>
+		 <!--Listado de tareas con un componente vuejs-->
+
+		 	<div>
+		 		<div class="row tarea_perfil">
+		 			<div class="box tarea_perfil_box">
+		 				<div class="box-header">
+			 				<div class="box-header-tittle" >
+			 					<div class="img-circle" >M</div>
+			 					<div class="box-header-content">
+			 						<h4>Manitoba</h4>
+			 						<p>Diseño pieza articulo Valle empresa</p>
+		 							<span>OT 1234 20/ene/2017</span>
+			 					</div>
+			 					
+			 				</div>
+		 					
+		 				</div>
+		 				<div class="box-body" >
+		 					<p >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore</p>
+		 				</div>
+		 				<div class="box-footer" >		 					
+		 					<button class="btn btn-primary button_tarea" >Ver tarea</button>
+		 				</div>
+		 				
+		 			</div>
+
+		 		</div>
+		 	</div>
+			
+
 			</div>
 		</div>
 	</div>

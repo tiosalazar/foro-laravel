@@ -7870,6 +7870,61 @@ body {
   color: white;
 }
 
+.tarea_perfil .tarea_perfil_box {
+  width: 44%;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  height: 200px;
+  display: inline-block;
+  margin-left: 4%;
+  margin-top: 2%;
+}
+
+.tarea_perfil .tarea_perfil_box .box-header-tittle {
+  display: -webkit-box;
+  display: flex;
+}
+
+.tarea_perfil .tarea_perfil_box .box-header-tittle .img-circle {
+  margin-top: 4%;
+  font-size: 20px;
+  font-style: 25px;
+  background: gray;
+  color: white;
+  -ms-display: flex;
+  display: -webkit-box;
+  display: flex;
+  /* alineacion vertical */
+  -webkit-box-align: center;
+  align-items: center;
+  /* alineacion horizontal */
+  -webkit-box-pack: center;
+  justify-content: center;
+  height: 60px;
+  width: 60px;
+  margin-right: 7px;
+}
+
+.tarea_perfil .tarea_perfil_box .box-header-tittle .box-header-content {
+  line-height: 10px;
+}
+
+.tarea_perfil .tarea_perfil_box .box-footer {
+  padding: 0;
+}
+
+.tarea_perfil .tarea_perfil_box .box-footer .button_tarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 0;
+  background-color: #15BAEE;
+}
+
+.listar_areas_modulo {
+  width: 80%;
+}
+
 .perfil-box {
   border: none;
   padding: 4% 0 4% 0;
