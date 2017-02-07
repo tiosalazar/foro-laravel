@@ -35,10 +35,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
-
+   
+   //OTS
     Route::get('/crear_ot', function () {
-           return view('crear_ot');
+           return view('admin.ots.crear_ot');
     });
+
+    Route::get('visualizar_ot/{id}','OtController@show');
     // Clientes
     Route::get('/crear_cliente', function () {
            return view('admin.clientes.crear_cliente');

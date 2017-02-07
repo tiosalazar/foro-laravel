@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<encabezado :horas_disponibles="h_Disponibles"></encabezado>
+
+		<encabezado :horas_disponibles="h_Disponibles" :limpiar_datos="limpiarDatos"></encabezado>
 		<div class="box box-primary">
 			<div class="box-header with-border">
 				<h3 class="box-title">Requerimientos y Compras</h3>
@@ -14,7 +15,7 @@
 						</ul>
 						<div class="tab-content" >
 							<div class="tab-pane"  v-for="area in listado_areas" :class="{ 'active': area.nombre=='Creatividad'  }"  :id="'tab_'+area.id">
-								<div class="row"> <anadir_requerimiento :area="area.nombre" :id_area="area.id" :realizar_validado="validar_requerimientos" :horas_disponibles="h_Disponibles" ></anadir_requerimiento></div>
+								<div class="row"> <anadir_requerimiento :area="area.nombre" :limpiar_datos="limpiarDatos" :id_area="area.id" :realizar_validado="validar_requerimientos" :horas_disponibles="h_Disponibles" ></anadir_requerimiento></div>
 								<div class="row">
 									<div class="col-md-12">
 										<div style="height:25px;"></div>
@@ -28,7 +29,7 @@
 										</div>
 									</div>
 									<div class="row">
-										<anadir_compra  :area="area.nombre" :id_area="area.id"  :realizar_validado="validar_compras" ></anadir_compra> </div>
+										<anadir_compra  :area="area.nombre" :id_area="area.id" :limpiar_datos="limpiarDatos"  :realizar_validado="validar_compras" ></anadir_compra> </div>
 										<div style="height:30px"></div>
 										<div class="row">
 											<div class=" pull-right  col-md-3">
@@ -102,6 +103,7 @@
 				}
 			},
 			components: { VueLocalStorage,VeeValidate,Validator},
+			props: ['visualizacion','arreglo_visualizar'],
 			data () {
 				return {
 					h_Disponibles:0,
@@ -109,15 +111,27 @@
 					horas_totales:0,
 					datos_encabezado:[],
 					datos_requerimiento:[],
-					datos_requerimientos_final:[],
 					datos_compras:[],
 					descripcion_ot:'',
+					message:'',
 					h_area:0,
 					id_tab:'',
+					limpiarDatos:false,
 					form_requerimiento_validado:false,
 					validar_requerimientos:false,
 					form_compras_validado: false,
 					validar_compras:false,
+					errors_return:{
+						'nombre':'',
+						'apellido':'',
+						'email':'',
+						'password':'',
+						'cargo':'',
+						'telefono':'',
+						'horas_disponible':'',
+						'fecha_nacimiento':''
+
+					},
 					option_toast:{
 						timeOut: 5000,
 						"positionClass": "toast-top-center",
@@ -127,6 +141,7 @@
 			},
 			created: function(){
 				this.fetchTips();
+
 				/*
         Escucha las horas totales emitidas por el encabezado y realiza el calculo
         */
@@ -174,7 +189,8 @@
 				*/
 				this.$on('form_compras_validado', function(v) {
 					this.form_compras_validado=v;
-				});				
+				});	
+
 			},
 			methods:{
 				fetchTips: function(){
@@ -191,6 +207,16 @@
 
 				this.datos_encabezado=this.$localStorage.get('datos_encabezado');
 			},
+			llenarDatosSiesVisualizacion: function(){
+
+				if (this.visualizacion==true) {
+					var arreglo_visualizar = this.arreglo_visualizar;
+					this.datos_encabezado=arreglo_visualizar.datos_encabezado;
+					this.datos_requerimiento=arreglo_visualizar.requerimientos;
+					this.datos_compras=arreglo_visualizar.compras;
+				}
+
+			},
 			GuardarOt: function (){
 				if ( !this.validarDatos(this.datos_encabezado) ) {
 					toastr.error('Error en el Detalle de la OT',"Error al guardar los datos",this.option_toast);
@@ -203,34 +229,72 @@
 					try {
 
 						var datos_procesados={
-
 							datos_encabezado:{
-							nombre :this.datos_encabezado.name_proyect,
-							referencia:this.datos_encabezado.num_ot,
-							valor :this.datos_encabezado.valor_total,
-							observaciones:this.descripcion_ot,
-							fecha_inicio:this.limpiarFechas(this.datos_encabezado.fecha_inicio),
-							fecha_final:this.limpiarFechas(this.datos_encabezado.fecha_fin),
-							clientes_id: this.datos_encabezado.cliente.id,
-							usuarios_id:this.datos_encabezado.ejecutivo.id,
-							estados_id: this.datos_encabezado.estado.id,
-						    },
-							requerimientos: this.procesarTodosRequerimientos()
+								nombre :this.datos_encabezado.name_proyect,
+								referencia:this.datos_encabezado.num_ot,
+								valor :this.datos_encabezado.valor_total,
+								observaciones:this.descripcion_ot,
+								fecha_inicio:this.limpiarFechas(this.datos_encabezado.fecha_inicio),
+								fecha_final:this.limpiarFechas(this.datos_encabezado.fecha_fin),
+								clientes_id: this.datos_encabezado.cliente.id,
+								usuarios_id:this.datos_encabezado.ejecutivo.id,
+								estados_id: this.datos_encabezado.estado.id,
+							},
+							requerimientos: this.procesarTodosRequerimientos(),
+							compras: this.procesarTodosCompras()
 						};
-
-						console.log("Entro al Try");
 
 						this.$http.post('/api/v1/ots', datos_procesados)
 						.then(function(respuesta){
+							if (respuesta.status != '200') {
+								if (Object.keys(respuesta.obj).length>0) {
+
+									$.each(respuesta.body.obj, function(index, value) {
+										that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+										that.errors_return[index] = 'has-warning';
+									});
+								}
+								toastr.warning(that.message,respuesta.body.msg,this.option_toast);
+							}else{
+								console.log(respuesta);
+								toastr.success(respuesta.body.msg,'',this.option_toast);
+								this.h_Disponibles=0;
+								this.horas_totales=0;
+								/*this.datos_encabezado=[];
+								this.datos_requerimiento=[];
+								this.datos_compras=[];*/
+								this.descripcion_ot='';
+								this.message='';
+								this.h_area=0;
+								this.id_tab='';
+								this.form_requerimiento_validado=false;
+								this.validar_requerimientos=false;
+								this.form_compras_validado= false;
+								this.validar_compras=false;
+
+								this.limpiarDatos=true;
+								this.$localStorage.remove('datos_encabezado');
+								this.limpiarComprasRequerimientos();
+							}
+						},(respuesta) => {
+							var that = this;
+							that.message ='';
+
 							console.log(respuesta);
+							if (Object.keys(respuesta.body.obj).length>0) {
 
-						});
+								$.each(respuesta.body.obj, function(index, value) {
+									that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+									that.errors_return[index] = 'has-warning';
+								});
+							}
 
-
-
+							toastr.error(that.message,respuesta.body.msg,this.option_toast);
+						});	
 					} catch (e) {
-						console.log("Error");
 						console.log(e);
+
+
 					}
 
 				}
@@ -276,17 +340,17 @@
      	$('.editarModal').modal('toggle');
      },
      procesarTodosRequerimientos(){
-     var total_areas  =this.$localStorage.get('listado_areas');
-     var arreglo_temporal=[];
-         	if (total_areas != null || total_areas != undefined ) {
-         		var size = Object.keys(total_areas).length;
-         		var hora_a=0;
-         		var total_a_restar=0;
-         		for (let f in total_areas) {
-         			let idx = Number(f)
-         			let p = total_areas[idx]
-         			hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
-         			if (hora_a !=null && hora_a[0].horas !="") {
+     	var total_areas  =this.$localStorage.get('listado_areas');
+     	var arreglo_temporal=[];
+     	if (total_areas != null || total_areas != undefined ) {
+     		var size = Object.keys(total_areas).length;
+     		var hora_a=0;
+     		var total_a_restar=0;
+     		for (let f in total_areas) {
+     			let idx = Number(f)
+     			let p = total_areas[idx]
+     			hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
+     			if (hora_a !=null && hora_a[0].horas !="") {
          				//total_a_restar +=parseInt(hora_a[0].horas);
          				var data={
          					area:p.id,
@@ -294,39 +358,90 @@
          					requerimientos:hora_a[0].requerimientos  
          				};
 
-         			arreglo_temporal.push(data);	
+         				arreglo_temporal.push(data);	
          			}
          		}
          		return arreglo_temporal;
          		
          	}  
-     },
-     guardarDatos: function(id){
-     	var index = Object.keys(this.datos_requerimiento).length;
-     	var requerimientos =this.datos_requerimiento;
-     	if(this.comprobarDatosRequerimientos()==true) {
+         },
+         procesarTodosCompras(){
+         	var total_areas  =this.$localStorage.get('listado_areas');
+         	var arreglo_temporal=[];
+         	if (total_areas != null || total_areas != undefined ) {
+         		var size = Object.keys(total_areas).length;
+         		var i=0;
+         		for (let f in total_areas) {
+         			let idx = Number(f)
+         			let p = total_areas[idx];
+         			var hora_a;
+         			hora_a=JSON.parse(this.$localStorage.get('datos_compra_'+p.id));
+         			if (hora_a !=null   ) {
+         				hora_a=hora_a[0].compras;
+         				for(let f in hora_a ){
+         					if (hora_a[i].model_desc !="" && hora_a[i].model_provedor !=""  && hora_a[i].model_valor !="") {
+         						var tipo_compra = hora_a[i].tipo_compra;
+         						var divisa = hora_a[i].divisa;		
+         						var data={
+         							areas_id:p.id,
+         							tipos_compras_id: tipo_compra.id,
+         							divisas_id: divisa.id,
+         							descripcion:hora_a[i].model_desc,
+         							provedor:hora_a[i].model_provedor,
+         							valor:hora_a[i].model_valor, 
+         						};
+         						arreglo_temporal.push(data);	 
+         					}
+         					i++;
+         				}
+         				i=0;
+         			}
+         		} 
+         		return arreglo_temporal;
+         		
+         	}  
+         },
+         limpiarComprasRequerimientos(){
+         	var total_areas  =this.$localStorage.get('listado_areas');
+         	var arreglo_temporal=[];
+         	if (total_areas != null || total_areas != undefined ) {
+         		var size = Object.keys(total_areas).length;
+         		var hora_a=0;
+         		var total_a_restar=0;
+         		for (let f in total_areas) {
+         			let idx = Number(f)
+         			let p = total_areas[idx]
+         			this.$localStorage.remove('datos_requerimiento_'+p.id);
+         			this.$localStorage.remove('datos_compra_'+p.id);
+         		}  
+         	}
+         },
+         guardarDatos: function(id){
+         	var index = Object.keys(this.datos_requerimiento).length;
+         	var requerimientos =this.datos_requerimiento;
+         	if(this.comprobarDatosRequerimientos()==true) {
 
-     		if(this.comprobarSiGuardoCompras() == true){
-     			this.validar_compras=true;	
-     			this.validar_requerimientos=true;	
-     			var compras =this.datos_compras[0].compras;
-     			if ( this.comprobarCompras(compras) == true ) {
+         		if(this.comprobarSiGuardoCompras() == true){
+         			//this.validar_compras=true;	
+         			//this.validar_requerimientos=true;	
+         			var compras =this.datos_compras[0].compras;
+         			if ( this.comprobarCompras(compras) == true ) {
 					// if(this.form_requerimiento_validado ==true ){
 						toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
 						this.$localStorage.set('datos_requerimiento_'+id,JSON.stringify(requerimientos) );
-						this.validar_requerimientos=false;
+						//this.validar_requerimientos=false;
 				//}
 				this.$localStorage.set('datos_compra_'+id,JSON.stringify(this.datos_compras) );
 			}	
 
 		}else{
-			this.validar_requerimientos=true;
-			toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
-			this.$localStorage.set('datos_requerimiento_'+id,JSON.stringify(requerimientos) );
-			this.validar_requerimientos=false;	
-		}
-
+		//	this.validar_requerimientos=true;
+		toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
+		this.$localStorage.set('datos_requerimiento_'+id,JSON.stringify(requerimientos) );
+		//	this.validar_requerimientos=false;	
 	}
+
+}
 
 },
 comprobarDatosRequerimientos: function(){
@@ -365,7 +480,7 @@ comprobarDatosRequerimientos: function(){
   },
   comprobarSiGuardoCompras: function () {
   	if (this.datos_compras ==[] || this.datos_compras[0] == null || this.datos_compras[0] == undefined ) {
-      return true;
+  		return true;
   	}
   	var compras =this.datos_compras[0].compras;
   	var index = Object.keys(compras).length;

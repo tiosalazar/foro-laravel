@@ -14,7 +14,7 @@
 					<div class="form-group required ">
 						<label for="num_ot" class="col-sm-4 control-label "># OT  <sup>*</sup></label>
 						<div class="col-sm-8" v-bind:class="{ 'has-error': errors.has('num_ot') }">
-							<input type="text"  name="referencia" v-validate data-vv-rules="required|alpha_num|min:3" data-vv-as="# OT" @mouseout="guardarDatos" v-model="datos_encabezado.num_ot" class="form-control" id="num_ot" placeholder="Numero OT">
+							<input type="text"  name="num_ot" v-validate data-vv-rules="required|alpha_num|min:3" data-vv-as="# OT" @mouseout="guardarDatos" v-model="datos_encabezado.num_ot" class="form-control" id="num_ot" placeholder="Numero OT">
 							<span  class="help-block" v-show="errors.has('num_ot')">{{ errors.first('num_ot') }}</span>
 						</div>
 					</div>
@@ -71,7 +71,7 @@
 				<div class="col-md-6 col-xs-7">
 					<div class="form-group col-md-6 nopadding required">
 						<label for="fecha_inicio" class="col-sm-3 nopadding ">Inicio <sup>*</sup></label>
-						<div class="col-sm-9" v-bind:class="{ 'has-error': errors.has('fecha_fin') }">
+						<div class="col-sm-9" v-bind:class="{ 'has-error': errors.has('fecha_inicio') }">
 							<div class="input-group date">
 								<div class="input-group-addon">
 									<i class="fa fa-calendar"></i>
@@ -123,7 +123,7 @@ import Datepicker from 'vuejs-datepicker';
 
 module.exports= {
 	components: {Datepicker},
-	props: ['horas_disponibles'],
+	props: ['horas_disponibles','limpiar_datos'],
 	localStorage: {
 		datos_encabezado: {
 			type: Object,
@@ -132,7 +132,7 @@ module.exports= {
 	data () {
 		return {
 			datos_encabezado:{
-				fecha_inicio:new Date(),
+				fecha_inicio: new Date(),
 				cliente:'',
 				ejecutivo:'',
 				htotal:'',
@@ -161,10 +161,28 @@ module.exports= {
 	watch:{
 		horas_disponibles:function(){
 			this.datos_encabezado.h_pasadas= (this.horas_disponibles < 0 )?true:false;
-		}
+		},
+		limpiar_datos: function(){
+			if(this.limpiar_datos == true){
+			this.datos_encabezado={
+				fecha_inicio:new Date(),
+				cliente:'',
+				ejecutivo:'',
+				htotal:'',
+				estado:'',
+				num_ot:'',
+				name_proyect:'',
+				valor_total:'',
+				horas_totales:'',
+				fecha_fin:'',
+				h_pasadas:false,
+			};
+		 }
+	   }
 	},
 	created: function(){
 		this.fetchTips();
+		this.llenarDatosSiesVisualizacion();
 		/*
 		Datos del formulario de clientes
 		*/
@@ -190,7 +208,7 @@ module.exports= {
      Si encuentra el arreglo de Datos Guardados proceda a llenar el formulario
 		*/
 		fetchTips: function(){
-			if(	this.$localStorage.get('datos_encabezado') != null  ){
+			if(	this.$localStorage.get('datos_encabezado') != null && this.$localStorage.get('datos_encabezado') != ""  ){
 				var arreglo =this.$localStorage.get('datos_encabezado');
 				var arreglo_Datos = new Object();
 				for (var k in arreglo){
@@ -204,6 +222,17 @@ module.exports= {
 			}
 
 		},
+		llenarDatosSiesVisualizacion: function(){
+
+				if (this.$parent.visualizacion=="true") {
+					console.log(this.$parent.arreglo_visualizar);
+					var arreglo_visualizar =JSON.parse(this.$parent.arreglo_visualizar);
+					this.datos_encabezado= JSON.parse(arreglo_visualizar.datos_encabezado);
+					/*this.datos_requerimiento=arreglo_visualizar.requerimientos;
+					this.datos_compras=arreglo_visualizar.compras;*/
+				}
+
+			},
 		/*
       Esta función se esta ejecutando constantemente, se encarga de emitir las horas totales al padre
 		*/
@@ -227,6 +256,7 @@ module.exports= {
 				h_pasadas:this.datos_encabezado.h_pasadas
 			};
 			  this.$parent.$emit('datos_encabezado',datos_encabezado);//Emite los datos al padre
+
 		},
 		/*
     Función Submit de guardar el formulario

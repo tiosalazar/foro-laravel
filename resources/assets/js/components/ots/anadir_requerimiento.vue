@@ -57,7 +57,7 @@
 <script>
 
 module.exports={
-  props: ['htotales','area','id_area','realizar_validado'],// Propiedades del componente
+  props: ['htotales','area','id_area','realizar_validado','limpiar_datos'],// Propiedades del componente
   data () {
     return {
       requerimiento: [
@@ -71,6 +71,16 @@ module.exports={
   watch: {
     nhoras: function (val) {
       this.realizarCalculo(); //Realiza la resta de las horas
+    },
+    limpiar_datos: function(){
+      if(this.limpiar_datos == true){
+          this. requerimiento=[
+            {  model_nom:'', model_horas:0}
+          ];
+      this.nhoras='';
+      this.v_resta='';
+      this.h_pasadas=false;
+      }
     },
     /*
        Función la cual esta pendiente de la variable realizar_validado cuando le entra un true valida los datos

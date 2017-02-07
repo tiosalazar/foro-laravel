@@ -59,42 +59,58 @@ class OtController extends Controller
          {
                 return response()->json($vl->errors());
          }else
-             {    
- 
+             {   
                 try
                 {
-                    /*DB::transaction(function()
-                      {*/
-                       $ot=new Ot;
-
+                   //  DB::beginTransaction();
+                         $ot=new Ot;
                          $ot->fill($data['datos_encabezado']);
                          $ot->save();
 
+                        $requerimientos=$data['requerimientos'];
+                        $compras=$data['compras'];
+
+                         /*Agregar Tiempos por Area Requerimientos */
+                         $id_ot=$ot->id;
+                         $index=0;
+                         foreach ($requerimientos as $requerimiento) {
                          $tiempos_x_area= new Tiempos_x_Area;
-                         $requerimientos = new Requerimientos_Ot;
-                          $requerimientos=$data['requerimientos'][0];
-                         foreach ($requerimientos['requerimientos'] as  $value) {
-                            $requerimientos->nombre=$value['model_nom'];
-                            $requerimientos->horas=$value['horas'];
-                            $requerimientos->ots_id= $ot->id;
-                            $requerimientos->save();
-
+                         /*Agrego el tiempo por Area */
+                         $tiempos_x_area->tiempo_estimado=$requerimiento['horas'];
+                         $tiempos_x_area->ots_id=$id_ot;
+                         $tiempos_x_area->areas_id=$requerimiento['area'];
+                         $tiempos_x_area->save();
+                           /*El siguiente for recorre el listado de requerimientos y los agrega */
+                         for ($i=0; $i < count($requerimiento['requerimientos']) ; $i++) {
+                            $model_descripcion_requerimiento= new Requerimientos_Ot; 
+                            $arreglo=$requerimiento['requerimientos'][$i];
+                            $arreglo_ingresar= array('nombre' => $arreglo['model_nom'],'horas'=> $arreglo['model_horas'],'ots_id'=>$id_ot);
+                            $model_descripcion_requerimiento->fill( $arreglo_ingresar);
+                            $model_descripcion_requerimiento->save();
                          }
-                    // });
 
+                        }
+                        /*El siguiente for recorre el listado de compras y los agrega*/
+                         foreach ($compras as $compra) {
+                                 $model_compras= new Compras_Ot; 
+                                 $model_compras->fill($compra);
+                                 $model_compras->ots_id=$id_ot;
+                                 $model_compras->save();
+                          }
                       return response([
                             'status' => Response::HTTP_OK,
                             'response_time' => microtime(true) - LARAVEL_START,
-                            'debug' => "hola",
-                            //'ot' => $ot
+                            'msg' => 'La OT ha sido creada con exito !! ',
+                            'obj' => $ot
                         ],Response::HTTP_OK);
 
                 }catch(Exception $e){
+                    // DB::rollback();
                     return response([
                         'status' => Response::HTTP_BAD_REQUEST,
                         'response_time' => microtime(true) - LARAVEL_START,
                         'error' => 'fallo_en_la_creacion',
-                        'consola' =>$e,
+                        'consola' =>$e->getMessage(),
                         'request' => $request->all()
                     ],Response::HTTP_BAD_REQUEST);
                }
@@ -110,7 +126,22 @@ class OtController extends Controller
      */
     public function show($id)
     {
-        //
+       
+         $ot=OT::findOrFail($id);
+         $data=[];
+         $data['datos_encabezado']=$ot;
+         $data['compras']=[];
+         foreach ($ot->Tiempos_x_Area as  $value) {
+            $data['requerimientos']['area']=$value['areas_id'];
+            $data['requerimientos']['horas']=$value['tiempo_estimado'];
+         }
+         foreach ($ot->Requerimiento_Ot as  $value) {
+            array_push($data['requerimientos'], $value);
+         }
+         foreach ($ot->Compras_Ot as  $value) {
+               array_push($data['compras'], $value);
+         }
+         return view('admin.ots.visualizar_ot')->with('arregloOT', json_encode($data));
     }
 
     /**

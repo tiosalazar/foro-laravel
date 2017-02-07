@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tiempos_x_Area extends Model
 {
+
+  public $table = "tiempos_x_area";
+
   /**
    * The attributes that are mass assignable.
    *
@@ -18,9 +21,9 @@ class Tiempos_x_Area extends Model
   /**
   * Obtiene la ot que esta asociado a un Tiempo por Area
   */
-  public function Ot()
+  public function Ots()
   {
-    return $this->belongsTo('App\Ot');
+    return $this->belongsTo('App\Ot','ots_id');
   }
   /**
   * Obtiene el Area que esta asociada a Tiempo

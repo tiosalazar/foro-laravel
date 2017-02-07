@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ot extends Model
 {
+
+ 
   /**
   * The attributes that are mass assignable.
   *
@@ -52,14 +54,14 @@ class Ot extends Model
  */
 public function Compras_Ot()
   {
-      return $this->hasMany('App\Compras_ot');
+      return $this->hasMany('App\Compras_ot','ots_id','id');
   }
   /**
   * Obtiene los Tiempos_x_Area que posee la OT
  */
 public function Tiempos_x_Area()
   {
-      return $this->hasMany('App\Tiempos_x_Area');
+      return $this->hasMany('App\Tiempos_x_Area','ots_id','id');
   }
   /**
   * Obtiene los compras que posee la OT
@@ -73,7 +75,7 @@ public function Historico_Ot()
  */
 public function Requerimiento_Ot()
   {
-      return $this->hasMany('App\Requerimientos_Ot');
+      return $this->hasMany('App\Requerimientos_Ot','ots_id','id');
   }
 
 }

@@ -53,7 +53,7 @@ module.exports= {
   },
   methods:{
     fetchTips: function(){
-      this.$http.get('api/v1/tipos_compra')//Consulta a la Base de datos por GET
+      this.$http.get('/api/v1/tipos_compra')//Consulta a la Base de datos por GET
       .then(function(respuesta){
         this.tipo_compra=respuesta.body;
       }.bind(this));

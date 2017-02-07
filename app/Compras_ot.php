@@ -12,7 +12,7 @@ class Compras_ot extends Model
   * @var array
   */
   protected $fillable = [
-    'nombre', 'descripcion', 'provedor', 'valor', 'ots_id', 'areas_id', 'tipos_compras_id','divisas_id',
+    'descripcion', 'provedor', 'valor', 'ots_id', 'areas_id', 'tipos_compras_id','divisas_id',
   ];
 
   /**

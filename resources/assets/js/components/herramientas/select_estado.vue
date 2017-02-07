@@ -53,7 +53,7 @@
     },
     methods:{
       fetchTips: function(){
-        this.$http.get('api/v1/estados/'+this.tipo_estado)
+        this.$http.get('/api/v1/estados/'+this.tipo_estado)
         .then(function(respuesta){
           this.estados=respuesta.body;
         }.bind(this));

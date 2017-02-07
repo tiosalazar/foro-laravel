@@ -63,7 +63,14 @@ module.exports={
           this.$parent.$emit('form_compras_validado',false);
         }
       }
-    }
+    },
+    limpiar_datos: function(){
+      if(this.limpiar_datos == true){
+          this.compra_asociada=[
+        { tipo_compra:{id:'',nombre:'' }, model_desc:'', model_provedor:'',model_valor:'', divisa:{id:'',nombre:''}}
+      ];
+      }
+    },
   },
   created: function(){
     this.llenarCampos();

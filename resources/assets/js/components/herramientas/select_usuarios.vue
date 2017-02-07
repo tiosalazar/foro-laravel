@@ -61,7 +61,7 @@
           fetchTips: function(){
             /*Si se necesita agregar más opciones de busqueda agregar un switch aquí */
 
-               this.$http.get('api/v1/usuarios/'+this.area) //Consulta a la Base de datos por GET
+               this.$http.get('/api/v1/usuarios/'+this.area) //Consulta a la Base de datos por GET
              .then(function(respuesta){
                      this.usuarios=respuesta.body;
              }.bind(this));

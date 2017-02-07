@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Requerimientos_Ot extends Model
 {
+
+  public $table = "requerimientos_ots";
      /**
    * The attributes that are mass assignable.
    *
@@ -20,6 +22,6 @@ class Requerimientos_Ot extends Model
   */
   public function Ot()
   {
-    return $this->belongsTo('App\Ot');
+    return $this->belongsTo('App\Ot','ots_id','id');
   }
 }
