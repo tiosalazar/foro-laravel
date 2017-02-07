@@ -8,6 +8,7 @@
 @section('main-content')
 
 	<section>
-	   <tarea></tarea>
+	   <tarea :id_user="{{Auth::user()->id }}"></tarea>
+			
 	</section>
 @endsection

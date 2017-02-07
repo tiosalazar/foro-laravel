@@ -12,12 +12,14 @@
   </div>
 </template>
 <script>
-	export default {
+	module.exports = {
+    props: ['id_user'],
     data(){
       return{
         usuarios:[],
       }
     },
+    created: function() {},
 
   }
   Vue.component('crear_tarea',require('./crear_tarea.vue'));

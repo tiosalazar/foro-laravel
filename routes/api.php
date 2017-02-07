@@ -30,6 +30,7 @@ Route::group(['prefix' => 'v1','middleware' => 'cors'], function () {
      Route::resource('areas', 'AreaController');
      Route::resource('roles', 'RolController');
      Route::resource('fases', 'FaseController');
+     Route::resource('tareas', 'TareaController');
      // OTs
      Route::resource('ots', 'OtController');
 
