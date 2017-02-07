@@ -7,20 +7,29 @@
 
 @section('main-content')
 
-
-	   <div class="modal fade" id="image_upload">
-	   {!! Form::open(['url' => 'usuariosuploadimagen', 'method' => 'POST' ,'files' => true]) !!}
-		    {{ Form::file('image', ['class' => 'field']) }}
-		    {{ Form::submit('Cambiar Imagen') }}
-		 {!! Form::close() !!} 
+	
+	   <div class="modal fade " id="image_upload">
+	   <div class="modal-dialog">
+		     <div class="modal-content">
+			     <div class="modal-header">
+			     	<h3>Cambiar imagen</h3>
+			     </div>
+			     <div class="modal-body">
+				     {!! Form::open(['url' => 'usuariosuploadimagen', 'method' => 'POST' ,'files' => true]) !!}
+					    {{ Form::file('image', ['class' => 'form-control','accept'=>'image/*']) }}
+					    <div class="modal-footer">
+					    {{ Form::button('Cerrar', ['class' => 'btn btn-danger','data-dismiss'=>'modal']) }}
+					    {{ Form::submit('Cambiar Imagen', ['class' => 'btn btn-primary']) }}
+					    </div>
+					 {!! Form::close() !!} 
+				 </div>
+			 </div>
+		 </div>
 	  </div>
 
-<?php 
-
-	echo $img;
-?>
 {{-- @if(file_exists(storage_path('avatars/Desarrollo1.png'))) --}}
 	<img src="{{ Storage::url('avatars/Desarrollo1.png') }}" alt="">
+
 {{-- @else --}}
 	{{-- <img src="{{asset('images/perfil.jpg')}}" alt=""> --}}
 {{-- @endif --}}
