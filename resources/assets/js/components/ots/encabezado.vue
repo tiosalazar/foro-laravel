@@ -225,9 +225,17 @@ module.exports= {
 		llenarDatosSiesVisualizacion: function(){
 
 				if (this.$parent.visualizacion=="true") {
-					console.log(this.$parent.arreglo_visualizar);
+
 					var arreglo_visualizar =JSON.parse(this.$parent.arreglo_visualizar);
-					this.datos_encabezado= JSON.parse(arreglo_visualizar.datos_encabezado);
+						console.log(arreglo_visualizar.datos_encabezado);
+					this.datos_encabezado={
+						fecha_inicio:arreglo_visualizar.datos_encabezado.fecha_inicio,
+						num_ot:arreglo_visualizar.datos_encabezado.referencia,
+						name_proyect:arreglo_visualizar.datos_encabezado.nombre,
+						valor_total:arreglo_visualizar.datos_encabezado.valor,
+						fecha_fin:arreglo_visualizar.datos_encabezado.fecha_fin
+					};
+
 					/*this.datos_requerimiento=arreglo_visualizar.requerimientos;
 					this.datos_compras=arreglo_visualizar.compras;*/
 				}
@@ -248,8 +256,8 @@ module.exports= {
 				name_proyect:this.datos_encabezado.name_proyect,
 				valor_total:this.datos_encabezado.valor_total,
 				horas_totales:this.datos_encabezado.horas_totales,
-				fecha_fin:this.datos_encabezado.fecha_fin,
-				fecha_inicio:this.datos_encabezado.fecha_inicio,
+				fecha_fin:this.limpiarFechas(this.datos_encabezado.fecha_fin),
+				fecha_inicio:this.limpiarFechas(this.datos_encabezado.fecha_inicio),
 				cliente:this.datos_encabezado.cliente,
 				estado:this.datos_encabezado.estado,
 				ejecutivo:this.datos_encabezado.ejecutivo,
@@ -270,8 +278,8 @@ module.exports= {
 						name_proyect:this.datos_encabezado.name_proyect,
 						valor_total:this.datos_encabezado.valor_total,
 						horas_totales:this.datos_encabezado.horas_totales,
-						fecha_fin:this.datos_encabezado.fecha_fin,
-						fecha_inicio:this.datos_encabezado.fecha_inicio,
+						fecha_fin:this.limpiarFechas(this.datos_encabezado.fecha_fin),
+						fecha_inicio:this.limpiarFechas(this.datos_encabezado.fecha_inicio),
 						cliente:this.datos_encabezado.cliente,
 						estado:this.datos_encabezado.estado,
 						ejecutivo:this.datos_encabezado.ejecutivo,
@@ -290,6 +298,13 @@ module.exports= {
 					}
 
 				}
+			}
+		},
+		limpiarFechas:function(fecha){
+			if (fecha != null && fecha != undefined) {
+				var fecha1=fecha;
+				var arreglo_nuevo=fecha1.split("T");
+				return arreglo_nuevo[0];
 			}
 		},
 		/*Función la cual me comprueba que los selects esten llenos*/
