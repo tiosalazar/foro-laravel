@@ -41,7 +41,7 @@
 			</div>
 			<!-- /.row -->
 			<div class="form-group">
-				<label>Date masks:</label>
+				<label>Fecha de solicitud:</label>
 
 				<div class="input-group">
 					<div class="input-group-addon">
@@ -55,8 +55,8 @@
 				<label>Prioridad <sup>*</sup></label>
 				<select_prioridad></select_prioridad>
 			</div>
-			<div class="form-group">
-				<label>Fase del Projecto</label>
+			<div class="form-group required">
+				<label>Fase del Projecto <sup>*</sup></label>
 				<select_fase></select_fase>
 			</div>
 			<div class="form-group required">
@@ -82,8 +82,9 @@
 			</div>
 			<div class="form-group" v-bind:class="[errors_return.enlaces_externos,{ 'has-error': errors.has('enlaces_externos') }]">
 				<label for="enlaces_externos">Ruta del server</label>
-				<textarea class="form-control" rows="3" name="enlaces_externos"  id="enlaces_externos" v-model="tarea.enlaces_externos" placeholder="Ruta del server" v-validate data-vv-rules="required|min:4"></textarea>
-				<span  class="help-block" v-show="errors.has('enlaces_externos')">{{ errors.first('enlaces_externos') }}</span>
+				<!-- <textarea class="form-control" rows="3" name="enlaces_externos"  id="enlaces_externos" v-model="tarea.enlaces_externos" placeholder="Ruta del server" v-validate data-vv-rules="required|min:4"></textarea> -->
+				<textarea class="form-control" rows="3" name="enlaces_externos"  id="enlaces_externos" v-model="tarea.enlaces_externos" placeholder="Ruta del server"></textarea>
+				<!-- <span  class="help-block" v-show="errors.has('enlaces_externos')">{{ errors.first('enlaces_externos') }}</span> -->
 			</div>
 			<div class="form-group required">
 				<label>Estado <sup>*</sup></label>

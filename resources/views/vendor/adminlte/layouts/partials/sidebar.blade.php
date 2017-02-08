@@ -50,6 +50,7 @@
       <li class="treeview">
         <a href="#"><i class='fuente-icon'>f</i> <span>{{ trans('texto_menu.foro') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
         <ul class="treeview-menu">
+          <li><a href="#">{{ trans('texto_menu.foro') }}</a></li>
           <li><a href="#">{{ trans('texto_menu.areas') }}</a></li>
           <li><a href="{{ url('crear_tarea') }}">{{ trans('texto_menu.creacion_tareas') }}</a></li>
         </ul>
