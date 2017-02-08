@@ -48,9 +48,17 @@
 						</div>
 					</div>
 					<div class="form-group required">
+						<label for="valor_total" class="col-sm-4 ">Fee <sup>*</sup></label>
+						<div class="col-sm-8" v-bind:class="{ 'has-error': errors.has('fee') }">
+							 <input type="radio" name="fee" value="1"  v-model="datos_encabezado.fee"  required="required"  @mouseout="guardarDatos" >Si 
+						 	 <input type="radio" name="fee" value="0"  v-model="datos_encabezado.fee"   required="required"   @mouseout="guardarDatos" > No
+							<span  class="help-block" v-show="errors.has('fee')">{{ errors.first('fee') }}</span>
+						</div>
+					</div>
+					<div class="form-group required">
 						<label for="horas_totales" class="col-sm-4 ">Horas Totales  <sup>*</sup></label>
 						<div class="col-sm-8" v-bind:class="{ 'has-error': errors.has('horas_totales') }">
-							<input type="text" class="form-control" @input="llenar_horas_totales" required="required"  @mouseout="guardarDatos" name="horas_totales"  v-validate data-vv-rules="required|decimal:1|max:10|min:1" data-vv-as="Horas Totales" v-model="datos_encabezado.horas_totales"  id="horas_totales" placeholder="Numero de Totales">
+							<input type="text" class="form-control" @input="llenar_horas_totales" required="required"  @mouseout="guardarDatos" name="horas_totales"  v-validate data-vv-rules="required|decimal:2|max:10|min:1" data-vv-as="Horas Totales" v-model="datos_encabezado.horas_totales"  id="horas_totales" placeholder="Numero de Totales">
 							<span  class="help-block" v-show="errors.has('horas_totales')">{{ errors.first('horas_totales') }}</span>
 						</div>
 					</div>
@@ -135,6 +143,7 @@ module.exports= {
 				fecha_inicio: new Date(),
 				cliente:'',
 				ejecutivo:'',
+				fee:1,
 				htotal:'',
 				estado:'',
 				num_ot:'',
@@ -168,6 +177,7 @@ module.exports= {
 				fecha_inicio:new Date(),
 				cliente:'',
 				ejecutivo:'',
+				fee:1,
 				htotal:'',
 				estado:'',
 				num_ot:'',
@@ -225,9 +235,22 @@ module.exports= {
 		llenarDatosSiesVisualizacion: function(){
 
 				if (this.$parent.visualizacion=="true") {
-					console.log(this.$parent.arreglo_visualizar);
+
 					var arreglo_visualizar =JSON.parse(this.$parent.arreglo_visualizar);
-					this.datos_encabezado= JSON.parse(arreglo_visualizar.datos_encabezado);
+					this.datos_encabezado={
+						fecha_inicio:arreglo_visualizar.datos_encabezado.fecha_inicio,
+						cliente:arreglo_visualizar.datos_encabezado.cliente,
+						ejecutivo:arreglo_visualizar.datos_encabezado.ejecutivo,
+						fee:arreglo_visualizar.datos_encabezado.fee,
+						estado:arreglo_visualizar.datos_encabezado.estado,
+						num_ot:arreglo_visualizar.datos_encabezado.referencia,
+						horas_totales:arreglo_visualizar.datos_encabezado.horas_totales,
+						name_proyect:arreglo_visualizar.datos_encabezado.nombre,
+						valor_total:arreglo_visualizar.datos_encabezado.valor,
+						fecha_fin:arreglo_visualizar.datos_encabezado.fecha_final
+					};
+					 this.$parent.$emit('datos_encabezado',this.datos_encabezado);//Emite los datos al padre
+
 					/*this.datos_requerimiento=arreglo_visualizar.requerimientos;
 					this.datos_compras=arreglo_visualizar.compras;*/
 				}
@@ -243,10 +266,12 @@ module.exports= {
      Le envia constantemente los datos al padre, por si la persona no le da en guardar Avance
 		 */
 		guardarDatos: function () {
+			//Wed Feb 15 2017 00:00:00 GMT-0500 (Hora est. Pacífico, Sudamérica)
 			var datos_encabezado={
 				num_ot:this.datos_encabezado.num_ot,
 				name_proyect:this.datos_encabezado.name_proyect,
 				valor_total:this.datos_encabezado.valor_total,
+				fee:this.datos_encabezado.fee,
 				horas_totales:this.datos_encabezado.horas_totales,
 				fecha_fin:this.datos_encabezado.fecha_fin,
 				fecha_inicio:this.datos_encabezado.fecha_inicio,
@@ -265,13 +290,15 @@ module.exports= {
 			this.$validator.validateAll();
 			if (!this.errors.any()) {
 				if(this.validarSelects() == true){
+
 					var datos_encabezado={
 						num_ot:this.datos_encabezado.num_ot,
 						name_proyect:this.datos_encabezado.name_proyect,
 						valor_total:this.datos_encabezado.valor_total,
 						horas_totales:this.datos_encabezado.horas_totales,
-						fecha_fin:this.datos_encabezado.fecha_fin,
-						fecha_inicio:this.datos_encabezado.fecha_inicio,
+						fee:this.datos_encabezado.fee,
+						fecha_fin:this.limpiarFechas(this.datos_encabezado.fecha_fin),
+						fecha_inicio:this.limpiarFechas(this.datos_encabezado.fecha_inicio),
 						cliente:this.datos_encabezado.cliente,
 						estado:this.datos_encabezado.estado,
 						ejecutivo:this.datos_encabezado.ejecutivo,
@@ -291,6 +318,26 @@ module.exports= {
 
 				}
 			}
+		},
+		limpiarFechas:function(fecha){
+			if (fecha != null && fecha != undefined && fecha != '' && this.validarFormatoFecha(fecha) !=false ) {			
+			//console.log(fecha.toISOString());
+				var fecha1=fecha;
+				fecha1=fecha1.toISOString();
+				var arreglo_nuevo=fecha1.split("T");
+				return arreglo_nuevo[0];
+			}else{
+				return fecha;
+			}
+		},
+		validarFormatoFecha:function(campo) {
+
+		      var RegExPattern = /^\d{1,2}\-\d{1,2}\-\d{2,4}$/;
+		      if ((campo.match(RegExPattern)) && (campo!='')) {
+		            return true;
+		      } else {
+		            return false;
+		      }
 		},
 		/*Función la cual me comprueba que los selects esten llenos*/
 		validarSelects: function(){

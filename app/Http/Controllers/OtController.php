@@ -130,18 +130,25 @@ class OtController extends Controller
          $ot=OT::findOrFail($id);
          $data=[];
          $data['datos_encabezado']=$ot;
+         $data['datos_encabezado']['cliente']=$ot->cliente;
+         $data['datos_encabezado']['ejecutivo']=$ot->Usuario;
+         $data['datos_encabezado']['estado']=$ot->Estado;
          $data['compras']=[];
          foreach ($ot->Tiempos_x_Area as  $value) {
             $data['requerimientos']['area']=$value['areas_id'];
             $data['requerimientos']['horas']=$value['tiempo_estimado'];
          }
+         $array_temporal=[];
+         $data['requerimientos']['requerimientos']=[];
          foreach ($ot->Requerimiento_Ot as  $value) {
-            array_push($data['requerimientos'], $value);
+             $array_temporal= array('model_nom'=>$value['nombre'] ,'model_horas'=>(int)$value['horas']); 
+            array_push($data['requerimientos']['requerimientos'], json_encode($array_temporal));
          }
          foreach ($ot->Compras_Ot as  $value) {
                array_push($data['compras'], $value);
          }
-         return view('admin.ots.visualizar_ot')->with('arregloOT', json_encode($data));
+        //var_dump($data);
+         return view('admin.ots.editar_ot')->with('arregloOT', json_encode($data));
     }
 
     /**
@@ -164,32 +171,80 @@ class OtController extends Controller
      */
     public function update(Request $request, $id)
     {
-           $respuesta=[];
-                    try
-                    {
-                    //Validaciòn de las entradas por el metodo POST
-                    $vl=$this->validatorCrearOT($request->all());
-                         if ($vl->fails())
-                            {
-                               return response()->json($vl->errors());
-                            }else
-                                {
-                                //Busca el usuario en la BD
-                                 $ot=  Ot::findOrFail($id);
-                                // Si la data es valida se la asignamos al usuario
-                                $ot->fill($request->all());
-                                // Guardamos el usuario
-                                $ot->update();
-                               $respuesta["error"]=0;
-                               $respuesta["mensaje"]="OK";
-                             }
-                    }catch(Exception $e){
-                       $respuesta["error"]="rol_no_encontrado";
-                       $respuesta["codigo_error"]="UC_Update_dontfind";
-                       $respuesta["mensaje"]="Rol no encontrado";
-                       $respuesta["consola"]=$e;
-                   }
-        return response()->json($respuesta);
+
+     $respuesta=[];
+       //Validaciòn de las entradas por el metodo POST
+        $data= $request->all();
+
+        $vl=$this->validatorCrearOT($data['datos_encabezado']);
+      if ($vl->fails())
+         {
+                return response()->json($vl->errors());
+         }else
+             {   
+
+        try
+                {
+                    //Busca el usuario en la BD
+                         $ot=  Ot::findOrFail($id);
+                         $ot->fill($data['datos_encabezado']);
+                         $ot->save();
+
+                        $requerimientos=$data['requerimientos'];
+                        $compras=$data['compras'];
+
+                         /*Agregar Tiempos por Area Requerimientos */
+                         $id_ot=$ot->id;
+                         $index=0;
+                         $tiempos_x_area= Tiempos_x_Area::where('ots_id',$id_ot)->get();
+                         $model_descripcion_requerimiento=  Requerimientos_Ot::where('ots_id',$id_ot)->get();
+                         $j=0;
+                         foreach ($requerimientos as $requerimiento) {
+                         /*Agrego el tiempo por Area */
+                         $tiempos_x_area[$index]->tiempo_estimado=$requerimiento['horas'];
+                         $tiempos_x_area[$index]->areas_id=$requerimiento['area'];
+                         $tiempos_x_area[$index]->save();
+                           /*El siguiente for recorre el listado de requerimientos y los agrega */
+                         for ($i=0; $i < count($requerimiento['requerimientos']) ; $i++) {
+                            $arreglo=$requerimiento['requerimientos'][$i];
+                            $arreglo_ingresar= array('nombre' => $arreglo['model_nom'],'horas'=> $arreglo['model_horas']);
+                            $model_descripcion_requerimiento[$j]->fill( $arreglo_ingresar);
+                            $model_descripcion_requerimiento[$j]->save();
+                            $j++;
+                         }
+
+                         $index++;
+
+                        }
+                        /*El siguiente for recorre el listado de compras y los agrega*/
+                          $index=0;
+                          $model_compras= Compras_Ot::where('ots_id',$id_ot)->get(); 
+                         foreach ($compras as $compra) {
+                                 $model_compras[$index]->fill($compra);
+                                 $model_compras[$index]->save();
+                                 $index++;
+                          }
+                      return response([
+                            'status' => Response::HTTP_OK,
+                            'response_time' => microtime(true) - LARAVEL_START,
+                            'msg' => 'Se han Actualizado los datos de la OT ',
+                            'obj' => $ot
+                        ],Response::HTTP_OK);
+
+                }catch(Exception $e){
+                    // DB::rollback();
+                    return response([
+                        'status' => Response::HTTP_BAD_REQUEST,
+                        'response_time' => microtime(true) - LARAVEL_START,
+                        'error' => 'fallo_en_la_creacion',
+                        'consola' =>$e->getMessage(),
+                        'request' => $request->all()
+                    ],Response::HTTP_BAD_REQUEST);
+               }
+
+           }
+
+
     }
 
     /**

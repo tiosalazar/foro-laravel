@@ -41,7 +41,7 @@ Route::group(['middleware' => 'auth'], function () {
            return view('admin.ots.crear_ot');
     });
 
-    Route::get('visualizar_ot/{id}','OtController@show');
+    Route::get('editar_ot/{id}','OtController@show');
     // Clientes
     Route::get('/crear_cliente', function () {
            return view('admin.clientes.crear_cliente');

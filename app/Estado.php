@@ -34,7 +34,7 @@ class Estado extends Model
   */
   public function Ot()
   {
-    return $this->hasMany('App\Ot');
+    return $this->hasMany('App\Ot','estados_id','id');
   }
   /**
   * Obtiene los Historicos que posee un Estado

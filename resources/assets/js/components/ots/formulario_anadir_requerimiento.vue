@@ -209,12 +209,12 @@
 			},
 			llenarDatosSiesVisualizacion: function(){
 
-				if (this.visualizacion==true) {
+				/*if (this.visualizacion=='true') {
 					var arreglo_visualizar = this.arreglo_visualizar;
 					this.datos_encabezado=arreglo_visualizar.datos_encabezado;
 					this.datos_requerimiento=arreglo_visualizar.requerimientos;
 					this.datos_compras=arreglo_visualizar.compras;
-				}
+				}*/
 
 			},
 			GuardarOt: function (){
@@ -225,17 +225,18 @@
 					toastr.error('El Resúmen de horas no puede dar negativo',"Error al guardar los datos",this.option_toast);
 					return false;
 				}else if(this.comprobarDatosRequerimientos()==true) {
-					console.log("Pase todas las pruebas");
 					try {
-
+                    
 						var datos_procesados={
 							datos_encabezado:{
 								nombre :this.datos_encabezado.name_proyect,
 								referencia:this.datos_encabezado.num_ot,
 								valor :this.datos_encabezado.valor_total,
+								fee: this.datos_encabezado.fee,
+								horas_totales:this.datos_encabezado.horas_totales,
 								observaciones:this.descripcion_ot,
-								fecha_inicio:this.limpiarFechas(this.datos_encabezado.fecha_inicio),
-								fecha_final:this.limpiarFechas(this.datos_encabezado.fecha_fin),
+								fecha_inicio:this.datos_encabezado.fecha_inicio,
+								fecha_final:this.datos_encabezado.fecha_fin,
 								clientes_id: this.datos_encabezado.cliente.id,
 								usuarios_id:this.datos_encabezado.ejecutivo.id,
 								estados_id: this.datos_encabezado.estado.id,
@@ -244,25 +245,19 @@
 							compras: this.procesarTodosCompras()
 						};
 
+
+						if(this.visualizacion != 'true'){
 						this.$http.post('/api/v1/ots', datos_procesados)
 						.then(function(respuesta){
 							if (respuesta.status != '200') {
 								if (Object.keys(respuesta.obj).length>0) {
-
-									$.each(respuesta.body.obj, function(index, value) {
-										that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-										that.errors_return[index] = 'has-warning';
-									});
+									toastr.error("Revise que todos los datos esten bien, y vuelva a intentar",respuesta.body.msg,this.option_toast);
+	                                return false;
 								}
-								toastr.warning(that.message,respuesta.body.msg,this.option_toast);
 							}else{
-								console.log(respuesta);
 								toastr.success(respuesta.body.msg,'',this.option_toast);
 								this.h_Disponibles=0;
 								this.horas_totales=0;
-								/*this.datos_encabezado=[];
-								this.datos_requerimiento=[];
-								this.datos_compras=[];*/
 								this.descripcion_ot='';
 								this.message='';
 								this.h_area=0;
@@ -279,18 +274,57 @@
 						},(respuesta) => {
 							var that = this;
 							that.message ='';
-
-							console.log(respuesta);
 							if (Object.keys(respuesta.body.obj).length>0) {
+							//toastr.error(that.message,respuesta.body.msg,this.option_toast);
+							toastr.error("Revise que todos los datos esten bien, y vuelva a intentar",respuesta.body.msg,this.option_toast);
+	                        return false;
+	                           }
+						});
+					}else{
+                     	var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
+                     	                     console.log(datos_procesados);
+					this.$http.put('/api/v1/ots/'+arreglo_visualizar.datos_encabezado.id, datos_procesados)
+						.then(function(respuesta){
+							console.log(respuesta);
+							if (respuesta.status != '200') {
+								if (Object.keys(respuesta.obj).length>0) {
+									toastr.error("Revise que todos los datos esten bien, y vuelva a intentar",respuesta.body.msg,this.option_toast);
+	                                return false;
+								}
+							}else{
+								toastr.success(respuesta.body.msg,'',this.option_toast);
+								/*
+								this.h_Disponibles=0;
+								this.horas_totales=0;
+								this.descripcion_ot='';
+								this.message='';
+								this.h_area=0;
+								this.id_tab='';
+								this.form_requerimiento_validado=false;
+								this.validar_requerimientos=false;
+								this.form_compras_validado= false;
+								this.validar_compras=false;
 
-								$.each(respuesta.body.obj, function(index, value) {
-									that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-									that.errors_return[index] = 'has-warning';
-								});
+								this.limpiarDatos=true;
+								this.$localStorage.remove('datos_encabezado');
+								this.limpiarComprasRequerimientos();*/
 							}
+						},(respuesta) => {
+							console.log(respuesta);
+							var that = this;
+							that.message ='';
+							//if (Object.keys(respuesta.body.obj).length>0) {
+							//toastr.error(that.message,respuesta.body.msg,this.option_toast);
+							toastr.error("Revise que todos los datos esten bien, y vuelva a intentar",respuesta.body.msg,this.option_toast);
+	                        return false;
+	                        //   }
+						});
+					}
 
-							toastr.error(that.message,respuesta.body.msg,this.option_toast);
-						});	
+
+
+
+
 					} catch (e) {
 						console.log(e);
 
@@ -424,8 +458,7 @@
          		if(this.comprobarSiGuardoCompras() == true){
          			//this.validar_compras=true;	
          			//this.validar_requerimientos=true;	
-         			var compras =this.datos_compras[0].compras;
-         			if ( this.comprobarCompras(compras) == true ) {
+         			if ( this.comprobarCompras(this.datos_compras) == true ) {
 					// if(this.form_requerimiento_validado ==true ){
 						toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
 						this.$localStorage.set('datos_requerimiento_'+id,JSON.stringify(requerimientos) );
@@ -480,12 +513,12 @@ comprobarDatosRequerimientos: function(){
   },
   comprobarSiGuardoCompras: function () {
   	if (this.datos_compras ==[] || this.datos_compras[0] == null || this.datos_compras[0] == undefined ) {
-  		return true;
+  		return false;
   	}
   	var compras =this.datos_compras[0].compras;
   	var index = Object.keys(compras).length;
   	if (index == 0) {
-  		return true;
+  		return false;
   	}
   	for (let f in compras) {
   		let idx = Number(f)
@@ -498,9 +531,10 @@ comprobarDatosRequerimientos: function(){
   	return false;
   },
   comprobarCompras: function (arreglo) {
-  	for (let f in arreglo) {
+    var compras =arreglo[0].compras;
+  	for (let f in compras) {
   		let idx = Number(f)
-  		let p = arreglo[idx]
+  		let p = compras[idx]
   		if (p.divisa.nombre == "" ) {
   			toastr.error("Por favor, seleccione una Divisa","Error al Guardar Compras Asociadas",this.option_toast);
   			return false;

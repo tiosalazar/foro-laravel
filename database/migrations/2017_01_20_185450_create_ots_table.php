@@ -18,6 +18,8 @@ class CreateOtsTable extends Migration
             $table->string('nombre',45);
             $table->string('referencia',255);
             $table->string('valor',55);
+            $table->tinyInteger('fee');
+            $table->decimal('horas_totales',5,2);
             $table->string('observaciones',255)->nullable();
             $table->dateTime('fecha_inicio');
             $table->dateTime('fecha_final');

@@ -64,7 +64,7 @@ class User extends Authenticatable
   */
   public function Ot()
   {
-    return $this->hasMany('App\Ot');
+    return $this->hasMany('App\Ot','usuarios_id','id');
   }
   /**
   * Obtiene los Historicos que posee el usuario

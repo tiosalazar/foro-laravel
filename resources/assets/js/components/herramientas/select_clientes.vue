@@ -43,7 +43,6 @@
         return this.select;
       },
       isInvalid () {
-        console.log('printed')
         return (this.isTouched &&  this.value=="" )?true:false //Compruebo de que haya selecionado algo
       }
     },

@@ -98,7 +98,8 @@ module.exports={
     }
   },
   created: function(){
-    this.llenarCampos();
+    this.llenarDatosSiesVisualizacion();
+    this.llenarCampos(); 
   },
   methods: {
     /*
@@ -114,7 +115,12 @@ module.exports={
       var data_req= JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.id_area));//busca dependiendo del Área
       if (data_req != null) {
         var arreglo_requerimientos = data_req[0].requerimientos;
-        this.requerimiento= arreglo_requerimientos;
+        if (this.$parent.visualizacion=="true") {
+          this.requerimiento=[];
+          this.requerimiento.push(Vue.util.extend({}, JSON.parse(arreglo_requerimientos)) );
+        }else{
+           this.requerimiento= arreglo_requerimientos;
+        }
         this.nhoras	= data_req[0].horas;
         this.h_pasadas	= data_req[0].h_pasadas;
         var datos=[{
@@ -125,6 +131,19 @@ module.exports={
         this.$parent.$emit('datos_requerimiento',datos);//Emite los datos al padre
       }
     },
+    llenarDatosSiesVisualizacion: function(){
+        if (this.$parent.visualizacion=="true") {
+               var arreglo_visualizar =JSON.parse(this.$parent.arreglo_visualizar);
+               var arreglo_requerimientos=arreglo_visualizar.requerimientos.requerimientos;
+
+           var datos=[{
+              requerimientos:arreglo_requerimientos,
+              horas: parseInt(arreglo_visualizar.requerimientos.horas),
+              h_pasadas: this.h_pasadas
+            }];
+            this.$localStorage.set('datos_requerimiento_'+arreglo_visualizar.requerimientos.area,JSON.stringify(datos));//busca dependiendo del Área
+        }
+      },
     /*
      Guarda los datos con cada entrada del Tecla en el input
     */

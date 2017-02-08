@@ -14,7 +14,7 @@ class Ot extends Model
   * @var array
   */
   protected $fillable = [
-    'nombre','referencia', 'valor', 'observaciones', 'fecha_inicio', 'fecha_final', 'clientes_id', 'usuarios_id','estados_id',
+    'nombre','referencia','fee','horas_totales','valor', 'observaciones', 'fecha_inicio', 'fecha_final', 'clientes_id', 'usuarios_id','estados_id',
   ];
 
 
@@ -24,21 +24,21 @@ class Ot extends Model
   */
   public function Cliente()
   {
-    return $this->belongsTo('App\Cliente');
+    return $this->belongsTo('App\Cliente','clientes_id','id');
   }
   /**
   * Obtiene el Usuario que esta asociada a una OT
   */
   public function Usuario()
   {
-    return $this->belongsTo('App\User');
+    return $this->belongsTo('App\User','usuarios_id','id');
   }
   /**
   * Obtiene el Estado que esta asociada a una OT
   */
   public function Estado()
   {
-    return $this->belongsTo('App\Estado');
+    return $this->belongsTo('App\Estado','estados_id','id');
   }
 
 
