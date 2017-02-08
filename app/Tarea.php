@@ -22,35 +22,35 @@ class Tarea extends Model
   */
   public function Estado()
   {
-    return $this->belongsTo('App\Estado');
+    return $this->belongsTo('App\Estado','estados_id','id');
   }
   /**
   * Obtiene el Area que esta asociada la Tarea
   */
   public function Area()
   {
-    return $this->belongsTo('App\Area');
+    return $this->belongsTo('App\Area','areas_id','id');
   }
   /**
   * Obtiene el Usuario que esta asociada la Tarea
   */
   public function Usuario()
   {
-    return $this->belongsTo('App\User');
+    return $this->belongsTo('App\User','usuarios_id','id');
   }
   /**
   * Obtiene la OT que esta asociada a la Tarea
   */
   public function Ot()
   {
-    return $this->belongsTo('App\Ot');
+    return $this->belongsTo('App\Ot','ots_id','id');
   }
   /**
   * Obtiene la Fase de Planeacion que esta asociado a una Tarea
   */
   public function Planeacion_fase()
   {
-    return $this->belongsTo('App\Planeacion_fase');
+    return $this->belongsTo('App\Planeacion_fase','planeacion_fases_id','id');
   }
 
   /**

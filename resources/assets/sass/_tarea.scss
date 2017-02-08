@@ -14,3 +14,24 @@
 
 	}
 }
+.label-estado{
+	display: block;
+	padding: 1px 5px;
+	height: 22px;
+	font-size: 12px;
+	width: 100%;
+	border-radius: 0;
+	line-height: 1.5;
+	font-weight: 300;
+}
+#tabla_tareas{
+	thead th{
+		text-align: center;
+		background-color: $azul-profundo;
+		color:$font-blanco;
+	}
+	td{
+		text-align: center;
+		color:$font-gris;
+	}
+}

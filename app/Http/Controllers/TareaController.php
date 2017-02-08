@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Tarea;
+use App\Ot;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
@@ -19,7 +20,13 @@ class TareaController extends Controller
      */
     public function index()
     {
-        //
+        $tareas= Tarea::all();
+        foreach ($tareas as $key => $value) {
+            $value->Ot->Cliente;
+            $value->Estado;
+        }
+        // return response()->json($tareas);
+        return array('recordsTotal'=>count($tareas),'recordsFiltered'=>count($tareas),'data'=>$tareas);
     }
 
     /**

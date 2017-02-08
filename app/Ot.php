@@ -47,7 +47,7 @@ class Ot extends Model
   */
   public function Tarea()
   {
-    return $this->hasMany('App\Tarea');
+    return $this->hasMany('App\Tarea','ots_id','id');
   }
   /**
   * Obtiene los compras que posee la OT

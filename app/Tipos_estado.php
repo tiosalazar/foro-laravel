@@ -20,6 +20,6 @@ class Tipos_estado extends Model
   */
   public function Tarea()
   {
-    return $this->hasMany('App\Estado');
+    return $this->hasMany('App\Estado','tipos_estados_id','id');
   }
 }
