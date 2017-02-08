@@ -23,7 +23,7 @@ class CreateTareasTable extends Migration
             $table->decimal('tiempo_estimado',5,3)->nullable();
             $table->decimal('tiempo_real',5,3)->nullable();
             $table->decimal('tiempo_mapa_cliente',5,3)->nullable();
-            $table->dateTime('fecha_entrega_cliente');
+            $table->dateTime('fecha_entrega_cliente')->nullable();
             $table->integer('estados_id')->unsigned();
             $table->integer('areas_id')->unsigned();
             $table->integer('usuarios_id')->unsigned();
