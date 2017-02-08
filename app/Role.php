@@ -18,10 +18,10 @@ class Role extends EntrustRole
   /**
   * Obtiene el Usuario que posee el Rol
  */
-  /*
+  
   public function User()
   {
-      return $this->hasMany('App\User','id');
+      return $this->hasMany('App\User','roles_id','id');
   }
    /**
   * Obtiene el Trafico que posee el Rol

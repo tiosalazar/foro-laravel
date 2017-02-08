@@ -11,27 +11,32 @@
         <div class="col-md-5 columnas_listar_tareas">
           <h3 class="titulo_listar_user">Usuarios</h3>
           <ul>
-            <li v-for="usuario in usuarios"><img src="/images/avatars/Desarrollo1.png"><div class="text_user_listado"><p>{{usuario.nombre}}</p><p>{{usuario.cargo}}</p><p>{{usuario.email}}</p><div></li>
+            <li v-for="usuario in itemsUserArea(usuarios,idareaUser) " :key="usuario.nombre" @click="userviewinfo()"><img src="/images/avatars/Desarrollo1.png"><div class="text_user_listado"><p>{{usuario.nombre}}</p><p>{{usuario.cargo}}</p><p>{{usuario.email}}</p><div></li>
           </ul>
         </div>
 
-        <div class="col-md-5 columnas_listar_tareas">
+        <div class="col-md-5 columnas_listar_tareas" >
           <h3 class="titulo_listar_info">Informacion</h3>
           <div class="info_content">
             <h3>Area</h3>
-            <p>Diseño <span>/Ext 203</span></p>
+            <p>{{areas_info.nombre}}<span> / Ext {{areas_info.extencion_tel}}</span></p>
           </div>
           <div class="info_content">
             <h3>Encargado</h3>
-            <p>Andrés Mabesoy</p>
-            <p>afmabesoy@himalayada.com</p>
+            <p>{{areas_info.coordinador}}</p>
+            <p>{{areas_info.email}}</p>
           </div>
-          <div class="info_content">
+          <div class="info_content" v-if="switcharea_user == '1'">
             <h3>Horas</h3>
-            <p>Horas usuario mes: <span>160</span></p>
+            <p>Horas área: <span>{{areas_info.total_horas}}</span></p>
+            <p>Horas disponible área: <span>20</span></p>
+          </div>
+          <div class="info_content" v-else>
+            <h3>Horas</h3>
+            <p>Horas usuario: <span>{{areas_info.total_horas}}</span></p>
             <p>Horas disponible usuario: <span>20</span></p>
           </div>
-          <div class="info_content">
+          <div class="info_content" v-if="switcharea_user == '2'">
             <button class="btn btn-primary">Editar usuario</button>
             <button class="btn btn-danger">Eliminar suario</button>
           </div>
@@ -55,16 +60,18 @@
         return{
           areas:[],
           usuarios:[],
-          idareaUser:''
+          idareaUser:'',
+          areas_info:[],
+          switcharea_user:'',
         }
      },
      created: function(){
-          this.consultarApiAreas();
+        this.consultarApiAreas();  
       }, 
       computed:{
         
-      }, 
-     methods:{
+      },
+      methods:{
 
         consultarApiAreas:function(){
 
@@ -78,21 +85,32 @@
 
           this.$http.get('/api/v1/usuarios')
           .then(function(respuesta){
+            //asigno los usuarios y el id del area para hacer el filtro en el v-for
             this.usuarios=respuesta.body.data;
             this.idareaUser=areaid;
-             console.log('id del area');
-            console.log(this.idareaUser);
-            console.log('Usuarios array');
-            console.log(this.usuarios);
+            this.switcharea_user=1;
+            //consulto la api por el id del area para mostrar la información en la ultima
 
+          });
+
+          //Consulto la api de areas con el id para traer los datos en la columna infomacion
+          this.$http.get('/api/v1/areas/'+areaid)
+          .then(function(respuesta){
+            this.areas_info=respuesta.body;
+            console.log(respuesta);
           });
         },
         //FUncion con filtro personalizado para traer los usuarios por io del area
-        // itemsUserArea: function(items) {
-        //     return this.items.filter(function(item) {
-        //     return item.areas_id=1;
-        //   });  
-        // }               
+        itemsUserArea: function(items,idareaUser) {
+         
+            return items.filter(function(item) {
+            return item.id_area==idareaUser;
+
+          });  
+        },
+        userviewinfo:function(){
+           this.switcharea_user=2;
+        }               
       
       }
 
