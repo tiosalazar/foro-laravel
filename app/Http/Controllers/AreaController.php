@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Area;
+use App\User;
+use App\Role;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
 use Illuminate\Http\Response;
@@ -18,7 +20,7 @@ class AreaController extends Controller
      */
     public function index()
     {
-       $area= Area::all();
+       $area=Area::all();
       return response()->json($area);
     }
 
@@ -80,6 +82,19 @@ class AreaController extends Controller
     public function show($id)
     {
         $area = Area::findOrFail($id);
+        $area["total_horas"]='';
+        $area["coordinador"]='';
+        $area["email"]='';
+        foreach ($area->User as $key => $value) {
+            $area["total_horas"] += $value['horas_disponible'];
+            $value->Rol;
+            if ($value->rol->name=='coordinador') {
+                $area["coordinador"]=$value->nombre;
+                $area["email"]=$value->email;
+            }
+
+        }
+
         return response()->json($area);
     }
 

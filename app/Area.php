@@ -20,7 +20,7 @@ class Area extends Model
   */
   public function User()
   {
-    return $this->hasMany('App\User','areas_id');
+    return $this->hasMany('App\User','areas_id','id');
   }
   /**
   * Obtiene las Tareas que posee un Area
