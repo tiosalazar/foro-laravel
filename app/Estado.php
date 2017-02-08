@@ -20,21 +20,21 @@ class Estado extends Model
   */
   public function Tipos_estado()
   {
-    return $this->belongsTo('App\Tipos_estado');
+    return $this->belongsTo('App\Tipos_estado','tipos_estados_id','id');
   }
   /**
   * Obtiene las Tareas que posee un Estado
   */
   public function Tarea()
   {
-    return $this->hasMany('App\Tarea');
+    return $this->hasMany('App\Tarea','estados_id','id');
   }
   /**
   * Obtiene los OTS que posee un Estado
   */
   public function Ot()
   {
-    return $this->hasMany('App\Ot');
+    return $this->hasMany('App\Ot','estados_id','id');
   }
   /**
   * Obtiene los Historicos que posee un Estado

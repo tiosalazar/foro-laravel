@@ -24,21 +24,21 @@ class Ot extends Model
   */
   public function Cliente()
   {
-    return $this->belongsTo('App\Cliente');
+    return $this->belongsTo('App\Cliente','clientes_id','id');
   }
   /**
   * Obtiene el Usuario que esta asociada a una OT
   */
   public function Usuario()
   {
-    return $this->belongsTo('App\User');
+    return $this->belongsTo('App\User','usuarios_id','id');
   }
   /**
   * Obtiene el Estado que esta asociada a una OT
   */
   public function Estado()
   {
-    return $this->belongsTo('App\Estado');
+    return $this->belongsTo('App\Estado','estados_id','id');
   }
 
 
@@ -47,7 +47,7 @@ class Ot extends Model
   */
   public function Tarea()
   {
-    return $this->hasMany('App\Tarea');
+    return $this->hasMany('App\Tarea','ots_id','id');
   }
   /**
   * Obtiene los compras que posee la OT

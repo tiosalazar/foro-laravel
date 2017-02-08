@@ -20,6 +20,6 @@ class Cliente extends Model
  */
   public function OT()
   {
-      return $this->hasMany('App\Ot');
+      return $this->hasMany('App\Ot','clientes_id','id');
   }
 }

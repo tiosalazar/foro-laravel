@@ -27,6 +27,7 @@
             estados:[],
             id_fase: 0,
             isTouched: false,
+            value:''
           }
       },
       computed:{},
