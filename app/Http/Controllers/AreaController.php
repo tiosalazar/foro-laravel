@@ -84,6 +84,7 @@ class AreaController extends Controller
         $area = Area::findOrFail($id);
         $area["total_horas"]='';
         $area["coordinador"]='';
+        $area["apellido_coordinador"]='';
         $area["email"]='';
         foreach ($area->User as $key => $value) {
             if ($value->estado != 0) {
@@ -92,6 +93,7 @@ class AreaController extends Controller
             $value->Rol;
             if ($value->rol->name=='coordinador') {
                 $area["coordinador"]=$value->nombre;
+                $area["apellido_coordinador"]=$value->apellido;
                 $area["email"]=$value->email;
             }
 
