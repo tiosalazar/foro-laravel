@@ -46,7 +46,7 @@
 
       methods:{
           fetchTips: function(){
-               this.$http.get('api/v1/ots/')
+               this.$http.get('/show_ots_tareas')
              .then(function(respuesta){
                 this.ots=respuesta.body;
              }.bind(this));

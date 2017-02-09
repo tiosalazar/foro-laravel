@@ -46,6 +46,11 @@ Route::group(['middleware' => 'auth'], function () {
            return view('admin.ots.listado_ot');
     });
 
+<<<<<<< HEAD
+=======
+    Route::get('editar_ot/{id}','OtController@show');
+    Route::get('show_ots_tareas','OtController@showOtEnTareas');
+>>>>>>> origin/aborrero
     // Clientes
     Route::get('/crear_cliente', function () {
            return view('admin.clientes.crear_cliente');
@@ -61,6 +66,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/listar_tareas', function () {
            return view('admin.tareas.listar_tareas');
     });
+    Route::get('/all_tareas/{id}','TareaController@showAllTareas');
+
     Route::get('/list_fases','FaseController@listFases');
 
     // Usuarios

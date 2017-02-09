@@ -275,6 +275,19 @@ class OtController extends Controller
         //
     }
 
+    /**
+    *
+    **/
+    public function showOtEnTareas()
+    {
+        $ot= DB::table('ots')
+            ->join('clientes', 'ots.clientes_id', '=', 'clientes.id')
+            ->join('users', 'ots.usuarios_id', '=', 'users.id')
+            ->select('ots.*', 'clientes.nombre as nombre_cli', 'users.nombre as nombre_ej')
+            ->get();
+        return response()->json($ot);
+    }
+
    /*DSO 24-01-2016 Funcion para validar los campos al crear un usuario
     * entra el arreglo de datos
     * Sale un arreglo con los errores.

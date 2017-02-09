@@ -10,6 +10,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
 use Illuminate\Http\Response;
 use Exception;
+use Yajra\Datatables\Datatables;
 
 class TareaController extends Controller
 {
@@ -20,13 +21,15 @@ class TareaController extends Controller
      */
     public function index()
     {
-        $tareas= Tarea::all();
-        foreach ($tareas as $key => $value) {
+        // $tareas= Tarea::all();
+        $tareas = Tarea::with('ot.cliente','estado')->get();
+        /*foreach ($tareas as $key => $value) {
             $value->Ot->Cliente;
             $value->Estado;
-        }
+        }*/
         // return response()->json($tareas);
-        return array('recordsTotal'=>count($tareas),'recordsFiltered'=>count($tareas),'data'=>$tareas);
+        // return array('recordsTotal'=>count($tareas),'recordsFiltered'=>count($tareas),'data'=>$tareas);
+        return Datatables::of($tareas)->make(true);
     }
 
     /**
@@ -77,7 +80,7 @@ class TareaController extends Controller
                 'error' => 'ERR_04',
                 'msg' => 'excepcion, fallo la petición',
                 'consola' =>$e->getMessage(),
-                'obj' => $request->all()
+                'obj' =>[]
                 ],Response::HTTP_BAD_REQUEST);
            }
        }
@@ -91,7 +94,9 @@ class TareaController extends Controller
      */
     public function show($id)
     {
-        //
+        // $tarea = Tarea::findOrFail($id);
+        return Datatables::of(Tarea::query())->make(true);
+
     }
 
     /**
@@ -128,7 +133,19 @@ class TareaController extends Controller
         //
     }
     /**
-    *
+     * Mostrar todas las tareas con Datatable.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showAllTareas($id)
+    {
+        $tarea = Tarea::with('ot.cliente')->get();
+
+        return Datatables::of($tarea)->make(true);
+
+    }
+    /**
+    * Validar Crear Tarea
     **/
     protected function validatorCrearTarea(array $data)
     {
