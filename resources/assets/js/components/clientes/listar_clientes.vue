@@ -43,16 +43,14 @@
              this.$http.get('api/v1/clientes')
              .then(function(respuesta){
                this.clientes=respuesta.body;
-               console.log(this.clientes);
              });
           },
           editCliente: function(id) {
-            console.log(id)
+            this.$parent.$emit('edit-cliente', false)
             $('.editarModal').modal('show');
 
           },
           setCliente: function(client) {
-            console.log(client);
             console.log(this.clientes);
             // this.clientes.push(client);
           }

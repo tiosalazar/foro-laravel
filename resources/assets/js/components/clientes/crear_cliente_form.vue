@@ -39,7 +39,8 @@
               <!-- /.form-group -->
             </div>
             <div class="col-xs-6 col-md-12">
-              <button type="button"  v-on:click="addCliente" class="btn btn-block btn-success aa">Agregar</button>
+              <button type="button" v-show="agregar" v-on:click="addCliente" class="btn btn-block btn-success aa">Agregar</button>
+              <button type="button" v-show="!agregar" v-on:click="editCliente(cliente)" class="btn btn-block btn-success aa">Editar</button>
             </div>
             </form>
           <!-- /.row -->
@@ -58,11 +59,13 @@
 
 	module.exports =  {
 		components: {VeeValidate,Validator},
+		props: ['cliente_url'],
 		data () {
 			return {
 				isActive:true,
 				cliente: {},
 				message :'',
+				agregar:true,
 				option_toast:{
 					timeOut: 5000,
 					"positionClass": "toast-top-center",
@@ -77,7 +80,22 @@
 				}
 			}
 		},
+		created:function() {
+			if (this.cliente_url) {
+		        console.log(this.cliente_url)
+		        this.cliente = this.cliente_url;
+		        this.agregar = false;
+		      }
+		  },
 		methods: {
+			setErrors:function(object) {
+		        this.message='';
+		        var that = this;
+		        $.each(object, function(index, value) {
+		          that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+		          that.errors_return[index] = 'has-warning';
+		        });
+		    },
 			addCliente: function(e) {
 				this.$validator.validateAll();
 			    if (this.errors.any()) {
@@ -89,37 +107,41 @@
 	             	var that = this;
 	             	that.message ='';
 	             	if (respuesta.status != '200') {
-	             		if (Object.keys(response.body.obj).length>0) {
-		             		$.each(respuesta.body.obj, function(index, value) {
-							    that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-							    that.errors_return[index] = 'has-warning';
-							});
+	             		if (Object.keys(respuesta.body.obj).length>0) {
+		             		this.setErrors(respuesta.body.obj);
 		             	}
 	             		toastr.warning(that.message,respuesta.body.msg,this.option_toast);
 	             	} else {
 	             		toastr.success(respuesta.body.msg,'',this.option_toast);
-	             		$('#agregar_cliente').trigger("reset");
-	             		$('.collapse-cliente').collapse('hide');
-	             		$('#app-datatable').append( $( "<tr> <td>"+respuesta.body.obj.nit+"</td> <td>"+respuesta.body.obj.nit+"</td> <td>"+respuesta.body.obj.nombre_contacto+"</td> <td>"+respuesta.body.obj.email+"</td> <td>"+respuesta.body.obj.telefono+"</td> <td><button type='button' class='btn btn-block btn-warning btn-sm edit'  :id='"+respuesta.body.obj.id+"'>Editar</button></td> <td><button type='button' class='btn btn-block btn-danger btn-sm edit' :id='"+respuesta.body.obj.id+"'>Borrar</button></td> </tr>" ) );
 	             	}
-	               this.clientes=respuesta.body;
-	               console.log(respuesta);
 	             }, (response) => {
 	             	var that = this;
 	             	that.message = '';
 	             	if (Object.keys(response.body.obj).length>0) {
-	             		$.each(response.body.obj, function(index, value) {
-						    that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-						    that.errors_return[index] = 'has-error';
-						});
+	             		this.setErrors(response.body.obj);
 	             	}
 				    toastr.error(that.message,response.body.msg,this.option_toast);
 				  });
 			},
-			editCliente: function(e) {
-				$('.example-modal').modal('show');
-
-			},
+			editCliente: function(client) {
+		        this.$http.put('/api/v1/clientes/'+client.id, client)
+		        .then(function(response) {
+		          if (response.status != '200') {
+		            if (Object.keys(response.body.obj).length>0) {
+		              this.setErrors(response.body.obj);
+		            }
+		            toastr.warning(this.message,response.body.msg,this.option_toast);
+		          } else {
+		            toastr.success(response.body.msg,'',this.option_toast);
+		            this.cliente={};
+		          }
+		        }, function(err) {
+		          if (Object.keys(err.body.obj).length>0) {
+		            this.setErrors(err.body.obj);
+		          }
+		          toastr.error(this.message,err.body.msg,this.option_toast);
+		        })
+		      },
 			deleteRequerimiento: function(e) {
 				e.preventDefault();
 				var index = this.requerimiento.indexOf(Vue.util.extend({}, this.requerimiento));

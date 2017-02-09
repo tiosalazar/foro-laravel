@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/listar_clientes', function () {
            return view('admin.clientes.listar_clientes');
     });
+    Route::get('/editar_cliente/{id}', 'ClienteController@getCliente');
 
     // Tareas
     Route::get('/crear_tarea', function () {
