@@ -11,7 +11,10 @@
         <div class="col-md-5 columnas_listar_tareas">
           <h3 class="titulo_listar_user">Usuarios</h3>
           <ul>
-            <li v-for="usuario in itemsUserArea(usuarios,idareaUser) " :key="usuario.nombre" @click="userviewinfo(usuario.horas_disponible,usuario.id)"><img src="/images/avatars/Desarrollo1.png"><div class="text_user_listado"><p>{{usuario.nombre}}</p><p>{{usuario.cargo}}</p><p>{{usuario.email}}</p><div></li>
+            <li v-for="usuario in itemsUserArea(usuarios,idareaUser) " :key="usuario.nombre" @click="userviewinfo(usuario.horas_disponible,usuario.id)">
+            <div v-if="usuario.img_perfil==null"><img   src="/images/perfil.jpg"></div>
+            <div v-else><img   v-bind:src="usuario.img_perfil"></div>
+            <div class="text_user_listado"><p>{{usuario.nombre}}</p><p>{{usuario.cargo}}</p><p>{{usuario.email}}</p><div></li>
           </ul>
         </div>
 
