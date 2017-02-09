@@ -38,9 +38,10 @@
       },
       created: function(){
           this.fetchTips();
-        console.log(this.refresh);
-        this.value={id: this.refresh.id, name: this.refresh.id_rol};
+        // console.log(this.refresh);
+        this.value={id: this.refresh.id, display_name: this.refresh.id_rol};
         this.id_rol=this.refresh.id;
+        // console.log(this.refresh);
        
       },
       watch : {

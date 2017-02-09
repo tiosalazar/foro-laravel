@@ -11,7 +11,7 @@
         <div class="col-md-5 columnas_listar_tareas">
           <h3 class="titulo_listar_user">Usuarios</h3>
           <ul>
-            <li v-for="usuario in itemsUserArea(usuarios,idareaUser) " :key="usuario.nombre" @click="userviewinfo()"><img src="/images/avatars/Desarrollo1.png"><div class="text_user_listado"><p>{{usuario.nombre}}</p><p>{{usuario.cargo}}</p><p>{{usuario.email}}</p><div></li>
+            <li v-for="usuario in itemsUserArea(usuarios,idareaUser) " :key="usuario.nombre" @click="userviewinfo(usuario.horas_disponible,usuario.id)"><img src="/images/avatars/Desarrollo1.png"><div class="text_user_listado"><p>{{usuario.nombre}}</p><p>{{usuario.cargo}}</p><p>{{usuario.email}}</p><div></li>
           </ul>
         </div>
 
@@ -31,13 +31,13 @@
             <p>Horas área: <span>{{areas_info.total_horas}}</span></p>
             <p>Horas disponible área: <span>20</span></p>
           </div>
-          <div class="info_content" v-else>
+          <div class="info_content" v-if="switcharea_user == '2'">
             <h3>Horas</h3>
-            <p>Horas usuario: <span>{{areas_info.total_horas}}</span></p>
+            <p>Horas usuario: <span >{{horas_user}}</span></p>
             <p>Horas disponible usuario: <span>20</span></p>
           </div>
           <div class="info_content" v-if="switcharea_user == '2'">
-            <button class="btn btn-primary">Editar usuario</button>
+            <a v-bind:href="id_user" ><button class="btn btn-primary" >Editar usuario</button></a>
             <button class="btn btn-danger">Eliminar suario</button>
           </div>
         </div>
@@ -63,13 +63,15 @@
           idareaUser:'',
           areas_info:[],
           switcharea_user:'',
+          horas_user:'',
+          id_user:''
         }
      },
      created: function(){
         this.consultarApiAreas();  
       }, 
       computed:{
-        
+       
       },
       methods:{
 
@@ -78,7 +80,7 @@
           this.$http.get('/api/v1/areas')
               .then(function(respuesta){
                 this.areas=respuesta.body;
-                console.log(respuesta);
+                // console.log(respuesta);
               });
         },
         consultarApiusuarios:function(areaid){
@@ -97,7 +99,7 @@
           this.$http.get('/api/v1/areas/'+areaid)
           .then(function(respuesta){
             this.areas_info=respuesta.body;
-            console.log(respuesta);
+            
           });
         },
         //FUncion con filtro personalizado para traer los usuarios por io del area
@@ -108,8 +110,10 @@
 
           });  
         },
-        userviewinfo:function(){
+        userviewinfo:function(horas,id_user){
            this.switcharea_user=2;
+           this.horas_user=horas;
+           this.id_user="/editar_usuario/"+id_user;  
         }               
       
       }
