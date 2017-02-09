@@ -73,6 +73,7 @@
          
            <button class="btn btn-primary" v-bind:class="{ 'hidden': valorboton }" @click="addUser">Guardar</button>
            <button class="btn btn-primary" v-bind:class="{ 'hidden': valorboton2 }" @click="updateaddUser">Actualizar</button>
+           <a href="/listar_areas/" v-bind:class="{ 'hidden': valorboton2 }"><button class="btn btn-default">Volver a listado áreas</button></a>
           
         </div>
     </div>
@@ -142,7 +143,6 @@
             console.log(this.edituserdata);
             var obj = JSON.parse(this.edituserdata);
             console.log(obj);
-            
              this.usuarios=obj;
              this.dato_refres=obj;
               this.dato_refres2=obj;

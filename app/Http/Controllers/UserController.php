@@ -23,7 +23,7 @@ class UserController extends Controller
     {
       // $user= User::where('estado',1)->get();
        $user = User::
-            select('users.id','users.nombre','users.apellido','users.cargo','users.telefono','users.email','users.horas_disponible','roles.display_name as roles_id','areas.nombre as areas_id','users.estado','areas.id as id_area','roles.id as id_rol')->join('roles','roles.id','=','users.roles_id')->join('areas','areas.id','=','users.areas_id')->get();
+            select('users.id','users.nombre','users.apellido','users.cargo','users.telefono','users.email','users.horas_disponible','roles.display_name as roles_id','areas.nombre as areas_id','users.estado','areas.id as id_area','roles.id as id_rol')->join('roles','roles.id','=','users.roles_id')->join('areas','areas.id','=','users.areas_id')->where('users.estado','1')->get();
       // return response()->json($user);
       return array('recordsTotal'=>count($user),'recordsFiltered'=>count($user),'data'=>$user);
     }
@@ -129,7 +129,7 @@ class UserController extends Controller
     {
          // Retorno consulta de join con la tabla areeas y roles para traer los nombres
          $user = User::
-            select('users.id','users.nombre','users.apellido','users.cargo','users.telefono','users.email','users.horas_disponible','roles.name as id_rol','areas.nombre as id_area','users.estado','areas.id as areas_id','roles.id as roles_id')->join('roles','roles.id','=','users.roles_id')->join('areas','areas.id','=','users.areas_id')->findOrFail($id);
+            select('users.id','users.nombre','users.apellido','users.cargo','users.telefono','users.fecha_nacimiento','users.email','users.horas_disponible','roles.display_name as id_rol','areas.nombre as id_area','users.estado','areas.id as areas_id','roles.id as roles_id')->join('roles','roles.id','=','users.roles_id')->join('areas','areas.id','=','users.areas_id')->findOrFail($id);
          //return response()->json($user);
          return view('admin.equipo.editar_usuario')->with('usuarioslist',$user);
     }
@@ -188,10 +188,33 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->estado=0;
-        $user->save();
-        return response()->json($user);
+        
+        $respuesta=[];
+            try
+            {
+            //Validaciòn de las entradas por el metodo POST
+                $vl=$this->$user = User::findOrFail($id);
+                 if ($vl->fails())
+                    {
+                       return response()->json($vl->errors());
+                    }else
+                        {
+
+                        $user->estado=0;
+                        $user->save();
+                        $respuesta["msg"]='Eliminado con exito';
+                        $respuesta["error"]=0;
+                        $respuesta["mensaje"]="OK";
+                        $respuesta["obj"]=$user;
+                     }
+            }catch(Exception $e){
+               $respuesta["error"]="Error con el usuario o no encontrado";
+               $respuesta["codigo_error"]="UC_Update_dontfind";
+               $respuesta["mensaje"]="Error con el usuario o no encontrado";
+               $respuesta["consola"]=$e;
+           }
+       
+        return response()->json($respuesta);
     }
 
      /*DSO 24-01-2016 Funcion para validar los campos al crear un usuario
