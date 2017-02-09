@@ -214,8 +214,8 @@ class ClienteController extends Controller
         return Validator::make($data, [
             'nombre' => 'required|min:4',
             'nit' => 'required|min:4|max:45',
-            'telefono' => 'min:4|max:45',
-            'email' => 'email|max:155|unique:users,email',
+            // 'telefono' => 'min:4|max:45',
+            // 'email' => 'email|max:155',
             'nombre_contacto' => 'min:4|max:45',
         ]);
     }
