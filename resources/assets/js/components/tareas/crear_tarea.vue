@@ -72,7 +72,7 @@
 			</div>
 			<div class="form-group required" v-bind:class="[errors_return.nombre_tarea,{ 'has-error': errors.has('nombre_tarea') }]">
 				<label for="nombre_tarea">Nombre de la Solicitud <sup>*</sup></label>
-				<input type="text" class="form-control"  id="nombre_tarea" v-model="tarea.nombre_tarea" name="nombre_tarea" placeholder="Solicitud" v-validate data-vv-rules="required|alpha_num|min:4" required="required">
+				<input type="text" class="form-control"  id="nombre_tarea" v-model="tarea.nombre_tarea" name="nombre_tarea" placeholder="Solicitud" v-validate data-vv-rules="required|min:4" required="required">
 				<span  class="help-block" v-show="errors.has('nombre_tarea')">{{ errors.first('nombre_tarea') }}</span>
 			</div>
 			<div class="form-group required" v-bind:class="[errors_return.descripcion,{ 'has-error': errors.has('descripcion') }]">
@@ -171,40 +171,45 @@
 			getCurrentDate:function(data='') {
 				var today;
 				if (!data) {
-					today = new Date()
+					today = new Date();
+					var dd = today.getDate();
+					var mm = today.getMonth()+1; //January is 0!
+					var yyyy = today.getFullYear();
+					var HH = today.getHours(); 
+					var MM = today.getMinutes(); 
+					var ss = today.getSeconds();
+					if(dd<10) {
+						dd='0'+dd
+					} 
+					if(mm<10) {
+						mm='0'+mm
+					} 
+					if(HH<10) {
+						HH='0'+HH
+					} 
+					if(MM<10) {
+						MM='0'+MM
+					}
+					if(ss<10) {
+						ss='0'+ss
+					} 
+					today = yyyy +'-' + dd+'-'+ mm +' '+ HH + ':' + MM + ':' + ss;
 				} else {
 					today = new Date(data)
+					let fecha1=today.toISOString();
+					var arreglo_nuevo=fecha1.split("T");
+					console.log(arreglo_nuevo[0]);
+					today = arreglo_nuevo[0];
 				}
-				var dd = today.getDate();
-				var mm = today.getMonth()+1; //January is 0!
-				var yyyy = today.getFullYear();
-				var HH = today.getHours(); 
-				var MM = today.getMinutes(); 
-				var ss = today.getSeconds();
-				if(dd<10) {
-					dd='0'+dd
-				} 
-				if(mm<10) {
-					mm='0'+mm
-				} 
-				if(HH<10) {
-					HH='0'+HH
-				} 
-				if(MM<10) {
-					MM='0'+MM
-				}
-				if(ss<10) {
-					ss='0'+ss
-				} 
-				today = yyyy +'-' + dd+'-'+ mm +' '+ HH + ':' + MM + ':' + ss;
+				
 				return today;
 			},
 			agregarTarea:function(e) {
+				this.tarea.fecha_entrega_cliente = (this.fecha_entrega_cliente)?this.getCurrentDate(this.fecha_entrega_cliente):null;
 				this.$validator.validateAll();
 		        if (this.errors.any()) {
 		          return false
 		        }
-				this.tarea.fecha_entrega_cliente = (this.fecha_entrega_cliente)?this.getCurrentDate(this.fecha_entrega_cliente.toString()):null;
 				this.tarea.estados_id = this.estado.id;
 				this.tarea.ots_id= this.ot.id;
 				this.tarea.planeacion_fases_id = this.fase.id;

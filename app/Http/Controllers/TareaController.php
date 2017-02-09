@@ -77,7 +77,7 @@ class TareaController extends Controller
                 'error' => 'ERR_04',
                 'msg' => 'excepcion, fallo la petición',
                 'consola' =>$e->getMessage(),
-                'obj' => $request->all()
+                'obj' =>[]
                 ],Response::HTTP_BAD_REQUEST);
            }
        }

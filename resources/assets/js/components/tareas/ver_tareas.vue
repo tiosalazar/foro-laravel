@@ -66,7 +66,7 @@
 							"targets": [4],
 							"data": null,
 						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-						       	return '<span class="label label-success label-estado">'+data.estado.nombre+'</span>';
+						       	return '<span class="label label-estado estado-'+data.estado.tipos_estados_id+'-'+data.estado.id+' ">'+data.estado.nombre+'</span>';
 						       	// return (full.estado==1)? 'Activo' : 'Inactivo';
 
 						       }
