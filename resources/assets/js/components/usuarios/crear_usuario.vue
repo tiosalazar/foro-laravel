@@ -143,7 +143,6 @@
             console.log(this.edituserdata);
             var obj = JSON.parse(this.edituserdata);
             console.log(obj);
-            
              this.usuarios=obj;
              this.dato_refres=obj;
               this.dato_refres2=obj;
