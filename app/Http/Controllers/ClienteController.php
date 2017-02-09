@@ -9,6 +9,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Validator;
 use Illuminate\Http\Response;
 use Exception;
+use Yajra\Datatables\Datatables;
 
 class ClienteController extends Controller
 {
@@ -21,7 +22,8 @@ class ClienteController extends Controller
     {
       // $clientes = Cliente::all();
       $clientes = Cliente::where('estado', 1)->get();
-      return response()->json($clientes);
+      // return response()->json($clientes);
+      return Datatables::of($clientes)->make(true);
     }
     /*public function index()
     {
@@ -97,7 +99,7 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        $user= Cliente::where('nit',$id)->get();
+        $user= Cliente::findOrFail($id);
         return response()->json($user);
     }
 
@@ -205,6 +207,21 @@ class ClienteController extends Controller
                 ],Response::HTTP_BAD_REQUEST);
         }
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getCliente($id)
+    {
+        $cliente= Cliente::findOrFail($id);
+        // return response()->json($cliente);
+        return view('admin.clientes.editar_cliente')->with('cliente',$cliente);
+    }
+
+
     /**
     *   
     *

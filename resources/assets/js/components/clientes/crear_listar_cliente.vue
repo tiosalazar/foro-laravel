@@ -2,174 +2,21 @@
   <div>
 
     <section class="col-md-12">
-      <!-- <div class="row"> -->
-      <div class="box box-default collapsed-box collapse-cliente">
-        <div class="box-header with-border">
-          <h3 class="box-title">Agregar Cliente</h3>
-
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse" v-on:click="clearCliente()"><i class="fa fa-plus"></i></button>
-          </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body">
-          <form class="row" name="agregar_cliente" id="agregar_cliente">
-            <div class="col-xs-6 col-md-12">
-              <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]" >
-                <label>Nombre</label>
-                <input type="text" v-model="cliente.nombre" v-validate data-vv-rules="required|alpha_num|min:3" name="nombre" id="nombre" class="form-control" required="required">
-                <span  class="help-block" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
-              </div>
-              <!-- /.form-group -->
-              <div class="form-group" v-bind:class="[errors_return.nombre_contacto,{ 'has-error': errors.has('nombre_contacto') }]">
-                <label>Nombre de Contacto</label>
-                <input type="text" v-model="cliente.nombre_contacto" v-validate data-vv-rules="alpha|min:3"  name="nombre_contacto" id="nombre_contacto" class="form-control">
-                <span  class="help-block" v-show="errors.has('nombre_contacto')">{{ errors.first('nombre_contacto') }}</span>
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <!-- /.col -->
-            <div class="col-xs-6 col-md-12">
-              <div class="form-group" v-bind:class="[errors_return.nit,{ 'has-error': errors.has('nit') }]">
-                <label>NIT</label>
-                <input type="text" v-model="cliente.nit" v-validate data-vv-rules="required|alpha_num|min:3" name="nit" id="nit" class="form-control" required="required">
-                <span  class="help-block" v-show="errors.has('nit')">{{ errors.first('nit') }}</span>
-              </div>
-              <!-- /.form-group -->
-              <div class="form-group" v-bind:class="[errors_return.email,{ 'has-error': errors.has('email') }]">
-                <label>Correo</label>
-                <input type="email" v-model="cliente.email" v-validate data-vv-rules="email" name="email" id="email" class="form-control">
-                <span  class="help-block" v-show="errors.has('email')">{{ errors.first('email') }}</span>
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <!-- /.col -->
-            <div class="col-xs-6 col-md-12">
-              <div class="form-group" v-bind:class="[errors_return.telefono,{ 'has-error': errors.has('telefono') }]">
-                <label>Teléfono</label>
-                <input type="text" v-model="cliente.telefono" v-validate data-vv-rules="min:5" name="telefono" id="telefono" class="form-control">
-                <span  class="help-block" v-show="errors.has('telefono')">{{ errors.first('telefono') }}</span>
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <div class="col-xs-6 col-md-12">
-              <button type="button"  v-on:click="addCliente" class="btn btn-block btn-success aa">Agregar</button>
-            </div>
-          </form>
-        </div>
-        <!-- /.box-body -->
-      </div>
-      <!-- </div> -->
-      <!-- ./ row -->
     </section>
-    <div class="col-xs-12">
-      <div class="box">
-        <div class="box-header">
-          <h3 class="box-title">Clientes</h3>
-
-          <div class="box-tools">
-            <div class="input-group input-group-sm" style="width: 150px;">
-              <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-
-              <div class="input-group-btn">
-                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body table-responsive no-padding">
-         <table class="table table-hover " id="app-datatable">
-          <tbody>
-            <tr>
+    <section class="col-xs-12">
+         <table class="table table-bordered table-striped table-hover datatable-foro" id="tabla_clientes">
+          <thead>
+            <tr>    
               <th>NIT</th>
               <th>Cliente</th>
               <th>Nombre de Contacto</th>
               <th>Correo</th>
               <th>Teléfono</th>
-              <th></th>
-              <th></th>
+              <th>Acciones</th>
             </tr>
-            <tr v-for="(cliente, index) in clientes">
-
-             <td>{{ cliente.nit }}</td>
-             <td>{{ cliente.nombre }}</td>
-             <td>{{ cliente.nombre_contacto }}</td>
-             <td>{{ cliente.email }}</td>
-             <td>{{ cliente.telefono }}</td>
-             <td><button type="button" class="btn btn-block btn-warning btn-sm edit"  :id="cliente.id" v-on:click="openModal(cliente)">Editar</button></td>
-             <td><button type="button" class="btn btn-block btn-danger btn-sm edit" :id="cliente.id" v-on:click="borrarCliente(cliente,index)">Borrar</button></td>
-           </tr>
-         </tbody></table>
-       </div>
-       <!-- /.box-body -->
-     </div>
-     <!-- /.box -->
-   </div> 
-   <div class="modal editarModal" >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span></button>
-            <h4 class="modal-title">Editar Cliente</h4>
-          </div>
-          <div class="modal-body">
-            <form class="row" name="agregar_cliente" id="agregar_cliente_edit">
-              <div class="col-xs-6 col-md-12">
-              <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]" >
-                <label>Nombre</label>
-                <input type="text" v-model="cliente.nombre" v-validate data-vv-rules="required|alpha_num|min:3" name="nombre" id="nombre" class="form-control" required="required">
-                <span  class="help-block" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
-              </div>
-              <!-- /.form-group -->
-              <div class="form-group" v-bind:class="[errors_return.nombre_contacto,{ 'has-error': errors.has('nombre_contacto') }]">
-                <label>Nombre de Contacto</label>
-                <input type="text" v-model="cliente.nombre_contacto" v-validate data-vv-rules="alpha|min:3"  name="nombre_contacto" id="nombre_contacto" class="form-control">
-                <span  class="help-block" v-show="errors.has('nombre_contacto')">{{ errors.first('nombre_contacto') }}</span>
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <!-- /.col -->
-            <div class="col-xs-6 col-md-12">
-              <div class="form-group" v-bind:class="[errors_return.nit,{ 'has-error': errors.has('nit') }]">
-                <label>NIT</label>
-                <input type="text" v-model="cliente.nit" v-validate data-vv-rules="required|alpha_num|min:3" name="nit" id="nit" class="form-control" required="required">
-                <span  class="help-block" v-show="errors.has('nit')">{{ errors.first('nit') }}</span>
-              </div>
-              <!-- /.form-group -->
-              <div class="form-group" v-bind:class="[errors_return.email,{ 'has-error': errors.has('email') }]">
-                <label>Correo</label>
-                <input type="email" v-model="cliente.email" v-validate data-vv-rules="email" name="email" id="email" class="form-control">
-                <span  class="help-block" v-show="errors.has('email')">{{ errors.first('email') }}</span>
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <!-- /.col -->
-            <div class="col-xs-6 col-md-12">
-              <div class="form-group" v-bind:class="[errors_return.telefono,{ 'has-error': errors.has('telefono') }]">
-                <label>Teléfono</label>
-                <input type="text" v-model="cliente.telefono" v-validate data-vv-rules="min:5" name="telefono" id="telefono" class="form-control">
-                <span  class="help-block" v-show="errors.has('telefono')">{{ errors.first('telefono') }}</span>
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <div class="col-xs-6 col-md-12">
-              <button type="button"  v-on:click="addCliente" class="btn btn-block btn-success aa">Agregar</button>
-            </div>
-            </form>
-            <!-- /.row -->
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary" v-on:click="editCliente(cliente)">Guardar</button>
-          </div>
-        </div>
-        <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
+        </thead>
+        </table>
+   </section> 
   </div>
 </template>
 <script>
@@ -178,11 +25,13 @@
   Vue.use(VeeValidate);
   module.exports =  {
     components: {VeeValidate,Validator},
+    
     data () {
       return {
         clientes:[],
         cliente:{},
         message :'',
+        agregar:true,
         option_toast:{
           timeOut: 5000,
           "positionClass": "toast-top-center",
@@ -198,6 +47,40 @@
       }
     },created:function () {
       this.listarClientes();
+      this.$on('edit-cliente', function(obj) { 
+        this.agregar= obj;
+      });
+    },
+    mounted() {
+      $('#tabla_clientes').DataTable({
+                     processing: true,
+               serverSide: false,
+               ajax: "api/v1/clientes",
+               columns: [
+
+                   { data: 'nit', name: 'nit' },
+                   { data: 'nombre', name: 'nombre' },
+                   { data: 'nombre_contacto', name: 'nombre_contacto' },
+                   { data: 'email', name: 'email' },
+                   { data: 'telefono', name: 'telefono' },
+                   ], 
+              columnDefs: [
+               {
+                   "targets": [5],
+                   "data": null,
+                   "render": function(data, type, full) { // Devuelve el contenido personalizado
+                    console.log(data)
+                      return '<a href="editar_cliente/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Editar</a><a href="editar_cliente/'+full.id+'" class="btn btn-danger btn-xs btn-flat btn-block usuario_edit" >Borrar</a>'; 
+                    }
+               },
+               ],
+               autoWidth: true,
+               responsive: true,
+               language: {
+                       "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
+                   },      
+
+                    });
     },
     methods:{
       setErrors:function(object) {
@@ -212,46 +95,12 @@
         console.log(this.cliente);
         this.cliente = {};
       },
-      openModal: function(client) {
-        $('#agregar_cliente')[0].reset();
-        console.log($('#agregar_cliente'))
-        $('.editarModal').modal('show');
-        $('.collapse-cliente').collapse('hide');
-        this.cliente = client;
-        this.errors.clear();
-
-      },
       listarClientes: function(){
          this.$http.get('api/v1/clientes')
          .then(function(respuesta){
            this.clientes=respuesta.body;
            console.log(this.clientes);
          });
-      },
-      addCliente: function(e) {
-        this.$validator.validateAll();
-        if (this.errors.any()) {
-          return false
-        }
-        this.$http.post('api/v1/clientes', this.cliente)
-        .then(function(respuesta){
-          if (respuesta.status != '200') {
-            if (Object.keys(respuesta.body.obj).length>0) {
-              this.setErrors(respuesta.body.obj);
-            }
-            toastr.warning(this.message,respuesta.body.msg,this.option_toast);
-          } else {
-            toastr.success(respuesta.body.msg,'',this.option_toast);
-            $('#agregar_cliente').trigger("reset");
-            $('.collapse-cliente').collapse('hide');
-            this.clientes.push(respuesta.body.obj);
-          }
-        }, (response) => {
-          if (Object.keys(response.body.obj).length>0) {
-            this.setErrors(response.body.obj);
-          }
-          toastr.error(this.message,response.body.msg,this.option_toast);
-        });
       },
       editCliente: function(client) {
         this.$http.put('api/v1/clientes/'+client.id, client)
