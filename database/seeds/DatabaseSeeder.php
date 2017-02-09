@@ -29,12 +29,14 @@ class DatabaseSeeder extends Seeder
      $this->command->info('Estados table seeded!');
      $this->call('TiposComprasTableSeeder');
      $this->command->info('Tipos_Compra table seeded!');
-     $this->call('OTs');
-     $this->command->info('OTs table seeded!');
+   //  $this->call('OTs');
+     //$this->command->info('OTs table seeded!');
      $this->call('Planeacion_fases');
      $this->command->info('Planeacion_fases table seeded!');
      $this->call('Planeacion_tipos');
      $this->command->info('Planeacion_tipos table seeded!');
+      $this->call('Permission_Role');
+     $this->command->info('Permisos Generados seeded!');
     }
 }
 class RolesTableSeeder extends Seeder {
@@ -142,9 +144,12 @@ class UsuariosTableSeeder extends Seeder {
     public function run()
     {
         DB::table('users')->delete();
-
+        $desarrollo= App\Role::where('name','desarrollo')->first();
         App\User::create(array('nombre' => 'Desarrollo','apellido' => 'Himalaya','cargo' => 'Tester','telefono' => '1111111','email' => 'desarrollo@himalayada.com',
-        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => '1','areas_id' => '1'));
+        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $desarrollo['id'],'areas_id' => '1'));
+        $user =   App\User::where('email','desarrollo@himalayada.com')->first();
+        $user->attachRole($desarrollo);
+       // $user->roles()->attach($role_id);
         App\User::create(array('nombre' => 'Ejecutiva 1','apellido' => 'Himalaya','cargo' => 'Ejecutiva','telefono' => '22222222','email' => 'ejecutiva@himalayada.com',
         'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => '1','areas_id' => '2'));
     }
@@ -226,6 +231,55 @@ class Planeacion_tipos extends Seeder {
         App\Planeacion_tipo::create(array('nombre' => 'Desarrollo'));
         App\Planeacion_tipo::create(array('nombre' => 'Calidad'));
         App\Planeacion_tipo::create(array('nombre' => 'Publicacion'));
+    }
+
+}
+
+class Permission_Role extends Seeder {
+
+    public function run()
+    {
+        DB::table('permission_role')->delete();
+
+         $desarrollo= App\Role::where('name','desarrollo')->first();
+
+         $permisos= App\Permission::all(); 
+
+         $desarrollo->attachPermissions($permisos);
+
+
+
+       /* App\Permission::create(array('name' => 'ver_ots','display_name'=>'Ver OTS','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'crear_ots','display_name'=>'Crear OTS','description'=>'Puede Crear' ));
+        App\Permission::create(array('name' => 'editar_ots','display_name'=>'Editar OTS','description'=>'Puede Editar' ));
+         //Permisos Sobre Clientes
+        App\Permission::create(array('name' => 'ver_clientes','display_name'=>'Ver Clientes','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'crear_clientes','display_name'=>'Crear Clientes','description'=>'Puede Crear' ));
+        App\Permission::create(array('name' => 'editar_clientes','display_name'=>'Editar Clientes','description'=>'Puede Editar' ));
+         //Permisos Sobre Usuarios
+        App\Permission::create(array('name' => 'ver_listado_usuarios','display_name'=>'Ver Listado de Usuarios','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'crear_usuarios','display_name'=>'Crear Usuarios','description'=>'Puede Crear' ));
+        App\Permission::create(array('name' => 'editar_usuarios','display_name'=>'Editar Usuarios','description'=>'Puede Editar' ));
+         //Permisos Sobre Foros
+        App\Permission::create(array('name' => 'ver_foro_creatividad','display_name'=>'Ver Foro de Creatividad','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'ver_foro_diseno','display_name'=>'Ver Foro de Diseño','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'ver_foro_desarrollo','display_name'=>'Ver Foro de Desarrollo','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'ver_foro_contenidos','display_name'=>'Ver Foro de Contenidos','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'ver_foro_digital','display_name'=>'Ver Foro de Digital','description'=>'Puede Ver' ));
+        //Permisos Sobre Areas
+        App\Permission::create(array('name' => 'ver_listado_areas','display_name'=>'Ver Areas','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'crear_areas','display_name'=>'Crear Areas','description'=>'Puede crear' ));
+        App\Permission::create(array('name' => 'editar_areas','display_name'=>'Editar Areas','description'=>'Puede Editar' ));
+        //Permisos Sobre Tareas
+        App\Permission::create(array('name' => 'crear_tareas','display_name'=>'Crear Tareas','description'=>'Puede crear' ));
+        App\Permission::create(array('name' => 'editar_tareas','display_name'=>'Editar Tareas','description'=>'Puede Editar' ));*/
+
+
+        /*
+        App\Planeacion_tipo::create(array('nombre' => 'Planeacion'));
+        App\Planeacion_tipo::create(array('nombre' => 'Desarrollo'));
+        App\Planeacion_tipo::create(array('nombre' => 'Calidad'));
+        App\Planeacion_tipo::create(array('nombre' => 'Publicacion'));*/
     }
 
 }

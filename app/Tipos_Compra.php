@@ -19,6 +19,6 @@ class Tipos_compra extends Model
  */
 public function Compras_Ot()
   {
-      return $this->hasMany('App\Compras_ot');
+      return $this->hasMany('App\Compras_ot','tipos_compras_id','id');
   }
 }

@@ -34,14 +34,14 @@ class Compras_ot extends Model
   */
   public function Tipo_Compra()
   {
-    return $this->belongsTo('App\Tipos_compra');
+    return $this->belongsTo('App\Tipos_compra','tipos_compras_id','id');
   }
   /**
   * Obtiene la Divisa que esta asociada a la Compra
   */
   public function Divisa()
   {
-    return $this->belongsTo('App\Divisa');
+    return $this->belongsTo('App\Divisa','divisas_id','id');
   }
 
 }

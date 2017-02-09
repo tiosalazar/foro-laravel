@@ -15,6 +15,7 @@ return [
 
     'ots'   => 'OTS',
     'crear_ot' => 'Crear OT',
+    'listar_ot' => 'Listar OT',
     'usuarios' => 'Equipo',
     'listar_usuarios' => 'Listar Usuarios',
     'crear_usuarios' => 'Crear Usuarios',

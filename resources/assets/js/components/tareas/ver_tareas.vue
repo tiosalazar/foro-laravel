@@ -1,6 +1,6 @@
 <template>
 	<div>
-        <table class="table table-striped table-hover  table-bordered dataTable no-footer" id="tabla_tareas">
+        <table class="table table-striped table-hover datatable-foro table-bordered dataTable no-footer" id="tabla_tareas">
 		  <thead>
 		        <tr>    
 		          <th >OT</th>

@@ -50,8 +50,8 @@
 					<div class="form-group required">
 						<label for="valor_total" class="col-sm-4 ">Fee <sup>*</sup></label>
 						<div class="col-sm-8" v-bind:class="{ 'has-error': errors.has('fee') }">
-							 <input type="radio" name="fee" value="1"  v-model="datos_encabezado.fee"  required="required"  @mouseout="guardarDatos" >Si 
-						 	 <input type="radio" name="fee" value="0"  v-model="datos_encabezado.fee"   required="required"   @mouseout="guardarDatos" > No
+							<input type="radio" name="fee" value="1"  v-model="datos_encabezado.fee"  required="required"  @mouseout="guardarDatos" >Si 
+							<input type="radio" name="fee" value="0"  v-model="datos_encabezado.fee"   required="required"   @mouseout="guardarDatos" > No
 							<span  class="help-block" v-show="errors.has('fee')">{{ errors.first('fee') }}</span>
 						</div>
 					</div>
@@ -86,7 +86,7 @@
 								</div>
 								<datepicker language="es" id="fecha_inicio" required="required" v-validate data-vv-rules="required"  @mouseout="guardarDatos" data-vv-as="Fecha de Inicio" placeholder="Fecha inicio"  :disabled="state.disabled" v-model="datos_encabezado.fecha_inicio" name="fecha_inicio" class="form-control"  format="dd-MM-yyyy"></datepicker>
 							</div>
-								<span  class="help-block" v-show="errors.has('fecha_inicio')">{{ errors.first('fecha_inicio') }}</span>
+							<span  class="help-block" v-show="errors.has('fecha_inicio')">{{ errors.first('fecha_inicio') }}</span>
 						</div>
 					</div>
 					<div class="form-group col-md-6 nopadding required">
@@ -173,22 +173,22 @@ module.exports= {
 		},
 		limpiar_datos: function(){
 			if(this.limpiar_datos == true){
-			this.datos_encabezado={
-				fecha_inicio:new Date(),
-				cliente:'',
-				ejecutivo:'',
-				fee:1,
-				htotal:'',
-				estado:'',
-				num_ot:'',
-				name_proyect:'',
-				valor_total:'',
-				horas_totales:'',
-				fecha_fin:'',
-				h_pasadas:false,
-			};
-		 }
-	   }
+				this.datos_encabezado={
+					fecha_inicio:new Date(),
+					cliente:'',
+					ejecutivo:'',
+					fee:1,
+					htotal:'',
+					estado:'',
+					num_ot:'',
+					name_proyect:'',
+					valor_total:'',
+					horas_totales:'',
+					fecha_fin:'',
+					h_pasadas:false,
+				};
+			}
+		}
 	},
 	created: function(){
 		this.fetchTips();
@@ -216,17 +216,17 @@ module.exports= {
 	methods:{
 		/*
      Si encuentra el arreglo de Datos Guardados proceda a llenar el formulario
-		*/
-		fetchTips: function(){
-			if(	this.$localStorage.get('datos_encabezado') != null && this.$localStorage.get('datos_encabezado') != ""  ){
-				var arreglo =this.$localStorage.get('datos_encabezado');
-				var arreglo_Datos = new Object();
-				for (var k in arreglo){
-					if (typeof arreglo[k] != '') {
-						arreglo_Datos[''+k+''] = arreglo[k];
-					}
-				}
-				this.datos_encabezado=arreglo_Datos;
+     */
+     fetchTips: function(){
+     	if(	this.$localStorage.get('datos_encabezado') != null && this.$localStorage.get('datos_encabezado') != ""  ){
+     		var arreglo =this.$localStorage.get('datos_encabezado');
+     		var arreglo_Datos = new Object();
+     		for (var k in arreglo){
+     			if (typeof arreglo[k] != '') {
+     				arreglo_Datos[''+k+''] = arreglo[k];
+     			}
+     		}
+     		this.datos_encabezado=arreglo_Datos;
 				this.$parent.$emit('horas_totales',this.datos_encabezado.horas_totales);//Envio de total de Horas
 				this.$parent.$emit('datos_encabezado',arreglo);//Emite los datos al padre
 			}
@@ -234,21 +234,21 @@ module.exports= {
 		},
 		llenarDatosSiesVisualizacion: function(){
 
-				if (this.$parent.visualizacion=="true") {
+			if (this.$parent.visualizacion=="true") {
 
-					var arreglo_visualizar =JSON.parse(this.$parent.arreglo_visualizar);
-					this.datos_encabezado={
-						fecha_inicio:arreglo_visualizar.datos_encabezado.fecha_inicio,
-						cliente:arreglo_visualizar.datos_encabezado.cliente,
-						ejecutivo:arreglo_visualizar.datos_encabezado.ejecutivo,
-						fee:arreglo_visualizar.datos_encabezado.fee,
-						estado:arreglo_visualizar.datos_encabezado.estado,
-						num_ot:arreglo_visualizar.datos_encabezado.referencia,
-						horas_totales:arreglo_visualizar.datos_encabezado.horas_totales,
-						name_proyect:arreglo_visualizar.datos_encabezado.nombre,
-						valor_total:arreglo_visualizar.datos_encabezado.valor,
-						fecha_fin:arreglo_visualizar.datos_encabezado.fecha_final
-					};
+				var arreglo_visualizar =JSON.parse(this.$parent.arreglo_visualizar);
+				this.datos_encabezado={
+					fecha_inicio:arreglo_visualizar.datos_encabezado.fecha_inicio,
+					cliente:arreglo_visualizar.datos_encabezado.cliente,
+					ejecutivo:arreglo_visualizar.datos_encabezado.ejecutivo,
+					fee:arreglo_visualizar.datos_encabezado.fee,
+					estado:arreglo_visualizar.datos_encabezado.estado,
+					num_ot:arreglo_visualizar.datos_encabezado.referencia,
+					horas_totales:arreglo_visualizar.datos_encabezado.horas_totales,
+					name_proyect:arreglo_visualizar.datos_encabezado.nombre,
+					valor_total:arreglo_visualizar.datos_encabezado.valor,
+					fecha_fin:arreglo_visualizar.datos_encabezado.fecha_final
+				};
 					 this.$parent.$emit('datos_encabezado',this.datos_encabezado);//Emite los datos al padre
 
 					/*this.datos_requerimiento=arreglo_visualizar.requerimientos;
@@ -258,14 +258,14 @@ module.exports= {
 			},
 		/*
       Esta función se esta ejecutando constantemente, se encarga de emitir las horas totales al padre
-		*/
-		llenar_horas_totales:function () {
-			this.$parent.$emit('horas_totales',this.datos_encabezado.horas_totales);
-		},
+      */
+      llenar_horas_totales:function () {
+      	this.$parent.$emit('horas_totales',this.datos_encabezado.horas_totales);
+      },
 		/*
      Le envia constantemente los datos al padre, por si la persona no le da en guardar Avance
-		 */
-		guardarDatos: function () {
+     */
+     guardarDatos: function () {
 			//Wed Feb 15 2017 00:00:00 GMT-0500 (Hora est. Pacífico, Sudamérica)
 			var datos_encabezado={
 				num_ot:this.datos_encabezado.num_ot,
@@ -282,37 +282,37 @@ module.exports= {
 			};
 			  this.$parent.$emit('datos_encabezado',datos_encabezado);//Emite los datos al padre
 
-		},
+			},
 		/*
     Función Submit de guardar el formulario
-		 */
-		validateBeforeSubmit(e) {
-			this.$validator.validateAll();
-			if (!this.errors.any()) {
-				if(this.validarSelects() == true){
+    */
+    validateBeforeSubmit(e) {
+    	this.$validator.validateAll();
+    	if (!this.errors.any()) {
+    		if(this.validarSelects() == true){
 
-					var datos_encabezado={
-						num_ot:this.datos_encabezado.num_ot,
-						name_proyect:this.datos_encabezado.name_proyect,
-						valor_total:this.datos_encabezado.valor_total,
-						horas_totales:this.datos_encabezado.horas_totales,
-						fee:this.datos_encabezado.fee,
-						fecha_fin:this.limpiarFechas(this.datos_encabezado.fecha_fin),
-						fecha_inicio:this.limpiarFechas(this.datos_encabezado.fecha_inicio),
-						cliente:this.datos_encabezado.cliente,
-						estado:this.datos_encabezado.estado,
-						ejecutivo:this.datos_encabezado.ejecutivo,
-						h_pasadas:this.datos_encabezado.h_pasadas
-					};
-					/*Compruebo que no se haya pasado de las horas*/
-					if(datos_encabezado.h_pasadas ==true){
-						toastr.error('El Resúmen de horas no puede dar negativo',"Error al guardar los datos",this.option_toast);
-						return false;
-					}
-					/*Compruebo los datos, si todo esta bien se guardan en LocalStorage*/
-					else if (this.validarDatos(datos_encabezado) ==true){
-						toastr.success('Puede seguir Editando la OT o Regresar más tarde para Continuar con la edición',"Datos Guadados Correctamente",this.option_toast);
-						this.$localStorage.set('datos_encabezado',datos_encabezado);
+    			var datos_encabezado={
+    				num_ot:this.datos_encabezado.num_ot,
+    				name_proyect:this.datos_encabezado.name_proyect,
+    				valor_total:this.datos_encabezado.valor_total,
+    				horas_totales:this.datos_encabezado.horas_totales,
+    				fee:this.datos_encabezado.fee,
+    				fecha_fin:this.limpiarFechas(this.datos_encabezado.fecha_fin),
+    				fecha_inicio:this.limpiarFechas(this.datos_encabezado.fecha_inicio),
+    				cliente:this.datos_encabezado.cliente,
+    				estado:this.datos_encabezado.estado,
+    				ejecutivo:this.datos_encabezado.ejecutivo,
+    				h_pasadas:this.datos_encabezado.h_pasadas
+    			};
+    			/*Compruebo que no se haya pasado de las horas*/
+    			if(datos_encabezado.h_pasadas ==true){
+    				toastr.error('El Resúmen de horas no puede dar negativo',"Error al guardar los datos",this.option_toast);
+    				return false;
+    			}
+    			/*Compruebo los datos, si todo esta bien se guardan en LocalStorage*/
+    			else if (this.validarDatos(datos_encabezado) ==true){
+    				toastr.success('Puede seguir Editando la OT o Regresar más tarde para Continuar con la edición',"Datos Guadados Correctamente",this.option_toast);
+    				this.$localStorage.set('datos_encabezado',datos_encabezado);
 						this.$parent.$emit('datos_encabezado',datos_encabezado);//Emite los datos al padre
 					}
 
@@ -322,50 +322,50 @@ module.exports= {
 		limpiarFechas:function(fecha){
 			if (fecha != null && fecha != undefined && fecha != '' && this.validarFormatoFecha(fecha) !=false ) {			
 			//console.log(fecha.toISOString());
-				var fecha1=fecha;
-				fecha1=fecha1.toISOString();
-				var arreglo_nuevo=fecha1.split("T");
-				return arreglo_nuevo[0];
-			}else{
-				return fecha;
-			}
-		},
-		validarFormatoFecha:function(campo) {
-
-		      var RegExPattern = /^\d{1,2}\-\d{1,2}\-\d{2,4}$/;
-		      if ((campo.match(RegExPattern)) && (campo!='')) {
-		            return true;
-		      } else {
-		            return false;
-		      }
-		},
-		/*Función la cual me comprueba que los selects esten llenos*/
-		validarSelects: function(){
-			if(this.cliente == ""){
-				toastr.error('No se olvide de elegir un cliente',"Error al guardar los datos",this.option_toast);
-				return false;
-			}else if(	this.ejecutivo == ""){
-				toastr.error('No se olvide elegir el estado de la OT',"Error al guardar los datos",this.option_toast);
-				return false;
-			}else if(this.estado == ""){
-				toastr.error('No se Olvide de elegir a quien va a estar asignada la OT',"Error al guardar los datos",this.option_toast);
-				return false;
-			}else{
-				return true;
-			}
-		},
-		/*Función la cual valida los datos del arreglo de datos, comprueba que ningun campo este vacio*/
-		validarDatos: function(arreglo){
-			for (var k in arreglo){
-				if (typeof arreglo[k] == '') {
-					return false;
-					 break;
-				}
-			}
+			var fecha1=fecha;
+			fecha1=fecha1.toISOString();
+			var arreglo_nuevo=fecha1.split("T");
+			return arreglo_nuevo[0];
+		}else{
+			return fecha;
+		}
+	},
+	validarFormatoFecha:function(campo) {
+		var campo2 = campo;
+		var RegExPattern = /^\d{1,2}\-\d{1,2}\-\d{2,4}$/;
+		if ((String(campo2).match(RegExPattern)) && ( String(campo2) !='')) {
+			return true;
+		} else {
+			return false;
+		}
+	},
+	/*Función la cual me comprueba que los selects esten llenos*/
+	validarSelects: function(){
+		if(this.cliente == ""){
+			toastr.error('No se olvide de elegir un cliente',"Error al guardar los datos",this.option_toast);
+			return false;
+		}else if(	this.ejecutivo == ""){
+			toastr.error('No se olvide elegir el estado de la OT',"Error al guardar los datos",this.option_toast);
+			return false;
+		}else if(this.estado == ""){
+			toastr.error('No se Olvide de elegir a quien va a estar asignada la OT',"Error al guardar los datos",this.option_toast);
+			return false;
+		}else{
 			return true;
 		}
-
+	},
+	/*Función la cual valida los datos del arreglo de datos, comprueba que ningun campo este vacio*/
+	validarDatos: function(arreglo){
+		for (var k in arreglo){
+			if (typeof arreglo[k] == '') {
+				return false;
+				break;
+			}
+		}
+		return true;
 	}
+
+}
 
 	/*
 	DSO Crea una validación personalizada

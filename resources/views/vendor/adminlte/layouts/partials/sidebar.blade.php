@@ -71,8 +71,9 @@
       <!--Ots-->
       @if(Auth::user()->can('ver_ots'))
       <li class="treeview">
-        <a href="#"><i class='fa fa-folder-open'></i> <span>{{ trans('texto_menu.ots') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
+        <a href="#"><i class='fuente-icon'>o</i> <span>{{ trans('texto_menu.ots') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
         <ul class="treeview-menu">
+         <li><a href="{{ url('listar_ot') }}">{{  trans('texto_menu.listar_ot') }}</a></li>
           @if(Auth::user()->can('crear_ots'))
           <li><a href="{{ url('crear_ot') }}">{{  trans('texto_menu.crear_ot') }}</a></li>
           @endif

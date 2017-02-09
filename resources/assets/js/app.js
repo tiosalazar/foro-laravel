@@ -24,6 +24,7 @@ Vue.component('ver_tareas', require('./components/tareas/ver_tareas.vue'));
 
 //Componentes Dsalazar
 Vue.component('formulario_anadir_requerimiento', require('./components/ots/formulario_anadir_requerimiento.vue'));
+Vue.component('listar_ots', require('./components/ots/listar_ots.vue'));
 //Fin Componentes Dsalazar
 //Componentes Bcaldas
 Vue.component('form_usuarios', require('./components/usuarios/crear_usuario.vue'));

@@ -15,7 +15,7 @@ class CreateComprasOtsTable extends Migration
     {
          Schema::create('compras_ots', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre',110);
+            $table->string('nombre',110)->nullable();
             $table->string('descripcion',255);
             $table->string('provedor',110);
             $table->string('valor',110);

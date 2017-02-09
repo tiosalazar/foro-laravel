@@ -116,8 +116,13 @@ module.exports={
       if (data_req != null) {
         var arreglo_requerimientos = data_req[0].requerimientos;
         if (this.$parent.visualizacion=="true") {
-          this.requerimiento=[];
-          this.requerimiento.push(Vue.util.extend({}, JSON.parse(arreglo_requerimientos)) );
+            this.requerimiento=[];
+           for (let f in arreglo_requerimientos) {
+                let idx = Number(f)
+               arreglo_requerimientos[idx]=JSON.parse(arreglo_requerimientos[idx])
+              }
+          this.requerimiento.push(Vue.util.extend({}, arreglo_requerimientos[0]) );
+          console.log(this.requerimiento); 
         }else{
            this.requerimiento= arreglo_requerimientos;
         }

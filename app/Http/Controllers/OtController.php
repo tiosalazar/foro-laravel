@@ -23,14 +23,27 @@ class OtController extends Controller
      */
     public function index()
     {
-        // $ot= Ot::all();
-        $ot= DB::table('ots')
+         $ots= Ot::all();
+         $data=[];
+         foreach ( $ots as $key =>  $ot) {
+            $ot->Cliente;
+             $ot->Usuario;
+             $ot->Estado;
+            array_push($data, $ot);
+             
+         }
+
+
+         
+        /*$ot= DB::table('ots')
             ->join('clientes', 'ots.clientes_id', '=', 'clientes.id')
             ->join('users', 'ots.usuarios_id', '=', 'users.id')
             ->select('ots.*', 'clientes.nombre as nombre_cli', 'users.nombre as nombre_ej')
-            ->get();
-      return response()->json($ot);
+            ->get();*/
+
+        return array('recordsTotal'=>count($data),'recordsFiltered'=>count($data),'data'=>$data);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -145,12 +158,16 @@ class OtController extends Controller
             array_push($data['requerimientos']['requerimientos'], json_encode($array_temporal));
          }
          foreach ($ot->Compras_Ot as  $value) {
-               array_push($data['compras'], $value);
+             $compra =Compras_Ot::findOrFail($value['id']);
+             $compra->Tipo_Compra;
+             $compra->Divisa;
+             $array_temporal= array('tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'model_desc' => $value['descripcion'],
+              'model_provedor'=>'provedor' , 'model_valor'=> 'valor', 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre'])   );
+             array_push($data['compras'],  $array_temporal);
          }
-        //var_dump($data);
+       // var_dump($data);
          return view('admin.ots.editar_ot')->with('arregloOT', json_encode($data));
     }
-
     /**
      * Show the form for editing the specified resource.
      *

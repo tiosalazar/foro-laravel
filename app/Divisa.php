@@ -19,6 +19,6 @@ class Divisa extends Model
  */
 public function Compras_Ot()
   {
-      return $this->hasMany('App\Compras_ot');
+      return $this->hasMany('App\Compras_ot','divisas_id','id');
   }
 }

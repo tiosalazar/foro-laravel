@@ -59,7 +59,7 @@
 								</div>
 							</div>
 						</div>
-						<!--Modal -->
+						<!--Modal Cambiar de Pestaña-->
 						<div class="modal editarModal" >
 							<div class="modal-dialog">
 								<div class="modal-content">
@@ -83,7 +83,6 @@
 					</div>
 				</template>
 				<script>
-
 					import VueLocalStorage from 'vue-localstorage'
 					Vue.use(VueLocalStorage);
 					import VeeValidate, { Validator } from 'vee-validate';
@@ -139,9 +138,22 @@
 					},
 				}
 			},
+			mounted: function () {
+				    	var bPreguntar = true;
+    	window.onbeforeunload = preguntarAntesDeSalir;
+    	console.log(this.h_Disponibles);
+		    	function preguntarAntesDeSalir()
+				    {
+				      if (bPreguntar)
+				      	//$('.exitModal').modal('show');
+				        return "¿Seguro que quieres salir?";
+				    }
+
+			},
 			created: function(){
 				this.fetchTips();
-
+				this.llenarDatosSiesVisualizacion();
+				
 				/*
         Escucha las horas totales emitidas por el encabezado y realiza el calculo
         */
@@ -208,13 +220,14 @@
 				this.datos_encabezado=this.$localStorage.get('datos_encabezado');
 			},
 			llenarDatosSiesVisualizacion: function(){
-
-				/*if (this.visualizacion=='true') {
-					var arreglo_visualizar = this.arreglo_visualizar;
-					this.datos_encabezado=arreglo_visualizar.datos_encabezado;
+				if (this.visualizacion=='true') {
+					var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
+					var datos_encabezado= arreglo_visualizar.datos_encabezado;
+					this.descripcion_ot=datos_encabezado.observaciones; 
+					/*this.datos_encabezado=arreglo_visualizar.datos_encabezado;
 					this.datos_requerimiento=arreglo_visualizar.requerimientos;
-					this.datos_compras=arreglo_visualizar.compras;
-				}*/
+					this.datos_compras=arreglo_visualizar.compras;*/
+				}
 
 			},
 			GuardarOt: function (){
@@ -235,8 +248,8 @@
 								fee: this.datos_encabezado.fee,
 								horas_totales:this.datos_encabezado.horas_totales,
 								observaciones:this.descripcion_ot,
-								fecha_inicio:this.datos_encabezado.fecha_inicio,
-								fecha_final:this.datos_encabezado.fecha_fin,
+								fecha_inicio: this.limpiarFechas(this.datos_encabezado.fecha_inicio),
+								fecha_final: this.limpiarFechas(this.datos_encabezado.fecha_fin),
 								clientes_id: this.datos_encabezado.cliente.id,
 								usuarios_id:this.datos_encabezado.ejecutivo.id,
 								estados_id: this.datos_encabezado.estado.id,
@@ -249,6 +262,7 @@
 						if(this.visualizacion != 'true'){
 						this.$http.post('/api/v1/ots', datos_procesados)
 						.then(function(respuesta){
+							console.log(respuesta);
 							if (respuesta.status != '200') {
 								if (Object.keys(respuesta.obj).length>0) {
 									toastr.error("Revise que todos los datos esten bien, y vuelva a intentar",respuesta.body.msg,this.option_toast);
@@ -274,11 +288,10 @@
 						},(respuesta) => {
 							var that = this;
 							that.message ='';
-							if (Object.keys(respuesta.body.obj).length>0) {
+							console.log(respuesta);
 							//toastr.error(that.message,respuesta.body.msg,this.option_toast);
 							toastr.error("Revise que todos los datos esten bien, y vuelva a intentar",respuesta.body.msg,this.option_toast);
 	                        return false;
-	                           }
 						});
 					}else{
                      	var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);

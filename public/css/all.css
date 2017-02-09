@@ -8174,13 +8174,13 @@ body {
   font-weight: 300;
 }
 
-#tabla_tareas thead th {
+.datatable-foro thead th {
   text-align: center;
   background-color: #002E60;
   color: #fff;
 }
 
-#tabla_tareas td {
+.datatable-foro td {
   text-align: center;
   color: #6F6F6F;
 }

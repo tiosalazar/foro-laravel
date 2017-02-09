@@ -73,6 +73,7 @@ module.exports={
     },
   },
   created: function(){
+    this.llenarDatosSiesVisualizacion();
     this.llenarCampos();
     /*
      Escucha la opción seleccionada del selector tipo Compra
@@ -103,6 +104,13 @@ module.exports={
         this.compra_asociada.push(Vue.util.extend({}, this.compra_asociada));
       }
     },
+     llenarDatosSiesVisualizacion: function(){
+        if (this.$parent.visualizacion=="true") {
+               var arreglo_visualizar =JSON.parse(this.$parent.arreglo_visualizar);
+                var datos=[{compras:arreglo_visualizar.compras}];
+            this.$localStorage.set('datos_compra_'+arreglo_visualizar.requerimientos.area,JSON.stringify(datos));//busca dependiendo del Área
+        }
+      },
     /*
      Si encuentra el arreglo guardado en el localStorage llena nos datos con lo que se ha escrito.
     */
