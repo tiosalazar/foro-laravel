@@ -139,21 +139,32 @@
 				}
 			},
 			mounted: function () {
-				    	var bPreguntar = true;
-    	window.onbeforeunload = preguntarAntesDeSalir;
-    	console.log(this.h_Disponibles);
-		    	function preguntarAntesDeSalir()
-				    {
-				      if (bPreguntar)
-				      	//$('.exitModal').modal('show');
-				        return "¿Seguro que quieres salir?";
-				    }
 
-			},
-			created: function(){
-				this.fetchTips();
-				this.llenarDatosSiesVisualizacion();
-				
+				if (this.visualizacion=='true') {
+					var bPreguntar = true;
+					var salir = false;
+					window.onbeforeunload = function (e)
+					{
+						var e = e || window.event,
+						salir=true;
+						       // message = 'Seguro que quieres salir sin guardar los cambios ?';
+
+						    // For IE and Firefox prior to version 4
+						    if (e)
+						    {
+						    	e.returnValue = true;
+						    }
+						    if (salir) {
+						    	window.localStorage.clear(); //try this to clear all local storage
+						    }
+						    return salir;
+						}
+					}
+				},
+				created: function(){
+					this.fetchTips();
+					this.llenarDatosSiesVisualizacion();
+
 				/*
         Escucha las horas totales emitidas por el encabezado y realiza el calculo
         */
@@ -237,9 +248,9 @@
 				}else if(this.datos_encabezado.h_pasadas ==true){		/*Compruebo que no se haya pasado de las horas*/
 					toastr.error('El Resúmen de horas no puede dar negativo',"Error al guardar los datos",this.option_toast);
 					return false;
-				}else if(this.comprobarDatosRequerimientos()==true) {
+				}else if(this.comprobarDatosTodosRequerimientos()==true) {
 					try {
-                    
+
 						var datos_procesados={
 							datos_encabezado:{
 								nombre :this.datos_encabezado.name_proyect,
@@ -260,52 +271,52 @@
 
 
 						if(this.visualizacion != 'true'){
-						this.$http.post('/api/v1/ots', datos_procesados)
-						.then(function(respuesta){
-							console.log(respuesta);
-							if (respuesta.status != '200') {
-								if (Object.keys(respuesta.obj).length>0) {
-									toastr.error("Revise que todos los datos esten bien, y vuelva a intentar",respuesta.body.msg,this.option_toast);
-	                                return false;
-								}
-							}else{
-								toastr.success(respuesta.body.msg,'',this.option_toast);
-								this.h_Disponibles=0;
-								this.horas_totales=0;
-								this.descripcion_ot='';
-								this.message='';
-								this.h_area=0;
-								this.id_tab='';
-								this.form_requerimiento_validado=false;
-								this.validar_requerimientos=false;
-								this.form_compras_validado= false;
-								this.validar_compras=false;
+							this.$http.post('/api/v1/ots', datos_procesados)
+							.then(function(respuesta){
+								console.log(respuesta);
+								if (respuesta.status != '200') {
+									if (Object.keys(respuesta.obj).length>0) {
+										toastr.error("Revise que todos los datos esten bien, y vuelva a intentar",respuesta.body.msg,this.option_toast);
+										return false;
+									}
+								}else{
+									toastr.success(respuesta.body.msg,'',this.option_toast);
+									this.h_Disponibles=0;
+									this.horas_totales=0;
+									this.descripcion_ot='';
+									this.message='';
+									this.h_area=0;
+									this.id_tab='';
+									this.form_requerimiento_validado=false;
+									this.validar_requerimientos=false;
+									this.form_compras_validado= false;
+									this.validar_compras=false;
 
-								this.limpiarDatos=true;
-								this.$localStorage.remove('datos_encabezado');
-								this.limpiarComprasRequerimientos();
-							}
-						},(respuesta) => {
-							var that = this;
-							that.message ='';
-							console.log(respuesta);
+									this.limpiarDatos=true;
+									this.$localStorage.remove('datos_encabezado');
+									this.limpiarComprasRequerimientos();
+								}
+							},(respuesta) => {
+								var that = this;
+								that.message ='';
+								console.log(respuesta);
 							//toastr.error(that.message,respuesta.body.msg,this.option_toast);
 							toastr.error("Revise que todos los datos esten bien, y vuelva a intentar",respuesta.body.msg,this.option_toast);
-	                        return false;
+							return false;
 						});
-					}else{
-                     	var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
-                     	                     console.log(datos_procesados);
-					this.$http.put('/api/v1/ots/'+arreglo_visualizar.datos_encabezado.id, datos_procesados)
-						.then(function(respuesta){
-							console.log(respuesta);
-							if (respuesta.status != '200') {
-								if (Object.keys(respuesta.obj).length>0) {
-									toastr.error("Revise que todos los datos esten bien, y vuelva a intentar",respuesta.body.msg,this.option_toast);
-	                                return false;
-								}
-							}else{
-								toastr.success(respuesta.body.msg,'',this.option_toast);
+						}else{
+							var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
+							console.log(datos_procesados);
+							this.$http.put('/api/v1/ots/'+arreglo_visualizar.datos_encabezado.id, datos_procesados)
+							.then(function(respuesta){
+								console.log(respuesta);
+								if (respuesta.status != '200') {
+									if (Object.keys(respuesta.obj).length>0) {
+										toastr.error("Revise que todos los datos esten bien, y vuelva a intentar",respuesta.body.msg,this.option_toast);
+										return false;
+									}
+								}else{
+									toastr.success(respuesta.body.msg,'',this.option_toast);
 								/*
 								this.h_Disponibles=0;
 								this.horas_totales=0;
@@ -329,10 +340,10 @@
 							//if (Object.keys(respuesta.body.obj).length>0) {
 							//toastr.error(that.message,respuesta.body.msg,this.option_toast);
 							toastr.error("Revise que todos los datos esten bien, y vuelva a intentar",respuesta.body.msg,this.option_toast);
-	                        return false;
+							return false;
 	                        //   }
-						});
-					}
+	                    });
+						}
 
 
 
@@ -340,6 +351,7 @@
 
 					} catch (e) {
 						console.log(e);
+						toastr.error("Revise que todos los datos esten bien, y vuelva a intentar","Error al Guardar",this.option_toast);
 
 
 					}
@@ -348,11 +360,26 @@
 
 			},
 			limpiarFechas:function(fecha){
-				var fecha1=fecha;
-				var arreglo_nuevo=fecha1.split("T");
-				return arreglo_nuevo[0];
-
-			},
+				if (fecha != null && fecha != undefined && fecha != '' && this.validarFormatoFecha(fecha) ==false ) {			
+			
+			var fecha1=String(fecha);
+			//console.log(fecha1);
+			//fecha1=fecha1.toISOString();
+			var arreglo_nuevo=fecha1.split("T");
+			return arreglo_nuevo[0];
+		}else{
+			return fecha;
+		}
+	},
+	validarFormatoFecha:function(campo) {
+		var campo2 = campo;
+		var RegExPattern = /^\d{1,2}\-\d{1,2}\-\d{2,4}$/;
+		if ((String(campo2).match(RegExPattern)) && ( String(campo2) !='')) {
+			return true;
+		} else {
+			return false;
+		}
+	},
 		/*
          realiza el calculo de lashoras por área
          */
@@ -490,9 +517,14 @@
 }
 
 },
-comprobarDatosRequerimientos: function(){
-	var index = Object.keys(this.datos_requerimiento).length;
-	var requerimientos =this.datos_requerimiento;
+comprobarDatosRequerimientos: function(arreglo){
+	if( arreglo != null && arreglo != undefined ){
+		var index = Object.keys(arreglo).length;
+		var requerimientos =arreglo;
+	}else{
+		var index = Object.keys(this.datos_requerimiento).length;
+		var requerimientos =this.datos_requerimiento;
+	}
 	if ( index == 0) {
 		toastr.error("Todos los campos son obligatorios","Error al Guardar Requerimientos",this.option_toast);
 		return false;
@@ -509,6 +541,22 @@ comprobarDatosRequerimientos: function(){
 		return true;
 	}
 
+},
+comprobarDatosTodosRequerimientos: function(){
+
+	var total_areas  =this.$localStorage.get('listado_areas');
+	var retorno=false;
+	if (total_areas != null || total_areas != undefined ) {
+		var size = Object.keys(total_areas).length;
+		var hora_a=0;
+		for (let f in total_areas) {
+			let idx = Number(f)
+			let p = total_areas[idx]
+			hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
+			retorno=this.comprobarDatosRequerimientos(hora_a);	    
+		}
+		return retorno;	
+	} 
 },
 /*
   Función la cual comprueba dentro del arreglo de requerimientos que no haya ningún campo en blanco
@@ -544,7 +592,7 @@ comprobarDatosRequerimientos: function(){
   	return false;
   },
   comprobarCompras: function (arreglo) {
-    var compras =arreglo[0].compras;
+  	var compras =arreglo[0].compras;
   	for (let f in compras) {
   		let idx = Number(f)
   		let p = compras[idx]

@@ -139,6 +139,8 @@ module.exports={
     llenarDatosSiesVisualizacion: function(){
         if (this.$parent.visualizacion=="true") {
                var arreglo_visualizar =JSON.parse(this.$parent.arreglo_visualizar);
+
+               console.log(arreglo_visualizar);
                var arreglo_requerimientos=arreglo_visualizar.requerimientos.requerimientos;
 
            var datos=[{

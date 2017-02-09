@@ -30,7 +30,7 @@
                 </div>
                  <div class="form-group" v-bind:class="[errors_return.cargo,{ 'has-error': errors.has('cargo') }]">
                     <label for="cargo_usuario">Cargo</label>
-                    <input type="text" class="form-control" id="cargo_usuario" name="cargo" v-model="usuarios.cargo"  placeholder="Cargo" v-validate data-vv-rules="required|alpha_num|max:30">
+                    <input type="text" class="form-control" id="cargo_usuario" name="cargo" v-model="usuarios.cargo"  placeholder="Cargo" v-validate data-vv-rules="required|alpha_spaces|max:30">
                      <span  class="help-block error_absolute" v-show="errors.has('cargo')">{{ errors.first('cargo') }}</span>
                  </div>
                  <div class="form-group" v-bind:class="[errors_return.telefono,{ 'has-error': errors.has('telefono') }]">

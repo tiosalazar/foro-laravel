@@ -33,14 +33,6 @@ class OtController extends Controller
              
          }
 
-
-         
-        /*$ot= DB::table('ots')
-            ->join('clientes', 'ots.clientes_id', '=', 'clientes.id')
-            ->join('users', 'ots.usuarios_id', '=', 'users.id')
-            ->select('ots.*', 'clientes.nombre as nombre_cli', 'users.nombre as nombre_ej')
-            ->get();*/
-
         return array('recordsTotal'=>count($data),'recordsFiltered'=>count($data),'data'=>$data);
     }
 
@@ -97,7 +89,7 @@ class OtController extends Controller
                          for ($i=0; $i < count($requerimiento['requerimientos']) ; $i++) {
                             $model_descripcion_requerimiento= new Requerimientos_Ot; 
                             $arreglo=$requerimiento['requerimientos'][$i];
-                            $arreglo_ingresar= array('nombre' => $arreglo['model_nom'],'horas'=> $arreglo['model_horas'],'ots_id'=>$id_ot);
+                            $arreglo_ingresar= array('nombre' => $arreglo['model_nom'],'horas'=> $arreglo['model_horas'],'areas_id'=>$requerimiento['area'],'ots_id'=>$id_ot);
                             $model_descripcion_requerimiento->fill( $arreglo_ingresar);
                             $model_descripcion_requerimiento->save();
                          }
@@ -147,10 +139,12 @@ class OtController extends Controller
          $data['datos_encabezado']['ejecutivo']=$ot->Usuario;
          $data['datos_encabezado']['estado']=$ot->Estado;
          $data['compras']=[];
+
          foreach ($ot->Tiempos_x_Area as  $value) {
             $data['requerimientos']['area']=$value['areas_id'];
             $data['requerimientos']['horas']=$value['tiempo_estimado'];
          }
+
          $array_temporal=[];
          $data['requerimientos']['requerimientos']=[];
          foreach ($ot->Requerimiento_Ot as  $value) {

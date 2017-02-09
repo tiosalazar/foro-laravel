@@ -110,6 +110,7 @@ class AreasTableSeeder extends Seeder {
         App\Area::create(array('nombre' => 'Desarrollo','extencion_tel' => '81','estado' => '1') );
         App\Area::create(array('nombre' => 'Contenidos','extencion_tel' => '0281','estado' => '1') );
         App\Area::create(array('nombre' => 'Digital Performance ','extencion_tel' => '0581','estado' => '1') );
+        App\Area::create(array('nombre' => 'Cuentas ','extencion_tel' => '0581','estado' => '1') );
 
     }
 

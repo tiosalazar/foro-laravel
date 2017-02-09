@@ -102,7 +102,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user= User::where('roles_id',$id)->get();
+        $ejecutivos= Role::where('name','cuentas')->first();
+        $user= User::where('roles_id', $ejecutivos->id)->get();
         return response()->json($user);
     }
 

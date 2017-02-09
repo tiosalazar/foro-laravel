@@ -4,7 +4,7 @@
 		<table class="table table-striped table-hover datatable-foro table-bordered dataTable no-footer" id="tabla_usuarios">
 			<thead>
 				<tr>    
-					<th >Referencia </th>
+					<th >Num. OT </th>
 					<th >Nombre</th>
 					<th >Valor</th>
 					<th >Fee</th> 
@@ -94,7 +94,8 @@
 							"targets": [3],
 							"data": null,
 						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-						       	return (full.fee==1)? 'SI' : 'NO';
+                                 var checked=(full.fee==1)?'checked':'';
+						       	return  '<input type="radio" " value="'+full.fee+'"  required="required" '+checked+' disabled >';
 
 						       }
 						   },
