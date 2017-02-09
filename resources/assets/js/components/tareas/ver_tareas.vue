@@ -47,7 +47,7 @@
 				setTimeout(function(){
 					$('#tabla_tareas').DataTable({
 						processing: true,
-						serverSide: false,
+						serverSide: true,
 						ajax: "/api/v1/tareas",
 						columns: [
 						{ data: 'ot.referencia', name: 'ot.referencia' },
@@ -75,7 +75,7 @@
 						   	"targets": [5],
 						   	"data": null,
 						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-						       	return '<a href="editar_usuario/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver tarea</a>';        
+						       	return '<a href="all_tareas/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver tarea</a>';        
 						       }
 						   }
 						   ],
