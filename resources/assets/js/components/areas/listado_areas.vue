@@ -11,7 +11,10 @@
         <div class="col-md-5 columnas_listar_tareas">
           <h3 class="titulo_listar_user">Usuarios</h3>
           <ul>
-            <li v-for="usuario in itemsUserArea(usuarios,idareaUser) " :key="usuario.nombre" @click="userviewinfo(usuario.horas_disponible,usuario.id)"><img src="/images/avatars/Desarrollo1.png"><div class="text_user_listado"><p>{{usuario.nombre}}</p><p>{{usuario.cargo}}</p><p>{{usuario.email}}</p><div></li>
+            <li v-for="usuario in itemsUserArea(usuarios,idareaUser) " :key="usuario.nombre" @click="userviewinfo(usuario.horas_disponible,usuario.id)">
+            <div v-if="usuario.img_perfil==null"><img   src="/images/perfil.jpg"></div>
+            <div v-else><img   v-bind:src="usuario.img_perfil"></div>
+            <div class="text_user_listado"><p>{{usuario.nombre}} {{usuario.apellido}}</p><p>{{usuario.cargo}}</p><p>{{usuario.email}}</p><div></li>
           </ul>
         </div>
 
@@ -23,7 +26,7 @@
           </div>
           <div class="info_content">
             <h3>Encargado</h3>
-            <p>{{areas_info.coordinador}}</p>
+            <p>{{areas_info.coordinador}} {{areas_info.apellido_coordinador}}</p>
             <p>{{areas_info.email}}</p>
           </div>
           <div class="info_content" v-if="switcharea_user == '1'">
@@ -38,11 +41,31 @@
           </div>
           <div class="info_content" v-if="switcharea_user == '2'">
             <a v-bind:href="id_user" ><button class="btn btn-primary" >Editar usuario</button></a>
-            <button class="btn btn-danger" v-bind:value="id_user_eliminar" @click="eliminarUsuario(id_user_eliminar)" >Eliminar suario</button>
+            <button class="btn btn-danger" v-bind:value="id_user_eliminar" data-target="#confirm_delete_user" data-toggle="modal"  >Eliminar suario</button>
           </div>
         </div>
       </div>
      
+    </div>
+
+     <div class="modal fade " id="confirm_delete_user">
+     <div class="modal-dialog">
+         <div class="modal-content">
+           <div class="modal-header">
+            <h3>Está Seguro que desea eliminar este usuario</h3>
+           </div>
+           <div class="modal-body">
+              <div class="center-block" style="width:150px; text-align:center;">
+                <button class="btn btn-danger " data-dismiss="modal">NO</button>
+                <button class="btn btn-primary " @click="eliminarUsuario(id_user_eliminar)" data-dismiss="modal">SI</button>
+              </div>
+              <div class="modal-footer">
+             
+              </div>
+          
+         </div>
+       </div>
+     </div>
     </div>
     
  </div>  
@@ -75,7 +98,7 @@
        
       },
       methods:{
-
+        //Consultar api de areas
         consultarApiAreas:function(){
 
           this.$http.get('/api/v1/areas')
@@ -90,7 +113,7 @@
           .then(function(respuesta){
             //asigno los usuarios y el id del area para hacer el filtro en el v-for
             this.usuarios=respuesta.body.data;
-            console.log(this.usuarios);
+            // console.log(this.usuarios);
             this.idareaUser=areaid;
             this.switcharea_user=1;
             //consulto la api por el id del area para mostrar la información en la ultima
@@ -106,10 +129,8 @@
         },
         //FUncion con filtro personalizado para traer los usuarios por io del area
         itemsUserArea: function(items,idareaUser) {
-         
             return items.filter(function(item) {
             return item.id_area==idareaUser;
-
           });  
         },
         userviewinfo:function(horas,id_user){
@@ -121,7 +142,16 @@
         eliminarUsuario:function(id_usuario_eliminar){
            this.$http.delete('/api/v1/usuarios/'+id_usuario_eliminar)
             .then(function(respuesta){
-              console.log(respuesta);
+              var id_usuario_respuesta=respuesta.body.obj.id;
+              console.log(id_usuario_respuesta);
+              var i=0;
+              this.usuarios.forEach(function(element, index, array){
+                if (element['id']==id_usuario_respuesta) {
+                   array.splice(i);
+                }
+                i++;
+              });
+              
             });
         }              
       

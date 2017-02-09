@@ -23,7 +23,7 @@ class UserController extends Controller
     {
       // $user= User::where('estado',1)->get();
        $user = User::
-            select('users.id','users.nombre','users.apellido','users.cargo','users.telefono','users.email','users.horas_disponible','roles.display_name as roles_id','areas.nombre as areas_id','users.estado','areas.id as id_area','roles.id as id_rol')->join('roles','roles.id','=','users.roles_id')->join('areas','areas.id','=','users.areas_id')->where('users.estado','1')->get();
+            select('users.id','users.nombre','users.apellido','users.cargo','users.telefono','users.email','users.img_perfil','users.horas_disponible','roles.display_name as roles_id','areas.nombre as areas_id','users.estado','areas.id as id_area','roles.id as id_rol')->join('roles','roles.id','=','users.roles_id')->join('areas','areas.id','=','users.areas_id')->where('users.estado','1')->get();
       // return response()->json($user);
       return array('recordsTotal'=>count($user),'recordsFiltered'=>count($user),'data'=>$user);
     }
@@ -191,29 +191,37 @@ class UserController extends Controller
     {
         
         $respuesta=[];
-            try
-            {
+          
             //Validaciòn de las entradas por el metodo POST
-                $vl=$this->$user = User::findOrFail($id);
-                 if ($vl->fails())
-                    {
-                       return response()->json($vl->errors());
-                    }else
-                        {
+        try{
+            $user = User::findOrFail($id);
+              $user->estado=0;
+              $user->save();
+              $respuesta["msg"]='Eliminado con exito';
+              $respuesta["error"]=0;
+              $respuesta["mensaje"]="OK";
+              $respuesta["obj"]=$user;
+        }catch(Exception $e){
+            $respuesta["msg"]='Error al eliminar el usuario o no encontrado';
+            $respuesta["error"]='Error';
+            $respuesta["mensaje"]="Fail";
+            $respuesta["obj"]=$user;
 
-                        $user->estado=0;
-                        $user->save();
-                        $respuesta["msg"]='Eliminado con exito';
-                        $respuesta["error"]=0;
-                        $respuesta["mensaje"]="OK";
-                        $respuesta["obj"]=$user;
-                     }
-            }catch(Exception $e){
-               $respuesta["error"]="Error con el usuario o no encontrado";
-               $respuesta["codigo_error"]="UC_Update_dontfind";
-               $respuesta["mensaje"]="Error con el usuario o no encontrado";
-               $respuesta["consola"]=$e;
-           }
+        }
+                // $user = User::findOrFail($id);
+
+                //  if ($user->fails()){
+                //         return response()->json($user->errors());
+                     
+                //     }else{
+                //         $user->estado=0;
+                //         $user->save();
+                //         $respuesta["msg"]='Eliminado con exito';
+                //         $respuesta["error"]=0;
+                //         $respuesta["mensaje"]="OK";
+                //         $respuesta["obj"]=$user;
+                //      }
+        
        
         return response()->json($respuesta);
     }
