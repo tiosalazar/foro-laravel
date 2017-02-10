@@ -26,6 +26,7 @@
   import Multiselect from 'vue-multiselect'
     module.exports= {
        components: { Multiselect},
+        props: ['select'],
       data () {
           return {
             estados:[],

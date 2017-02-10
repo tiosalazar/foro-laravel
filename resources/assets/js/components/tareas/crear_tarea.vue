@@ -3,7 +3,7 @@
 		<div class="box-body">
 			<div class="form-group required">
 				<label for="ot">Nombre el Projecto <sup>*</sup></label>
-				<select_ot></select_ot>
+				<select_ot :select="select_ot"></select_ot>
 			</div>
 			<div class="row">
 				<div class="col-sm-3 border-right">
@@ -53,7 +53,7 @@
 			</div>
 			<div class="form-group required">
 				<label>Prioridad <sup>*</sup></label>
-				<select_prioridad></select_prioridad>
+				<select_prioridad :select="prioridad"></select_prioridad>
 			</div>
 			<div class="form-group required">
 				<label>Fase del Projecto <sup>*</sup></label>
@@ -117,6 +117,8 @@
 					enlaces_externos:'',
 
 				},
+				select_ot:'',
+				prioridad:'',
 				ot:{},
 				area:{},
 				current_date:'',
@@ -146,6 +148,7 @@
 		created: function() {
 			this.$on('send-ot', function(obj) { 
 				this.ot= obj;
+				this.select_ot= obj;
 			});
 			this.$on('area_option', function(obj) { 
 				this.area= obj;
@@ -155,6 +158,9 @@
 			});
 			this.$on('fase_option', function(obj) {
 				this.fase=obj;
+			});
+			this.$on('send-prioridad', function(obj) {
+				this.prioridad=obj;
 			});
 			this.current_date=this.getCurrentDate();
 			this.user = this.$parent.id_user;
@@ -229,6 +235,8 @@
 			          } else {
 			            toastr.success(respuesta.body.msg,'',this.option_toast);
 			            this.tarea= {};
+			            this.select_ot='';
+			            this.prioridad='';
 			          }
 		           console.log(respuesta);
 		         }, (response) => {
