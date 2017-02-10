@@ -1,16 +1,22 @@
 <template>
   <div>
-  <div >
+  <div :class="{ 'select-error': isInvalid }">
       <multiselect
       :options="roles"
+      select-label=""
+      :close-on-select="true"
       :searchable="true" placeholder="Seleccione un Rol" select-label="" label="display_name" track-by="display_name"
       :options-limit="100"
       :allow-empty="false"
       @input="updateSelected"
+      @close="onTouch"
       :value="value"
       :option-height="104">
       </multiselect>
       <input type="hidden"  :value="id_rol" name="id_rol" >
+    </div>
+     <div style="padding:2px 0px;"  :class="{ 'has-error': isInvalid }" v-show="isInvalid">
+      <span  class="help-block">El campo Rol es obligatorio</span>
     </div>
       <div style="height:12px"></div>
   </div>
@@ -30,11 +36,16 @@
             roles:[],
             id_rol: 0,
             isTouched: false,
+            value_touch:'',
             value:{}
           }
       },
-      computed: function(){
-       
+      computed: {
+        isInvalid () {
+          console.log(this.isTouched, this.value_touch);
+          return (this.isTouched &&  this.value_touch=="" )?true:false //Compruebo de que haya selecionado algo
+
+        }
       },
       created: function(){
           this.fetchTips();
@@ -60,6 +71,7 @@
          updateSelected (newSelected) {
             if (newSelected != null && newSelected != undefined) {
              this.id_rol = newSelected.id;
+             this.value_touch=newSelected;
              this.$parent.$emit('rol_option',newSelected);
              console.log(newSelected);
 
@@ -67,6 +79,12 @@
              this.id_rol = 0;
            }
         },
+        /*
+        * esta función se ejecuta cuando se da click fuera del cuadro de Dialogo
+        */
+        onTouch () {
+          this.isTouched =(this.value_touch=="" )?true:false ; //Compruebo de que haya selecionado algo
+        }
     }
   }
 </script>
