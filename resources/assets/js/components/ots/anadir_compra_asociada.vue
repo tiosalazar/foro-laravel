@@ -6,12 +6,16 @@
 <template>
   <div class="col-md-12">
     <div class="row">
-      <section class="Form__section" v-for="(ed,index) in compra_asociada">
-        <div style="    display: inline-block;">
-          <div class="form-group col-md-2 col-xs-12">
+      <section class="form_section" v-for="(ed,index) in compra_asociada">
+       <div class="row">
+         <div class="col-md-6">
+            <div class="form-group  col-xs-12">
             <label class="sr-only" for="nombre_requerimiento">Item</label>
             <select_tipo_compra  :index="index" :select="ed.tipo_compra"></select_tipo_compra>
           </div>
+         </div>
+       </div>
+        <div style="display: inline-block;">
           <div class="form-group  col-md-3 col-xs-12" v-bind:class="{ 'has-error': errors.has('descipcion_compra'+index) }">
             <label class="sr-only" for="descipcion_compra">Descripción</label>
             <input type="text" :name="'descipcion_compra'+index"  @mouseover="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Descripción" v-model="ed.model_desc" class="form-control"   placeholder="Descripción">
@@ -28,17 +32,20 @@
             <span  class="help-block" v-show="errors.has('valor_compra'+index)">{{ errors.first('valor_compra'+index) }}</span>
           </div>
           <div class="form-group col-md-1 nopadding col-xs-6"><select_divisa :index="index" :select="ed.divisa"></select_divisa> </div>
-          <div class="form-group  col-md-1 col-xs-12">
+          <div class="form-group  col-md-1 col-xs-12" v-show="$parent.visualizacion != 'true'">
             <button type="button" @click="deleteRequerimiento" class="btn btn-danger">Eliminar</button>
           </div>
+
         </div>
       </section>
     </div>
-    <div class="row">
+
+    <div class="row"  v-show="$parent.visualizacion != 'true'">
       <div class="col-md-3">
         <button type="button" @click="addRequerimiento" class="btn btn-block btn-success col-sm-3">Añadir Compra</button>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -108,7 +115,7 @@ module.exports={
         if (this.$parent.visualizacion=="true") {
                var arreglo_visualizar =JSON.parse(this.$parent.arreglo_visualizar);
                 var arreglo_compras=arreglo_visualizar.final_com;
-              //  console.log(arreglo_compras);
+              // console.log(arreglo_compras);
                for (let f in arreglo_compras) {
                    let idx = Number(f)
                //   console.log(datos);

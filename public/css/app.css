@@ -7797,6 +7797,172 @@
   opacity: 0;
 }
 
+.Formulario_OT {
+  /* WebKit */
+  /* Firefox 18- */
+  /* Firefox 19+ */
+  /* IE 10+ */
+}
+
+.Formulario_OT .padding_ots {
+  padding: 5%;
+}
+
+.Formulario_OT .form-control {
+  border-radius: 0px;
+}
+
+.Formulario_OT .form-group {
+  color: #3c3939;
+}
+
+.Formulario_OT .campo_azul {
+  width: 40%;
+  color: white;
+  margin-top: 12px;
+  text-align: center;
+  font-size: 20px;
+  background: #15baee;
+}
+
+.Formulario_OT .boton_foro {
+  border-radius: 0px;
+  font-size: 16px;
+}
+
+.Formulario_OT .boton_foro.succes {
+  background: #3b9600;
+}
+
+.Formulario_OT .boton_foro.error {
+  background: #da0724;
+  font-style: italic;
+  padding: 5px 28px;
+}
+
+.Formulario_OT .boton_foro.add_req {
+  background: #00ca78;
+}
+
+.Formulario_OT .multiselect {
+  color: #9a9a9a;
+  font-style: italic;
+}
+
+.Formulario_OT ::-webkit-input-placeholder {
+  font-style: italic;
+  color: #9a9a9a;
+}
+
+.Formulario_OT :-moz-placeholder {
+  font-style: italic;
+  color: #9a9a9a;
+}
+
+.Formulario_OT ::-moz-placeholder {
+  font-style: italic;
+  color: #9a9a9a;
+}
+
+.Formulario_OT :-ms-input-placeholder {
+  font-style: italic;
+  color: #9a9a9a;
+}
+
+.Formulario_OT .titulo_interna_ot {
+  color: #626262;
+  font-weight: 600;
+}
+
+.Formulario_OT .nav-tabs-custom > .nav-tabs > li.active > a {
+  border-left-color: #d8d8d8;
+  border-right-color: #d8d8d8;
+}
+
+.Formulario_OT .tab-content {
+  border: 1px #d8d8d8 solid;
+  padding: 40px;
+}
+
+.Formulario_OT .mensaje_info {
+  padding: 20px 10px;
+  background: #15baee;
+  color: white;
+}
+
+.letra_mediana {
+  font-size: 16px;
+}
+
+.span_titulo1 {
+  font-size: 28px;
+  font-weight: 900;
+  color: #003a81;
+}
+
+.span_titulo2 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #15baee;
+}
+
+.span_descripcion1 {
+  font-size: 20px;
+  font-weight: 300;
+  color: #003a81;
+}
+
+.span_descripcion2 {
+  font-size: 20px;
+  font-weight: 300;
+  color: #15baee;
+}
+
+.formulario label {
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  padding-left: 25px;
+  margin-right: 15px;
+  font-size: 13px;
+}
+
+.formulario input[type=radio] {
+  display: none;
+}
+
+.formulario label:before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 10px;
+  position: absolute;
+  left: 0;
+  bottom: 1px;
+  border-radius: 16px;
+  background-color: #fff;
+  border: 1px #cccccc solid;
+}
+
+.formulario .radio label:before {
+  border-radius: 8px;
+}
+
+.formulario input[type=radio]:checked + label:before {
+  content: "\2022";
+  color: #15baee;
+  font-size: 30px;
+  margin-top: -5px;
+  text-align: center;
+  line-height: 13px;
+  padding-left: 1px;
+}
+
+.nav-tabs-custom > .nav-tabs > li.active {
+  border-top-color: #15baee;
+}
+
 .input-group.date .datepicker input {
   width: 107%;
   text-align: center;
@@ -7807,12 +7973,13 @@
 }
 
 #encabezado_ot .form-group {
-  padding: 6px 0px 28px 0px;
+  padding: 12px 0px 46px 0px;
 }
 
 .required sup {
-  color: red;
+  color: #ff0000;
   font-size: 13px;
+  vertical-align: text-bottom;
 }
 
 sup {
@@ -7840,6 +8007,9 @@ sub, sup {
   .nopadding {
     padding: auto !important;
     margin: auto !important;
+  }
+  #encabezado_ot .form-group {
+    padding: 0px 0px 0px 0px;
   }
 }
 

@@ -23,14 +23,14 @@ class Tiempos_x_Area extends Model
   */
   public function Ots()
   {
-    return $this->belongsTo('App\Ot','ots_id');
+    return $this->belongsTo('App\Ot','ots_id','id');
   }
   /**
   * Obtiene el Area que esta asociada a Tiempo
   */
   public function Area()
   {
-    return $this->belongsTo('App\Area');
+    return $this->belongsTo('App\Area','areas_id','id');
   }
   /**
   * Obtiene el Historico_Ot que esta asociada a Tiempo

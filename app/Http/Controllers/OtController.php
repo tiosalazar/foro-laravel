@@ -7,6 +7,7 @@ use App\Ot;
 use App\Tiempos_x_Area;
 use App\Requerimientos_Ot;
 use App\Compras_Ot;
+use App\Area;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -142,13 +143,14 @@ class OtController extends Controller
          $data['final_req']=[];
          $data['final_com']=[];
          $array_temporal=[];
+         $data['listado_areas']=[];
          $data['requerimientos']['requerimientos']=[];
         // $requerimientos= $ot->Requerimiento_Ot;
          foreach ($ot->Tiempos_x_Area as  $value) {
             $area_actual=$value['areas_id'];
+            array_push($data['listado_areas'], $value->Area);
             $data['requerimientos']['area']=$value['areas_id'];
-            $data['requerimientos']['horas']=$value['tiempo_estimado'];
-            $data['compras']['area']=$value['areas_id'];
+            $data['requerimientos']['horas']=$value['tiempo_estimado'];   
             foreach ($ot->Requerimiento_Ot as  $value) {
                 if ($value['areas_id'] ==  $area_actual ) {
                     $array_temporal= array('model_nom'=>$value['nombre'] ,'model_horas'=>(int)$value['horas']);
@@ -160,6 +162,7 @@ class OtController extends Controller
            $ingreso=[];
            foreach ($ot->Compras_Ot as  $value) {
                if ($value['areas_id'] ==  $area_actual ) {
+                $data['compras']['area']=$value['areas_id'];
                $compra =Compras_Ot::findOrFail($value['id']);
                $compra->Tipo_Compra;
                $compra->Divisa;
@@ -171,30 +174,15 @@ class OtController extends Controller
                //array_push($data['compras'],  $array_temporal);
               }
            }
+
             array_push($data['final_req'], $data['requerimientos']);
-            array_push($data['final_com'], $data['compras']);
+           
          }
+          array_push($data['final_com'], $data['compras']);
 
-        //var_dump($data['final_req']);
+        //var_dump( $data['final_com']);
+         // return response()->json( $data['listado_areas']);
 
-
-    /*    $req=$ot->Requerimiento_Ot;
-         for ($i=0; $i <count($req) ; $i++) {
-              $req_actual=$data['final_req'][0];
-              $clave = array_search('verde', $data['final_req']); // $clave = 2;
-               var_dump( $clave);
-             if ( $req[$i]['areas_id'] ==  $req_actual['area'] ) {
-                 $array_temporal= array('model_nom'=> $req[$i]['nombre'] ,'model_horas'=>(int) $req[$i]['horas']);
-                array_push($data['requerimientos']['requerimientos'], json_encode($array_temporal));
-             }
-         }*/
-         /*
-         foreach ($ot->Requerimiento_Ot as  $value) {
-             if ($value['areas_id'] ==  $data['final_req']['requerimientos']['area'] ) {
-                 $array_temporal= array('model_nom'=>$value['nombre'] ,'model_horas'=>(int)$value['horas']);
-                array_push($data['requerimientos']['requerimientos'], json_encode($array_temporal));
-             }
-        }*/
 
         //var_dump($data);
         return view('admin.ots.editar_ot')->with('arregloOT', json_encode($data));

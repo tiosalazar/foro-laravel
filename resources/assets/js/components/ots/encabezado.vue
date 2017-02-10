@@ -4,81 +4,44 @@
 <!-- Autor: David Salazar  -->
 <!-- Fecha : Enero 2017  -->
 <template>
-	<div class="box box-primary"  id="encabezado_ot">
+	<div class=""  id="encabezado_ot">
 		<div class="box-header with-border">
-			<h3 class="box-title">Detalle OT</h3>
+			<h3 class="box-title"><span class="span_descripcion1">Detalle</span> <span class="span_descripcion2">OT</span></h3>
 		</div>
 		<div class="box-body">
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group required ">
-						<label for="num_ot" class="col-sm-4 control-label "># OT  <sup>*</sup></label>
-						<div class="col-sm-8" v-bind:class="{ 'has-error': errors.has('num_ot') }">
-							<input type="text"  name="num_ot" v-validate data-vv-rules="required|alpha_num|min:3" data-vv-as="# OT" @mouseout="guardarDatos" v-model="datos_encabezado.num_ot" class="form-control" id="num_ot" placeholder="Numero OT">
+						<label for="num_ot" class="col-sm-12 control-label "><sup>*</sup> Número de OT  </label>
+						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('num_ot') }">
+							<input type="text"  name="num_ot" v-validate data-vv-rules="required|numeric|min:3" data-vv-as="# OT" @mouseout="guardarDatos" v-model="datos_encabezado.num_ot" class="form-control" id="num_ot" placeholder="Número de OT">
 							<span  class="help-block" v-show="errors.has('num_ot')">{{ errors.first('num_ot') }}</span>
 						</div>
 					</div>
 					<div class="form-group required">
-						<label for="cliente" class="col-sm-4 ">Cliente  <sup>*</sup> </label>
-						<div class="col-sm-8" >
+						<label for="cliente" class="col-sm-4 "><sup>*</sup>  Cliente  </label>
+						<div class="col-sm-12" >
 							<select_clientes :select="datos_encabezado.cliente" ></select_clientes>
 						</div>
 					</div>
 					<div class="form-group required">
-						<label for="name_proyecto" class="col-sm-4 ">Proyecto   <sup>*</sup></label>
-						<div class="col-sm-8"  v-bind:class="{ 'has-error': errors.has('name_proyect') }">
-							<input type="text" name="name_proyect" class="form-control" v-validate data-vv-rules="required|min:5"  @mouseout="guardarDatos" data-vv-as="Proyecto" required="required"  v-model="datos_encabezado.name_proyect" id="name_proyecto" placeholder="Nombre del Proyecto">
+						<label for="name_proyecto" class="col-sm-4 "><sup>*</sup> Proyecto   </label>
+						<div class="col-sm-12"  v-bind:class="{ 'has-error': errors.has('name_proyect') }">
+							<input type="text" name="name_proyect" class="form-control" v-validate data-vv-rules="required|min:5"  @mouseout="guardarDatos" data-vv-as="Proyecto" required="required"  v-model="datos_encabezado.name_proyect" id="name_proyecto" placeholder="Nombre del proyecto">
 							<span  class="help-block" v-show="errors.has('name_proyect')">{{ errors.first('name_proyect') }}</span>
 						</div>
 					</div>
-				</div>
-				<div class="col-md-6">
 					<div class="form-group required">
-						<label for="estado" class="col-sm-4 ">Estado  <sup>*</sup></label>
-						<div class="col-sm-8">
-							<select_estados tipo_estado="2"  :select="datos_encabezado.estado" ></select_estados>
-							<span  class="help-block" v-show="errors.has('estado')">{{ errors.first('estado') }}</span>
-						</div>
-					</div>
-					<div class="form-group required">
-						<label for="valor_total" class="col-sm-4 ">Valor Total <sup>*</sup></label>
-						<div class="col-sm-8" v-bind:class="{ 'has-error': errors.has('valor_total') }">
-							<input type="text" name="valor_total" v-validate data-vv-rules="required|numeric|min:4"  @mouseout="guardarDatos" data-vv-as="Valor Total" class="form-control" required="required"  v-model="datos_encabezado.valor_total" id="valor_total" placeholder="Valor Total">
-							<span  class="help-block" v-show="errors.has('valor_total')">{{ errors.first('valor_total') }}</span>
-						</div>
-					</div>
-					<div class="form-group required">
-						<label for="valor_total" class="col-sm-4 ">Fee <sup>*</sup></label>
-						<div class="col-sm-8" v-bind:class="{ 'has-error': errors.has('fee') }">
-							<input type="radio" name="fee" value="1"  v-model="datos_encabezado.fee"  required="required"  @mouseout="guardarDatos" >Si
-							<input type="radio" name="fee" value="0"  v-model="datos_encabezado.fee"   required="required"   @mouseout="guardarDatos" > No
-							<span  class="help-block" v-show="errors.has('fee')">{{ errors.first('fee') }}</span>
-						</div>
-					</div>
-					<div class="form-group required">
-						<label for="horas_totales" class="col-sm-4 ">Horas Totales  <sup>*</sup></label>
-						<div class="col-sm-8" v-bind:class="{ 'has-error': errors.has('horas_totales') }">
-							<input type="text" class="form-control" @input="llenar_horas_totales" required="required"  @mouseout="guardarDatos" name="horas_totales"  v-validate data-vv-rules="required|decimal:2|max:10|min:1" data-vv-as="Horas Totales" v-model="datos_encabezado.horas_totales"  id="horas_totales" placeholder="Numero de Totales">
-							<span  class="help-block" v-show="errors.has('horas_totales')">{{ errors.first('horas_totales') }}</span>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div  class="col-md-6">
-					<div class="form-group required">
-						<label for="ejecutivo" class="col-sm-4 ">Ejecutivo  <sup>*</sup></label>
-						<div class="col-sm-8">
+						<label for="ejecutivo" class="col-sm-4 "><sup>*</sup> Ejecutivo  </label>
+						<div class="col-sm-12">
 							<select_usuarios  area="cuentas" :select="datos_encabezado.ejecutivo" ></select_usuarios>
 						</div>
 					</div>
-				</div>
-			</div>
-			<div style="height:15px"></div>
-			<div class="row ">
-				<div class="col-md-6 col-xs-7">
-					<div class="form-group col-md-6 nopadding required">
-						<label for="fecha_inicio" class="col-sm-3 nopadding ">Inicio <sup>*</sup></label>
+
+				<div class="form-group required">
+			 <label for="horas_totales"  class="col-sm-12 "><sup>*</sup> Fecha OT  </label>
+					<div class="form-group col-md-6  required">
+						<label for="fecha_inicio" class="col-sm-3  ">Inicio </label>
 						<div class="col-sm-9" v-bind:class="{ 'has-error': errors.has('fecha_inicio') }">
 							<div class="input-group date">
 								<div class="input-group-addon">
@@ -89,8 +52,8 @@
 							<span  class="help-block" v-show="errors.has('fecha_inicio')">{{ errors.first('fecha_inicio') }}</span>
 						</div>
 					</div>
-					<div class="form-group col-md-6 nopadding required">
-						<label for="fecha_fin" class="col-sm-3 nopadding  ">Fín <sup>*</sup> </label>
+					<div class="form-group col-md-6  required">
+						<label for="fecha_fin" class="col-sm-3   "> Fín </label>
 						<div class="col-sm-9" v-bind:class="{ 'has-error': errors.has('fecha_fin') }">
 							<div class="input-group date"  >
 								<div class="input-group-addon" >
@@ -101,21 +64,60 @@
 							<span  class="help-block" v-show="errors.has('fecha_fin')">{{ errors.first('fecha_fin') }}</span>
 						</div>
 					</div>
+			 </div>	
+
 				</div>
-				<div class="col-md-6 col-xs-5">
+				<div class="col-md-6">
+					<div class="form-group required">
+						<label for="estado" class="col-sm-4 "><sup>*</sup> Estado de OT </label>
+						<div class="col-sm-12">
+							<select_estados tipo_estado="2"  :select="datos_encabezado.estado" ></select_estados>
+							<span  class="help-block" v-show="errors.has('estado')">{{ errors.first('estado') }}</span>
+						</div>
+					</div>
+
+					<div class="form-group required radio">
+						<label for="valor_total" class="col-sm-4 "><sup>*</sup> Fee </label>
+						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('fee') }">
+						<div class="col-sm-4 formulario">
+						<input type="radio" name="fee" value="1" id="male" v-model="datos_encabezado.fee"  required="required"  @mouseout="guardarDatos" ><label for="male"> Si</label>
+						</div>
+						<div class="col-sm-4 formulario" >
+						<input type="radio" name="fee" value="0" id="female" v-model="datos_encabezado.fee"   required="required"   @mouseout="guardarDatos" > <label for="female"> No</label>
+						</div>
+							<span  class="help-block" v-show="errors.has('fee')">{{ errors.first('fee') }}</span>
+						</div>
+					</div>
+					<div class="form-group required">
+						<label for="valor_total" class="col-sm-4 "><sup>*</sup> Valor total </label>
+						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('valor_total') }">
+							<input type="text" name="valor_total" v-validate data-vv-rules="required|numeric|min:4"  @mouseout="guardarDatos" data-vv-as="Valor Total" class="form-control" required="required"  v-model="datos_encabezado.valor_total" id="valor_total" placeholder="$">
+							<span  class="help-block" v-show="errors.has('valor_total')">{{ errors.first('valor_total') }}</span>
+						</div>
+					</div>
+					<div class="form-group required">
+						<label for="horas_totales" class="col-sm-4 "><sup>*</sup> Horas totales  </label>
+						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('horas_totales') }">
+							<input type="text" class="form-control" @input="llenar_horas_totales" required="required" @keyup="number_format(this,3)"  @mouseout="guardarDatos" name="horas_totales"  v-validate data-vv-rules="required|decimal:2|max:10|min:1" data-vv-as="Horas Totales" v-model="datos_encabezado.horas_totales"  id="horas_totales" placeholder="Numero de horas totales">
+							<span  class="help-block" v-show="errors.has('horas_totales')">{{ errors.first('horas_totales') }}</span>
+						</div>
+					</div>
 					<div class="form-group required" v-bind:class="{ 'has-error': datos_encabezado.h_pasadas }">
-						<label for="horas_disponibles" class="col-sm-4 " >Horas Disponibles <sup>*</sup></label>
-						<div class="col-sm-6">
-							<input type="text" class="form-control" required="required"  id="horas_disponibles" v-model="horas_disponibles" disabled placeholder="Numero de Horas Disponibles">
-							<span  class="help-block" v-show="datos_encabezado.h_pasadas">Se ha pasado del numero de horas permitidas para el Area</span>
+						<label for="horas_disponibles" class="col-sm-12 " ><sup>*</sup> Horas disponibles </label>
+						<div class="col-sm-12">
+						   <div class="campo_azul">
+						   	{{ horas_disponibles }}
+						   </div>
+							<!--<input type="text" class="form-control" required="required"  id="horas_disponibles" v-model=" horas_disponibles" disabled placeholder="Numero de Horas Disponibles">
+							  -->
+							 <span  class="help-block" v-show="datos_encabezado.h_pasadas">Se ha pasado del numero de horas permitidas para el Area</span>
 						</div>
 					</div>
 				</div>
-			</div><!-- /.row -->
+				<div class="col-md-4 col-md-offset-4" >
+					<div style="height:15px"></div>
+			<button type="submit" @click="validateBeforeSubmit" class="btn btn-block btn-success boton_foro succes text-center">Guardar Información</button>
 			<div style="height:15px"></div>
-			<div class="row ">
-				<div class=" pull-right  col-md-3">
-					<button type="submit" @click="validateBeforeSubmit" class="btn btn-block btn-success col-sm-3">Guardar Avance</button>
 				</div>
 			</div>
 		</div>
@@ -127,7 +129,7 @@
 Realizo los Required
 */
 import Datepicker from 'vuejs-datepicker';
-
+import moment from 'moment'
 
 module.exports= {
 	components: {Datepicker},
@@ -232,6 +234,29 @@ module.exports= {
 			}
 
 		},
+		 number_format: function(amount, decimals) {
+		 	console.log("hola");
+
+			    amount += ''; // por si pasan un numero en vez de un string
+			    amount = parseFloat(amount.replace(/[^0-9\.]/g, '')); // elimino cualquier cosa que no sea numero o punto
+
+			    decimals = decimals || 0; // por si la variable no fue fue pasada
+
+			    // si no es un numero o es igual a cero retorno el mismo cero
+			    if (isNaN(amount) || amount === 0) 
+			        return parseFloat(0).toFixed(decimals);
+
+			    // si es mayor o menor que cero retorno el valor formateado como numero
+			    amount = '' + amount.toFixed(decimals);
+
+			    var amount_parts = amount.split('.'),
+			        regexp = /(\d+)(\d{3})/;
+
+			    while (regexp.test(amount_parts[0]))
+			        amount_parts[0] = amount_parts[0].replace(regexp, '$1' + ',' + '$2');
+
+			    return amount_parts.join('.');
+			},
 		llenarDatosSiesVisualizacion: function(){
 
 			if (this.$parent.visualizacion=="true") {
@@ -249,7 +274,8 @@ module.exports= {
 					valor_total:arreglo_visualizar.datos_encabezado.valor,
 					fecha_fin:arreglo_visualizar.datos_encabezado.fecha_final
 				};
-					 this.$parent.$emit('datos_encabezado',this.datos_encabezado);//Emite los datos al padre
+
+			this.$parent.$emit('datos_encabezado',this.datos_encabezado);//Emite los datos al padre
 
 					/*this.datos_requerimiento=arreglo_visualizar.requerimientos;
 					this.datos_compras=arreglo_visualizar.compras;*/
@@ -260,6 +286,7 @@ module.exports= {
       Esta función se esta ejecutando constantemente, se encarga de emitir las horas totales al padre
       */
       llenar_horas_totales:function () {
+      	//console.log("Horas Totales Encabezado : "+ this.datos_encabezado.horas_totales);
       	this.$parent.$emit('horas_totales',this.datos_encabezado.horas_totales);
       },
 		/*
@@ -273,8 +300,8 @@ module.exports= {
 				valor_total:this.datos_encabezado.valor_total,
 				fee:this.datos_encabezado.fee,
 				horas_totales:this.datos_encabezado.horas_totales,
-				fecha_fin:this.limpiarFechas(this.datos_encabezado.fecha_fin),
-				fecha_inicio:this.limpiarFechas(this.datos_encabezado.fecha_inicio),
+				fecha_fin:moment(this.datos_encabezado.fecha_fin).format('DD-MM-YYYY'),
+				fecha_inicio:moment(this.datos_encabezado.fecha_inicio).format('DD-MM-YYYY'),
 				cliente:this.datos_encabezado.cliente,
 				estado:this.datos_encabezado.estado,
 				ejecutivo:this.datos_encabezado.ejecutivo,
@@ -297,8 +324,8 @@ module.exports= {
     				valor_total:this.datos_encabezado.valor_total,
     				horas_totales:this.datos_encabezado.horas_totales,
     				fee:this.datos_encabezado.fee,
-    				fecha_fin:this.limpiarFechas(this.datos_encabezado.fecha_fin),
-    				fecha_inicio:this.limpiarFechas(this.datos_encabezado.fecha_inicio),
+    				fecha_fin:moment(this.datos_encabezado.fecha_fin).format('DD-MM-YYYY'),
+    				fecha_inicio:moment(this.datos_encabezado.fecha_inicio).format('DD-MM-YYYY'),
     				cliente:this.datos_encabezado.cliente,
     				estado:this.datos_encabezado.estado,
     				ejecutivo:this.datos_encabezado.ejecutivo,
@@ -320,7 +347,7 @@ module.exports= {
 			}
 		},
 		limpiarFechas:function(fecha){
-		//	console.log(fecha);
+			console.log(fecha);
 			if (fecha != null && fecha != undefined && fecha != '' && this.validarFormatoFecha(fecha) ==false ) {
 			//console.log(fecha.toISOString());
 			var fecha1=fecha;
@@ -334,7 +361,11 @@ module.exports= {
 	validarFormatoFecha:function(campo) {
 		var campo2 = campo;
 		var RegExPattern = /^\d{1,2}\-\d{1,2}\-\d{2,4}$/;
-		if ((String(campo2).match(RegExPattern)) && ( String(campo2) !='')) {
+		//var RegExPattern2 = /^\d{1,2}\-\d{1,2}\-\d{2,4}\ \d{0,2}\:\d{0,2}\:\d{0,2}$/;
+
+		console.log(moment(campo).format('DD-MM-YYYY'));
+
+		if (  (String(campo2).match(RegExPattern)) && ( String(campo2) !='') ) {
 			return true;
 		} else {
 			return false;

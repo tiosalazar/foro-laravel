@@ -7,29 +7,36 @@
 <!-- Fecha : Enero 2017  -->
 <template>
   <div class="col-md-12">
-    <div class="row">
-      <div class="col-md-4">
-        <h2>Requerimiento</h2>
-      </div>
-      <div class="col-md-8">
-        <div class="form-group col-md-6" v-bind:class="{ 'has-error': errors.has('horas_area'+id_area) }">
-          <label for="horas_area" class="col-sm-6 "><h5>Horas Area {{ area }}</h5> </label>
-          <div class="col-sm-6">
-            <input type="text" @input="emitirData"  :name="'horas_area'+id_area" @mouseout="guardarDatos"  v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control" :id="'horas_area'+id_area" v-model="nhoras" :placeholder="'Numero de Horas '+area">
+      <div class="row">
+      <div class="col-md-12 nopadding">
+      <div style="height:22px;"></div>
+        <div class="form-group col-md-4" v-bind:class="{ 'has-error': errors.has('horas_area'+id_area) }">
+          <label for="horas_area" class="col-sm-6 nopadding"><h5>Horas de {{ area }}</h5> </label>
+          <div class="col-sm-5">
+            <input type="text" @input="emitirData" style="margin-top: 12px;" :name="'horas_area'+id_area" @mouseout="guardarDatos"  v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control text-center" :id="'horas_area'+id_area" v-model="nhoras" :placeholder="'Numero de Horas '+area">
             <span  class="help-block" v-show="errors.has('horas_area'+id_area)">{{ errors.first('horas_area'+id_area) }}</span>
           </div>
         </div>
         <div class="form-group col-md-6"  v-bind:class="{ 'has-error': h_pasadas }">
-          <label for="horas_area" class="col-sm-6 "><h5>Resumen {{ area }}</h5> </label>
-          <div class="col-sm-6">
-            <input type="text" class="form-control" disabled="disabled" v-model="v_resta" :placeholder="'Resumen de Horas '+area">
+          <label for="horas_area" class="col-sm-5 "><h5>Resumen de horas de {{ area }}</h5> </label>
+          <div class="col-sm-7">
+           <div class="campo_azul">
+                {{ v_resta }}
+            </div>
+            <!--<input type="text" class="form-control" disabled="disabled" v-model="v_resta" :placeholder="'Resumen de Horas '+area">-->
             <span  class="help-block" v-show="h_pasadas">Se ha pasado del numero de horas permitidas para el Area</span>
           </div>
         </div>
       </div>
     </div>
     <div class="row">
-      <section class="Form__section" v-for="(ed,index) in requerimiento">
+      <div class="col-md-4">
+        <h4 class="titulo_interna_ot">Requerimiento</h4>
+      </div>
+    </div>
+    <div style="height:22px;"></div>
+    <div class="row">
+      <section class="col-md-12 nopadding" v-for="(ed,index) in requerimiento">
         <div class="form-group col-md-8" v-bind:class="{ 'has-error': errors.has('nombre_requerimiento'+index) }">
           <label class="sr-only" for="nombre_requerimiento">Nombre Requerimiento</label>
           <input type="text" @mouseout="guardarDatos" :name="'nombre_requerimiento'+index" v-validate data-vv-rules="required|min:4" data-vv-as="Nombre Requerimiento" v-model="ed.model_nom" class="form-control" :id="'nombre_requerimiento'+index" placeholder="Nombre Requerimiento">
@@ -40,14 +47,16 @@
           <input type="text" @input="realizarCalculo" @mouseout="guardarDatos" :name="'no_horas_req'+index" v-validate data-vv-rules="required|numeric" data-vv-as="No horas"  v-model="ed.model_horas" class="form-control" :id="'no_horas_req'+index" placeholder="No. Horas">
           <span  class="help-block" v-show="errors.has('no_horas_req'+index)">{{ errors.first('no_horas_req'+index) }}</span>
         </div>
-        <div class="form-group  col-md-2">
-          <button type="button" @click="deleteRequerimiento" class="btn btn-danger">Eliminar</button>
+        <div class="form-group  col-md-2"  v-show="$parent.visualizacion != 'true'" >
+          <button type="button" @click="deleteRequerimiento" class="btn btn-danger boton_foro error">Eliminar</button>
         </div>
       </section>
+
     </div>
-    <div class="row">
-      <div class="col-md-3">
-        <button type="button" @click="addRequerimiento" class="btn btn-block btn-success col-sm-3">Añadir Tarea</button>
+    <div style="height:12px;"></div>
+    <div class="row"  v-show="$parent.visualizacion != 'true'">
+      <div class="col-md-3" >
+        <button type="button" @click="addRequerimiento" class="btn btn-block btn-success boton_foro add_req col-sm-3">Añadir Requerimiento</button>
       </div>
     </div>
 
@@ -106,7 +115,7 @@ module.exports={
      Envia El total de horas del area
      */
     emitirData:function(){
-      this.$parent.$emit('horas_area',this.nhoras);
+      this.$parent.$emit('horas_area',this.nhoras,this.id_area );
     },
     /*
      Si encuentra el arreglo guardado en el localStorage llena nos datos con lo que se ha escrito.

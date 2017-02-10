@@ -2,9 +2,9 @@
 	<div>
 
 		<encabezado :horas_disponibles="h_Disponibles" :limpiar_datos="limpiarDatos"></encabezado>
-		<div class="box box-primary">
+		<div class="">
 			<div class="box-header with-border">
-				<h3 class="box-title">Requerimientos y Compras</h3>
+				<h3 class="box-title"><span class="span_descripcion1">Requerimientos y </span> <span class="span_descripcion2">Compras</span></h3>
 			</div>
 			<div class="box-body">
 				<div class="col-md-12">
@@ -16,19 +16,28 @@
 						<div class="tab-content" >
 							<div class="tab-pane"  v-for="area in listado_areas" :class="{ 'active': area.nombre=='Creatividad'  }"  :id="'tab_'+area.id">
 								<div class="row"> <anadir_requerimiento :area="area.nombre" :limpiar_datos="limpiarDatos" :id_area="area.id" :realizar_validado="validar_requerimientos" :horas_disponibles="h_Disponibles" ></anadir_requerimiento></div>
-								<div class="row">
-									<div class="col-md-12">
-										<div style="height:25px;"></div>
-										<div class="alert bg-light-blue disabled color-palette alert-dismissible" role="alert">
-											<strong>Importante!</strong> Si no desea agregar compras relacionadas, por favor deje el campo de compras vacio. </div>
-										</div>
-									</div>
+								<div style="height:42px"></div>
 									<div class="row">
 										<div class="col-md-6">
-											<h2>Compras relacionadas</h2>
+											 <h4 class="titulo_interna_ot">Compras relacionadas</h4>
 										</div>
 									</div>
+									<div style="height:22px"></div>
 									<div class="row">
+									<div class="col-md-12">
+									 <div class="col-md-12 mensaje_info" role="alert">
+									  <div class="col-md-2 text-center ">
+									  	<i class="fa fa-exclamation-triangle fa-3x text-center" aria-hidden="true"></i>
+									  </div>
+									  <div class="col-md-10 letra_mediana">
+									  	<div class="col-sm-12"> <strong >IMPORTANTE!</strong></div>
+									  	<div class="col-sm-12">Si no desea agregar compras relacionadas, por favor deje el campo de compras vacio.</div>
+									  </div>
+									  </div>
+									  </div>
+									</div>
+									<div class="row">
+									<div style="height:22px"></div>
 										<anadir_compra  :area="area.nombre" :id_area="area.id" :limpiar_datos="limpiarDatos"  :realizar_validado="validar_compras" ></anadir_compra> </div>
 										<div style="height:30px"></div>
 										<div class="row">
@@ -115,6 +124,7 @@
 					message:'',
 					h_area:0,
 					id_tab:'',
+					area_temporal:'',
 					limpiarDatos:false,
 					form_requerimiento_validado:false,
 					validar_requerimientos:false,
@@ -170,17 +180,22 @@
         */
         this.$on('horas_totales', function(v) {
         	this.horas_totales=parseInt(v);
+        	console.log("Horas totales : "+this.horas_totales);
         	var resta_anterior=0;
-        	resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras();
+        	resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(this.area_temporal);
+        	console.log("Horas totales Resta : "+resta_anterior);
         	this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
         });
 				/*
         Escucha las horas del area actual emitidas por Añadir requerimiento y realiza el calculo
         */
-        this.$on('horas_area', function(v) {
+        this.$on('horas_area', function(v,h) {
+        	this.area_temporal=h;
         	this.h_area=parseInt(v);
+        	console.log("This Area :"+h);
         	var resta_anterior=0;
-        	resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras();
+        	resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(this.area_temporal);
+        	console.log("Resta Anterio Horas AArea"+resta_anterior);
         	this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
         });
 				/*
@@ -217,6 +232,7 @@
 			},
 			methods:{
 				fetchTips: function(){
+					if (this.visualizacion !='true') {
 					//if(this.$localStorage.get('listado_areas') ==null){
 						this.$http.get('/api/v1/areas/')
 						.then(function(respuesta){
@@ -224,6 +240,12 @@
 							this.$localStorage.set('listado_areas',respuesta.body);
 						//console.log(respuesta.body);
 					}.bind(this));
+
+					}else{
+					var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
+                      this.listado_areas=arreglo_visualizar.listado_areas;
+					this.$localStorage.set('listado_areas',arreglo_visualizar.listado_areas);
+					}	
 					/*}else{
 					this.listado_areas=this.$localStorage.get('listado_areas');
 				}*/
@@ -259,8 +281,8 @@
 								fee: this.datos_encabezado.fee,
 								horas_totales:this.datos_encabezado.horas_totales,
 								observaciones:this.descripcion_ot,
-								fecha_inicio: this.limpiarFechas(this.datos_encabezado.fecha_inicio),
-								fecha_final: this.limpiarFechas(this.datos_encabezado.fecha_fin),
+								fecha_inicio: this.datos_encabezado.fecha_inicio,
+								fecha_final: this.datos_encabezado.fecha_fin,
 								clientes_id: this.datos_encabezado.cliente.id,
 								usuarios_id:this.datos_encabezado.ejecutivo.id,
 								estados_id: this.datos_encabezado.estado.id,
@@ -382,19 +404,23 @@
 		/*
          realiza el calculo de lashoras por área
          */
-         realizarCalculoHoras:function () {
+         realizarCalculoHoras:function (area) { 
+
          	var total_areas  =this.$localStorage.get('listado_areas');
+         	console.log(total_areas);
          	if (total_areas != null || total_areas != undefined ) {
-         		var size = Object.keys(total_areas).length;
          		var hora_a=0;
          		var total_a_restar=0;
          		for (let f in total_areas) {
          			let idx = Number(f)
          			let p = total_areas[idx]
+         			if(p.id != area ){
          			hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
          			if (hora_a !=null && hora_a[0].horas !="") {
          				total_a_restar +=parseInt(hora_a[0].horas);
          			}
+         		 }
+
          		}
          		return total_a_restar;
          	}
