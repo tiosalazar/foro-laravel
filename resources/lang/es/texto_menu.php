@@ -28,5 +28,10 @@ return [
     'areas' => '&Aacute;reas',
     'creacion_tareas' => 'Creaci&oacute;n de Tareas',
     'listar_tareas' => 'Listar Tareas',
+    'diseno' => 'Diseño',
+    'creatividad' => 'Creatividad',
+    'desarrollo' => 'Desarrollo',
+    'digital' => 'Dig. Performance',
+    'contenido' => 'Contenido',
 
 ];
