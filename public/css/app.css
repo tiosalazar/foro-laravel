@@ -7880,13 +7880,41 @@ body {
   margin-bottom: 10%;
 }
 
+.skin-blue .main-sidebar .sidebar-menu li a {
+  text-decoration: none;
+}
+
 .skin-blue .main-sidebar .sidebar-menu li:hover > a {
   background-color: #002143;
   color: white;
 }
 
+.skin-blue .main-sidebar .sidebar-menu li:hover > a i {
+  color: #15BAEE;
+}
+
 .skin-blue .main-sidebar .sidebar-menu li:active > a {
   background-color: #002143;
+  color: white;
+}
+
+.skin-blue .main-sidebar .sidebar-menu li ul {
+  padding-left: 0;
+  background-color: #002143;
+}
+
+.skin-blue .main-sidebar .sidebar-menu li ul li {
+  color: #15BAEE;
+}
+
+.skin-blue .main-sidebar .sidebar-menu li ul li a {
+  color: #15BAEE;
+  height: 40px;
+  padding-top: 5%;
+}
+
+.skin-blue .main-sidebar .sidebar-menu li ul li a:hover {
+  background-color: #15BAEE;
   color: white;
 }
 
@@ -7960,92 +7988,123 @@ body {
   /* mixin centrado, fuente y alto titulo de las columnas */
 }
 
-.listar_areas_modulo .columnas_listar_tareas {
+.listar_areas_modulo .columnas_listar_areas {
   padding-right: 0;
   padding-left: 0;
-  height: 400px;
+  height: 450px;
   background-color: #EDEDED;
 }
 
-.listar_areas_modulo .columnas_listar_tareas:nth-child(1) ul {
+.listar_areas_modulo .columnas_listar_areas:nth-child(1) ul {
   margin-top: 15%;
   list-style: none;
   padding: 0;
   text-align: center;
 }
 
-.listar_areas_modulo .columnas_listar_tareas:nth-child(1) ul li {
+.listar_areas_modulo .columnas_listar_areas:nth-child(1) ul li {
   height: 35px;
   padding-top: 7px;
   cursor: pointer;
 }
 
-.listar_areas_modulo .columnas_listar_tareas:nth-child(1) ul li:hover {
+.listar_areas_modulo .columnas_listar_areas:nth-child(1) ul li:hover {
   background-color: #15BAEE;
   color: white;
 }
 
-.listar_areas_modulo .columnas_listar_tareas:nth-child(2) {
+.listar_areas_modulo .columnas_listar_areas:nth-child(1) ul a:focus {
+  display: block;
+  background-color: #15BAEE;
+  color: white;
+  text-decoration: none;
+}
+
+.listar_areas_modulo .columnas_listar_areas:nth-child(2) {
   background-color: #E8E8E8;
 }
 
-.listar_areas_modulo .columnas_listar_tareas:nth-child(2) ul {
+.listar_areas_modulo .columnas_listar_areas:nth-child(2) ul {
   margin-top: 5%;
   list-style: none;
   list-style: none;
   padding: 0;
   overflow: auto;
   height: 325px;
+  border-top: 1px dashed gray;
 }
 
-.listar_areas_modulo .columnas_listar_tareas:nth-child(2) ul::-webkit-scrollbar {
+.listar_areas_modulo .columnas_listar_areas:nth-child(2) ul::-webkit-scrollbar {
   width: 10px;
   background-color: #8c8c8c;
 }
 
-.listar_areas_modulo .columnas_listar_tareas:nth-child(2) ul::-webkit-scrollbar-thumb {
+.listar_areas_modulo .columnas_listar_areas:nth-child(2) ul::-webkit-scrollbar-thumb {
   background-color: #003A81;
   outline: 1px solid #003A81;
 }
 
-.listar_areas_modulo .columnas_listar_tareas:nth-child(2) ul li {
+.listar_areas_modulo .columnas_listar_areas:nth-child(2) ul a:focus {
+  display: block;
+  background-color: #15BAEE;
+  color: white;
+  text-decoration: none;
+}
+
+.listar_areas_modulo .columnas_listar_areas:nth-child(2) ul li {
   height: 80px;
-  border-top: 1px dotted;
+  border-bottom: 1px dashed gray;
   display: -webkit-box;
   display: flex;
   line-height: 8px;
 }
 
-.listar_areas_modulo .columnas_listar_tareas:nth-child(2) ul li .text_user_listado {
+.listar_areas_modulo .columnas_listar_areas:nth-child(2) ul li .text_user_listado {
   padding-top: 17px;
   padding-left: 5%;
 }
 
-.listar_areas_modulo .columnas_listar_tareas:nth-child(2) ul li:last-child {
-  border-bottom: 1px dotted;
-}
-
-.listar_areas_modulo .columnas_listar_tareas:nth-child(2) ul li img {
+.listar_areas_modulo .columnas_listar_areas:nth-child(2) ul li img {
   width: 60px;
   height: 60px;
   margin-top: 10px;
   margin-left: 10px;
 }
 
-.listar_areas_modulo .columnas_listar_tareas:nth-child(2) ul li:hover {
+.listar_areas_modulo .columnas_listar_areas:nth-child(2) ul li:hover {
   background-color: #15BAEE;
   color: white;
   cursor: pointer;
 }
 
-.listar_areas_modulo .columnas_listar_tareas .info_content {
+.listar_areas_modulo .columnas_listar_areas .info_content {
   width: 300px;
   margin: 0 auto;
 }
 
-.listar_areas_modulo .columnas_listar_tareas .info_content h3 {
+.listar_areas_modulo .columnas_listar_areas .info_content h3 {
   color: #15BAEE;
   font-weight: bold;
+}
+
+.listar_areas_modulo .columnas_listar_areas .info_content .editar_usuarios_area {
+  background-color: #15BAEE;
+  border: none;
+  margin-top: 35px;
+}
+
+.listar_areas_modulo .columnas_listar_areas .info_content .editar_usuarios_area:hover {
+  background-color: #025e7b;
+}
+
+.listar_areas_modulo .columnas_listar_areas .info_content .eliminar_usuario_area {
+  background-color: #FE0101;
+  border: none;
+  margin-top: 35px;
+}
+
+.listar_areas_modulo .columnas_listar_areas .info_content .eliminar_usuario_area:hover {
+  background-color: #8c0000;
 }
 
 .listar_areas_modulo .titulo_listar_area {
@@ -8098,6 +8157,15 @@ body {
   height: 50px;
   font-size: 14px;
   margin-top: 0;
+}
+
+.v-enter {
+  -webkit-transition: opacity .5s;
+  transition: opacity .5s;
+}
+
+.v-leave {
+  opacity: 0;
 }
 
 .perfil-box {

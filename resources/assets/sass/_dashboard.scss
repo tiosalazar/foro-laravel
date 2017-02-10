@@ -3,6 +3,8 @@ body{
 
 }
 
+
+
 .fuente-icon{
 	font-family: 'iconforo';
 	font-size: 18px;
@@ -36,13 +38,39 @@ body{
 		}
 		.sidebar-menu {
 			li{
+				a{
+					text-decoration: none;
+
+				}
 				&:hover > a{
-				background-color: #002143;
-				color: white;
+					background-color: #002143;
+					color: white;
+
+					i{
+						color:#15BAEE; 
+					}
 				}
 				&:active > a{
 					background-color: #002143;
 					color: white;
+				}
+
+				ul{
+					padding-left: 0;
+					background-color: #002143;
+					li{
+						color: #15BAEE;
+						a{	
+							color:#15BAEE;
+							height: 40px;
+   						    padding-top: 5%; 
+							&:hover{
+								background-color: #15BAEE;
+								color: white;
+							}		
+						}
+						
+					}
 				}
 
 			}

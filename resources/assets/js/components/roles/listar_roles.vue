@@ -49,10 +49,10 @@
                         <label for="id_rol_edit">ID</label>
                         <input type="text" class="form-control" id="id_rol_edit" v-model="id_rol_edit" disabled>
                           </div>
-                        <div class="form-group required" v-bind:class="[errors_return.display_name,{ 'has-error': errors.has('display_name') }]">
+                        <div class="form-group required" v-bind:class="[errors_return.Nombre,{ 'has-error': errors.has('Nombre') }]">
                         <label for="nombre_rol_edit">Editar nombre del rol <sup>*</sup></label>
-                        <input type="text" class="form-control" id="nombre_rol_edit" name="display_name" v-model="nombre_rol_edit.display_name" placeholder="Nuevo nombre" v-validate data-vv-rules="required|alpha_num|min:5">
-                          <span  class="help-block" v-show="errors.has('display_name')">{{ errors.first('display_name') }}</span>
+                        <input type="text" class="form-control" id="nombre_rol_edit" name="Nombre" v-model="nombre_rol_edit.display_name" placeholder="Nuevo nombre" v-validate data-vv-rules="required|alpha_num|min:3">
+                          <span  class="help-block" v-show="errors.has('Nombre')">{{ errors.first('Nombre') }}</span>
                         </div>
 
                         <div class="form-group required" v-bind:class="[errors_return.description,{ 'has-error': errors.has('description') }]">

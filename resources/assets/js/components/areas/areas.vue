@@ -15,14 +15,14 @@
           <div   role="form" class="form-area"  >
                 <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]">
                     <label for="nombre_area">Nombre</label>
-                    <input type="text" v-model="areaarray.nombre" class="form-control" id="nombre_area" name="nombre" placeholder="Nombre area" v-validate data-vv-rules="required|alpha_num|max:30">
+                    <input type="text" v-model="areaarray.nombre" class="form-control" id="nombre_area" name="nombre" placeholder="Nombre area" v-validate data-vv-rules="required|alpha_num|min:3">
                     <span  class="help-block error_absolute" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
                 </div>
                
-                 <div class="form-group" v-bind:class="[errors_return.extencion_tel,{ 'has-error': errors.has('extencion_tel') }]">
+                 <div class="form-group" v-bind:class="[errors_return.extencion_tel,{ 'has-error': errors.has('extencion') }]">
                     <label for="nombre_ext">Extención</label>
-                    <input type="text" v-model="areaarray.extencion_tel" class="form-control" id="nombre_ext" name="extencion_tel" placeholder="Extención" v-validate data-vv-rules="required|numeric|min:5"> 
-                     <span  class="help-block" v-show="errors.has('extencion_tel')">{{ errors.first('extencion_tel') }}</span>  
+                    <input type="text" v-model="areaarray.extencion_tel" class="form-control" id="nombre_ext" name="extencion" placeholder="Extención" v-validate data-vv-rules="required|numeric|min:3"> 
+                     <span  class="help-block" v-show="errors.has('extencion')">{{ errors.first('extencion') }}</span>  
                 </div>
                       
                 <div class="form-group">
@@ -103,6 +103,7 @@
                 }else{
                   toastr.success(respuesta.body.msg,'',this.option_toast);
                   this.id_area_passing={'id':respuesta.body.area.id,'nombre':respuesta.body.area.nombre,'extencion_tel':respuesta.body.area.extencion_tel,'estado':respuesta.body.area.estado} 
+                  this.areaarray={}
                 } 
                 
                         

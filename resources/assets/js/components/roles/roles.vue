@@ -15,13 +15,13 @@
           <div  role="form"  action="#">
                 <div class="form-group required" v-bind:class="[errors_return.name,{ 'has-error': errors.has('name') }]">
                     <label for="nombre_rol">Nombre  <sup>*</sup> </label>
-                    <input type="text" v-model="rolarray.name"  class="form-control" name="name" id="nombre_rol" placeholder="Nombre logico del rol" data-vv-as="Nombre Logico" v-validate data-vv-rules="required|alpha_num|min:5" >
+                    <input type="text" v-model="rolarray.name"  class="form-control" name="name" id="nombre_rol" placeholder="Nombre logico del rol" data-vv-as="Nombre Logico" v-validate data-vv-rules="required|alpha_num|min:3" >
                       <span  class="help-block" v-show="errors.has('name')">{{ errors.first('name') }}</span>
                 </div>
-                <div class="form-group required" v-bind:class="[errors_return.display_name,{ 'has-error': errors.has('display_name') }]">
+                <div class="form-group required" v-bind:class="[errors_return.Nombre,{ 'has-error': errors.has('Nombre') }]">
                     <label for="nombre_rol">Nombre a Mostrar   <sup>*</sup> </label>
-                    <input type="text" v-model="rolarray.display_name"  class="form-control" name="display_name" id="display_name_rol" data-vv-as="Nombre a mostrar" placeholder="Nombre del rol"  v-validate data-vv-rules="required|min:5" >
-                     <span  class="help-block" v-show="errors.has('display_name')">{{ errors.first('display_name') }}</span>
+                    <input type="text" v-model="rolarray.display_name"  class="form-control" name="Nombre" id="Nombre_rol" data-vv-as="Nombre a mostrar" placeholder="Nombre del rol"  v-validate data-vv-rules="required|min:3" >
+                     <span  class="help-block" v-show="errors.has('Nombre')">{{ errors.first('Nombre') }}</span>
                 </div>
                 <div class="form-group required" v-bind:class="[errors_return.description,{ 'has-error': errors.has('description') }]">
                     <label for="nombre_rol">Descripción </label>
