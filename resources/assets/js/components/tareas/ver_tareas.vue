@@ -8,12 +8,7 @@
 		          <th >Requerimiento</th>
 		          <th >Fecha de Solicitud</th> 
 		          <th >Estado</th> 
-		          <th >Editar</th>
-		          <!-- <th >Fee</th> -->
-		          <!-- <th >Rol</th> 
-		            <th >Area</th>
-		            <th >Estado</th>
-		            <th >Edicion</th> -->  
+		          <th >Acciones</th>
 		        </tr>
 		    </thead>
         </table>
@@ -54,12 +49,6 @@
 						{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre' },
 						{ data: 'nombre_tarea', name: 'nombre_tarea' },
 						{ data: 'created_at', name: 'created_at' },
-						// { data: 'estado.nombre', name: 'estado.nombre' },
-						// { data: 'telefono', name: 'telefono' },
-						/*{ data: 'horas_disponible', name: 'horas_disponible' },
-						{ data: 'roles_id', name: 'roles_id' },
-						{ data: 'areas_id', name: 'areas_id' },
-						{ data: 'estado', name: 'estado' },*/
 						], 
 						columnDefs: [
 						{

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Ot;
+use App\Cliente;
+use App\User;
 use App\Tiempos_x_Area;
 use App\Requerimientos_Ot;
 use App\Compras_Ot;
@@ -304,6 +306,19 @@ class OtController extends Controller
             ->join('users', 'ots.usuarios_id', '=', 'users.id')
             ->select('ots.*', 'clientes.nombre as nombre_cli', 'users.nombre as nombre_ej')
             ->get();
+        return response()->json($ot);
+    }
+
+    /**
+    *
+    **/
+    public function showOtEnTareasByQuery($query)
+    {
+        if (is_numeric($query)) {
+            $ot = Ot::with(['cliente','usuario'])->where('referencia', 'like', '%'.$query.'%')->get();
+        } else {
+            $ot = Ot::with(['cliente','usuario'])->where('nombre', 'like', '%'.$query.'%')->get();
+        }
         return response()->json($ot);
     }
 

@@ -68,7 +68,7 @@
 				<div class="input-group-addon">
 					<i class="fa fa-calendar"></i>
 				</div>
-				<datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="fecha_entrega_cliente" class="form-control"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
+				<datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="fecha_entrega_cliente" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
 			</div>
 			<div class="form-group required" v-bind:class="[errors_return.nombre_tarea,{ 'has-error': errors.has('nombre_tarea') }]">
 				<label for="nombre_tarea">Nombre de la Solicitud <sup>*</sup></label>
@@ -126,6 +126,9 @@
 				user:'',
 				fecha_entrega_cliente:'',
 				message:'',
+				disabled:{
+				  "to": new Date(),
+				},
 				errors_return:{
 		          'nombre':'',
 		          'nit':'',
@@ -225,6 +228,7 @@
 			            toastr.warning(this.message,respuesta.body.msg,this.option_toast);
 			          } else {
 			            toastr.success(respuesta.body.msg,'',this.option_toast);
+			            this.tarea= {};
 			          }
 		           console.log(respuesta);
 		         }, (response) => {

@@ -11,7 +11,14 @@
       :allow-empty="false"
       @input="updateSelected"
       @close="onTouch"
+      @search-change="asyncFind"
+      :internal-search="false" 
+      :loading="isLoading" 
+      :limit="3" 
+      :limit-text="limitText"
+      id="ajax"
       :option-height="104">
+        No se encontraron OTs
       </multiselect>
       <input type="hidden"  :value="id_ot" name="id_ot">
     </div>
@@ -32,7 +39,10 @@
             ots:[],
             id_ot: 0,
             isTouched: false,
-            value:''
+            value:'',
+            selectedCountries: [],
+            countries: [],
+            isLoading: false,
           }
       },
       computed:{
@@ -48,7 +58,7 @@
           fetchTips: function(){
                this.$http.get('/show_ots_tareas')
              .then(function(respuesta){
-                this.ots=respuesta.body;
+                // this.ots=respuesta.body;
              }.bind(this));
           },
           /*
@@ -72,6 +82,16 @@
         */
         onTouch () {
           this.isTouched =(this.value=="" )?true:false ; //Compruebo de que haya selecionado algo
+        },
+        limitText (count) {
+          return `y ${count} otras OTs`
+        },
+        asyncFind (query) {
+          this.isLoading = true
+          this.$http.get('/show_ots_tareas/'+query).then(response => {
+            this.ots = response.body;
+            this.isLoading = false
+          })
         },
     }
   }

@@ -23,7 +23,12 @@ class ClienteController extends Controller
       // $clientes = Cliente::all();
       $clientes = Cliente::where('estado', 1)->get();
       // return response()->json($clientes);
-      return Datatables::of($clientes)->make(true);
+      return Datatables::of($clientes)
+      /*->addColumn('action', function($cliente) {
+            // return url('/editar_cliente/' . $cliente->id);
+            return '<a href="#edit-'.$cliente->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+        })*/
+        ->make(true);
     }
     /**
      * Display a listing of the resource.
