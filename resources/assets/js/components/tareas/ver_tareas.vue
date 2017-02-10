@@ -75,7 +75,7 @@
 						   	"targets": [5],
 						   	"data": null,
 						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-						       	return '<a href="all_tareas/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver tarea</a>';        
+						       	return '<a href="ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver tarea</a>';        
 						       }
 						   }
 						   ],
