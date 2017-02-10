@@ -50,7 +50,7 @@
 					<div class="form-group required">
 						<label for="valor_total" class="col-sm-4 ">Fee <sup>*</sup></label>
 						<div class="col-sm-8" v-bind:class="{ 'has-error': errors.has('fee') }">
-							<input type="radio" name="fee" value="1"  v-model="datos_encabezado.fee"  required="required"  @mouseout="guardarDatos" >Si 
+							<input type="radio" name="fee" value="1"  v-model="datos_encabezado.fee"  required="required"  @mouseout="guardarDatos" >Si
 							<input type="radio" name="fee" value="0"  v-model="datos_encabezado.fee"   required="required"   @mouseout="guardarDatos" > No
 							<span  class="help-block" v-show="errors.has('fee')">{{ errors.first('fee') }}</span>
 						</div>
@@ -69,7 +69,7 @@
 					<div class="form-group required">
 						<label for="ejecutivo" class="col-sm-4 ">Ejecutivo  <sup>*</sup></label>
 						<div class="col-sm-8">
-							<select_usuarios  area="1" :select="datos_encabezado.ejecutivo" ></select_usuarios>
+							<select_usuarios  area="cuentas" :select="datos_encabezado.ejecutivo" ></select_usuarios>
 						</div>
 					</div>
 				</div>
@@ -320,7 +320,8 @@ module.exports= {
 			}
 		},
 		limpiarFechas:function(fecha){
-			if (fecha != null && fecha != undefined && fecha != '' && this.validarFormatoFecha(fecha) !=false ) {			
+		//	console.log(fecha);
+			if (fecha != null && fecha != undefined && fecha != '' && this.validarFormatoFecha(fecha) ==false ) {
 			//console.log(fecha.toISOString());
 			var fecha1=fecha;
 			fecha1=fecha1.toISOString();

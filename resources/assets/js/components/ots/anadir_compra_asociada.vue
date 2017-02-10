@@ -107,8 +107,19 @@ module.exports={
      llenarDatosSiesVisualizacion: function(){
         if (this.$parent.visualizacion=="true") {
                var arreglo_visualizar =JSON.parse(this.$parent.arreglo_visualizar);
-                var datos=[{compras:arreglo_visualizar.compras}];
-            this.$localStorage.set('datos_compra_'+arreglo_visualizar.requerimientos.area,JSON.stringify(datos));//busca dependiendo del Área
+                var arreglo_compras=arreglo_visualizar.final_com;
+              //  console.log(arreglo_compras);
+               for (let f in arreglo_compras) {
+                   let idx = Number(f)
+               //   console.log(datos);
+                //   var ingreso=[];
+               //ingreso.push(arreglo_compras[idx].compras);
+            var datos=[{compras:arreglo_compras[idx].compras }];
+                  this.$localStorage.set('datos_compra_'+arreglo_compras[idx].area,JSON.stringify(datos));//busca dependiendo del Área
+
+               }
+              //  var datos=[{compras:arreglo_visualizar.compras}];
+          //  this.$localStorage.set('datos_compra_'+arreglo_visualizar.requerimientos.area,JSON.stringify(datos));//busca dependiendo del Área
         }
       },
     /*

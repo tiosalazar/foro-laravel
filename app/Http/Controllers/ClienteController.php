@@ -25,6 +25,17 @@ class ClienteController extends Controller
       // return response()->json($clientes);
       return Datatables::of($clientes)->make(true);
     }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function select_clientes()
+    {
+      // $clientes = Cliente::all();
+      $clientes = Cliente::where('estado', 1)->get();
+      return response()->json($clientes);
+    }
     /*public function index()
     {
         $clientes = Cliente::all();
@@ -123,7 +134,7 @@ class ClienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {       
+        try {
             //Validación de las entradas por el metodo POST
             $vl=$this->validatorCrearCliente($request->all());
             if ($vl->fails()){
@@ -133,7 +144,7 @@ class ClienteController extends Controller
                     'msg' => 'Error al actualizar el cliente',
                     'error' => 'ERR_02',
                     'obj' =>$vl->errors()
-                ],Response::HTTP_BAD_REQUEST);  
+                ],Response::HTTP_BAD_REQUEST);
             }else{
                 //Busca el cliente en la BD
                 $cliente=  Cliente::findOrFail($id);
@@ -147,7 +158,7 @@ class ClienteController extends Controller
                         'obj' => $cliente,
                         'error' => null,
                         'msg' => 'Cliente actualizado con éxito',
-                    ],Response::HTTP_OK);                       
+                    ],Response::HTTP_OK);
             }
         }catch(Exception $e){
             return response([
@@ -170,7 +181,7 @@ class ClienteController extends Controller
     public function destroy($id)
     {
         $vl= Validator::make(['id'=>$id], ['id' => 'required|integer']);
-        
+
         try {
             //Busca el cliente en la BD
             $cliente=  Cliente::findOrFail($id);
@@ -193,9 +204,9 @@ class ClienteController extends Controller
                             'msg' => 'Cliente borrado con éxito',
                         ],Response::HTTP_OK);
             }
-            
-            
-            
+
+
+
         } catch (Exception $e) {
             return response([
                     'status' => Response::HTTP_BAD_REQUEST,
@@ -223,7 +234,7 @@ class ClienteController extends Controller
 
 
     /**
-    *   
+    *
     *
     **/
     protected function validatorCrearCliente(array $data)

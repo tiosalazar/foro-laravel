@@ -99,7 +99,7 @@ module.exports={
   },
   created: function(){
     this.llenarDatosSiesVisualizacion();
-    this.llenarCampos(); 
+    this.llenarCampos();
   },
   methods: {
     /*
@@ -115,17 +115,18 @@ module.exports={
       var data_req= JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.id_area));//busca dependiendo del Área
       if (data_req != null) {
         var arreglo_requerimientos = data_req[0].requerimientos;
-        if (this.$parent.visualizacion=="true") {
+      /*  if (this.$parent.visualizacion=="true") {
             this.requerimiento=[];
            for (let f in arreglo_requerimientos) {
                 let idx = Number(f)
                arreglo_requerimientos[idx]=JSON.parse(arreglo_requerimientos[idx])
               }
           this.requerimiento.push(Vue.util.extend({}, arreglo_requerimientos[0]) );
-          console.log(this.requerimiento); 
+          console.log(this.requerimiento);
         }else{
            this.requerimiento= arreglo_requerimientos;
-        }
+        }*/
+         this.requerimiento= arreglo_requerimientos;
         this.nhoras	= data_req[0].horas;
         this.h_pasadas	= data_req[0].h_pasadas;
         var datos=[{
@@ -139,16 +140,29 @@ module.exports={
     llenarDatosSiesVisualizacion: function(){
         if (this.$parent.visualizacion=="true") {
                var arreglo_visualizar =JSON.parse(this.$parent.arreglo_visualizar);
+              // console.log(arreglo_visualizar);
+              var arreglo_requerimientos=arreglo_visualizar.final_req;
 
-               console.log(arreglo_visualizar);
-               var arreglo_requerimientos=arreglo_visualizar.requerimientos.requerimientos;
+                for (let f in arreglo_requerimientos) {
+                    let idx = Number(f)
+                  var datos=[{
+                     requerimientos:[JSON.parse(arreglo_requerimientos[idx].requerimientos)],
+                     horas: parseInt(arreglo_requerimientos[idx].horas),
+                     h_pasadas: this.h_pasadas
+                   }];
+                //   console.log(datos);
+                   this.$localStorage.set('datos_requerimiento_'+arreglo_requerimientos[idx].area,JSON.stringify(datos));//busca dependiendo del Área
 
+                }
+               /*
+               var arreglo_requerimientos=arreglo_visualizar.final_req.requerimientos;
            var datos=[{
               requerimientos:arreglo_requerimientos,
               horas: parseInt(arreglo_visualizar.requerimientos.horas),
               h_pasadas: this.h_pasadas
             }];
-            this.$localStorage.set('datos_requerimiento_'+arreglo_visualizar.requerimientos.area,JSON.stringify(datos));//busca dependiendo del Área
+            this.$localStorage.set('datos_requerimiento_'+arreglo_visualizar.final_req.area,JSON.stringify(datos));//busca dependiendo del Área
+            */
         }
       },
     /*

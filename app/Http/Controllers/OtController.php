@@ -30,7 +30,7 @@ class OtController extends Controller
              $ot->Usuario;
              $ot->Estado;
             array_push($data, $ot);
-             
+
          }
 
         return array('recordsTotal'=>count($data),'recordsFiltered'=>count($data),'data'=>$data);
@@ -58,13 +58,13 @@ class OtController extends Controller
            $respuesta=[];
        //Validaciòn de las entradas por el metodo POST
         $data= $request->all();
-        
+
         $vl=$this->validatorCrearOT($data['datos_encabezado']);
       if ($vl->fails())
          {
                 return response()->json($vl->errors());
          }else
-             {   
+             {
                 try
                 {
                    //  DB::beginTransaction();
@@ -87,7 +87,7 @@ class OtController extends Controller
                          $tiempos_x_area->save();
                            /*El siguiente for recorre el listado de requerimientos y los agrega */
                          for ($i=0; $i < count($requerimiento['requerimientos']) ; $i++) {
-                            $model_descripcion_requerimiento= new Requerimientos_Ot; 
+                            $model_descripcion_requerimiento= new Requerimientos_Ot;
                             $arreglo=$requerimiento['requerimientos'][$i];
                             $arreglo_ingresar= array('nombre' => $arreglo['model_nom'],'horas'=> $arreglo['model_horas'],'areas_id'=>$requerimiento['area'],'ots_id'=>$id_ot);
                             $model_descripcion_requerimiento->fill( $arreglo_ingresar);
@@ -97,7 +97,7 @@ class OtController extends Controller
                         }
                         /*El siguiente for recorre el listado de compras y los agrega*/
                          foreach ($compras as $compra) {
-                                 $model_compras= new Compras_Ot; 
+                                 $model_compras= new Compras_Ot;
                                  $model_compras->fill($compra);
                                  $model_compras->ots_id=$id_ot;
                                  $model_compras->save();
@@ -120,7 +120,7 @@ class OtController extends Controller
                     ],Response::HTTP_BAD_REQUEST);
                }
          }
-         
+
     }
 
     /**
@@ -131,7 +131,7 @@ class OtController extends Controller
      */
     public function show($id)
     {
-       
+
          $ot=OT::findOrFail($id);
          $data=[];
          $data['datos_encabezado']=$ot;
@@ -139,28 +139,65 @@ class OtController extends Controller
          $data['datos_encabezado']['ejecutivo']=$ot->Usuario;
          $data['datos_encabezado']['estado']=$ot->Estado;
          $data['compras']=[];
-
-         foreach ($ot->Tiempos_x_Area as  $value) {
-            $data['requerimientos']['area']=$value['areas_id'];
-            $data['requerimientos']['horas']=$value['tiempo_estimado'];
-         }
-
+         $data['final_req']=[];
+         $data['final_com']=[];
          $array_temporal=[];
          $data['requerimientos']['requerimientos']=[];
+        // $requerimientos= $ot->Requerimiento_Ot;
+         foreach ($ot->Tiempos_x_Area as  $value) {
+            $area_actual=$value['areas_id'];
+            $data['requerimientos']['area']=$value['areas_id'];
+            $data['requerimientos']['horas']=$value['tiempo_estimado'];
+            $data['compras']['area']=$value['areas_id'];
+            foreach ($ot->Requerimiento_Ot as  $value) {
+                if ($value['areas_id'] ==  $area_actual ) {
+                    $array_temporal= array('model_nom'=>$value['nombre'] ,'model_horas'=>(int)$value['horas']);
+                    $data['requerimientos']['requerimientos']=json_encode($array_temporal);
+                  /// array_push($data['requerimientos']['requerimientos'], json_encode($array_temporal));
+                }
+           }
+           $array_temporal=[];
+           $ingreso=[];
+           foreach ($ot->Compras_Ot as  $value) {
+               if ($value['areas_id'] ==  $area_actual ) {
+               $compra =Compras_Ot::findOrFail($value['id']);
+               $compra->Tipo_Compra;
+               $compra->Divisa;
+             // $array_temporal['area']=$value['areas_id'];
+               $array_temporal= array('tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'model_desc' => $value['descripcion'],
+                'model_provedor'=>'provedor' , 'model_valor'=> 'valor', 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
+                array_push($ingreso,$array_temporal);
+               $data['compras']['compras']=$ingreso;
+               //array_push($data['compras'],  $array_temporal);
+              }
+           }
+            array_push($data['final_req'], $data['requerimientos']);
+            array_push($data['final_com'], $data['compras']);
+         }
+
+        //var_dump($data['final_req']);
+
+
+    /*    $req=$ot->Requerimiento_Ot;
+         for ($i=0; $i <count($req) ; $i++) {
+              $req_actual=$data['final_req'][0];
+              $clave = array_search('verde', $data['final_req']); // $clave = 2;
+               var_dump( $clave);
+             if ( $req[$i]['areas_id'] ==  $req_actual['area'] ) {
+                 $array_temporal= array('model_nom'=> $req[$i]['nombre'] ,'model_horas'=>(int) $req[$i]['horas']);
+                array_push($data['requerimientos']['requerimientos'], json_encode($array_temporal));
+             }
+         }*/
+         /*
          foreach ($ot->Requerimiento_Ot as  $value) {
-             $array_temporal= array('model_nom'=>$value['nombre'] ,'model_horas'=>(int)$value['horas']); 
-            array_push($data['requerimientos']['requerimientos'], json_encode($array_temporal));
-         }
-         foreach ($ot->Compras_Ot as  $value) {
-             $compra =Compras_Ot::findOrFail($value['id']);
-             $compra->Tipo_Compra;
-             $compra->Divisa;
-             $array_temporal= array('tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'model_desc' => $value['descripcion'],
-              'model_provedor'=>'provedor' , 'model_valor'=> 'valor', 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre'])   );
-             array_push($data['compras'],  $array_temporal);
-         }
-       // var_dump($data);
-         return view('admin.ots.editar_ot')->with('arregloOT', json_encode($data));
+             if ($value['areas_id'] ==  $data['final_req']['requerimientos']['area'] ) {
+                 $array_temporal= array('model_nom'=>$value['nombre'] ,'model_horas'=>(int)$value['horas']);
+                array_push($data['requerimientos']['requerimientos'], json_encode($array_temporal));
+             }
+        }*/
+
+        //var_dump($data);
+        return view('admin.ots.editar_ot')->with('arregloOT', json_encode($data));
     }
     /**
      * Show the form for editing the specified resource.
@@ -192,7 +229,7 @@ class OtController extends Controller
          {
                 return response()->json($vl->errors());
          }else
-             {   
+             {
 
         try
                 {
@@ -229,7 +266,7 @@ class OtController extends Controller
                         }
                         /*El siguiente for recorre el listado de compras y los agrega*/
                           $index=0;
-                          $model_compras= Compras_Ot::where('ots_id',$id_ot)->get(); 
+                          $model_compras= Compras_Ot::where('ots_id',$id_ot)->get();
                          foreach ($compras as $compra) {
                                  $model_compras[$index]->fill($compra);
                                  $model_compras[$index]->save();

@@ -212,7 +212,7 @@
 				*/
 				this.$on('form_compras_validado', function(v) {
 					this.form_compras_validado=v;
-				});	
+				});
 
 			},
 			methods:{
@@ -234,7 +234,7 @@
 				if (this.visualizacion=='true') {
 					var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
 					var datos_encabezado= arreglo_visualizar.datos_encabezado;
-					this.descripcion_ot=datos_encabezado.observaciones; 
+					this.descripcion_ot=datos_encabezado.observaciones;
 					/*this.datos_encabezado=arreglo_visualizar.datos_encabezado;
 					this.datos_requerimiento=arreglo_visualizar.requerimientos;
 					this.datos_compras=arreglo_visualizar.compras;*/
@@ -268,8 +268,7 @@
 							requerimientos: this.procesarTodosRequerimientos(),
 							compras: this.procesarTodosCompras()
 						};
-
-
+          			console.log(datos_procesados);
 						if(this.visualizacion != 'true'){
 							this.$http.post('/api/v1/ots', datos_procesados)
 							.then(function(respuesta){
@@ -295,6 +294,8 @@
 									this.limpiarDatos=true;
 									this.$localStorage.remove('datos_encabezado');
 									this.limpiarComprasRequerimientos();
+									this.datos_requerimiento=[];
+									this.datos_compras=[];
 								}
 							},(respuesta) => {
 								var that = this;
@@ -347,8 +348,6 @@
 
 
 
-
-
 					} catch (e) {
 						console.log(e);
 						toastr.error("Revise que todos los datos esten bien, y vuelva a intentar","Error al Guardar",this.option_toast);
@@ -360,8 +359,8 @@
 
 			},
 			limpiarFechas:function(fecha){
-				if (fecha != null && fecha != undefined && fecha != '' && this.validarFormatoFecha(fecha) ==false ) {			
-			
+				if (fecha != null && fecha != undefined && fecha != '' && this.validarFormatoFecha(fecha) ==false ) {
+
 			var fecha1=String(fecha);
 			//console.log(fecha1);
 			//fecha1=fecha1.toISOString();
@@ -429,15 +428,15 @@
          				var data={
          					area:p.id,
          					horas:hora_a[0].horas,
-         					requerimientos:hora_a[0].requerimientos  
+         					requerimientos:hora_a[0].requerimientos
          				};
 
-         				arreglo_temporal.push(data);	
+         				arreglo_temporal.push(data);
          			}
          		}
          		return arreglo_temporal;
-         		
-         	}  
+
+         	}
          },
          procesarTodosCompras(){
          	var total_areas  =this.$localStorage.get('listado_areas');
@@ -455,25 +454,25 @@
          				for(let f in hora_a ){
          					if (hora_a[i].model_desc !="" && hora_a[i].model_provedor !=""  && hora_a[i].model_valor !="") {
          						var tipo_compra = hora_a[i].tipo_compra;
-         						var divisa = hora_a[i].divisa;		
+         						var divisa = hora_a[i].divisa;
          						var data={
          							areas_id:p.id,
          							tipos_compras_id: tipo_compra.id,
          							divisas_id: divisa.id,
          							descripcion:hora_a[i].model_desc,
          							provedor:hora_a[i].model_provedor,
-         							valor:hora_a[i].model_valor, 
+         							valor:hora_a[i].model_valor,
          						};
-         						arreglo_temporal.push(data);	 
+         						arreglo_temporal.push(data);
          					}
          					i++;
          				}
          				i=0;
          			}
-         		} 
+         		}
          		return arreglo_temporal;
-         		
-         	}  
+
+         	}
          },
          limpiarComprasRequerimientos(){
          	var total_areas  =this.$localStorage.get('listado_areas');
@@ -487,7 +486,7 @@
          			let p = total_areas[idx]
          			this.$localStorage.remove('datos_requerimiento_'+p.id);
          			this.$localStorage.remove('datos_compra_'+p.id);
-         		}  
+         		}
          	}
          },
          guardarDatos: function(id){
@@ -496,8 +495,8 @@
          	if(this.comprobarDatosRequerimientos()==true) {
 
          		if(this.comprobarSiGuardoCompras() == true){
-         			//this.validar_compras=true;	
-         			//this.validar_requerimientos=true;	
+         			//this.validar_compras=true;
+         			//this.validar_requerimientos=true;
          			if ( this.comprobarCompras(this.datos_compras) == true ) {
 					// if(this.form_requerimiento_validado ==true ){
 						toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
@@ -505,13 +504,13 @@
 						//this.validar_requerimientos=false;
 				//}
 				this.$localStorage.set('datos_compra_'+id,JSON.stringify(this.datos_compras) );
-			}	
+			}
 
 		}else{
 		//	this.validar_requerimientos=true;
 		toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
 		this.$localStorage.set('datos_requerimiento_'+id,JSON.stringify(requerimientos) );
-		//	this.validar_requerimientos=false;	
+		//	this.validar_requerimientos=false;
 	}
 
 }
@@ -553,10 +552,10 @@ comprobarDatosTodosRequerimientos: function(){
 			let idx = Number(f)
 			let p = total_areas[idx]
 			hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
-			retorno=this.comprobarDatosRequerimientos(hora_a);	    
+			retorno=this.comprobarDatosRequerimientos(hora_a);
 		}
-		return retorno;	
-	} 
+		return retorno;
+	}
 },
 /*
   Función la cual comprueba dentro del arreglo de requerimientos que no haya ningún campo en blanco

@@ -14,7 +14,7 @@ class Requerimientos_Ot extends Model
    * @var array
    */
   protected $fillable = [
-      'nombre', 'horas', 'ots_id',
+      'nombre', 'horas','areas_id', 'ots_id',
   ];
 
   /**

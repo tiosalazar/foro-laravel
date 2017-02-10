@@ -100,9 +100,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($nombre_rol)
     {
-        $ejecutivos= Role::where('name','cuentas')->first();
+        $ejecutivos= Role::where('name',$nombre_rol)->first();
         $user= User::where('roles_id', $ejecutivos->id)->get();
         return response()->json($user);
     }
@@ -189,9 +189,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        
+
         $respuesta=[];
-          
+
             //Validaciòn de las entradas por el metodo POST
         try{
             $user = User::findOrFail($id);
@@ -212,7 +212,7 @@ class UserController extends Controller
 
                 //  if ($user->fails()){
                 //         return response()->json($user->errors());
-                     
+
                 //     }else{
                 //         $user->estado=0;
                 //         $user->save();
@@ -221,8 +221,8 @@ class UserController extends Controller
                 //         $respuesta["mensaje"]="OK";
                 //         $respuesta["obj"]=$user;
                 //      }
-        
-       
+
+
         return response()->json($respuesta);
     }
 
@@ -291,7 +291,7 @@ class UserController extends Controller
         //return view('adminlte::home',array('usuario' =>$user));
     }
 
-    
 
-   
+
+
 }
