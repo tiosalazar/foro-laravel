@@ -46,7 +46,8 @@ Route::group(['middleware' => 'auth'], function () {
            return view('admin.ots.listado_ot');
     });
 
-    Route::get('show_ots_tareas','OtController@showOtEnTareas');
+    Route::get('/show_ots_tareas','OtController@showOtEnTareas');
+    Route::get('/show_ots_tareas/{query}','OtController@showOtEnTareasByQuery');
 
     // Clientes
     Route::get('/crear_cliente', function () {
