@@ -1,3 +1,5 @@
+
+
 .listar_areas_modulo{
 	width: 90%;
 	
@@ -14,10 +16,10 @@
 		margin-top: 0;
 	}
 
-	.columnas_listar_tareas{
+	.columnas_listar_areas{
 		padding-right: 0;
 		padding-left: 0;
-		height: 400px;
+		height: 450px;
 		background-color: #EDEDED;
 
 		//ul areas
@@ -35,10 +37,21 @@
 			    		background-color: #15BAEE;
 			    		color: white;
 			    	}
+			    	
 			    }
+			    a{
+		    		&:focus{
+		    			display: block;
+						background-color:#15BAEE;
+						color:white;
+						text-decoration: none;
+		    		 }
+			    }
+			   
 			}
+			
 		}
-		//ul usuarios
+		//ul listado de usuarios
 		&:nth-child(2){
 			background-color: #E8E8E8;
 			ul{
@@ -48,6 +61,7 @@
 			    padding: 0;
 			    overflow: auto;
 			    height: 325px;
+			    border-top: 1px dashed gray;
 				&::-webkit-scrollbar {
 				   width: 10px;
 				   background-color: #8c8c8c;
@@ -56,18 +70,25 @@
 				  background-color: #003A81;
 				  outline: 1px solid #003A81;
 				}
-
+				a{
+		    		&:focus{
+		    			display: block;
+						background-color:#15BAEE;
+						color:white;
+						text-decoration: none;
+		    		 }
+			    }
 			    li{
 			    	height: 80px;
-			    	border-top: 1px dotted;
+			    	border-bottom: 1px dashed gray;
 			    	display: flex;
 			    	line-height: 8px;
+			    	&:last-child{
+
+			    	}
 			    	.text_user_listado{
 			    		padding-top: 17px;
     					padding-left: 5%;
-			    	}
-			    	&:last-child(){
-						border-bottom: 1px dotted;
 			    	}
 			    	img{
 			    		width: 60px;
@@ -91,6 +112,22 @@
 				color: #15BAEE;
 				font-weight: bold;
 			}
+			.editar_usuarios_area{
+				background-color: #15BAEE;
+				border:none;
+				margin-top: 35px;
+				&:hover{
+					background-color: #025e7b;
+				}
+			}
+			.eliminar_usuario_area{
+				background-color: #FE0101;
+				border:none;
+				margin-top: 35px;
+				&:hover{
+					background-color: #8c0000;
+				}
+			}
 		}
 		
 	}
@@ -98,6 +135,7 @@
 		background-color: #003A81;
 		color: white;
 		@include center_text();
+
 
 	}
 	.titulo_listar_user{
@@ -111,4 +149,13 @@
 		margin-bottom: 8%;
 		@include center_text();
 	}
+}
+
+//Transiciones de listar tarea
+
+.v-enter {
+  transition: opacity .5s
+}
+.v-leave /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
 }

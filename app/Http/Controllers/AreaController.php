@@ -24,6 +24,12 @@ class AreaController extends Controller
       return response()->json($area);
     }
 
+    public function index_areas()
+    {
+       $area=Area::all()->where('estado','1');
+      return response()->json($area);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

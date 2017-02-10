@@ -68,7 +68,7 @@
             if (newSelected != null && newSelected != undefined) {
 
              this.id_area = newSelected.id;
-             this.value = newSelected;
+              this.value = newSelected;
               this.$parent.$emit('area_option',newSelected);
            }else {
              this.id_area = 0;

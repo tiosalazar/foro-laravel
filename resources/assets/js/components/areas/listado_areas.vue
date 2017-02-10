@@ -1,24 +1,29 @@
 <template>
   <div>
+  
     <div class="row listar_areas_modulo">
       <div class="col-md-12">
-       <div class="col-md-2 columnas_listar_tareas">
+       <div class="col-md-2 columnas_listar_areas">
           <h3 class="titulo_listar_area">Áreas</h3>
-          <ul >
-            <li v-for="area in areas" @click="consultarApiusuarios(area.id)">{{area.nombre}}</li>
-          </ul>
-        </div>
-        <div class="col-md-5 columnas_listar_tareas">
-          <h3 class="titulo_listar_user">Usuarios</h3>
           <ul>
-            <li v-for="usuario in itemsUserArea(usuarios,idareaUser) " :key="usuario.nombre" @click="userviewinfo(usuario.horas_disponible,usuario.id)">
-            <div v-if="usuario.img_perfil==null"><img   src="/images/perfil.jpg"></div>
-            <div v-else><img   v-bind:src="usuario.img_perfil"></div>
-            <div class="text_user_listado"><p>{{usuario.nombre}} {{usuario.apellido}}</p><p>{{usuario.cargo}}</p><p>{{usuario.email}}</p><div></li>
+            <a href="#" v-for="area in areas"><li  @click="consultarApiusuarios(area.id)" >{{area.nombre}}</li></a>
           </ul>
+          
+        </div>
+        <div class="col-md-5 columnas_listar_areas">
+          <h3 class="titulo_listar_user">Usuarios</h3>
+          
+            <ul class="listado_usuarios">
+            <a href="#" v-for="usuario in itemsUserArea(usuarios,idareaUser)" v-bind:key="usuario" class="list-usuario">
+              <li class="listado_usuarios_item"  :key="usuario.nombre" @click="userviewinfo(usuario.horas_disponible,usuario.id)" >
+              <div v-if="usuario.img_perfil==null"><img   src="/images/perfil.jpg"></div>
+              <div v-else><img   v-bind:src="usuario.img_perfil"></div>
+              <div class="text_user_listado"><p>{{usuario.nombre}} {{usuario.apellido}}</p><p>{{usuario.cargo}}</p><p>{{usuario.email}}</p><div></li></a>
+            </ul>
+          
         </div>
 
-        <div class="col-md-5 columnas_listar_tareas" >
+        <div class="col-md-5 columnas_listar_areas" >
           <h3 class="titulo_listar_info">Informacion</h3>
           <div class="info_content">
             <h3>Area</h3>
@@ -40,8 +45,8 @@
             <p>Horas disponible usuario: <span>20</span></p>
           </div>
           <div class="info_content" v-if="switcharea_user == '2'">
-            <a v-bind:href="id_user" ><button class="btn btn-primary" >Editar usuario</button></a>
-            <button class="btn btn-danger" v-bind:value="id_user_eliminar" data-target="#confirm_delete_user" data-toggle="modal"  >Eliminar suario</button>
+            <a v-bind:href="id_user" ><button class="btn btn-primary btn-flat editar_usuarios_area" >Editar usuario</button></a>
+            <button class="btn btn-danger btn-flat eliminar_usuario_area" v-bind:value="id_user_eliminar" data-target="#confirm_delete_user" data-toggle="modal"  >Eliminar suario</button>
           </div>
         </div>
       </div>
@@ -56,8 +61,8 @@
            </div>
            <div class="modal-body">
               <div class="center-block" style="width:150px; text-align:center;">
-                <button class="btn btn-danger " data-dismiss="modal">NO</button>
-                <button class="btn btn-primary " @click="eliminarUsuario(id_user_eliminar)" data-dismiss="modal">SI</button>
+                <button class="btn btn-danger btn-flat" data-dismiss="modal">NO</button>
+                <button class="btn btn-primary btn-flat" @click="eliminarUsuario(id_user_eliminar)" data-dismiss="modal">SI</button>
               </div>
               <div class="modal-footer">
              
@@ -67,11 +72,10 @@
        </div>
      </div>
     </div>
-    
+
  </div>  
 
 </template>
-
 
 <script>
 
@@ -88,23 +92,22 @@
           switcharea_user:'',
           horas_user:'',
           id_user:'',
-          id_user_eliminar:''
+          id_user_eliminar:'',
+          i:1
         }
      },
      created: function(){
         this.consultarApiAreas();  
-      }, 
-      computed:{
-       
-      },
+      },     
       methods:{
         //Consultar api de areas
         consultarApiAreas:function(){
 
-          this.$http.get('/api/v1/areas')
+          this.$http.get('/api/v1/listar_areas')
               .then(function(respuesta){
                 this.areas=respuesta.body;
                 // console.log(respuesta);
+
               });
         },
         consultarApiusuarios:function(areaid){
@@ -117,7 +120,6 @@
             this.idareaUser=areaid;
             this.switcharea_user=1;
             //consulto la api por el id del area para mostrar la información en la ultima
-
           });
 
           //Consulto la api de areas con el id para traer los datos en la columna infomacion
@@ -137,8 +139,11 @@
            this.switcharea_user=2;
            this.horas_user=horas;
            this.id_user="/editar_usuario/"+id_user;
-           this.id_user_eliminar=id_user;  
-        },
+           this.id_user_eliminar=id_user;
+           console.log(this);
+ 
+           
+         },
         eliminarUsuario:function(id_usuario_eliminar){
            this.$http.delete('/api/v1/usuarios/'+id_usuario_eliminar)
             .then(function(respuesta){
