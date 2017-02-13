@@ -1,8 +1,10 @@
 <template>
   <div>
-  <div :class="{ 'select-error': isInvalid }">
+  <div :class="{ 'select-error': isInvalid }" class="areas">
       <multiselect
       :options="areas"
+      selected-label=""
+      deselect-label=""
       :close-on-select="true"
       select-label=""
       :searchable="true" placeholder="Seleccione un Área" label="nombre" track-by="nombre"

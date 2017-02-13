@@ -1,9 +1,11 @@
 <template>
   <div>
-  <div :class="{ 'select-error': isInvalid }">
+  <div :class="{ 'select-error': isInvalid }" class="select_ot">
       <multiselect
       :custom-label="nameWithLang"
       :options="ots"
+      selected-label=""
+      deselect-label=""
       select-label=""
       :close-on-select="true"
       :searchable="true" placeholder="Escribe el nombre del Proyecto o el # de Ot" label="nombre" track-by="nombre"

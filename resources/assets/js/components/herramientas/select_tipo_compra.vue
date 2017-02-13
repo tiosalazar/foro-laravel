@@ -6,6 +6,8 @@
     <div :class="{ 'select-error': isInvalid }">
       <Multiselect
       :options="tipo_compra"
+      selected-label=""
+      deselect-label=""
       placeholder="Item" select-label="" label="nombre" track-by="nombre"
       :close-on-select="true"
       :options-limit="300"

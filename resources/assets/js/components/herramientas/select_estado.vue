@@ -6,6 +6,8 @@
       <div :class="{ 'select-error': isInvalid }">
         <multiselect
         :options="estados"
+        selected-label=""
+        deselect-label=""
         :searchable="false" placeholder="Seleccione un Estado de OT" select-label="" label="nombre" track-by="nombre"
         :close-on-select="true"
         :allow-empty="false"

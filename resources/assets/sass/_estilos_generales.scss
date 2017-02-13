@@ -23,3 +23,23 @@
 .estado-3-8{
 	background-color: $estado-baja;
 }
+
+// Bordes
+.box {
+	.border-right{
+		border-right: 1px solid $borde-gris;
+	}
+	.border-left {
+	  	border-left: 1px solid $borde-gris;
+	}
+}
+
+// Multiselect
+.multiselect__option--highlight{
+	background-color: $azul-claro !important;
+}
+.multiselect__option--selected,
+.multiselect__option--selected.multiselect__option--highlight{
+	background-color: $azul-profundo !important;
+	color:#fff !important;
+}

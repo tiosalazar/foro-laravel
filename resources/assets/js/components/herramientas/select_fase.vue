@@ -3,6 +3,8 @@
   <div >
       <multiselect
       :options="estados"
+      selected-label=""
+      deselect-label=""
       group-values="fases" 
       group-label="tipo" 
       :searchable="true" placeholder="Seleccione la Fase del projecto" label="nombre" track-by="nombre"

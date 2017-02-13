@@ -1,9 +1,11 @@
 <template>
   <div>
-  <div  :class="{ 'select-error': isInvalid }">
+  <div  :class="{ 'select-error': isInvalid }" class="prioridad">
       <multiselect
       :options="estados"
-      :searchable="true" placeholder="Seleccione la Prioridad" label="nombre" track-by="nombre"
+      selected-label=""
+      deselect-label=""
+      :searchable="true" placeholder="--" label="nombre" track-by="nombre"
       :options-limit="100"
       select-label=""
       :close-on-select="true"
