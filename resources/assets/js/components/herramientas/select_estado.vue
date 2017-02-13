@@ -52,6 +52,7 @@
         },
     },
     created: function(){
+      console.log(this);
       this.fetchTips();
     },
     methods:{

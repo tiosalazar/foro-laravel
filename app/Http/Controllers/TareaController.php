@@ -144,6 +144,16 @@ class TareaController extends Controller
         return Datatables::of($tarea)->make(true);
 
     }
+
+    public function showOneTarea($id)
+    {
+        $tarea = Tarea::findOrFail($id);
+        $tarea->ot->cliente;
+        $tarea->estado;
+        // return response()->json($tarea);
+        return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea);
+    }
+
     /**
     * Validar Crear Tarea
     **/
