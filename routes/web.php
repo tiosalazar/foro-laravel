@@ -65,6 +65,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/listar_tareas', function () {
            return view('admin.tareas.listar_tareas');
     });
+
+    Route::get('/all_tareas/{id}','TareaController@showAllTareas');
+
     Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
 
     Route::get('/list_fases','FaseController@listFases');

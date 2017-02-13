@@ -6,7 +6,9 @@
       <div :class="{ 'select-error': isInvalid }">
         <Multiselect
         :options="clientes"
-        :custom-label="nameWithLang"  placeholder="Seleccione un cliente" label="nombre" track-by="nombre"
+        selected-label=""
+        deselect-label=""
+        :custom-label="nameWithLang"  placeholder="Seleccione un Cliente" label="nombre" track-by="nombre"
         select-label=""
         :close-on-select="true"
         :value="value"

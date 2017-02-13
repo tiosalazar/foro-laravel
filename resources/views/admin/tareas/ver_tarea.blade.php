@@ -8,8 +8,6 @@
 @section('main-content')
 
 	<section>
-	   <ver_tarea arraytarea="{{$tareainfo}}"></ver_tarea>
-	
-			
+	   <ver_tarea arraytarea="{{$tareainfo}}"></ver_tarea>			
 	</section>
 @endsection

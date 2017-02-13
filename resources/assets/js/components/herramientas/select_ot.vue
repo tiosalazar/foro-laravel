@@ -1,12 +1,14 @@
 <template>
   <div>
-  <div :class="{ 'select-error': isInvalid }">
+  <div :class="{ 'select-error': isInvalid }" class="select_ot">
       <multiselect
       :custom-label="nameWithLang"
       :options="ots"
+      selected-label=""
+      deselect-label=""
       select-label=""
       :close-on-select="true"
-      :searchable="true" placeholder="Seleccione un Proyecto" label="nombre" track-by="nombre"
+      :searchable="true" placeholder="Escribe el nombre del Proyecto o el # de Ot" label="nombre" track-by="nombre"
       :options-limit="100"
       :allow-empty="false"
       @input="updateSelected"
@@ -17,6 +19,7 @@
       :limit="3" 
       :limit-text="limitText"
       id="ajax"
+      :value="value_select"
       :option-height="104">
         No se encontraron OTs
       </multiselect>
@@ -34,6 +37,7 @@
   import Multiselect from 'vue-multiselect'
     module.exports= {
        components: { Multiselect},
+       props: ['select'],
       data () {
           return {
             ots:[],
@@ -48,7 +52,10 @@
       computed:{
         isInvalid () {
           return (this.isTouched &&  this.value=="" )?true:false //Compruebo de que haya selecionado algo
-        }
+        },
+        value_select: function () {
+          return this.select;
+        },
       },
       created: function(){
           this.fetchTips();

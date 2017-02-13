@@ -34,11 +34,29 @@
 }
 
 .estado-3-7 {
-  background-color: #F6FF2A;
+  background-color: #FABC00;
 }
 
 .estado-3-8 {
   background-color: #56C716;
+}
+
+.box .border-right {
+  border-right: 1px solid #d8d8d8;
+}
+
+.box .border-left {
+  border-left: 1px solid #d8d8d8;
+}
+
+.multiselect__option--highlight {
+  background-color: #15baee !important;
+}
+
+.multiselect__option--selected,
+.multiselect__option--selected.multiselect__option--highlight {
+  background-color: #002E60 !important;
+  color: #fff !important;
 }
 
 /*!
@@ -8420,8 +8438,76 @@ body {
   display: none;
 }
 
+.tarea {
+  padding: 15px;
+}
+
+.tarea .multiselect {
+  border-radius: 0;
+  min-height: 25px;
+  height: 25px;
+}
+
+.tarea .multiselect input {
+  height: 22px;
+}
+
+.tarea .multiselect .multiselect__tags {
+  min-height: 25px;
+  height: 25px;
+  padding-top: 0;
+  border-radius: 0;
+}
+
+.tarea .multiselect .multiselect__select {
+  min-height: 25px;
+  height: 25px;
+}
+
+.tarea .multiselect .multiselect__select:before {
+  color: #15baee;
+  border-top-color: #15baee;
+}
+
+.tarea .desc-ot {
+  padding: 0 0 25px;
+  margin-bottom: 40px;
+}
+
+.tarea .desc-ot strong {
+  color: #15baee;
+}
+
+.tarea .desc-ot ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.tarea .desc-ot ul li {
+  margin: 7px 0;
+}
+
+.tarea .with-border {
+  border-bottom: 1px solid #d8d8d8;
+}
+
+.tarea .input-group-addon {
+  padding: 4px 10px;
+}
+
+.tarea .form-control {
+  border-radius: 0;
+}
+
+.tarea input {
+  height: 25px;
+}
+
 .tarea .input-group.date .datepicker {
   padding: 0 12px;
+  height: 25px;
+  position: relative;
 }
 
 .tarea .input-group.date .datepicker input {
@@ -8431,6 +8517,33 @@ body {
   height: 100%;
   margin-top: 0;
   border: 0;
+}
+
+.tarea .input-group.date .datepicker:before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-style: solid;
+  border-width: 5px 5px 0;
+  border-color: #15baee transparent transparent;
+}
+
+.tarea .prioridad .multiselect__element {
+  color: #fff;
+}
+
+.tarea .prioridad .multiselect__element:nth-child(1) {
+  background-color: #FF1A1A;
+}
+
+.tarea .prioridad .multiselect__element:nth-child(2) {
+  background-color: #FABC00;
+}
+
+.tarea .prioridad .multiselect__element:nth-child(3) {
+  background-color: #56C716;
 }
 
 .label-estado {

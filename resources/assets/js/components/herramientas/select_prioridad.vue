@@ -1,15 +1,18 @@
 <template>
   <div>
-  <div  :class="{ 'select-error': isInvalid }">
+  <div  :class="{ 'select-error': isInvalid }" class="prioridad">
       <multiselect
       :options="estados"
-      :searchable="true" placeholder="Seleccione la Prioridad" label="nombre" track-by="nombre"
+      selected-label=""
+      deselect-label=""
+      :searchable="true" placeholder="--" label="nombre" track-by="nombre"
       :options-limit="100"
       select-label=""
       :close-on-select="true"
       :allow-empty="false"
       @input="updateSelected"
       @close="onTouch"
+      :value="value"
       :option-height="104">
       </multiselect>
       <input type="hidden"  :value="id_prioridad" name="id_prioridad">
@@ -26,15 +29,18 @@
   import Multiselect from 'vue-multiselect'
     module.exports= {
        components: { Multiselect},
+        props: ['select'],
       data () {
           return {
             estados:[],
-            id_prioridad: 0,
+            id_prioridad: '',
             isTouched: false,
-            value:''
           }
       },
       computed:{
+        value: function () {
+          return this.select;
+        },
         isInvalid () {
           return (this.isTouched &&  this.value=="" )?true:false //Compruebo de que haya selecionado algo
         }

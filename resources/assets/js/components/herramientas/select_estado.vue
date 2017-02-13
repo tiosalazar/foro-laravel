@@ -6,7 +6,9 @@
       <div :class="{ 'select-error': isInvalid }">
         <multiselect
         :options="estados"
-        :searchable="false" placeholder="Seleccione un estado de OT" select-label="" label="nombre" track-by="nombre"
+        selected-label=""
+        deselect-label=""
+        :searchable="false" placeholder="Seleccione un Estado de OT" select-label="" label="nombre" track-by="nombre"
         :close-on-select="true"
         :allow-empty="false"
         :value="value"
@@ -37,18 +39,20 @@
       return {
         estados:[],
         id_estado:0,
-        isTouched: false
+        isTouched: false,
+        // value:'',
       }
     },
     computed:{
-      value: function () {
-        return this.select;
-      },
       isInvalid () {
         return (this.isTouched &&  this.value=="" )?true:false//Compruebo de que haya selecionado algo
-      }
+      },
+      value: function () {
+          return this.select;
+        },
     },
     created: function(){
+      console.log(this);
       this.fetchTips();
     },
     methods:{

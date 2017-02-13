@@ -6,6 +6,8 @@
     <div :class="{ 'select-error': isInvalid }">
       <Multiselect
       :options="divisa"
+      selected-label=""
+      deselect-label=""
       placeholder="Moneda" label="nombre" select-label="" track-by="nombre"
       :close-on-select="true"
       :options-limit="300"

@@ -3,12 +3,16 @@
   <div >
       <multiselect
       :options="estados"
+      selected-label=""
+      deselect-label=""
       group-values="fases" 
       group-label="tipo" 
       :searchable="true" placeholder="Seleccione la Fase del projecto" label="nombre" track-by="nombre"
       :options-limit="100"
       :allow-empty="false"
       @input="updateSelected"
+      @close="onTouch"
+      :value="value"
       :option-height="104">
       </multiselect>
       <input type="hidden"  :value="id_fase" name="id_fase">
@@ -22,15 +26,22 @@
   import Multiselect from 'vue-multiselect'
     module.exports= {
        components: { Multiselect},
+       props: ['select'],
       data () {
           return {
             estados:[],
-            id_fase: 0,
+            id_fase: '',
             isTouched: false,
-            value:''
           }
       },
-      computed:{},
+      computed:{
+        isInvalid () {
+          return (this.isTouched &&  this.value=="" )?true:false //Compruebo de que haya selecionado algo
+        },
+        value: function () {
+          return this.select;
+        },
+      },
       created: function(){
           this.fetchTips();
           console.log(this.options);
@@ -44,6 +55,7 @@
           },
          updateSelected (newSelected) {
             if (newSelected != null && newSelected != undefined) {
+             this.value = newSelected;
              this.id_fase = newSelected.id;
              this.$parent.$emit('fase_option',newSelected);
              // Creo un evento para enviar el item seleccionado al padre.
@@ -51,6 +63,12 @@
            }else {
              this.id_fase = 0;
            }
+        },
+        /*
+        * esta función se ejecuta cuando se da click fuera del cuadro de Dialogo
+        */
+        onTouch () {
+          this.isTouched =(this.value=="" )?true:false ; //Compruebo de que haya selecionado algo
         },
     }
   }

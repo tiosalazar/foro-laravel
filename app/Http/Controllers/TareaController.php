@@ -148,9 +148,12 @@ class TareaController extends Controller
     public function showOneTarea($id)
     {
         $tarea = Tarea::findOrFail($id);
+        $tarea->ot->cliente;
+        $tarea->estado;
         // return response()->json($tarea);
         return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea);
     }
+
     /**
     * Validar Crear Tarea
     **/

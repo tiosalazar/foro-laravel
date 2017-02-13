@@ -5,6 +5,8 @@
       :options="roles"
       select-label=""
       :close-on-select="true"
+      selected-label=""
+      deselect-label=""
       :searchable="true" placeholder="Seleccione un Rol" select-label="" label="display_name" track-by="display_name"
       :options-limit="100"
       :allow-empty="false"
