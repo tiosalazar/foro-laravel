@@ -6,7 +6,7 @@
       :options="ots"
       select-label=""
       :close-on-select="true"
-      :searchable="true" placeholder="Seleccione un Proyecto" label="nombre" track-by="nombre"
+      :searchable="true" placeholder="Escribe el nombre del Proyecto o el # de Ot" label="nombre" track-by="nombre"
       :options-limit="100"
       :allow-empty="false"
       @input="updateSelected"

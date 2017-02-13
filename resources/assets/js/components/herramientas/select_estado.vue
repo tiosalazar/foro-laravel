@@ -37,16 +37,17 @@
       return {
         estados:[],
         id_estado:0,
-        isTouched: false
+        isTouched: false,
+        // value:'',
       }
     },
     computed:{
-      value: function () {
-        return this.select;
-      },
       isInvalid () {
         return (this.isTouched &&  this.value=="" )?true:false//Compruebo de que haya selecionado algo
-      }
+      },
+      value: function () {
+          return this.select;
+        },
     },
     created: function(){
       this.fetchTips();

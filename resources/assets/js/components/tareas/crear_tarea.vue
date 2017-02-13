@@ -57,7 +57,7 @@
 			</div>
 			<div class="form-group required">
 				<label>Fase del Projecto <sup>*</sup></label>
-				<select_fase></select_fase>
+				<select_fase :select="fase"></select_fase>
 			</div>
 			<div class="form-group required">
 				<label>Área <sup>*</sup></label>
@@ -119,12 +119,12 @@
 				},
 				select_ot:'',
 				prioridad:'',
+				estado:'',
+				fase:'',
 				ot:{},
 				area:{},
 				current_date:'',
 				refresh:'',
-				estado:'',
-				fase:'',
 				user:'',
 				fecha_entrega_cliente:'',
 				message:'',
@@ -237,6 +237,10 @@
 			            this.tarea= {};
 			            this.select_ot='';
 			            this.prioridad='';
+			            this.fase='';
+			            this.estado="";
+			            this.refresh=0;
+			            this.fecha_entrega_cliente = '';
 			          }
 		           console.log(respuesta);
 		         }, (response) => {

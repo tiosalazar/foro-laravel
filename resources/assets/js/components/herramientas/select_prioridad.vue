@@ -10,6 +10,7 @@
       :allow-empty="false"
       @input="updateSelected"
       @close="onTouch"
+      :value="value"
       :option-height="104">
       </multiselect>
       <input type="hidden"  :value="id_prioridad" name="id_prioridad">
@@ -30,12 +31,14 @@
       data () {
           return {
             estados:[],
-            id_prioridad: 0,
+            id_prioridad: '',
             isTouched: false,
-            value:''
           }
       },
       computed:{
+        value: function () {
+          return this.select;
+        },
         isInvalid () {
           return (this.isTouched &&  this.value=="" )?true:false //Compruebo de que haya selecionado algo
         }
