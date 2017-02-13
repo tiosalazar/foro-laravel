@@ -15,32 +15,36 @@
           </div>
          </div>
        </div>
-        <div style="display: inline-block;">
-          <div class="form-group  col-md-3 col-xs-12" v-bind:class="{ 'has-error': errors.has('descipcion_compra'+index) }">
+          <div class="form-group  col-md-12 col-xs-12" v-bind:class="{ 'has-error': errors.has('descipcion_compra'+index) }">
             <label class="sr-only" for="descipcion_compra">Descripción</label>
-            <input type="text" :name="'descipcion_compra'+index"  @mouseover="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Descripción" v-model="ed.model_desc" class="form-control"   placeholder="Descripción">
+            <textarea  :name="'descipcion_compra'+index" rows="3" @mouseover="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Descripción" v-model="ed.model_desc" class="form-control"   placeholder="Descripción">  
+            </textarea>
             <span  class="help-block" v-show="errors.has('descipcion_compra'+index)">{{ errors.first('descipcion_compra'+index) }}</span>
           </div>
-          <div class="form-group  col-md-2 col-xs-12"  v-bind:class="{ 'has-error': errors.has('provedor_compra'+index) }">
+         <div class="row">
+         <div class="col-md-12">
+        <div style="display: inline-block;">
+          <div class="form-group  col-md-4 col-xs-12"  v-bind:class="{ 'has-error': errors.has('provedor_compra'+index) }">
             <label class="sr-only" for="no_horas_req">Provedor</label>
             <input type="text"  :name="'provedor_compra'+index"  @mouseover="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Provedor" v-model="ed.model_provedor" class="form-control" :id="'provedor_compra'+index"   placeholder="Provedor">
             <span  class="help-block" v-show="errors.has('provedor_compra'+index)">{{ errors.first('provedor_compra'+index) }}</span>
           </div>
-          <div class="form-group  col-md-2 col-xs-6"  v-bind:class="{ 'has-error': errors.has('valor_compra'+index) }">
+          <div class="form-group  col-md-4 col-xs-12"  v-bind:class="{ 'has-error': errors.has('valor_compra'+index) }">
             <label class="sr-only" for="no_horas_req">Valor</label>
             <input type="text" :name="'valor_compra'+index"  @mouseover="guardarDatos" v-validate data-vv-rules="required|numeric" data-vv-as="Valor" v-model="ed.model_valor" class="form-control" :id="'valor_compra'+index"  placeholder="Valor">
             <span  class="help-block" v-show="errors.has('valor_compra'+index)">{{ errors.first('valor_compra'+index) }}</span>
           </div>
-          <div class="form-group col-md-1 nopadding col-xs-6"><select_divisa :index="index" :select="ed.divisa"></select_divisa> </div>
-          <div class="form-group  col-md-1 col-xs-12" v-show="$parent.visualizacion != 'true'">
-            <button type="button" @click="deleteRequerimiento" class="btn btn-danger">Eliminar</button>
+          <div class="form-group col-md-4 nopadding col-xs-12"><select_divisa :index="index" :select="ed.divisa"></select_divisa> </div> 
           </div>
-
         </div>
+        </div> 
       </section>
     </div>
 
     <div class="row"  v-show="$parent.visualizacion != 'true'">
+    <div class="form-group  col-md-1 col-xs-12" v-show="$parent.visualizacion != 'true'">
+            <button type="button" @click="deleteRequerimiento" class="btn btn-danger">Eliminar</button>
+      </div>
       <div class="col-md-3">
         <button type="button" @click="addRequerimiento" class="btn btn-block btn-success col-sm-3">Añadir Compra</button>
       </div>
