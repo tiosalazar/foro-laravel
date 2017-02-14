@@ -27,7 +27,7 @@ class Area extends Model
   */
   public function Tarea()
   {
-    return $this->hasMany('App\Tarea');
+    return $this->hasMany('App\Tarea','areas_id','id');
   }
   /**
   * Obtiene los compras que posee el Area

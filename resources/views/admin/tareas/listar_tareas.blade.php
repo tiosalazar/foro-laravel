@@ -8,7 +8,7 @@
 @section('main-content')
 
 	<section>
-	   <ver_tareas></ver_tareas>
+	   <ver_tareas ></ver_tareas>
 			
 	</section>
 @endsection
