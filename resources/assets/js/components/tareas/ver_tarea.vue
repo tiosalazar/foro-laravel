@@ -114,7 +114,15 @@
 </template>
 <script>
 import Datepicker from 'vuejs-datepicker';
-  import VeeValidate, { Validator } from 'vee-validate';
+import VeeValidate, { Validator } from 'vee-validate';
+
+Vue.component('select_estados',require('../herramientas/select_estado.vue'));
+Vue.component('select_area',require('../herramientas/select_area.vue'));
+Vue.component('select_fase',require('../herramientas/select_fase.vue'));
+Vue.component('select_prioridad',require('../herramientas/select_prioridad.vue'));
+Vue.component('select_ot',require('../herramientas/select_ot.vue'));
+Vue.component('select_area',require('../herramientas/select_area.vue'));
+Vue.component('select_rol',require('../herramientas/select_rol.vue'));
 
     Vue.use(VeeValidate);
 	module.exports = {
@@ -167,11 +175,5 @@ import Datepicker from 'vuejs-datepicker';
 
   }
 }
-  Vue.component('select_estados',require('../herramientas/select_estado.vue'));
-Vue.component('select_area',require('../herramientas/select_area.vue'));
-Vue.component('select_fase',require('../herramientas/select_fase.vue'));
-Vue.component('select_prioridad',require('../herramientas/select_prioridad.vue'));
-Vue.component('select_ot',require('../herramientas/select_ot.vue'));
-Vue.component('select_area',require('../herramientas/select_area.vue'));
-Vue.component('select_rol',require('../herramientas/select_rol.vue'));
+
 </script>

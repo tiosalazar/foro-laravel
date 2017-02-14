@@ -8568,6 +8568,12 @@ body {
   color: #6F6F6F;
 }
 
+.footer_tarea {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
 /*# sourceMappingURL=app.css.map */
 
 /*

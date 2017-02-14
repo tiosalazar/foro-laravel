@@ -80,34 +80,7 @@
 					</div>
 				</div>
 		 <!--Listado de tareas con un componente vuejs-->
-
-		 	<div>
-		 		<div class="row tarea_perfil">
-		 			<div class="box tarea_perfil_box">
-		 				<div class="box-header">
-			 				<div class="box-header-tittle" >
-			 					<div class="img-circle" >M</div>
-			 					<div class="box-header-content">
-			 						<h4>Manitoba</h4>
-			 						<p>Diseño pieza articulo Valle empresa</p>
-		 							<span>OT 1234 20/ene/2017</span>
-			 					</div>
-			 					
-			 				</div>
-		 					
-		 				</div>
-		 				<div class="box-body" >
-		 					<p >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore</p>
-		 				</div>
-		 				<div class="box-footer" >		 					
-		 					<button class="btn btn-primary button_tarea" >Ver tarea</button>
-		 				</div>
-		 				
-		 			</div>
-
-		 		</div>
-		 	</div>
-			
+		    <tareas_perfil lista_tareas="{{$tareas}}"></tareas_perfil>
 
 			</div>
 		</div>
