@@ -52,7 +52,7 @@
         <ul class="treeview-menu">
           <li><a href="{{url('listar_tareas')}}">{{ trans('texto_menu.creatividad') }}</a></li>
           <li><a href="#">{{ trans('texto_menu.diseno') }}</a></li>
-          <li><a href="#">{{ trans('texto_menu.desarrollo') }}</a></li>
+          <li><a href="{{route('desarrollo')}}">{{ trans('texto_menu.desarrollo') }}</a></li>
           <li><a href="#">{{ trans('texto_menu.contenido') }}</a></li>
           <li><a href="#">{{ trans('texto_menu.digital') }}</a></li>
           <li><a href="{{ url('crear_tarea') }}">{{ trans('texto_menu.creacion_tareas') }}</a></li>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Tarea;
 use App\Ot;
+use App\Area;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
@@ -139,9 +140,28 @@ class TareaController extends Controller
      */
     public function showAllTareas($id)
     {
-        $tarea = Tarea::with('ot.cliente')->get();
+        $output= array();
+        if ($id == -1) {
+            $tarea = Tarea::with(['ot.cliente','estado','area' => function ($query) use ($id) {
+                $query->where('id', '=', $id);
+            }])->get();
+            $output=$tarea;
+        }else{
+            
+            $tarea = Tarea::with(['ot.cliente','estado','area' => function ($query) use ($id) {
+                $query->where('id', '=', $id);
+            }])->get();
 
-        return Datatables::of($tarea)->make(true);
+            // selecciona solos los que tiene el area especifico
+            foreach ($tarea as $key => $value) {
+                if ($value->area) {
+                    array_push($output, $value);
+                }
+            }
+            $output = collect($output);
+        }
+        return Datatables::of($output)->make(true);
+        // return $output;
 
     }
 
@@ -152,6 +172,19 @@ class TareaController extends Controller
         $tarea->estado;
         // return response()->json($tarea);
         return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea);
+    }
+
+    /**
+    *   Metodos del Foro - Listar por Áreas
+    **/
+
+    public function showDesarrollo()
+    {
+        $lista_tareas = Tarea::with(['area' => function ($query) {
+            $query->where('nombre', 'like', '%desarrollo%');
+        }])->get();
+
+        return Datatables::of($lista_tareas)->make(true);
     }
 
     /**

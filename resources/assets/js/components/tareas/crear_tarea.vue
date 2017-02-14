@@ -9,14 +9,14 @@
 				<div class="col-sm-6 border-right">
 					<ul>
 						<li><strong>Numero de OT:</strong><span> #{{ot.referencia}}</span></li>
-						<li><strong>Ejecutiva:</strong><span> {{ot.nombre_ej}}</span></li>
+						<li><strong>Ejecutiva:</strong><span> {{ot.usuario.nombre}}</span></li>
 						<li><strong>Fecha de Solicitud:</strong><span> {{current_date}}</span></li>
 					</ul>
 				</div>
 				<div class="col-sm-6">
 					<ul>
 						<li><strong>Proyecto:</strong><span> {{ot.nombre}}</span></li>
-						<li><strong>Cliente:</strong><span> {{ot.nombre_cli}}</span></li>
+						<li><strong>Cliente:</strong><span> {{ot.cliente.nombre}}</span></li>
 					</ul>
 				</div>
 				<!-- /.col -->
@@ -119,7 +119,14 @@
 				prioridad:'',
 				estado:'',
 				fase:'',
-				ot:{},
+				ot:{
+					usuario:{
+						nombre:''
+					},
+					cliente:{
+						nombre:''
+					}
+				},
 				area:{},
 				current_date:'',
 				refresh:'',
@@ -146,6 +153,8 @@
 		created: function() {
 			this.$on('send-ot', function(obj) { 
 				this.ot= obj;
+				console.log('cliente',obj.cliente.nombre)
+				console.log('ot',obj.usuario.nombre)
 				this.select_ot= obj;
 			});
 			this.$on('area_option', function(obj) { 

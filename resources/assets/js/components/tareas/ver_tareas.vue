@@ -17,6 +17,7 @@
 <script>
 	import table from 'datatables.net';
 	module.exports={
+		props: ['area'],
 		data(){
 			return{
 				list_tareas:[],
@@ -27,58 +28,53 @@
 		created: function(){
 			this.list_tareas_api();
 			this.getTareass();
+			if (typeof(this.area) == 'undefined') {
+				this.area = -1;
+			}
 		},
 		watch:{},
-		methods:{
-			getTareass:function() {
-				this.$http.get('api/v1/tareas').then(function(respuesta){
-					console.log(respuesta);
-					this.tareas = respuesta.body;
-				},function(error) {
-					console.log(error);
-				})
-			},
-			list_tareas_api: function(){
-				setTimeout(function(){
-					$('#tabla_tareas').DataTable({
-						processing: true,
-						serverSide: true,
-						ajax: "/api/v1/tareas",
-						columns: [
-						{ data: 'ot.referencia', name: 'ot.referencia' },
-						{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre' },
-						{ data: 'nombre_tarea', name: 'nombre_tarea' },
-						{ data: 'created_at', name: 'created_at' },
-						], 
-						columnDefs: [
-						{
-							"targets": [4],
-							"data": null,
-						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-						       	return '<span class="label label-estado estado-'+data.estado.tipos_estados_id+'-'+data.estado.id+' ">'+data.estado.nombre+'</span>';
+		mounted() {
+			let that = this;
+			$('#tabla_tareas').DataTable({
+				processing: true,
+				serverSide: true,
+				// ajax: "/api/v1/tareas",
+				ajax: "/all_tareas/"+that.area,
+				columns: [
+					{ data: 'ot.referencia', name: 'ot.referencia' },
+					{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre' },
+					{ data: 'nombre_tarea', name: 'nombre_tarea' },
+					{ data: 'created_at', name: 'created_at' },
+				], 
+				columnDefs: [
+					{
+						"targets": [4],
+						"data": null,
+						   "render": function(data, type, full) { // Devuelve el contenido personalizado
+						  	return '<span class="label label-estado estado-'+data.estado.tipos_estados_id+'-'+data.estado.id+' ">'+data.estado.nombre+'</span>';
 						       	// return (full.estado==1)? 'Activo' : 'Inactivo';
 
-						       }
-						   },
-						   {
-						   	"targets": [5],
-						   	"data": null,
-						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-						       	return '<a href="ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver tarea</a>';        
-						       }
-						   }
-						   ],
-						   autoWidth: true,
-						   responsive: true,
-						   language: {
-						   	"url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
-						   },      
+						     }
+					},
+					{
+						"targets": [5],
+						"data": null,
+						   "render": function(data, type, full) { // Devuelve el contenido personalizado
+						    	return '<a href="ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver tarea</a>';        
+						   	}
+					}
+				],
+				autoWidth: true,
+				responsive: true,
+				language: {
+					"url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
+				},      
 
-						});
-				}, 0);
-
-
-			}
+			});
+		},
+		methods:{
+			getTareass:function() {},
+			list_tareas_api: function(){}
 		},
 
 	}
