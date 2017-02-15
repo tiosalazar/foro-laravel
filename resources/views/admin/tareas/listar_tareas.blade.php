@@ -6,9 +6,11 @@
 
 
 @section('main-content')
-
+  
 	<section>
-	   <ver_tareas ></ver_tareas>
+
+	<notificacion :id="{{Auth::user()->id }}" ></notificacion>
+	   <ver_tareas :area="-1"></ver_tareas>
 			
 	</section>
 @endsection

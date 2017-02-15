@@ -70,10 +70,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/foro/desarrollo', function () {
            return view('admin.foro.desarrollo');
     })->name('desarrollo');
-
     Route::get('/all_tareas/{id}','TareaController@showAllTareas');
-
     Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
+
+    //
 
     Route::get('/list_fases','FaseController@listFases');
 

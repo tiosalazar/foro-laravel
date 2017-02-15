@@ -51,8 +51,12 @@ import Echo from "laravel-echo"
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: 'd6a13b3892fbcd4a53a2'
+    key: 'd6a13b3892fbcd4a53a2',
 });
+
+Pusher.log = function(message) {
+	window.console.log(message)
+}
 
 $(document).ready(function(){
     $('[data-toggle="modal"]').tooltip(); 
