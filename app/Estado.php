@@ -30,6 +30,13 @@ class Estado extends Model
     return $this->hasMany('App\Tarea','estados_id','id');
   }
   /**
+  * Obtiene las tareas que poseen cierta prioridad
+  */
+  public function PrioridadTarea()
+  {
+    return $this->hasMany('App\Tarea','prioridad_id','id');
+  }
+  /**
   * Obtiene los OTS que posee un Estado
   */
   public function Ot()

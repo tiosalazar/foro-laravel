@@ -8574,6 +8574,56 @@ body {
   bottom: 0;
 }
 
+.ver_tarea {
+  padding: 70px;
+}
+
+.ver_tarea .desc-ot {
+  padding-bottom: 15px;
+}
+
+.ver_tarea textarea {
+  min-height: 200px;
+}
+
+.ver_tarea label {
+  color: #15baee;
+}
+
+.ver_tarea .prioridad_btn {
+  display: block;
+  width: 100px;
+  background-color: #fabb00;
+  color: white;
+  border: none;
+}
+
+.ver_tarea .prioridad_btn:disabled {
+  background-color: #fabb00;
+  color: white;
+  opacity: 1;
+}
+
+.ver_tarea .multiselect__select {
+  min-height: 33px !important;
+}
+
+.ver_tarea .multiselect__tags {
+  height: 35px !important;
+}
+
+.ver_tarea .multiselect__input {
+  height: 30px !important;
+}
+
+.ver_tarea .multiselect__single {
+  padding-top: 5px !important;
+}
+
+.ver_tarea .tiempo_estimado {
+  height: 35px;
+}
+
 /*# sourceMappingURL=app.css.map */
 
 /*

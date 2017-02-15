@@ -35,12 +35,12 @@
 
     module.exports= {
        components: { Multiselect},
-         props: ['area','select'], //en la propiedad select se va a meter la opción por defecto
+         props: ['area','select','id_area_tarea'], //en la propiedad select se va a meter la opción por defecto
            localStorage: {
                ejecutivo_seleccionado: {
                  type: Object,
                }
-             },
+             }, 
       data () {
           return {
             usuarios:[],
@@ -57,15 +57,30 @@
         }
       },
       created: function(){
+
+        if (typeof this.id_area_tarea === 'undefined' || this.id_area_tarea === null) {
           this.fetchTips();
+        }else{
+          this.usuarios_area();
+        }
+        
       },
       methods:{
           fetchTips: function(){
             /*Si se necesita agregar más opciones de busqueda agregar un switch aquí */
 
-               this.$http.get('/api/v1/usuarios/'+this.area) //Consulta a la Base de datos por GET
+              this.$http.get('/api/v1/usuarios/'+this.area) //Consulta a la Base de datos por GET
              .then(function(respuesta){
                      this.usuarios=respuesta.body;
+             }.bind(this));
+
+          },
+           usuarios_area: function(){
+            /*Si se necesita agregar más opciones de busqueda agregar un switch aquí */
+
+              this.$http.get('/api/v1/usuarios_tarea/'+this.id_area_tarea) //Consulta a la Base de datos por GET
+             .then(function(respuesta){
+                this.usuarios=respuesta.body;
              }.bind(this));
 
           },

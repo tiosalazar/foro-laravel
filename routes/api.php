@@ -29,6 +29,7 @@ Route::group(['prefix' => 'v1','middleware' => 'cors'], function () {
      Route::resource('estados', 'EstadoController');
      Route::resource('areas', 'AreaController');
      Route::resource('listar_areas', 'AreaController@index_areas');
+     Route::resource('usuarios_tarea', 'UserController@UsuariosArea');
      Route::resource('roles', 'RolController');
      Route::resource('fases', 'FaseController');
      Route::resource('tareas', 'TareaController');

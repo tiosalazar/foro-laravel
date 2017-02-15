@@ -107,6 +107,19 @@ class UserController extends Controller
         return response()->json($user);
     }
 
+     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function UsuariosArea($id)
+    {
+        $ejecutivos= Role::where('name','colaborador')->first();
+        $users= User::where('roles_id', $ejecutivos->id)->where('areas_id',$id)->get();
+        return response()->json($users);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

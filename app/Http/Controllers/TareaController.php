@@ -203,8 +203,12 @@ class TareaController extends Controller
         $tarea = Tarea::findOrFail($id);
         $tarea->ot->cliente;
         $tarea->estado;
+        $tarea->estado_prioridad;
+        $tarea->planeacion_fase;
+        $tarea->area;
         $tarea->usuario;
-        // return response()->json($tarea);
+
+        // return respo nse()->json($tarea);
         return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea);
     }
 

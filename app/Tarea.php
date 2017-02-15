@@ -25,6 +25,13 @@ class Tarea extends Model
     return $this->belongsTo('App\Estado','estados_id','id');
   }
   /**
+  * Obtiene el Estado que esta asociado a una Tarea
+  */
+  public function Estado_prioridad()
+  {
+    return $this->belongsTo('App\Estado','prioridad_id','id');
+  }
+  /**
   * Obtiene el Area que esta asociada la Tarea
   */
   public function Area()

@@ -117,3 +117,46 @@
 	width: 100%;
 	bottom: 0;
 }
+
+
+//Ver tarea
+.ver_tarea{
+		
+	padding: 70px;
+	.desc-ot{
+		padding-bottom: 15px;
+	}
+	textarea{
+		min-height: 200px; 
+	}
+	label{
+		color:$azul-claro;
+	}
+	.prioridad_btn{
+		display: block;
+		width: 100px;
+		background-color: #fabb00;
+		color: white;
+		border:  none;
+		&:disabled{
+		 background-color: #fabb00;
+		 color: white;
+		 opacity: 1;
+		}
+	}
+	.multiselect__select{
+		min-height: 33px !important;
+	}
+	.multiselect__tags{
+		height: 35px !important;
+	}
+	.multiselect__input{
+		height: 30px !important;
+	}
+	.multiselect__single{
+		padding-top: 5px !important;
+	}
+	.tiempo_estimado{
+		height: 35px;
+	}
+}
