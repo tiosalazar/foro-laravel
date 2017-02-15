@@ -73,6 +73,35 @@ class UserController extends Controller
 
                     $user->save();
                     $user->attachRole($request->roles_id);
+                    /*$rol=$user->roles;
+                    if($rol[0]->name="colaborador"){
+                        $area=$user->Area;
+
+                        switch ($area['nombre']) {
+                            case 'Creatividad':
+                                # code...
+                                break;
+                            case 'Diseño':
+                                # code...
+                                break;
+                            case 'Desarrollo':
+                                # code...
+                                break;
+                            case 'Contenidos':
+                                # code...
+                                break; 
+                            case 'Digital Performance':
+                                # code...
+                                break;             
+                            
+                            default:
+                                # code...
+                                break;
+                        }
+
+                    }
+
+                    */
 
                       return response([
                             'status' => Response::HTTP_OK,
@@ -287,7 +316,9 @@ class UserController extends Controller
 
      public function AgregarRoll()
     {
-        $user =  User::find(1)->roles;
+       // $user =  User::find(1)->roles;
+
+        $user =  User::find(1);
         //$role_id= Role::where('name','owner')->first();
 
        // $user->roles()->attach($role_id);
@@ -300,7 +331,7 @@ class UserController extends Controller
         //var_dump($user->role());
        // $rol = Role::findOrfail(12);
        //var_dump($rol->User);
-        var_dump($user[0]->display_name);
+        var_dump($user->can('crear_usuarios') );
         //return view('adminlte::home',array('usuario' =>$user));
     }
 

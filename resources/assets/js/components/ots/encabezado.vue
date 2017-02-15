@@ -5,16 +5,15 @@
 <!-- Fecha : Enero 2017  -->
 <template>
 	<div class=""  id="encabezado_ot">
-		<div class="box-header with-border">
 			<h3 class="box-title"><span class="span_descripcion1">Detalle</span> <span class="span_descripcion2">OT</span></h3>
-		</div>
 		<div class="box-body">
+			<div style="height:22px"></div>
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group required ">
 						<label for="num_ot" class="col-sm-12 control-label "><sup>*</sup> Número de OT  </label>
 						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('num_ot') }">
-							<input type="text"  name="num_ot" v-validate data-vv-rules="required|numeric|min:3" data-vv-as="# OT" @mouseout="guardarDatos" v-model="datos_encabezado.num_ot" class="form-control" id="num_ot" placeholder="Número de OT">
+							<input type="text"  name="num_ot" v-validate data-vv-rules="required|numeric|min:3" data-vv-as="# OT" @input="guardarDatos" v-model="datos_encabezado.num_ot" class="form-control" id="num_ot" placeholder="Número de OT">
 							<span  class="help-block" v-show="errors.has('num_ot')">{{ errors.first('num_ot') }}</span>
 						</div>
 					</div>
@@ -27,7 +26,7 @@
 					<div class="form-group required">
 						<label for="name_proyecto" class="col-sm-4 "><sup>*</sup> Proyecto   </label>
 						<div class="col-sm-12"  v-bind:class="{ 'has-error': errors.has('name_proyect') }">
-							<input type="text" name="name_proyect" class="form-control" v-validate data-vv-rules="required|min:5"  @mouseout="guardarDatos" data-vv-as="Proyecto" required="required"  v-model="datos_encabezado.name_proyect" id="name_proyecto" placeholder="Nombre del proyecto">
+							<input type="text" name="name_proyect" class="form-control" v-validate data-vv-rules="required|min:5"  @input="guardarDatos" data-vv-as="Proyecto" required="required"  v-model="datos_encabezado.name_proyect" id="name_proyecto" placeholder="Nombre del proyecto">
 							<span  class="help-block" v-show="errors.has('name_proyect')">{{ errors.first('name_proyect') }}</span>
 						</div>
 					</div>
@@ -39,7 +38,7 @@
 					</div>
 
 				<div class="form-group required">
-			 <label for="horas_totales"  class="col-sm-12 "><sup>*</sup> Fecha OT  </label>
+			 <label   class="col-sm-12 "><sup>*</sup> Fecha OT  </label>
 					<div class="form-group col-md-6  required">
 						<label for="fecha_inicio" class="col-sm-3  ">Inicio </label>
 						<div class="col-sm-9" v-bind:class="{ 'has-error': errors.has('fecha_inicio') }">
@@ -47,7 +46,7 @@
 								<div class="input-group-addon">
 									<i class="fa fa-calendar"></i>
 								</div>
-								<datepicker language="es" id="fecha_inicio" required="required" v-validate data-vv-rules="required"  @mouseout="guardarDatos" data-vv-as="Fecha de Inicio" placeholder="Fecha inicio"  :disabled="state.disabled" v-model="datos_encabezado.fecha_inicio" name="fecha_inicio" class="form-control"  format="dd-MM-yyyy"></datepicker>
+								<datepicker language="es" id="fecha_inicio" required="required" v-validate data-vv-rules="required"  @input="guardarDatos" data-vv-as="Fecha de Inicio" placeholder="Fecha inicio"  :disabled="state.disabled" v-model="datos_encabezado.fecha_inicio" name="fecha_inicio" class="form-control"  format="dd-MM-yyyy"></datepicker>
 							</div>
 							<span  class="help-block" v-show="errors.has('fecha_inicio')">{{ errors.first('fecha_inicio') }}</span>
 						</div>
@@ -59,12 +58,12 @@
 								<div class="input-group-addon" >
 									<i class="fa fa-calendar"></i>
 								</div>
-								<datepicker language="es"  id="fecha_fin" required="required"  @mouseout="guardarDatos"  v-validate data-vv-rules="required" data-vv-as="Fecha de finalización" placeholder="Fecha fin"  :disabled="state.disabled" v-model="datos_encabezado.fecha_fin" class="form-control"  name="fecha_fin" format="dd-MM-yyyy"></datepicker>
+								<datepicker language="es"  id="fecha_fin" required="required"  @input="guardarDatos"  v-validate data-vv-rules="required" data-vv-as="Fecha de finalización" placeholder="Fecha fin"  :disabled="state.disabled" v-model="datos_encabezado.fecha_fin" class="form-control"  name="fecha_fin" format="dd-MM-yyyy"></datepicker>
 							</div>
 							<span  class="help-block" v-show="errors.has('fecha_fin')">{{ errors.first('fecha_fin') }}</span>
 						</div>
 					</div>
-			 </div>	
+			 </div>
 
 				</div>
 				<div class="col-md-6">
@@ -80,10 +79,10 @@
 						<label for="valor_total" class="col-sm-4 "><sup>*</sup> Fee </label>
 						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('fee') }">
 						<div class="col-sm-4 formulario">
-						<input type="radio" name="fee" value="1" id="male" v-model="datos_encabezado.fee"  required="required"  @mouseout="guardarDatos" ><label for="male"> Si</label>
+						<input type="radio" name="fee" value="1" id="male" v-model="datos_encabezado.fee"  required="required"  @input="guardarDatos" ><label for="male"> Si</label>
 						</div>
 						<div class="col-sm-4 formulario" >
-						<input type="radio" name="fee" value="0" id="female" v-model="datos_encabezado.fee"   required="required"   @mouseout="guardarDatos" > <label for="female"> No</label>
+						<input type="radio" name="fee" value="0" id="female" v-model="datos_encabezado.fee"   required="required"   @input="guardarDatos" > <label for="female"> No</label>
 						</div>
 							<span  class="help-block" v-show="errors.has('fee')">{{ errors.first('fee') }}</span>
 						</div>
@@ -91,14 +90,14 @@
 					<div class="form-group required">
 						<label for="valor_total" class="col-sm-4 "><sup>*</sup> Valor total </label>
 						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('valor_total') }">
-							<input type="text" name="valor_total" v-validate data-vv-rules="required|numeric|min:4"  @mouseout="guardarDatos" data-vv-as="Valor Total" class="form-control" required="required"  v-model="datos_encabezado.valor_total" id="valor_total" placeholder="$">
+							<input type="text" name="valor_total" v-validate data-vv-rules="required|numeric|min:4"  @input="guardarDatos" data-vv-as="Valor Total" class="form-control" required="required"  v-model="datos_encabezado.valor_total" id="valor_total" placeholder="$">
 							<span  class="help-block" v-show="errors.has('valor_total')">{{ errors.first('valor_total') }}</span>
 						</div>
 					</div>
 					<div class="form-group required">
 						<label for="horas_totales" class="col-sm-4 "><sup>*</sup> Horas totales  </label>
 						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('horas_totales') }">
-							<input type="text" class="form-control" @input="llenar_horas_totales" required="required" @keyup="number_format(this,3)"  @mouseout="guardarDatos" name="horas_totales"  v-validate data-vv-rules="required|decimal:2|max:10|min:1" data-vv-as="Horas Totales" v-model="datos_encabezado.horas_totales"  id="horas_totales" placeholder="Numero de horas totales">
+							<input type="text" class="form-control" @input="llenar_horas_totales(),guardarDatos()" required="required" name="horas_totales"  v-validate data-vv-rules="required|decimal:2|max:10|min:1" data-vv-as="Horas Totales" v-model="datos_encabezado.horas_totales"  id="horas_totales" placeholder="Numero de horas totales">
 							<span  class="help-block" v-show="errors.has('horas_totales')">{{ errors.first('horas_totales') }}</span>
 						</div>
 					</div>
@@ -235,7 +234,7 @@ module.exports= {
 
 		},
 		 number_format: function(amount, decimals) {
-		 	console.log("hola");
+		 	//console.log("hola");
 
 			    amount += ''; // por si pasan un numero en vez de un string
 			    amount = parseFloat(amount.replace(/[^0-9\.]/g, '')); // elimino cualquier cosa que no sea numero o punto
@@ -243,7 +242,7 @@ module.exports= {
 			    decimals = decimals || 0; // por si la variable no fue fue pasada
 
 			    // si no es un numero o es igual a cero retorno el mismo cero
-			    if (isNaN(amount) || amount === 0) 
+			    if (isNaN(amount) || amount === 0)
 			        return parseFloat(0).toFixed(decimals);
 
 			    // si es mayor o menor que cero retorno el valor formateado como numero
@@ -262,6 +261,7 @@ module.exports= {
 			if (this.$parent.visualizacion=="true") {
 
 				var arreglo_visualizar =JSON.parse(this.$parent.arreglo_visualizar);
+				console.log(arreglo_visualizar);
 				this.datos_encabezado={
 					fecha_inicio:arreglo_visualizar.datos_encabezado.fecha_inicio,
 					cliente:arreglo_visualizar.datos_encabezado.cliente,
@@ -270,12 +270,15 @@ module.exports= {
 					estado:arreglo_visualizar.datos_encabezado.estado,
 					num_ot:arreglo_visualizar.datos_encabezado.referencia,
 					horas_totales:arreglo_visualizar.datos_encabezado.horas_totales,
+					horas_disponibles:arreglo_visualizar.datos_encabezado.horas_disponibles,
 					name_proyect:arreglo_visualizar.datos_encabezado.nombre,
 					valor_total:arreglo_visualizar.datos_encabezado.valor,
 					fecha_fin:arreglo_visualizar.datos_encabezado.fecha_final
 				};
+				this.llenar_horas_totales();
 
-			this.$parent.$emit('datos_encabezado',this.datos_encabezado);//Emite los datos al padre
+				//this.horas_disponibles=arreglo_visualizar.datos_encabezado.horas_disponibles;
+			    this.$parent.$emit('datos_encabezado',this.datos_encabezado);//Emite los datos al padre
 
 					/*this.datos_requerimiento=arreglo_visualizar.requerimientos;
 					this.datos_compras=arreglo_visualizar.compras;*/
@@ -300,6 +303,7 @@ module.exports= {
 				valor_total:this.datos_encabezado.valor_total,
 				fee:this.datos_encabezado.fee,
 				horas_totales:this.datos_encabezado.horas_totales,
+				horas_disponibles:this.horas_disponibles,
 				fecha_fin:moment(this.datos_encabezado.fecha_fin).format('YYYY-MM-DD'),
 				fecha_inicio:moment(this.datos_encabezado.fecha_inicio).format('YYYY-MM-DD'),
 				cliente:this.datos_encabezado.cliente,
@@ -323,6 +327,7 @@ module.exports= {
     				name_proyect:this.datos_encabezado.name_proyect,
     				valor_total:this.datos_encabezado.valor_total,
     				horas_totales:this.datos_encabezado.horas_totales,
+    				horas_disponibles:this.horas_disponibles,
     				fee:this.datos_encabezado.fee,
     				fecha_fin:moment(this.datos_encabezado.fecha_fin).format('YYYY-MM-DD'),
     				fecha_inicio:moment(this.datos_encabezado.fecha_inicio).format('YYYY-MM-DD'),
@@ -347,7 +352,6 @@ module.exports= {
 			}
 		},
 		limpiarFechas:function(fecha){
-			console.log(fecha);
 			if (fecha != null && fecha != undefined && fecha != '' && this.validarFormatoFecha(fecha) ==false ) {
 			//console.log(fecha.toISOString());
 			var fecha1=fecha;
@@ -399,151 +403,7 @@ module.exports= {
 
 }
 
-	/*
-	DSO Crea una validación personalizada
-	Validator.extend('verify_password', {
-	    getMessage: field => `The password must contain at least: 1 uppercase letter, 1 lowercase letter, 1 number, and one special character (E.g. , . _ & ? etc)`,
-	    validate: value => {
-	        var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-	        return strongRegex.test(value);
-	    }
-	});
-
-	/*,
-	 created () {
-	_.forEach(this.requerimiento, (form) => {
-				Object.defineProperty(this.requerimiento, form.model, {
-					get: () => _.get(this.value, form.model),
-					set: (v) => this.vueSet(this.value, form.model, v)
-				})
-			})
-		}
-		vueSet (obj, path, val) {
-      let value = obj
-      console.log(val);
-      let fields = _.isArray(path) ? path : _.toPath(path)
-      for (let f in fields) {
-        let idx = Number(f)
-        let p = fields[idx]
-        if (idx === fields.length - 1) Vue.set(value, p, val)
-        else if (!value[p]) Vue.set(value, p, _.isNumber(p) ? [] : {})
-        value = value[p]
-      }
-    },
-
-    realizarCalculoHoras:function(){
-      //var horas_disponibles= this.$localStorage.get('h_Disponibles');
-      var horas_disponibles= this.$localStorage.get('horas_totales')
-      var total= horas_disponibles-this.nhoras;
-      this.$localStorage.set('h_Disponibles',total);
-    },
-
-	// with either of the two lines I get the same error.
-	// const validator = new Validator();
-	let validator = new Validator();
-
-	validator.attach('password', 'required|min:8|verify_password');*/
-
-	/*DS POR SI NECECITO ESTAS FUNCIONES
-	AREA IMPORTS
-	import VueLocalStorage from 'vue-localstorage'
-
-	import VeeValidate, { Validator } from 'vee-validate';
-	//Traducciones del validador
-	import messages from '../../es/es';
-
-	//Realizando los Use
-
-	//Uso LocalStorage para gardar la data.
-	Vue.use(VueLocalStorage);
-	// Merge the locales.
-	Validator.updateDictionary({es: { messages }});
-	// Install the plugin and set the locale.
-	Vue.use(VeeValidate, { locale: 'es' });
-	components: {Datepicker,VueLocalStorage,VeeValidate,Validator},
-
-
-	/*var data_req=this.$localStorage.get('datos_requerimiento_'+id);
-	var data_compra=this.$localStorage.get('datos_compra_'+id);
-	var data_req = JSON.parse(data_req);
-	var data_compra = JSON.parse(data_compra);
-	var arreglo_requerimientos = data_req[0].requerimientos;
-	var arreglo_compras = data_compra[0].compras;
-	//	console.log(arreglo_requerimientos[0].model_nom);
-	if (data_req == null && data_compra == null) {
-	toastr.error("Todos los campos son obligatorios","Error al Guardar Requerimientos y Compras",this.option_toast);
-	return false;
-}else if( !this.comprobarRequerimientos(arreglo_requerimientos) ){
-toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Requerimientos",this.option_toast);
-return false;
-}else if( !this.comprobarCompras(arreglo_compras) ){
-toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Compras Relacionadas",this.option_toast);
-return false;
-}else{
-toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
-console.log(data_req);
-console.log(data_compra);
-}*/
-
-				/*for (let f in this.listado_areas) {
-				let idx = Number(f)
-				let p = this.listado_areas[idx]
-				this.$set(p, 'validar_area_'+p.id, 'lllll')
-				console.log(this.validar_area_17)
-
-				//this.$set(this.someObject, 'b', 2)
-				// Vue.set('validar_area_'+p.id,'','');
-			}*/
-/*
-	COMPUTED
-
-	date: function () {
-
-	var today = new Date();
-	var dd = today.getDate();
-	var mm = today.getMonth()+1; //January is 0!
-
-	var yyyy = today.getFullYear();
-	if(dd<10){
-	dd='0'+dd;
-}
-if(mm<10){
-mm='0'+mm;
-}
-var today = dd+'-'+mm+'-'+yyyy;
-return new Date()
-}
-
-METHODS
-realizarCalculoHoras:function () {
-var total_areas  =this.$localStorage.get('listado_areas');
-if (total_areas != null || total_areas != undefined ) {
-var size = Object.keys(total_areas).length;
-var hora_a=0;
-var total_a_restar=0;
-
-for (let f in total_areas) {
-let idx = Number(f)
-let p = total_areas[idx]
-hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
-if (hora_a !=null && hora_a[0].horas !="") {
-total_a_restar +=parseInt(hora_a[0].horas);
-}
-}
-var total=	this.horas_totales -total_a_restar;
-this.h_pasadas= (this.$localStorage.get('h_Disponibles') > total)?true:false;
-console.log(this.h_pasadas);
-this.$localStorage.set('h_Disponibles',total);
-}
-
-
-},
-
-
-
-
-
-*/
+  
 
 }
 </script>

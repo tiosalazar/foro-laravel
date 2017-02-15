@@ -70,7 +70,7 @@ class OtController extends Controller
              {
                 try
                 {
-                   //  DB::beginTransaction();
+                     DB::beginTransaction();
                          $ot=new Ot;
                          $ot->fill($data['datos_encabezado']);
                          $ot->save();
@@ -84,7 +84,7 @@ class OtController extends Controller
                          foreach ($requerimientos as $requerimiento) {
                          $tiempos_x_area= new Tiempos_x_Area;
                          /*Agrego el tiempo por Area */
-                         $tiempos_x_area->tiempo_estimado=$requerimiento['horas'];
+                         $tiempos_x_area->tiempo_estimado_ot=$requerimiento['horas'];
                          $tiempos_x_area->ots_id=$id_ot;
                          $tiempos_x_area->areas_id=$requerimiento['area'];
                          $tiempos_x_area->save();
@@ -105,6 +105,7 @@ class OtController extends Controller
                                  $model_compras->ots_id=$id_ot;
                                  $model_compras->save();
                           }
+                          DB::commit();
                       return response([
                             'status' => Response::HTTP_OK,
                             'response_time' => microtime(true) - LARAVEL_START,
@@ -113,7 +114,7 @@ class OtController extends Controller
                         ],Response::HTTP_OK);
 
                 }catch(Exception $e){
-                    // DB::rollback();
+                     DB::rollback();
                     return response([
                         'status' => Response::HTTP_BAD_REQUEST,
                         'response_time' => microtime(true) - LARAVEL_START,
@@ -152,7 +153,7 @@ class OtController extends Controller
             $area_actual=$value['areas_id'];
             array_push($data['listado_areas'], $value->Area);
             $data['requerimientos']['area']=$value['areas_id'];
-            $data['requerimientos']['horas']=$value['tiempo_estimado'];   
+            $data['requerimientos']['horas']=$value['tiempo_estimado_ot'];
             foreach ($ot->Requerimiento_Ot as  $value) {
                 if ($value['areas_id'] ==  $area_actual ) {
                     $array_temporal= array('model_nom'=>$value['nombre'] ,'model_horas'=>(int)$value['horas']);
@@ -168,9 +169,10 @@ class OtController extends Controller
                $compra =Compras_Ot::findOrFail($value['id']);
                $compra->Tipo_Compra;
                $compra->Divisa;
+
              // $array_temporal['area']=$value['areas_id'];
                $array_temporal= array('tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'model_desc' => $value['descripcion'],
-                'model_provedor'=>'provedor' , 'model_valor'=> 'valor', 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
+                'model_provedor'=> $value['provedor'] , 'model_valor'=>  $value['valor'], 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
                 array_push($ingreso,$array_temporal);
                $data['compras']['compras']=$ingreso;
                //array_push($data['compras'],  $array_temporal);
@@ -178,12 +180,12 @@ class OtController extends Controller
            }
 
             array_push($data['final_req'], $data['requerimientos']);
-           
+            array_push($data['final_com'], $data['compras']);
          }
-          array_push($data['final_com'], $data['compras']);
+
 
         //var_dump( $data['final_com']);
-         // return response()->json( $data['listado_areas']);
+        //  return response()->json( $data['final_com']);
 
 
         //var_dump($data);
@@ -239,7 +241,7 @@ class OtController extends Controller
                          $j=0;
                          foreach ($requerimientos as $requerimiento) {
                          /*Agrego el tiempo por Area */
-                         $tiempos_x_area[$index]->tiempo_estimado=$requerimiento['horas'];
+                         $tiempos_x_area[$index]->tiempo_estimado_ot=$requerimiento['horas'];
                          $tiempos_x_area[$index]->areas_id=$requerimiento['area'];
                          $tiempos_x_area[$index]->save();
                            /*El siguiente for recorre el listado de requerimientos y los agrega */

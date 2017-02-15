@@ -43,21 +43,39 @@
       <!--Home -->
       <li class="active treeview"><a href="{{ url('home') }}"><i class='fuente-icon'>p</i> <span>{{ trans('texto_menu.perfil') }}</span></a></li>
 
+      @if( Auth::user()->can('ver_roles') )
       <!--Roles -->
       <li class="treeview"><a href="{{ url('roles') }}"><i class='fuente-icon'>c</i><span>{{  trans('texto_menu.crear_roles') }}</span></a></li>
+      @endif
 
       <!--Foro -->
       <li class="treeview">
         <a href="#"><i class='fuente-icon'>f</i> <span>{{ trans('texto_menu.foro') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
         <ul class="treeview-menu">
+        @if(Auth::user()->can('ver_foro_colaborador'))
           <li><a href="{{route('foro')}}">{{ trans('texto_menu.ver_foro') }}</a></li>
+         @endif 
+        @if(Auth::user()->can('ver_foro_creatividad'))
           <li><a href="{{route('creatividad')}}">{{ trans('texto_menu.creatividad') }}</a></li>
+         @endif 
+        @if(Auth::user()->can('ver_foro_diseno'))
           <li><a href="{{route('diseno')}}">{{ trans('texto_menu.diseno') }}</a></li>
+        @endif  
+        @if(Auth::user()->can('ver_foro_desarrollo'))  
           <li><a href="{{route('desarrollo')}}">{{ trans('texto_menu.desarrollo') }}</a></li>
+         @endif 
+        @if(Auth::user()->can('ver_foro_contenidos'))  
           <li><a href="{{route('contenido')}}">{{ trans('texto_menu.contenido') }}</a></li>
+         @endif 
+        @if(Auth::user()->can('ver_foro_digital'))  
           <li><a href="{{route('digital')}}">{{ trans('texto_menu.digital') }}</a></li>
-          <li><a href="{{route('cuentas')}}">{{ trans('texto_menu.cuentas') }}</a></li>
+         @endif 
+         @if(Auth::user()->can('ver_foro_cuentas')) 
+         <li><a href="{{route('cuentas')}}">{{ trans('texto_menu.cuentas') }}</a></li>
+         @endif 
+          @if( Auth::user()->can('crear_tareas') )
           <li><a href="{{ url('crear_tarea') }}">{{ trans('texto_menu.creacion_tareas') }}</a></li>
+          @endif
         </ul>
       </li>
 
@@ -89,10 +107,18 @@
       <li class="treeview">
         <a href="#"><i class='fuente-icon'>e</i> <span>{{ trans('texto_menu.usuarios') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
         <ul class="treeview-menu">
+          @if(Auth::user()->can('crear_areas'))
           <li><a href="{{ url('areas') }}">{{  trans('texto_menu.crear_areas') }}</a></li>
+          @endif
+          @if(Auth::user()->can('crear_usuarios'))
           <li><a href="{{ url('crear_usuario') }}">{{  trans('texto_menu.crear_usuarios') }}</a></li>
+          @endif
+          @if(Auth::user()->can('crear_usuarios'))
           <li><a href="{{ url('usuarios') }}">{{  trans('texto_menu.listar_usuarios') }}</a></li>
+          @endif
+          @if(Auth::user()->can('ver_listado_areas'))
           <li><a href="{{ url('listar_areas') }}">{{  trans('texto_menu.listar_areas') }}</a></li>
+          @endif
         </ul>
       </li>
 

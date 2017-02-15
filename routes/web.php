@@ -37,31 +37,63 @@ Route::group(['middleware' => 'auth'], function () {
     #adminlte_routes
    
    //OTS
-    Route::get('/crear_ot', function () {
+
+    Route::get('/crear_ot', function()
+      {
+          // check the current user
+          if (!Auth::user()->can('crear_ots')) {
+            return Redirect::to('home');
+          }
            return view('admin.ots.crear_ot');
-    });
+      });
+
+
     Route::get('/editar_ot/{id}','OtController@show');
 
-    Route::get('/listar_ot', function () {
+    Route::get('/listar_ot', function()
+      {
+          // check the current user
+          if (!Auth::user()->can('crear_ots')) {
+            return Redirect::to('home');
+          }
            return view('admin.ots.listado_ot');
-    });
+      });
+
 
     Route::get('/show_ots_tareas','OtController@showOtEnTareas');
     Route::get('/show_ots_tareas/{query}','OtController@showOtEnTareasByQuery');
 
     // Clientes
-    Route::get('/crear_cliente', function () {
+    Route::get('/crear_cliente', function()
+      {
+          // check the current user
+          if (!Auth::user()->can('crear_clientes')) {
+            return Redirect::to('home');
+          }
            return view('admin.clientes.crear_cliente');
-    });
-    Route::get('/listar_clientes', function () {
+      });
+    Route::get('/listar_clientes', function()
+      {
+          // check the current user
+          if (!Auth::user()->can('ver_clientes')) {
+            return Redirect::to('home');
+          }
            return view('admin.clientes.listar_clientes');
-    });
+      });
+
     Route::get('/editar_cliente/{id}', 'ClienteController@getCliente');
 
     // Tareas
-    Route::get('/crear_tarea', function () {
+
+    Route::get('/crear_tarea', function()
+      {
+          // check the current user
+          if (!Auth::user()->can('crear_tareas')) {
+            return Redirect::to('home');
+          }
            return view('admin.tareas.crear_tarea');
-    });
+      });
+
     Route::get('/listar_tareas', function () {
            return view('admin.tareas.listar_tareas');
     });

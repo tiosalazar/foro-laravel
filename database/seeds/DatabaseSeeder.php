@@ -77,6 +77,7 @@ class PermisosTableSeeder extends Seeder {
         App\Permission::create(array('name' => 'ver_foro_desarrollo','display_name'=>'Ver Foro de Desarrollo','description'=>'Puede Ver' ));
         App\Permission::create(array('name' => 'ver_foro_contenidos','display_name'=>'Ver Foro de Contenidos','description'=>'Puede Ver' ));
         App\Permission::create(array('name' => 'ver_foro_digital','display_name'=>'Ver Foro de Digital','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'ver_foro_colaborador','display_name'=>'Ver Foro Colaborador','description'=>'Muestra el foro dependiendo del area del colaborador' ));
         //Permisos Sobre Areas
         App\Permission::create(array('name' => 'ver_listado_areas','display_name'=>'Ver Areas','description'=>'Puede Ver' ));
         App\Permission::create(array('name' => 'crear_areas','display_name'=>'Crear Areas','description'=>'Puede crear' ));
@@ -84,6 +85,8 @@ class PermisosTableSeeder extends Seeder {
         //Permisos Sobre Tareas
         App\Permission::create(array('name' => 'crear_tareas','display_name'=>'Crear Tareas','description'=>'Puede crear' ));
         App\Permission::create(array('name' => 'editar_tareas','display_name'=>'Editar Tareas','description'=>'Puede Editar' ));
+        //Permisos sobre Roles
+        App\Permission::create(array('name' => 'ver_roles','display_name'=>'Ver y editar Roles','description'=>'Puede crear y editar los Roles de la Aplicación' ));
 
       /*
         App\Permission::create(array('name' => 'todos','display_name'=>'Permisos Totales','description'=>'Tiene Acceso a todas las vistas de la aplicación' ));
@@ -109,8 +112,8 @@ class AreasTableSeeder extends Seeder {
         App\Area::create(array('nombre' => 'Diseño','extencion_tel' => '0581','estado' => '1'));
         App\Area::create(array('nombre' => 'Desarrollo','extencion_tel' => '81','estado' => '1') );
         App\Area::create(array('nombre' => 'Contenidos','extencion_tel' => '0281','estado' => '1') );
-        App\Area::create(array('nombre' => 'Digital Performance ','extencion_tel' => '0581','estado' => '1') );
-        App\Area::create(array('nombre' => 'Cuentas ','extencion_tel' => '0581','estado' => '1') );
+        App\Area::create(array('nombre' => 'Digital Performance','extencion_tel' => '0581','estado' => '1') );
+        App\Area::create(array('nombre' => 'Cuentas','extencion_tel' => '0581','estado' => '1') );
 
     }
 
@@ -145,14 +148,35 @@ class UsuariosTableSeeder extends Seeder {
     public function run()
     {
         DB::table('users')->delete();
-        $desarrollo= App\Role::where('name','desarrollo')->first();
+        $rol= App\Role::where('name','desarrollo')->first();
+        $area= App\Area::where('nombre','Desarrollo')->first();
         App\User::create(array('nombre' => 'Desarrollo','apellido' => 'Himalaya','cargo' => 'Tester','telefono' => '1111111','email' => 'desarrollo@himalayada.com',
-        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $desarrollo['id'],'areas_id' => '1'));
+        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' =>$area['id']));
         $user =   App\User::where('email','desarrollo@himalayada.com')->first();
-        $user->attachRole($desarrollo);
-       // $user->roles()->attach($role_id);
+        $user->attachRole($rol);
+
+        $rol= App\Role::where('name','cuentas')->first();
+        $area= App\Area::where('nombre','Cuentas')->first();
         App\User::create(array('nombre' => 'Ejecutiva 1','apellido' => 'Himalaya','cargo' => 'Ejecutiva','telefono' => '22222222','email' => 'ejecutiva@himalayada.com',
-        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => '1','areas_id' => '2'));
+        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' => $area['id']));
+        $user =   App\User::where('email','ejecutiva@himalayada.com')->first();
+        $user->attachRole($rol);
+
+        $rol= App\Role::where('name','coordinador')->first();
+        $area= App\Area::where('nombre','Diseño')->first();
+        App\User::create(array('nombre' => 'Coordinador 1','apellido' => 'Himalaya','cargo' => 'Coordinador Diseño','telefono' => '22222222','email' => 'coordinador1@himalayada.com',
+        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' => $area['id']));
+        $user =   App\User::where('email','coordinador1@himalayada.com')->first();
+        $user->attachRole($rol);
+
+        $rol= App\Role::where('name','colaborador')->first();
+        $area= App\Area::where('nombre','Diseño')->first();
+        App\User::create(array('nombre' => 'Colaborador 1','apellido' => 'Himalaya','cargo' => 'Colaborador Diseño','telefono' => '22222222','email' => 'colaborador1@himalayada.com',
+        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' => $area['id']));
+        $user =   App\User::where('email','colaborador1@himalayada.com')->first();
+        $user->attachRole($rol);
+
+
     }
 
 }
@@ -242,45 +266,50 @@ class Permission_Role extends Seeder {
     {
         DB::table('permission_role')->delete();
 
-         $desarrollo= App\Role::where('name','desarrollo')->first();
 
+         //El Rol Desarrollo tiene todos los permisos
+         $rol= App\Role::where('name','desarrollo')->first();
          $permisos= App\Permission::all(); 
+         $rol->attachPermissions($permisos);
+        //El Rol owner tiene todos los permisos
+         $rol= App\Role::where('name','owner')->first();
+         $rol->attachPermissions($permisos);
+        //El Rol cuentas tiene todos los permisos
+         $rol= App\Role::where('name','cuentas')->first();
+         $permisos= App\Permission::where('name','ver_ots')
+                                   ->orWhere('name','crear_ots')
+                                   ->orWhere('name','ver_clientes')
+                                   ->orWhere('name','crear_tareas')
+                                   ->orWhere('name','ver_listado_areas')
+                                   ->orWhere('name','ver_foro_creatividad')
+                                   ->orWhere('name','ver_foro_desarrollo')
+                                   ->orWhere('name','ver_foro_diseno')
+                                   ->orWhere('name','ver_foro_contenidos')
+                                   ->orWhere('name','ver_foro_digital') 
+                                   ->orWhere('name','crear_clientes')
+                                   ->orWhere('name','editar_clientes')->get();
+         //El Rol Coordinador                           
+         $rol->attachPermissions($permisos);         
+         $rol= App\Role::where('name','coordinador')->first();
+         $permisos= App\Permission::where('name','ver_ots')
+                                   ->orWhere('name','ver_clientes') 
+                                   ->orWhere('name','ver_listado_areas') 
+                                   ->orWhere('name','ver_foro_creatividad') 
+                                   ->orWhere('name','ver_foro_desarrollo') 
+                                   ->orWhere('name','ver_foro_diseno') 
+                                   ->orWhere('name','ver_foro_contenidos') 
+                                   ->orWhere('name','ver_foro_digital') 
+                                   ->orWhere('name','editar_tareas')
+                                   ->get(); 
+        //El Rol Colaborador  
+         $rol->attachPermissions($permisos);
+         $rol= App\Role::where('name','colaborador')->first();
+         $permisos= App\Permission::where('name','ver_listado_areas')
+                                   ->orWhere('name','ver_foro_colaborador') 
+                                   ->orWhere('name','editar_tareas')
+                                   ->get(); 
+         $rol->attachPermissions($permisos);
 
-         $desarrollo->attachPermissions($permisos);
-
-
-
-       /* App\Permission::create(array('name' => 'ver_ots','display_name'=>'Ver OTS','description'=>'Puede Ver' ));
-        App\Permission::create(array('name' => 'crear_ots','display_name'=>'Crear OTS','description'=>'Puede Crear' ));
-        App\Permission::create(array('name' => 'editar_ots','display_name'=>'Editar OTS','description'=>'Puede Editar' ));
-         //Permisos Sobre Clientes
-        App\Permission::create(array('name' => 'ver_clientes','display_name'=>'Ver Clientes','description'=>'Puede Ver' ));
-        App\Permission::create(array('name' => 'crear_clientes','display_name'=>'Crear Clientes','description'=>'Puede Crear' ));
-        App\Permission::create(array('name' => 'editar_clientes','display_name'=>'Editar Clientes','description'=>'Puede Editar' ));
-         //Permisos Sobre Usuarios
-        App\Permission::create(array('name' => 'ver_listado_usuarios','display_name'=>'Ver Listado de Usuarios','description'=>'Puede Ver' ));
-        App\Permission::create(array('name' => 'crear_usuarios','display_name'=>'Crear Usuarios','description'=>'Puede Crear' ));
-        App\Permission::create(array('name' => 'editar_usuarios','display_name'=>'Editar Usuarios','description'=>'Puede Editar' ));
-         //Permisos Sobre Foros
-        App\Permission::create(array('name' => 'ver_foro_creatividad','display_name'=>'Ver Foro de Creatividad','description'=>'Puede Ver' ));
-        App\Permission::create(array('name' => 'ver_foro_diseno','display_name'=>'Ver Foro de Diseño','description'=>'Puede Ver' ));
-        App\Permission::create(array('name' => 'ver_foro_desarrollo','display_name'=>'Ver Foro de Desarrollo','description'=>'Puede Ver' ));
-        App\Permission::create(array('name' => 'ver_foro_contenidos','display_name'=>'Ver Foro de Contenidos','description'=>'Puede Ver' ));
-        App\Permission::create(array('name' => 'ver_foro_digital','display_name'=>'Ver Foro de Digital','description'=>'Puede Ver' ));
-        //Permisos Sobre Areas
-        App\Permission::create(array('name' => 'ver_listado_areas','display_name'=>'Ver Areas','description'=>'Puede Ver' ));
-        App\Permission::create(array('name' => 'crear_areas','display_name'=>'Crear Areas','description'=>'Puede crear' ));
-        App\Permission::create(array('name' => 'editar_areas','display_name'=>'Editar Areas','description'=>'Puede Editar' ));
-        //Permisos Sobre Tareas
-        App\Permission::create(array('name' => 'crear_tareas','display_name'=>'Crear Tareas','description'=>'Puede crear' ));
-        App\Permission::create(array('name' => 'editar_tareas','display_name'=>'Editar Tareas','description'=>'Puede Editar' ));*/
-
-
-        /*
-        App\Planeacion_tipo::create(array('nombre' => 'Planeacion'));
-        App\Planeacion_tipo::create(array('nombre' => 'Desarrollo'));
-        App\Planeacion_tipo::create(array('nombre' => 'Calidad'));
-        App\Planeacion_tipo::create(array('nombre' => 'Publicacion'));*/
     }
 
 }

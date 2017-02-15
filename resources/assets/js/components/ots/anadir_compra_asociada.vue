@@ -4,7 +4,7 @@
 <!-- Autor: David Salazar  -->
 <!-- Fecha : Enero 2017  -->
 <template>
-  <div class="col-md-12">
+  <div  id="seccion_compra"class="col-md-12">
     <div class="row">
       <section class="form_section" v-for="(ed,index) in compra_asociada">
        <div class="row">
@@ -17,36 +17,41 @@
        </div>
           <div class="form-group  col-md-12 col-xs-12" v-bind:class="{ 'has-error': errors.has('descipcion_compra'+index) }">
             <label class="sr-only" for="descipcion_compra">Descripción</label>
-            <textarea  :name="'descipcion_compra'+index" rows="3" @mouseover="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Descripción" v-model="ed.model_desc" class="form-control"   placeholder="Descripción">  
+            <textarea  :name="'descipcion_compra'+index" rows="3" @input="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Descripción" v-model="ed.model_desc" class="form-control"   placeholder="Descripción">
             </textarea>
             <span  class="help-block" v-show="errors.has('descipcion_compra'+index)">{{ errors.first('descipcion_compra'+index) }}</span>
           </div>
          <div class="row">
          <div class="col-md-12">
-        <div style="display: inline-block;">
           <div class="form-group  col-md-4 col-xs-12"  v-bind:class="{ 'has-error': errors.has('provedor_compra'+index) }">
             <label class="sr-only" for="no_horas_req">Provedor</label>
-            <input type="text"  :name="'provedor_compra'+index"  @mouseover="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Provedor" v-model="ed.model_provedor" class="form-control" :id="'provedor_compra'+index"   placeholder="Provedor">
+            <input type="text"  :name="'provedor_compra'+index"  @input="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Provedor" v-model="ed.model_provedor" class="form-control" :id="'provedor_compra'+index"   placeholder="Provedor">
             <span  class="help-block" v-show="errors.has('provedor_compra'+index)">{{ errors.first('provedor_compra'+index) }}</span>
           </div>
           <div class="form-group  col-md-4 col-xs-12"  v-bind:class="{ 'has-error': errors.has('valor_compra'+index) }">
             <label class="sr-only" for="no_horas_req">Valor</label>
-            <input type="text" :name="'valor_compra'+index"  @mouseover="guardarDatos" v-validate data-vv-rules="required|numeric" data-vv-as="Valor" v-model="ed.model_valor" class="form-control" :id="'valor_compra'+index"  placeholder="Valor">
+            <input type="text" :name="'valor_compra'+index"  @input="guardarDatos" v-validate data-vv-rules="required|numeric" data-vv-as="Valor" v-model="ed.model_valor" class="form-control" :id="'valor_compra'+index"  placeholder="Valor">
             <span  class="help-block" v-show="errors.has('valor_compra'+index)">{{ errors.first('valor_compra'+index) }}</span>
           </div>
-          <div class="form-group col-md-4 nopadding col-xs-12"><select_divisa :index="index" :select="ed.divisa"></select_divisa> </div> 
-          </div>
+          <div class="form-group col-md-4  col-xs-12"><select_divisa :index="index" :select="ed.divisa"></select_divisa> </div>
         </div>
-        </div> 
+        </div>
+        <div class="col-md-12">
+          <div style="height:22px"></div>
+  				<div class="separador"> </div>
+          <div style="height:22px"></div>
+  			</div>
       </section>
     </div>
 
     <div class="row"  v-show="$parent.visualizacion != 'true'">
-    <div class="form-group  col-md-1 col-xs-12" v-show="$parent.visualizacion != 'true'">
-            <button type="button" @click="deleteRequerimiento" class="btn btn-danger">Eliminar</button>
-      </div>
-      <div class="col-md-3">
-        <button type="button" @click="addRequerimiento" class="btn btn-block btn-success col-sm-3">Añadir Compra</button>
+      <div class="col-md-12 text-center">
+        <div class="col-md-4 col-md-offset-2">
+          <button type="button" @click="addRequerimiento" :class="{'disabled' : disabled }" class="btn btn-block boton_foro btn-success succes col-sm-3" :disabled="disabled">Añadir Compra</button>
+        </div>
+        <div class="form-group  col-md-4 col-xs-12" v-show="$parent.visualizacion != 'true'">
+                <button type="button" style="width:100%" @click="deleteRequerimiento" :class="{'disabled' : disabled }" class="btn btn-danger boton_foro error " :disabled="disabled">Eliminar</button>
+          </div>
       </div>
     </div>
 
@@ -82,6 +87,11 @@ module.exports={
       ];
       }
     },
+  },
+  computed:{
+    disabled: function(){
+      return this.$parent.diabled_compras ;
+    }
   },
   created: function(){
     this.llenarDatosSiesVisualizacion();
@@ -125,10 +135,20 @@ module.exports={
                //   console.log(datos);
                 //   var ingreso=[];
                //ingreso.push(arreglo_compras[idx].compras);
-            var datos=[{compras:arreglo_compras[idx].compras }];
-                  this.$localStorage.set('datos_compra_'+arreglo_compras[idx].area,JSON.stringify(datos));//busca dependiendo del Área
+              var datos=[{compras:[] }];
+            if(arreglo_compras[idx].compras != undefined && arreglo_compras[idx].compras != null ){
+                 datos=[{compras:arreglo_compras[idx].compras }];
+                   this.$localStorage.set('datos_compra_'+arreglo_compras[idx].area,JSON.stringify(datos));//busca dependiendo del Área
+            }else{
+                 this.compra_asociada=[];
+
+            }
+
+
 
                }
+
+
               //  var datos=[{compras:arreglo_visualizar.compras}];
           //  this.$localStorage.set('datos_compra_'+arreglo_visualizar.requerimientos.area,JSON.stringify(datos));//busca dependiendo del Área
         }
@@ -138,10 +158,11 @@ module.exports={
     */
     llenarCampos:function () {
       var data_req= JSON.parse(this.$localStorage.get('datos_compra_'+this.id_area));
-      if (data_req != null) {
+      if (data_req != null ) {
         var arreglo_requerimientos = data_req[0].compras;
         this.compra_asociada= arreglo_requerimientos;
       }
+
     },
     /*
      Función la cual se encarga de borrar un requerimiento, lo que hace es que
