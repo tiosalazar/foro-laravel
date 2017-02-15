@@ -9,7 +9,7 @@
 
 	<section>
 		<!-- Listar todas las tareas -->
-	   <ver_tareas :area="-1" ></ver_tareas>
+	   	<ver_tareas :area="{{Auth::user()->areas_id}}" ></ver_tareas>
 			
 	</section>
 @endsection

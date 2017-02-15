@@ -33,5 +33,7 @@ return [
     'desarrollo' => 'Desarrollo',
     'digital' => 'Dig. Performance',
     'contenido' => 'Contenido',
+    'cuentas' => 'Cuentas',
+    'ver_foro' => 'Ver Foro',
 
 ];

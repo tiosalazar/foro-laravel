@@ -50,11 +50,13 @@
       <li class="treeview">
         <a href="#"><i class='fuente-icon'>f</i> <span>{{ trans('texto_menu.foro') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
         <ul class="treeview-menu">
-          <li><a href="{{url('listar_tareas')}}">{{ trans('texto_menu.creatividad') }}</a></li>
-          <li><a href="#">{{ trans('texto_menu.diseno') }}</a></li>
+          <li><a href="{{route('foro')}}">{{ trans('texto_menu.ver_foro') }}</a></li>
+          <li><a href="{{route('creatividad')}}">{{ trans('texto_menu.creatividad') }}</a></li>
+          <li><a href="{{route('diseno')}}">{{ trans('texto_menu.diseno') }}</a></li>
           <li><a href="{{route('desarrollo')}}">{{ trans('texto_menu.desarrollo') }}</a></li>
-          <li><a href="#">{{ trans('texto_menu.contenido') }}</a></li>
-          <li><a href="#">{{ trans('texto_menu.digital') }}</a></li>
+          <li><a href="{{route('contenido')}}">{{ trans('texto_menu.contenido') }}</a></li>
+          <li><a href="{{route('digital')}}">{{ trans('texto_menu.digital') }}</a></li>
+          <li><a href="{{route('cuentas')}}">{{ trans('texto_menu.cuentas') }}</a></li>
           <li><a href="{{ url('crear_tarea') }}">{{ trans('texto_menu.creacion_tareas') }}</a></li>
         </ul>
       </li>
