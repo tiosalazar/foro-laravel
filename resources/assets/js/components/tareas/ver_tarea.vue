@@ -19,8 +19,8 @@
               <div class="col-sm-6 border-right">
                 <ul>
                   <li><strong>Numero de OT:</strong><span> #{{ot.referencia}}</span></li>
-                  <li><strong>Ejecutiva:</strong><span> {{ot.nombre_ej}}</span></li>
-                  <li><strong>Fecha de Solicitud:</strong><span> {{current_date}}</span></li>
+                  <li><strong>Ejecutivo:</strong><span> {{ot.usuario.nombre}}</span></li>
+                  <li><strong>Fecha de Solicitud:</strong><span> {{tarea_info.created_at}}</span></li>
                 </ul>
               </div>
               <div class="col-sm-6">
@@ -85,7 +85,7 @@
               <div class="col-sm-6">
                 <div class="form-group required">
                   <label>Estado <sup>*</sup></label>
-                  <select_estados tipo_estado="1"  :select="estado" ></select_estados>
+                  <select_estados tipo_estado="1"  :select="estado"></select_estados>
                 </div>
               </div>
               <div class="col-sm-6">
@@ -124,7 +124,7 @@ Vue.component('select_ot',require('../herramientas/select_ot.vue'));
 Vue.component('select_area',require('../herramientas/select_area.vue'));
 Vue.component('select_rol',require('../herramientas/select_rol.vue'));
 
-    Vue.use(VeeValidate);
+  Vue.use(VeeValidate);
 	module.exports = {
     props: ['arraytarea'],
     components: {Datepicker,VeeValidate,Validator},
@@ -140,7 +140,15 @@ Vue.component('select_rol',require('../herramientas/select_rol.vue'));
         prioridad:'',
         estado:this.arraytarea.estado,
         fase:'',
-        ot:{},
+        ot:{
+          usuario:{
+            nombre:''
+          },
+          cliente:{
+            nombre:''
+          }
+        },
+        tarea_info:{},
         area:{},
         current_date:this.arraytarea.created_at,
         refresh:'',
@@ -165,11 +173,16 @@ Vue.component('select_rol',require('../herramientas/select_rol.vue'));
       }
     },
     created: function() {
-      if (this.arraytarea!=undefined) {
-           
-          console.log(this.arraytarea);
+
+      //Recibe la propiedad arraytarea desde la vista y verifico si es indefinida o no
+      if (this.arraytarea!=undefined) {  
           var obj = JSON.parse(this.arraytarea);
-          console.log(obj);           
+          this.ot=obj.ot;
+          this.ot.usuario=obj.usuario;
+          this.ot.cliente=obj.cliente;
+          this.tarea_info=obj;
+          console.log(this.arraytarea);
+          console.log(this.tarea_info);
 
     }
 

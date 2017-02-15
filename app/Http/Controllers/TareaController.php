@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Tarea;
 use App\Ot;
 use App\Area;
+use App\User;
+use App\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
@@ -50,40 +52,71 @@ class TareaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $tarea = new Tarea;
-        $tarea->fill($request->all());
-        //Validación de las entradas por el metodo POST
-        $vl=$this->validatorCreartarea($request->all());
-        if ($vl->fails()){
-            // return response()->json($vl->errors());
-            return response([
-                'status' => Response::HTTP_BAD_REQUEST,
-                'response_time' => microtime(true) - LARAVEL_START,
-                'msg' => 'Error al crear la tarea',
-                'error' => 'ERR_01',
-                'obj' =>$vl->errors()
-                ],Response::HTTP_BAD_REQUEST);
-        }else{
-            try {
-                $tarea->save();
+    {   
+
+        //id Rol coordinador
+        $role=Role::where('name','coordinador')->get();
+
+        //Coordinador con con el area enviada en el request
+        $userdata= User::where('roles_id',$role[0]->id)
+                    ->where('areas_id', $request->areas_id)->get();
+
+        if ($userdata!=null and isset($userdata[0])) {
+  
+            //Id del usuario            
+            $idusuario=$userdata[0]->id;
+
+            //Agrego al request el id
+            $request['encargado_id']=$idusuario;
+
+            $tarea = new Tarea;
+            $tarea->fill($request->all());
+
+            //Validación de las entradas por el metodo POST
+            $vl=$this->validatorCreartarea($request->all());
+
+            if ($vl->fails()){
+                // return response()->json($vl->errors());
                 return response([
-                    'status' => Response::HTTP_OK,
+                    'status' => Response::HTTP_BAD_REQUEST,
                     'response_time' => microtime(true) - LARAVEL_START,
-                    'obj' => $tarea,
-                    'error' => null,
-                    'msg' => 'Tarea creada con exito',
-                    ],Response::HTTP_OK);
-            } catch (Exception $e) {
-               return response([
-                'status' => Response::HTTP_BAD_REQUEST,
-                'response_time' => microtime(true) - LARAVEL_START,
-                'error' => 'ERR_04',
-                'msg' => 'excepcion, fallo la petición',
-                'consola' =>$e->getMessage(),
-                'obj' =>[]
-                ],Response::HTTP_BAD_REQUEST);
+                    'msg' => 'Error al crear la tarea',
+                    'error' => 'ERR_01',
+                    'obj' =>$vl->errors()
+                    ],Response::HTTP_BAD_REQUEST);
+            }else{
+                try {
+                    $tarea->save();
+                    return response([
+                        'status' => Response::HTTP_OK,
+                        'response_time' => microtime(true) - LARAVEL_START,
+                        'obj' => $tarea,
+                        'error' => null,
+                        'msg' => 'Tarea creada con exito',
+                        ],Response::HTTP_OK);
+                } catch (Exception $e) {
+                   return response([
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'response_time' => microtime(true) - LARAVEL_START,
+                    'error' => 'ERR_04',
+                    'msg' => 'excepcion, fallo la petición',
+                    'consola' =>$e->getMessage(),
+                    'obj' =>[]
+                    ],Response::HTTP_BAD_REQUEST);
+               }
            }
+
+       }else{
+
+             return response([
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'response_time' => microtime(true) - LARAVEL_START,
+                    'error' => 'ERR_04',
+                    'msg' => 'Coordinador no asignado',
+                    // 'consola' =>$e->getMessage(),
+                    'obj' =>[]
+                    ],Response::HTTP_BAD_REQUEST);
+
        }
     }
 
@@ -170,6 +203,7 @@ class TareaController extends Controller
         $tarea = Tarea::findOrFail($id);
         $tarea->ot->cliente;
         $tarea->estado;
+        $tarea->usuario;
         // return response()->json($tarea);
         return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea);
     }
@@ -203,6 +237,7 @@ class TareaController extends Controller
             'areas_id' => 'required',
             'usuarios_id' => 'required',
             'ots_id' => 'required',
+            'encargado_id' => 'required',
             'planeacion_fases_id' => 'required',
         ]);
     }

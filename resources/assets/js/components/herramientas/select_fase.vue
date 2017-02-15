@@ -44,7 +44,7 @@
       },
       created: function(){
           this.fetchTips();
-          console.log(this.options);
+          // console.log(this.options);
       },
       methods:{
           fetchTips: function(){

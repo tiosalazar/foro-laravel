@@ -231,6 +231,9 @@
 				this.tarea.planeacion_fases_id = this.fase.id;
 				this.tarea.areas_id = this.area.id;
 				this.tarea.usuarios_id = this.user;
+				this.tarea.prioridad_id=this.prioridad.id;
+				// console.log(this.prioridad);
+				
 				console.log(this.tarea);
 				this.$http.post('api/v1/tareas',this.tarea)
 		         .then(function(respuesta){
@@ -253,6 +256,7 @@
 		         }, (response) => {
 		          if (Object.keys(response.body.obj).length>0) {
 		            this.setErrors(response.body.obj);
+		            console.log(response);
 		          }
 		          toastr.error(this.message,response.body.msg,this.option_toast);
 		        });
