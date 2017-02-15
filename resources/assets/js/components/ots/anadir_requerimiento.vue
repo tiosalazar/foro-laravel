@@ -13,7 +13,7 @@
         <div class="form-group col-md-4 col-sm-6" v-bind:class="{ 'has-error': errors.has('horas_area'+id_area) }">
           <label for="horas_area" class="col-sm-6 nopadding"><h5>Horas de {{ area }}</h5> </label>
           <div class="col-sm-6">
-            <input type="text" @input="emitirData" style="margin-top: 12px;" :name="'horas_area'+id_area" @mouseout="guardarDatos"  v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control text-center" :id="'horas_area'+id_area" v-model="nhoras" :placeholder="'Numero de Horas '+area">
+            <input type="text" @input="emitirData(),guardarDatos()"  style="margin-top: 12px;" :name="'horas_area'+id_area"  v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control text-center" :id="'horas_area'+id_area" v-model="nhoras" :placeholder="'Numero de Horas '+area">
             <span  class="help-block" v-show="errors.has('horas_area'+id_area)">{{ errors.first('horas_area'+id_area) }}</span>
           </div>
         </div>
@@ -39,12 +39,12 @@
       <section class="col-md-12 nopadding" v-for="(ed,index) in requerimiento">
         <div class="form-group col-md-8" v-bind:class="{ 'has-error': errors.has('nombre_requerimiento'+index) }">
           <label class="sr-only" for="nombre_requerimiento">Nombre Requerimiento</label>
-          <input type="text" @mouseout="guardarDatos" :name="'nombre_requerimiento'+index" v-validate data-vv-rules="required|min:3" data-vv-as="Nombre Requerimiento" v-model="ed.model_nom" class="form-control" :id="'nombre_requerimiento'+index" placeholder="Nombre Requerimiento">
+          <input type="text" @input="guardarDatos" :name="'nombre_requerimiento'+index" v-validate data-vv-rules="required|min:3" data-vv-as="Nombre Requerimiento" v-model="ed.model_nom" class="form-control" :id="'nombre_requerimiento'+index" placeholder="Nombre Requerimiento">
           <span  class="help-block" v-show="errors.has('nombre_requerimiento'+index)">{{ errors.first('nombre_requerimiento'+index) }}</span>
         </div>
         <div class="form-group  col-md-2"  v-bind:class="{ 'has-error': errors.has('no_horas_req'+index) }">
           <label class="sr-only" for="no_horas_req">N° Horas</label>
-          <input type="text" @input="realizarCalculo" @mouseout="guardarDatos" :name="'no_horas_req'+index" v-validate data-vv-rules="required|numeric" data-vv-as="No horas"  v-model="ed.model_horas" class="form-control" :id="'no_horas_req'+index" placeholder="No. Horas">
+          <input type="text" @input="realizarCalculo(),guardarDatos()" :name="'no_horas_req'+index" v-validate data-vv-rules="required|numeric" data-vv-as="No horas"  v-model="ed.model_horas" class="form-control" :id="'no_horas_req'+index" placeholder="No. Horas">
           <span  class="help-block" v-show="errors.has('no_horas_req'+index)">{{ errors.first('no_horas_req'+index) }}</span>
         </div>
         <div class="form-group  col-md-2"  v-show="$parent.visualizacion != 'true'" >
@@ -111,6 +111,7 @@ module.exports={
   created: function(){
     this.llenarDatosSiesVisualizacion();
     this.llenarCampos();
+    this.realizarCalculo();
   },
   methods: {
     /*
@@ -126,20 +127,12 @@ module.exports={
       var data_req= JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.id_area));//busca dependiendo del Área
       if (data_req != null) {
         var arreglo_requerimientos = data_req[0].requerimientos;
-      /*  if (this.$parent.visualizacion=="true") {
-            this.requerimiento=[];
-           for (let f in arreglo_requerimientos) {
-                let idx = Number(f)
-               arreglo_requerimientos[idx]=JSON.parse(arreglo_requerimientos[idx])
-              }
-          this.requerimiento.push(Vue.util.extend({}, arreglo_requerimientos[0]) );
-          console.log(this.requerimiento);
-        }else{
-           this.requerimiento= arreglo_requerimientos;
-        }*/
          this.requerimiento= arreglo_requerimientos;
         this.nhoras	= data_req[0].horas;
+        console.log("llenarCampos"+this.nhoras);
         this.h_pasadas	= data_req[0].h_pasadas;
+         this.emitirData();
+
         var datos=[{
           requerimientos:this.requerimiento,
           horas:this.nhoras,
@@ -156,12 +149,16 @@ module.exports={
 
                 for (let f in arreglo_requerimientos) {
                     let idx = Number(f)
+                    this.horas=parseInt(arreglo_requerimientos[idx].horas);
+                    this.h_pasadas=this.h_pasadas;
+                    this.emitirData();
+                    this.realizarCalculo();
                   var datos=[{
                      requerimientos:[JSON.parse(arreglo_requerimientos[idx].requerimientos)],
                      horas: parseInt(arreglo_requerimientos[idx].horas),
                      h_pasadas: this.h_pasadas
                    }];
-                //   console.log(datos);
+
                    this.$localStorage.set('datos_requerimiento_'+arreglo_requerimientos[idx].area,JSON.stringify(datos));//busca dependiendo del Área
 
                 }
@@ -180,6 +177,7 @@ module.exports={
      Guarda los datos con cada entrada del Tecla en el input
     */
     guardarDatos: function(){
+       this.realizarCalculo();
       var datos=[{
         requerimientos:this.requerimiento,
         horas:this.nhoras,

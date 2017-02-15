@@ -24,6 +24,7 @@ return [
     'listar_areas' => 'Listado de Areas',
     'organizacion' => 'Roles',
     'foro' => 'Foro',
+    'ver_foro' => 'Ver Foro',
     'perfil' => 'Perfil',
     'areas' => '&Aacute;reas',
     'creacion_tareas' => 'Creaci&oacute;n de Tareas',

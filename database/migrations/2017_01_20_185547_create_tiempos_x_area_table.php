@@ -15,7 +15,8 @@ class CreateTiemposXAreaTable extends Migration
     {
         Schema::create('tiempos_x_area', function (Blueprint $table) {
             $table->increments('id');
-            $table->decimal('tiempo_estimado',5,3);
+            $table->decimal('tiempo_estimado_jefe',5,3)->nullable();
+            $table->decimal('tiempo_estimado_ot',5,3);
             $table->decimal('tiempo_real',5,3)->nullable();
             $table->decimal('tiempo_extra',5,3)->nullable();
             $table->integer('ots_id')->unsigned();

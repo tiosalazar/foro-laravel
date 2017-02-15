@@ -70,7 +70,7 @@ class OtController extends Controller
              {
                 try
                 {
-                   //  DB::beginTransaction();
+                     DB::beginTransaction();
                          $ot=new Ot;
                          $ot->fill($data['datos_encabezado']);
                          $ot->save();
@@ -84,7 +84,7 @@ class OtController extends Controller
                          foreach ($requerimientos as $requerimiento) {
                          $tiempos_x_area= new Tiempos_x_Area;
                          /*Agrego el tiempo por Area */
-                         $tiempos_x_area->tiempo_estimado=$requerimiento['horas'];
+                         $tiempos_x_area->tiempo_estimado_ot=$requerimiento['horas'];
                          $tiempos_x_area->ots_id=$id_ot;
                          $tiempos_x_area->areas_id=$requerimiento['area'];
                          $tiempos_x_area->save();
@@ -105,6 +105,7 @@ class OtController extends Controller
                                  $model_compras->ots_id=$id_ot;
                                  $model_compras->save();
                           }
+                          DB::commit();
                       return response([
                             'status' => Response::HTTP_OK,
                             'response_time' => microtime(true) - LARAVEL_START,
@@ -113,7 +114,7 @@ class OtController extends Controller
                         ],Response::HTTP_OK);
 
                 }catch(Exception $e){
-                    // DB::rollback();
+                     DB::rollback();
                     return response([
                         'status' => Response::HTTP_BAD_REQUEST,
                         'response_time' => microtime(true) - LARAVEL_START,
@@ -152,7 +153,7 @@ class OtController extends Controller
             $area_actual=$value['areas_id'];
             array_push($data['listado_areas'], $value->Area);
             $data['requerimientos']['area']=$value['areas_id'];
-            $data['requerimientos']['horas']=$value['tiempo_estimado'];
+            $data['requerimientos']['horas']=$value['tiempo_estimado_ot'];
             foreach ($ot->Requerimiento_Ot as  $value) {
                 if ($value['areas_id'] ==  $area_actual ) {
                     $array_temporal= array('model_nom'=>$value['nombre'] ,'model_horas'=>(int)$value['horas']);
@@ -240,7 +241,7 @@ class OtController extends Controller
                          $j=0;
                          foreach ($requerimientos as $requerimiento) {
                          /*Agrego el tiempo por Area */
-                         $tiempos_x_area[$index]->tiempo_estimado=$requerimiento['horas'];
+                         $tiempos_x_area[$index]->tiempo_estimado_ot=$requerimiento['horas'];
                          $tiempos_x_area[$index]->areas_id=$requerimiento['area'];
                          $tiempos_x_area[$index]->save();
                            /*El siguiente for recorre el listado de requerimientos y los agrega */

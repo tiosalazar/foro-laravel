@@ -20,6 +20,8 @@ class CreateOtsTable extends Migration
             $table->string('valor',55);
             $table->tinyInteger('fee');
             $table->decimal('horas_totales',5,2);
+            $table->decimal('horas_disponibles',5,2);
+            $table->decimal('total_horas_extra',5,2)->nullable();
             $table->string('observaciones',255)->nullable();
             $table->dateTime('fecha_inicio');
             $table->dateTime('fecha_final');

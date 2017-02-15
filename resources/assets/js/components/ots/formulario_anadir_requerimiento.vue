@@ -301,6 +301,7 @@
 								valor :this.datos_encabezado.valor_total,
 								fee: this.datos_encabezado.fee,
 								horas_totales:this.datos_encabezado.horas_totales,
+								horas_disponibles:this.datos_encabezado.horas_disponibles,
 								observaciones:this.descripcion_ot,
 								fecha_inicio: this.datos_encabezado.fecha_inicio,
 								fecha_final: this.datos_encabezado.fecha_fin,
@@ -539,6 +540,8 @@
 			guardarDatos: function(id){
 				var index = Object.keys(this.datos_requerimiento).length;
 				var requerimientos =this.datos_requerimiento;
+				console.log("requerimientos");
+				console.log(requerimientos);
 				if(this.comprobarDatosRequerimientos()==true) {
 
 					if(this.comprobarSiGuardoCompras() == true){
@@ -571,6 +574,7 @@
 					var index = Object.keys(this.datos_requerimiento).length;
 					var requerimientos =this.datos_requerimiento;
 				}
+				console.log(requerimientos);
 				if ( index == 0) {
 					toastr.error("Todos los campos son obligatorios","Error al Guardar Requerimientos",this.option_toast);
 					return false;
@@ -579,6 +583,9 @@
 					return false;
 				}else if( !this.comprobarRequerimientos(requerimientos[0].requerimientos) ){
 					toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Requerimientos",this.option_toast);
+					return false;
+				}else if(this.datos_encabezado.h_pasadas ==true){		/*Compruebo que no se haya pasado de las horas*/
+					toastr.error('Las horas disponibles no puden ser negativas',"Error al guardar los datos",this.option_toast);
 					return false;
 				}else if(requerimientos[0].h_pasadas){
 					toastr.error("El Resúmen de horas no puede dar negativo","Error en Requerimientos",this.option_toast);
