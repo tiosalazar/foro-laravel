@@ -15,7 +15,8 @@
         "intervention/image":"^2.3.11",
         "laravel/passport": "^1.0",
         "zizaco/entrust": "dev-master#6a0fd8c3b73037b4855c6c4eaf1060788c0df1e9",
-        "yajra/laravel-datatables-oracle": "^6.0"
+        "yajra/laravel-datatables-oracle": "^6.0",
+        "pusher/pusher-php-server": "^2.6"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

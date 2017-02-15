@@ -47,12 +47,12 @@ next();
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from "laravel-echo"
+import Echo from "laravel-echo"
 
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: 'your-pusher-key'
-// });
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: 'd6a13b3892fbcd4a53a2'
+});
 
 $(document).ready(function(){
     $('[data-toggle="modal"]').tooltip(); 
