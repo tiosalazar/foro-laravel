@@ -12,6 +12,20 @@
 		        </tr>
 		    </thead>
         </table>
+        <form method="POST" id="search-form" class="form-inline" role="form">
+			<select_estados tipo_estado="1"  :select="estado" ></select_estados>
+			<select name="estados" id="estados">
+	        	<option value="1">1</option>
+	        	<option value="2">2</option>
+	        	<option value="3">3</option>
+	        </select>
+            <!-- <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" name="nombre_tarea" id="name" placeholder="search name" v-model="estado.id">
+            </div> -->
+
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
 	</div>
 </template>
 <script>
@@ -22,6 +36,7 @@
 			return{
 				list_tareas:[],
 				tareas:[],
+				estado:{},
 				boton_hidden:false,
 			}
 		},
@@ -31,15 +46,27 @@
 			if (typeof(this.area) == 'undefined') {
 				this.area = -1;
 			}
+			this.$on('select_estado', function(v) {
+				this.estado=v;
+			});
 		},
 		watch:{},
 		mounted() {
 			let that = this;
-			$('#tabla_tareas').DataTable({
+			var oTable = $('#tabla_tareas').DataTable({
+				 dom: "<'row'<'col-xs-12'<'col-xs-5 selects'><'col-xs-5'f><'col-xs-2'l>>r>"+
+			            "<'row'<'col-xs-12't>>"+
+			            "<'row'<'col-xs-12'<'col-xs-6'i><'col-xs-6'p>>>",
 				processing: true,
 				serverSide: true,
 				// ajax: "/api/v1/tareas",
-				ajax: "/all_tareas/"+that.area,
+				ajax: {
+					url: "/all_tareas/"+that.area,
+					data: function (d) {
+		                d.nombre_tarea = $('select[name=estados]').val();
+						console.log(d.nombre_tarea)
+		            },
+				},
 				columns: [
 					{ data: 'ot.referencia', name: 'ot.referencia' },
 					{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre' },
@@ -71,6 +98,16 @@
 				},      
 
 			});
+			// Enviar los datos del filtro personalizado
+			$('#search-form').on('submit', function(e) {
+		        oTable.draw();
+		        e.preventDefault();
+		    });
+		    // Agregar Selects al dibujar la tabla
+		    $('#tabla_tareas').on( 'draw.dt', function () {
+			    $('#estados').appendTo('.selects');
+			} );
+		    
 		},
 		methods:{
 			getTareass:function() {},
@@ -78,4 +115,5 @@
 		},
 
 	}
+	Vue.component('select_estados',require('../herramientas/select_estado.vue'));
 </script>

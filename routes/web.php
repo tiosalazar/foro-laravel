@@ -66,10 +66,37 @@ Route::group(['middleware' => 'auth'], function () {
            return view('admin.tareas.listar_tareas');
     });
 
-    // Foro por Área
+   /**
+    * Foro por Área
+    */
+    // Lista todas las áreas
+    Route::get('/foro', function () {
+           return view('admin.foro.general');
+    })->name('foro');
+    // Desarrollo
     Route::get('/foro/desarrollo', function () {
            return view('admin.foro.desarrollo');
     })->name('desarrollo');
+    // Diseño
+    Route::get('/foro/diseno', function () {
+           return view('admin.foro.diseno');
+    })->name('diseno');
+    // Creatividad
+    Route::get('/foro/creatividad', function () {
+           return view('admin.foro.creatividad');
+    })->name('creatividad');
+    // Digital
+    Route::get('/foro/digital', function () {
+           return view('admin.foro.digital');
+    })->name('digital');
+    // Cuentas
+    Route::get('/foro/cuentas', function () {
+           return view('admin.foro.cuentas');
+    })->name('cuentas');
+    // Contenido
+    Route::get('/foro/contenido', function () {
+           return view('admin.foro.contenido');
+    })->name('contenido');
 
     Route::get('/all_tareas/{id}','TareaController@showAllTareas');
 
