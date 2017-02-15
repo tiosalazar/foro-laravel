@@ -138,29 +138,43 @@ class TareaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showAllTareas($id)
+    public function showAllTareas($id,Request $request)
     {
         $output= array();
-        if ($id == -1) {
-            $tarea = Tarea::with(['ot.cliente','estado','area' => function ($query) use ($id) {
-                $query->where('id', '=', $id);
-            }])->get();
-            $output=$tarea;
-        }else{
-            
-            $tarea = Tarea::with(['ot.cliente','estado','area' => function ($query) use ($id) {
-                $query->where('id', '=', $id);
-            }])->get();
 
-            // selecciona solos los que tiene el area especifico
-            foreach ($tarea as $key => $value) {
-                if ($value->area) {
-                    array_push($output, $value);
-                }
+        $tarea = Tarea::with(['ot.cliente','estado' => function ($query) use ($request) {
+            if ($request->has('nombre_tarea')) {
+                // $query->where('nombre_tarea', 'like', "%{$request->get('nombre_tarea')}%");
+                $query->where('id', '=', $request->get('nombre_tarea'));
             }
-            $output = collect($output);
+        },'area' => function ($query) use ($id) {
+            $query->where('id', '=', $id);
+        }])->get();
+
+        // selecciona solos los que tiene el area especifico
+        foreach ($tarea as $key => $value) {
+            if ($value->area && $value->ot->cliente && $value->estado ) {
+                array_push($output, $value);
+            }
         }
-        return Datatables::of($output)->make(true);
+        $output = collect($output);
+        return Datatables::of($output)
+        ->editColumn('created_at', function ($user) {
+                return $user->updated_at->format('d-M-Y');
+            })
+        /*->filterColumn('created_at', function ($query, $keyword) {
+                $query->whereRaw("DATE_FORMAT(created_at,'%d-%M-%Y') like ?", ["%$keyword%"]);
+            })*/
+        /*->filter(function ($query) use ($request) {
+                if ($request->has('nombre_tarea')) {
+                    $query->where('nombre_tarea', 'like', "%{$request->get('nombre_tarea')}%");
+                }
+
+                // if ($request->has('email')) {
+                //     $query->where('email', 'like', "%{$request->get('email')}%");
+                // }
+            })*/
+        ->make(true);
         // return $output;
 
     }
