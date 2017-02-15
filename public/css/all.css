@@ -7855,16 +7855,10 @@
 .Formulario_OT .boton_foro.error {
   background: #da0724;
   font-style: italic;
-  padding: 5px 28px;
 }
 
 .Formulario_OT .boton_foro.add_req {
   background: #00ca78;
-}
-
-.Formulario_OT .multiselect {
-  color: #9a9a9a;
-  font-style: italic;
 }
 
 .Formulario_OT ::-webkit-input-placeholder {
@@ -7892,6 +7886,20 @@
   font-weight: 600;
 }
 
+.Formulario_OT #seccion_compra .disabled {
+  border: 0px;
+  margin-bottom: 10px;
+  background-color: #8d8d8d !important;
+}
+
+.Formulario_OT .formulario_ot_panel {
+  border: 1px solid #d8d8d8;
+}
+
+.Formulario_OT .nav-tabs-custom {
+  margin-bottom: -1px;
+}
+
 .Formulario_OT .nav-tabs-custom > .nav-tabs > li.active > a {
   border-left-color: #d8d8d8;
   border-right-color: #d8d8d8;
@@ -7906,6 +7914,41 @@
   padding: 20px 10px;
   background: #15baee;
   color: white;
+}
+
+.Formulario_OT .multiselect {
+  border-radius: 0;
+  min-height: 33px;
+  height: 33px;
+  font-style: italic;
+}
+
+.Formulario_OT .multiselect input {
+  height: 22px;
+}
+
+.Formulario_OT .multiselect .multiselect__tags {
+  min-height: 33px;
+  height: 33px;
+  padding-top: 2px;
+  border-radius: 0;
+}
+
+.Formulario_OT .multiselect .multiselect__select {
+  min-height: 33px;
+  height: 33px;
+}
+
+.Formulario_OT .multiselect .multiselect__select:before {
+  color: #15baee;
+  border-top-color: #15baee;
+}
+
+.separador {
+  height: 1px;
+  border: 0px;
+  width: 100%;
+  background: #dddddd;
 }
 
 .letra_mediana {
@@ -8006,7 +8049,7 @@ sup {
 
 .select-error {
   border: 1px solid red;
-  border-radius: 6px;
+  /*  border-radius: 6px;*/
 }
 
 sub, sup {
@@ -8019,6 +8062,12 @@ sub, sup {
 .nopadding {
   padding: 0 !important;
   margin: 0 !important;
+}
+
+@media screen and (min-width: 1620px) {
+  .boton_foro.error {
+    padding: 5px 28px;
+  }
 }
 
 @media screen and (max-width: 768px) {

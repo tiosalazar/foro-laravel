@@ -5,10 +5,9 @@
 <!-- Fecha : Enero 2017  -->
 <template>
 	<div class=""  id="encabezado_ot">
-		<div class="box-header with-border">
 			<h3 class="box-title"><span class="span_descripcion1">Detalle</span> <span class="span_descripcion2">OT</span></h3>
-		</div>
 		<div class="box-body">
+			<div style="height:22px"></div>
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group required ">
@@ -64,7 +63,7 @@
 							<span  class="help-block" v-show="errors.has('fecha_fin')">{{ errors.first('fecha_fin') }}</span>
 						</div>
 					</div>
-			 </div>	
+			 </div>
 
 				</div>
 				<div class="col-md-6">
@@ -243,7 +242,7 @@ module.exports= {
 			    decimals = decimals || 0; // por si la variable no fue fue pasada
 
 			    // si no es un numero o es igual a cero retorno el mismo cero
-			    if (isNaN(amount) || amount === 0) 
+			    if (isNaN(amount) || amount === 0)
 			        return parseFloat(0).toFixed(decimals);
 
 			    // si es mayor o menor que cero retorno el valor formateado como numero

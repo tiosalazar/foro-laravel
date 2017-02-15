@@ -10,14 +10,14 @@
       <div class="row">
       <div class="col-md-12 nopadding">
       <div style="height:22px;"></div>
-        <div class="form-group col-md-4" v-bind:class="{ 'has-error': errors.has('horas_area'+id_area) }">
+        <div class="form-group col-md-4 col-sm-6" v-bind:class="{ 'has-error': errors.has('horas_area'+id_area) }">
           <label for="horas_area" class="col-sm-6 nopadding"><h5>Horas de {{ area }}</h5> </label>
-          <div class="col-sm-5">
+          <div class="col-sm-6">
             <input type="text" @input="emitirData" style="margin-top: 12px;" :name="'horas_area'+id_area" @mouseout="guardarDatos"  v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control text-center" :id="'horas_area'+id_area" v-model="nhoras" :placeholder="'Numero de Horas '+area">
             <span  class="help-block" v-show="errors.has('horas_area'+id_area)">{{ errors.first('horas_area'+id_area) }}</span>
           </div>
         </div>
-        <div class="form-group col-md-6"  v-bind:class="{ 'has-error': h_pasadas }">
+        <div class="form-group col-md-6 col-sm-6"  v-bind:class="{ 'has-error': h_pasadas }">
           <label for="horas_area" class="col-sm-5 "><h5>Resumen de horas de {{ area }}</h5> </label>
           <div class="col-sm-7">
            <div class="campo_azul">
@@ -39,7 +39,7 @@
       <section class="col-md-12 nopadding" v-for="(ed,index) in requerimiento">
         <div class="form-group col-md-8" v-bind:class="{ 'has-error': errors.has('nombre_requerimiento'+index) }">
           <label class="sr-only" for="nombre_requerimiento">Nombre Requerimiento</label>
-          <input type="text" @mouseout="guardarDatos" :name="'nombre_requerimiento'+index" v-validate data-vv-rules="required|min:4" data-vv-as="Nombre Requerimiento" v-model="ed.model_nom" class="form-control" :id="'nombre_requerimiento'+index" placeholder="Nombre Requerimiento">
+          <input type="text" @mouseout="guardarDatos" :name="'nombre_requerimiento'+index" v-validate data-vv-rules="required|min:3" data-vv-as="Nombre Requerimiento" v-model="ed.model_nom" class="form-control" :id="'nombre_requerimiento'+index" placeholder="Nombre Requerimiento">
           <span  class="help-block" v-show="errors.has('nombre_requerimiento'+index)">{{ errors.first('nombre_requerimiento'+index) }}</span>
         </div>
         <div class="form-group  col-md-2"  v-bind:class="{ 'has-error': errors.has('no_horas_req'+index) }">
@@ -55,7 +55,7 @@
     </div>
     <div style="height:12px;"></div>
     <div class="row"  v-show="$parent.visualizacion != 'true'">
-      <div class="col-md-3" >
+      <div class="col-md-4" >
         <button type="button" @click="addRequerimiento" class="btn btn-block btn-success boton_foro add_req col-sm-3">Añadir Requerimiento</button>
       </div>
     </div>
@@ -70,9 +70,11 @@ module.exports={
   data () {
     return {
       requerimiento: [
-        {  model_nom:'', model_horas:0}
+        {  model_nom:'', model_horas:''}
       ],
       nhoras:'',
+      model_nom:'',
+      model_horas:0,
       v_resta:'',
       h_pasadas:false
     }
@@ -83,7 +85,7 @@ module.exports={
     },
     limpiar_datos: function(){
       if(this.limpiar_datos == true){
-          this. requerimiento=[
+          this.requerimiento=[
             {  model_nom:'', model_horas:0}
           ];
       this.nhoras='';

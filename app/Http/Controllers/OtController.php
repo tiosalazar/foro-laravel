@@ -152,7 +152,7 @@ class OtController extends Controller
             $area_actual=$value['areas_id'];
             array_push($data['listado_areas'], $value->Area);
             $data['requerimientos']['area']=$value['areas_id'];
-            $data['requerimientos']['horas']=$value['tiempo_estimado'];   
+            $data['requerimientos']['horas']=$value['tiempo_estimado'];
             foreach ($ot->Requerimiento_Ot as  $value) {
                 if ($value['areas_id'] ==  $area_actual ) {
                     $array_temporal= array('model_nom'=>$value['nombre'] ,'model_horas'=>(int)$value['horas']);
@@ -168,9 +168,10 @@ class OtController extends Controller
                $compra =Compras_Ot::findOrFail($value['id']);
                $compra->Tipo_Compra;
                $compra->Divisa;
+
              // $array_temporal['area']=$value['areas_id'];
                $array_temporal= array('tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'model_desc' => $value['descripcion'],
-                'model_provedor'=>'provedor' , 'model_valor'=> 'valor', 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
+                'model_provedor'=> $value['provedor'] , 'model_valor'=>  $value['valor'], 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
                 array_push($ingreso,$array_temporal);
                $data['compras']['compras']=$ingreso;
                //array_push($data['compras'],  $array_temporal);
@@ -178,12 +179,12 @@ class OtController extends Controller
            }
 
             array_push($data['final_req'], $data['requerimientos']);
-           
+            array_push($data['final_com'], $data['compras']);
          }
-          array_push($data['final_com'], $data['compras']);
+
 
         //var_dump( $data['final_com']);
-         // return response()->json( $data['listado_areas']);
+        //  return response()->json( $data['final_com']);
 
 
         //var_dump($data);
