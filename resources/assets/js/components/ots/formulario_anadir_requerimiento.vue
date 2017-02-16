@@ -227,12 +227,9 @@
 				this.$on('horas_extra_area', function(v,h) {
 					this.area_temporal=h;
 					this.t_extra=parseInt(v);
-					console.log(this.t_extra);
 					var resta_anterior=0;
 					resta_anterior=(!this.realizarCalculoHorasExtra())?0:this.realizarCalculoHorasExtra(this.area_temporal);
-
 					this.h_extra_total= this.t_extra+resta_anterior;
-          console.log("Horas Extra T"+this.h_extra_total);
 					//this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
 				});
 				/*
@@ -357,6 +354,7 @@
 							});
 						}else{
 							var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
+							datos_procesados.datos_encabezado.editor_id=arreglo_visualizar.editor_id;
 							console.log(datos_procesados);
 							this.$http.put('/api/v1/ots/'+arreglo_visualizar.datos_encabezado.id, datos_procesados)
 							.then(function(respuesta){

@@ -29,7 +29,7 @@
 							</div>
 							<div class="col-sm-6 border-left">
 								<ul>
-								@if(Auth::user()->hasRole('desarrollo') )
+									@if(Auth::user()->hasRole('cuentas') )
 									<div class="row">
 										<div class="col-sm-6">
 											<strong>Estado de OT:</strong>
@@ -37,9 +37,9 @@
 											<select_estados tipo_estado="2" cambiar_estado="{{$ot['id']}}" :select="{{$ot['estado']}}" ></select_estados>
 										</div>
 									</div>
-							    @else
-							    	<li><strong>Estado de OT:</strong><span> {{$ot['estado']['nombre']}}</span></li>	
-								@endif	
+									@else
+									<li><strong>Estado de OT:</strong><span> {{$ot['estado']['nombre']}}</span></li>	
+									@endif	
 									<li><strong>Horas totales:</strong><span> {{$ot['horas_totales']}} Horas</span></li>
 									<li><strong>Horas disponibles:</strong><span> {{$ot['horas_disponibles']}} Horas</span></li>
 									<li><strong>Horas adicionales:</strong><span> {{$ot['total_horas_extra']}} Horas</span></li>
@@ -83,11 +83,11 @@
 															</div>
 														</ul>
 													</div>
-													@if(Auth::user()->hasRole('desarrollo') )
+													@if(Auth::user()->hasRole('cuentas') )
 													<!-- /.col -->
 													<div class="row">
 														<div class="col-md-12">
-															<button type="button" onclick="abriModal()" class="btn btn-block text-center btn-danger boton_foro error  col-sm-3" >Solicitar Horas Extra </button>
+															<button type="button" onclick="abriModal('{{ $area["area"]["nombre"] }}')" class="btn btn-block text-center btn-danger boton_foro error  col-sm-3" >Solicitar Horas Extra </button>
 														</div>
 													</div>
 													@endif
@@ -101,20 +101,20 @@
 															</div>
 														</div>
 														<div class="row  ">
-														 <div class="col-md-12"> 
-															@foreach ($ot['requerimiento_ot'] as $requerimiento)
-															@if( $area['area']['id']==$requerimiento['areas_id'] )
-															<div class="listado_requerimientos_resumen">
-															  <ul>
-																<li><strong>Requerimiento No 1:</strong></li>
-																<li><span> {{$requerimiento['nombre'] }}</span></li>
-																<li><strong>Hora Requerimiento No 1:</strong></li>
-																<li><span> {{$requerimiento['horas'] }} Horas</span></li>
-																</ul>
-															</div>
-															@endif
-															@endforeach
-														 </div>	
+															<div class="col-md-12"> 
+																@foreach ($ot['requerimiento_ot'] as $requerimiento)
+																@if( $area['area']['id']==$requerimiento['areas_id'] )
+																<div class="listado_requerimientos_resumen">
+																	<ul>
+																		<li><strong>Requerimiento No 1:</strong></li>
+																		<li><span> {{$requerimiento['nombre'] }}</span></li>
+																		<li><strong>Hora Requerimiento No 1:</strong></li>
+																		<li><span> {{$requerimiento['horas'] }} Horas</span></li>
+																	</ul>
+																</div>
+																@endif
+																@endforeach
+															</div>	
 														</div>
 													</div>
 												</div>
@@ -129,11 +129,11 @@
 													</div>
 												</div>
 												<div class="row">
-												 <div class="col-md-12"> 
-												 	@foreach ($ot['compras_ot'] as $compra)
+													<div class="col-md-12"> 
+														@foreach ($ot['compras_ot'] as $compra)
 														@if( $area['area']['id']==compra['areas_id'] )
-															<div class="listado_requerimientos_resumen">
-															  <ul>
+														<div class="listado_requerimientos_resumen">
+															<ul>
 																<li><strong>Item:</strong></li>
 																<li><span> {{compra['tipos_compras_id'] }}</span></li>
 																<li><strong>Descripción:</strong></li>
@@ -144,11 +144,11 @@
 																<li><span> {{compra['divisas_id'] }}</span></li>
 																<li><strong>Valor:</strong></li>
 																<li><span> {{compra['valor'] }} </span></li>
-																</ul>
-															</div>
+															</ul>
+														</div>
 														@endif
-												   @endforeach
-												 </div>
+														@endforeach
+													</div>
 												</div>
 											</div>
 										</div>
@@ -159,85 +159,77 @@
 								<!-- /.tab-content -->
 							</div>
 							<div class="formulario_ot_panel">
-							<div class="row">
-							  <div class="col-md-12 ">
-							<div style="height:20px"></div>
-							   <div class="col-md-12 ">
-												<div class="row">
-													<div class="col-md-4">
-														<h4 class="titulo_interna_ot">Observaciones</h4>
+								<div class="row">
+									<div class="col-md-12 ">
+										<div style="height:20px"></div>
+										<div class="col-md-12 ">
+											<div class="row">
+												<div class="col-md-4">
+													<h4 class="titulo_interna_ot">Observaciones</h4>
+												</div>
+											</div>
+											<div style="height:20px"></div>
+											<div class="col-md-12">
+												<div class="box-body">
+													<div class="form-group">
+														{{ $ot['observaciones'] }}
 													</div>
 												</div>
-								<div style="height:20px"></div>
-								<div class="col-md-12">
-									<div class="box-body">
-										<div class="form-group">
-										 {{ $ot['observaciones'] }}
+											</div>
+											<div style="height:30px"></div>
 										</div>
 									</div>
 								</div>
-								<div style="height:30px"></div>
 							</div>
-							</div>
-						   </div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<!-- Modal-->
-	<div class="modal">
-	  <div class="col-md-12">
-	    <div class="contenido_modal">
-	       <div class="desc_modal">
-	           ¿Cuantas Horas adicionales necesita el Area de  para la<span> OT #  </span>
-	       </div>
-	       <div>
-	       	 <input type="text" name="horas_adicionales">
-	       	 <button> Enviar</button>
-	       </div>
-	    	
-	    </div>
-	  	
-	  </div>
 
-	  <!--Modal Cambiar de Pestaña-->
-				<div class="modal editarModal" >
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">×</span></button>
-								</div>
-								<div class="modal-body">
-									  ¿Cuantas Horas adicionales necesita el Area de  para la<span> OT #  </span>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-primary" >Enviar</button>
+		<!--Modal Cambiar de Pestaña-->
+		<div class="modal editarModal modal_personalizado" >
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">×</span></button>			
+					<div class="contenido_modal">
+						<div class="desc_modal">
+							¿Cuantas Horas adicionales necesita el Area de <span id="nombre_area" class="font-info"></span> para la<span class="font-info"> OT #{{$ot['referencia'] }}  {{$ot['nombre']}} ? </span>
+						</div>
+						<form action=""> 
+						<div class="form-group col-sm-6 col-sm-offset-3 col-xs-offset-3 ">
+							<input type="text"  class="form-control" required="required" pattern="^([0-9].[0-9]|[0-9]*){1,10}$" title="Ejemplo... 10 ó 10.5"  placeholder="No horas adicionales" name="horas_adicionales">
+						</div>
+						<div class="row">
+							<div class="col-sm-4 col-sm-offset-4 col-xs-offset-4 col-xs-6 col-xs-4">
+								<div style="height:20px"></div>
+								<div class="text-center" >
+								<button  type="submit" class="btn btn-block text-center  boton_foro succes  col-sm-3" > Enviar</button>
 								</div>
 							</div>
 						</div>
+						</form>
 					</div>
-	      
+				</div>
+			</div>
+		</div>
+
 		
 
 	</div>
 </div>
 
-
-
-
 </div>
 @endsection
 
-<script>
-$(document).ready(function(){
-function abriModal() {
-		$('.editarModal').modal('show');
-	    console.log("entrooo2");
-}
+<script type="text/javascript">
 
-});
+	function abriModal(nombre) {
+		$('#nombre_area').text(nombre);
+		$('.editarModal').modal('show');
+		console.log("entrooo2");
+	}
+
 </script>
 

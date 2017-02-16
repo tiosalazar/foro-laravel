@@ -212,6 +212,33 @@ input[type=radio]:checked + label:before {
 }
 
 }
+.modal_personalizado{
+  .close {
+    font-size: 43px;
+    margin-right: 20px;
+    color: $azul-claro;
+    text-shadow: 0 1px 0 $azul-claro;
+}
+.boton_foro:hover{
+  color: white;
+}
+
+ .modal-content {
+    background: #003a81;
+ }
+
+.contenido_modal {
+    padding: 50px;
+    text-align: center;
+    color:white;
+}
+.desc_modal {
+    font-size: 1.5em;
+    padding: 20px 21%;
+}
+
+}
+
 
 #encabezado_ot{
   .form-group {
