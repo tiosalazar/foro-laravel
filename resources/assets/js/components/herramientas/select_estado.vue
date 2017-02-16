@@ -59,6 +59,13 @@
     created: function(){
       console.log(this);
       this.fetchTips();
+      //Valido que la propiedad encargado que traigo de la tarea tenga datos
+        if (typeof this.select != 'undefined' || this.select != null) {
+          // this.value=this.select;
+          this.updateSelected(this.select);
+          this.id_estado=this.select.id;
+        }
+        
     },
     methods:{
       fetchTips: function(){
