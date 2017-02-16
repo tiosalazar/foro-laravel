@@ -7,6 +7,7 @@
 		          <th >Cliente</th>
 		          <th >Requerimiento</th>
 		          <th >Fecha de Solicitud</th> 
+		          <th >Encargado</th> 
 		          <th >Estado</th> 
 		          <th >Acciones</th>
 		        </tr>
@@ -89,10 +90,11 @@
 					{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre' },
 					{ data: 'nombre_tarea', name: 'nombre_tarea' },
 					{ data: 'created_at', name: 'created_at' },
+					{ data: 'usuarioencargado.nombre', name: 'usuarioencargado.nombre' },
 				], 
 				columnDefs: [
 					{
-						"targets": [4],
+						"targets": [5],
 						"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
 						  	return '<span class="label label-estado estado-'+data.estado.tipos_estados_id+'-'+data.estado.id+' ">'+data.estado.nombre+'</span>';
@@ -100,7 +102,7 @@
 						     }
 					},
 					{
-						"targets": [5],
+						"targets": [6],
 						"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
 						    	return '<a href="/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block"   aria-label="View">Ver tarea</a>';        
