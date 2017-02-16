@@ -34,14 +34,19 @@
 
   module.exports= {
     components: {Multiselect},
-    props: ['tipo_estado','select'], //en la propiedad select se va a meter la opción por defecto
+    props: ['tipo_estado','select','cambiar_estado'], //en la propiedad select se va a meter la opción por defecto
     data () {
       return {
         estados:[],
         id_estado:0,
         isTouched: false,
-        // value:'',
+        option_toast:{
+        timeOut: 5000,
+        "positionClass": "toast-top-center",
+        "closeButton": true,
+        }
       }
+      
     },
     computed:{
       isInvalid () {
@@ -70,6 +75,21 @@
           this.id_estado = newSelected.id;
           this.value=newSelected;
           this.$parent.$emit('select_estado',newSelected);
+          if (this.cambiar_estado != '' && this.cambiar_estado != null ) {
+            this.$http.put('/api/v1/actualizar_estado_ot/'+this.cambiar_estado, newSelected.id)
+            .then(function(respuesta){
+              if (respuesta.status != '200') {
+                  if (Object.keys(respuesta.obj).length>0) {
+                    toastr.error("Ocurrio un error al cambiar el estado, consulte con soporte",respuesta.body.msg,this.option_toast);
+                    return false;
+                  }
+                }else{
+                  toastr.success(respuesta.body.msg,'',this.option_toast);
+                }
+               console.log(respuesta);
+            }.bind(this));
+
+          }
         }else {
           this.id_estado = 0;
           this.$parent.$emit('select_estado','');//emito la variable vasia para comprobar en el padre

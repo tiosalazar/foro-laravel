@@ -5,6 +5,9 @@
   .border-right{
     border-right: 1px solid $borde-gris;
   }
+  .border-left {
+      border-left: 1px solid $borde-gris;
+  }
   .form-control{
     border-radius:0px;
   }
@@ -43,6 +46,7 @@
  color: #626262;
  font-weight: 600;
 }
+
 #seccion_compra{
 .disabled{
   border: 0px;
@@ -93,6 +97,9 @@
   }
 }
 
+.detalle_horas{
+  margin-top: 25px;
+}
 
 }
 
@@ -189,6 +196,23 @@ input[type=radio]:checked + label:before {
   }
 
 }
+#formulario_ot_actualizacion{
+  .titulo_interna_ot{
+   color: $azul-profundo;
+  }
+
+  .campo_fecha{
+     font-weight: 600;
+
+  }
+  .listado_requerimientos_resumen {
+    display: inline-block;
+    width: 47%;
+    padding: 20px 50px;
+}
+
+}
+
 #encabezado_ot{
   .form-group {
     padding: 12px 0px 46px 0px;

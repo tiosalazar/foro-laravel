@@ -7830,6 +7830,10 @@
   border-right: 1px solid #d8d8d8;
 }
 
+.Formulario_OT .border-left {
+  border-left: 1px solid #d8d8d8;
+}
+
 .Formulario_OT .form-control {
   border-radius: 0px;
 }
@@ -7947,6 +7951,10 @@
   border-top-color: #15baee;
 }
 
+.Formulario_OT .detalle_horas {
+  margin-top: 25px;
+}
+
 .separador {
   height: 1px;
   border: 0px;
@@ -8034,6 +8042,20 @@
   height: 141%;
   margin-top: -4%;
   border: 0;
+}
+
+#formulario_ot_actualizacion .titulo_interna_ot {
+  color: #002E60;
+}
+
+#formulario_ot_actualizacion .campo_fecha {
+  font-weight: 600;
+}
+
+#formulario_ot_actualizacion .listado_requerimientos_resumen {
+  display: inline-block;
+  width: 47%;
+  padding: 20px 50px;
 }
 
 #encabezado_ot .form-group {

@@ -35,6 +35,7 @@ Route::group(['prefix' => 'v1','middleware' => 'cors'], function () {
      Route::resource('tareas', 'TareaController');
      // OTs
      Route::resource('ots', 'OtController');
+     Route::put('actualizar_estado_ot/{id}', 'OtController@updateEstadoOT');
 
      Route::get('tipos_compra', function (Request $request) {
                  $tipo_compra= App\Tipos_Compra::all();
