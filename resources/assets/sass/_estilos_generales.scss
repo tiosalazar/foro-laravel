@@ -1,7 +1,13 @@
 // Botones
-/* .btn{
-	padding: 2px 12px;
-} */
+.btn{
+	padding: 4px 12px;
+}
+.btn-primary{
+	background-color: $azul-profundo;
+}
+.btn-info{
+	background-color: $azul-claro;
+}
 // Estados Datatable
 .estado-1-1{
 	background-color: $estado-realizado;

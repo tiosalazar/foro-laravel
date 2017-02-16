@@ -13,28 +13,34 @@
 		    </thead>
         </table>
         <form method="POST" id="search-form" class="form-inline" role="form">
-	        <select name="estados" id="estados"  class="form-control multiselect">
-	        	<option value="">Estados</option>
-	        </select>
-	        <select name="year" id="year"  class="form-control multiselect">
-	        	<option value="">Año</option>
-	        </select>
-	        <select name="month" id="month"  class="form-control multiselect">
-	        	<option value="">Mes</option>
-	        	<option value="01">Enero</option>
-	        	<option value="02">Febrero</option>
-	        	<option value="03">Marzo</option>
-	        	<option value="04">Abril</option>
-	        	<option value="05">Mayo</option>
-	        	<option value="06">Junio</option>
-	        	<option value="07">Julio</option>
-	        	<option value="08">Agosto</option>
-	        	<option value="09">Septiembre</option>
-	        	<option value="10">Octubre</option>
-	        	<option value="11">Noviembre</option>
-	        	<option value="12">Diciembre</option>
-	        </select>
-            <button type="submit" class="btn btn-primary btn-flat">Buscar</button>
+	        <div class="drop">
+	        	<select name="estados" id="estados"  class="form-control multiselect">
+		        	<option value="">Estados</option>
+		        </select>
+	        </div>
+	        <div class="drop">
+	        	<select name="year" id="year"  class="form-control multiselect">
+		        	<option value="">Año</option>
+		        </select>
+	        </div>
+	        <div class="drop">
+	        	<select name="month" id="month"  class="form-control multiselect">
+		        	<option value="">Mes</option>
+		        	<option value="01">Enero</option>
+		        	<option value="02">Febrero</option>
+		        	<option value="03">Marzo</option>
+		        	<option value="04">Abril</option>
+		        	<option value="05">Mayo</option>
+		        	<option value="06">Junio</option>
+		        	<option value="07">Julio</option>
+		        	<option value="08">Agosto</option>
+		        	<option value="09">Septiembre</option>
+		        	<option value="10">Octubre</option>
+		        	<option value="11">Noviembre</option>
+		        	<option value="12">Diciembre</option>
+		        </select>
+	        </div>
+            <button type="submit" class="btn btn-info btn-flat">Buscar</button>
         </form>
 	</div>
 </template>
@@ -64,9 +70,9 @@
 		mounted() {
 			let that = this;
 			var oTable = $('#tabla_tareas').DataTable({
-				 dom: "<'row'<'col-xs-12'<'col-xs-5 selects'><'col-xs-5'f><'col-xs-2'l>>r>"+
+				 dom: "<'row'<'col-xs-12'<'row filtros'<'col-xs-4 selects'><'col-xs-6'f><'col-xs-2'l>>>r>"+
 			            "<'row'<'col-xs-12't>>"+
-			            "<'row'<'col-xs-12'<'col-xs-6'i><'col-xs-6'p>>>",
+			            "<'row'<'col-xs-12'<'row'<'col-xs-6'i><'col-xs-6'p>>>>",
 				processing: true,
 				serverSide: true,
 				// ajax: "/api/v1/tareas",
@@ -90,7 +96,6 @@
 						"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
 						  	return '<span class="label label-estado estado-'+data.estado.tipos_estados_id+'-'+data.estado.id+' ">'+data.estado.nombre+'</span>';
-						       	// return (full.estado==1)? 'Activo' : 'Inactivo';
 
 						     }
 					},
@@ -98,7 +103,7 @@
 						"targets": [5],
 						"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
-						    	return '<a href="/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver tarea</a>';        
+						    	return '<a href="/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block"   aria-label="View">Ver tarea</a>';        
 						   	}
 					}
 				],
@@ -132,8 +137,6 @@
 		    	 		option.attr('value', item.id).text(item.nombre);
 		    	 		$('#estados').append(option);
 		    	 	})
-		    	 	// Agregar las opciones al select
-		    	 	// $('#search-form').appendTo('.selects');
 				})
 				$.ajax( "/years_tarea" )
 		    	.done(function(response) {
@@ -150,9 +153,8 @@
 		    	 		option.attr('value', item).text(item);
 		    	 		$('#year').append(option);
 		    	 	})
-		    	 	// Agregar las opciones al select
-		    	 	// $('#search-form').appendTo('.selects');
 				})
+				// Agregar las formulario a datatable
 				$('#search-form').appendTo('.selects');
 			    
 			} );

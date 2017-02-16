@@ -4,21 +4,21 @@
 	padding: 15px;
 	.multiselect{
 		border-radius: 0;
-		min-height: 25px;
-		height: 23px;
+		min-height: 28px;
+		height: 28px;
 		padding: 0;
 		input{
-			height: 22px;
+			height: 26px;
 		}
 		.multiselect__tags{
-			min-height: 25px;
-			height: 25px;
+			min-height: 28px;
+			height: 28px;
 			padding-top:0;
 			border-radius: 0;
 		}
 		.multiselect__select{
-			min-height: 25px;
-			height: 25px;
+			min-height: 28px;
+			height: 28px;
 			&:before{
 				color:$azul-claro;
 				border-top-color: $azul-claro;
@@ -32,12 +32,12 @@
 		border-radius: 0;
 	}
 	input{
-		height: 25px;
+		height: 28px;
 	}
 	.input-group.date{
 		.datepicker {
 			padding: 0 12px;
-			height: 25px;
+			height: 28px;
 			position: relative;
 			input{
 				width: 100%;
@@ -76,14 +76,15 @@
 }
 .label-estado{
 	display: block;
-	padding: 1px 5px;
-	height: 22px;
-	font-size: 12px;
+	padding: 3px 5px;
+	height: 28px;
+	font-size: 14px;
 	width: 100%;
 	border-radius: 0;
 	line-height: 1.5;
 	font-weight: 300;
 }
+// Tabla Foro
 .datatable-foro{
 	thead th{
 		text-align: center;
@@ -93,6 +94,43 @@
 	td{
 		text-align: center;
 		color:$font-gris;
+	}
+}
+#tabla_tareas_wrapper{
+	label{
+		width: 100%;
+		input{
+			max-width: 290px;
+		}
+	}
+	.filtros{
+		div:not(:last-child){
+			border-right: 1px solid $borde-gris;
+		}
+		.drop{
+			display: inline-block;
+			position: relative;
+			&:before{
+				width: 0; 
+				height: 0; 
+				display: block;
+				border-left: 4px solid transparent;
+				border-right: 4px solid transparent;
+				border-top: 4px solid $azul-claro;
+				position: absolute;
+				top: 40%;
+				right: 5px;
+				content: " ";
+				z-index: 98;
+			}
+		}
+		select{
+			padding: 0px 10px;
+			-webkit-appearance: none;
+		    -moz-appearance: none;
+		    appearance: none;
+			
+		}
 	}
 }
 

@@ -10,7 +10,15 @@
 }
 
 .btn {
-  padding: 2px 12px;
+  padding: 4px 12px;
+}
+
+.btn-primary {
+  background-color: #002E60;
+}
+
+.btn-info {
+  background-color: #15baee;
 }
 
 .estado-1-1 {
@@ -8522,25 +8530,25 @@ body {
 
 .tarea .multiselect {
   border-radius: 0;
-  min-height: 25px;
-  height: 23px;
+  min-height: 28px;
+  height: 28px;
   padding: 0;
 }
 
 .tarea .multiselect input {
-  height: 22px;
+  height: 26px;
 }
 
 .tarea .multiselect .multiselect__tags {
-  min-height: 25px;
-  height: 25px;
+  min-height: 28px;
+  height: 28px;
   padding-top: 0;
   border-radius: 0;
 }
 
 .tarea .multiselect .multiselect__select {
-  min-height: 25px;
-  height: 25px;
+  min-height: 28px;
+  height: 28px;
 }
 
 .tarea .multiselect .multiselect__select:before {
@@ -8557,12 +8565,12 @@ body {
 }
 
 .tarea input {
-  height: 25px;
+  height: 28px;
 }
 
 .tarea .input-group.date .datepicker {
   padding: 0 12px;
-  height: 25px;
+  height: 28px;
   position: relative;
 }
 
@@ -8604,9 +8612,9 @@ body {
 
 .label-estado {
   display: block;
-  padding: 1px 5px;
-  height: 22px;
-  font-size: 12px;
+  padding: 3px 5px;
+  height: 28px;
+  font-size: 14px;
   width: 100%;
   border-radius: 0;
   line-height: 1.5;
@@ -8622,6 +8630,44 @@ body {
 .datatable-foro td {
   text-align: center;
   color: #6F6F6F;
+}
+
+#tabla_tareas_wrapper label {
+  width: 100%;
+}
+
+#tabla_tareas_wrapper label input {
+  max-width: 290px;
+}
+
+#tabla_tareas_wrapper .filtros div:not(:last-child) {
+  border-right: 1px solid #d8d8d8;
+}
+
+#tabla_tareas_wrapper .filtros .drop {
+  display: inline-block;
+  position: relative;
+}
+
+#tabla_tareas_wrapper .filtros .drop:before {
+  width: 0;
+  height: 0;
+  display: block;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #15baee;
+  position: absolute;
+  top: 40%;
+  right: 5px;
+  content: " ";
+  z-index: 98;
+}
+
+#tabla_tareas_wrapper .filtros select {
+  padding: 0px 10px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .footer_tarea {
