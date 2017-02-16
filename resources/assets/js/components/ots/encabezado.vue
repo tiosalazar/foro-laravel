@@ -101,16 +101,30 @@
 							<span  class="help-block" v-show="errors.has('horas_totales')">{{ errors.first('horas_totales') }}</span>
 						</div>
 					</div>
+					<div class="row">
+				<div :class="{'col-md-6': $parent.visualizacion =='true','col-md-12': $parent.visualizacion !='true'}" >
 					<div class="form-group required" v-bind:class="{ 'has-error': datos_encabezado.h_pasadas }">
 						<label for="horas_disponibles" class="col-sm-12 " ><sup>*</sup> Horas disponibles </label>
 						<div class="col-sm-12">
-						   <div class="campo_azul">
+						   <div class="campo_azul " :class="{'col-sm-12': $parent.visualizacion =='true','col-sm-4': $parent.visualizacion !='true'}">
 						   	{{ horas_disponibles }}
 						   </div>
 							<!--<input type="text" class="form-control" required="required"  id="horas_disponibles" v-model=" horas_disponibles" disabled placeholder="Numero de Horas Disponibles">
 							  -->
 							 <span  class="help-block" v-show="datos_encabezado.h_pasadas">Se ha pasado del numero de horas permitidas para el Area</span>
 						</div>
+					</div>
+					</div>
+					<div class="col-md-6" v-show="$parent.visualizacion == 'true'">
+					<div class="form-group required" >
+						<label  class="col-sm-12 " > Total Horas Adicionales  </label>
+						<div class="col-sm-12">
+						   <div class="campo_azul col-sm-12">
+						   	{{ $parent.h_extra_total }}
+						   </div>
+						</div>
+					</div>
+				</div>
 					</div>
 				</div>
 				<div class="col-md-4 col-md-offset-4" >
@@ -403,7 +417,7 @@ module.exports= {
 
 }
 
-  
+
 
 }
 </script>

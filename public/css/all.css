@@ -7826,6 +7826,10 @@
   padding: 5%;
 }
 
+.Formulario_OT .border-right {
+  border-right: 1px solid #d8d8d8;
+}
+
 .Formulario_OT .form-control {
   border-radius: 0px;
 }
@@ -7835,7 +7839,6 @@
 }
 
 .Formulario_OT .campo_azul {
-  width: 40%;
   color: white;
   margin-top: 12px;
   text-align: center;
@@ -8518,29 +8521,6 @@ body {
   border-top-color: #15baee;
 }
 
-.tarea .desc-ot {
-  padding: 0 0 25px;
-  margin-bottom: 40px;
-}
-
-.tarea .desc-ot strong {
-  color: #15baee;
-}
-
-.tarea .desc-ot ul {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.tarea .desc-ot ul li {
-  margin: 7px 0;
-}
-
-.tarea .with-border {
-  border-bottom: 1px solid #d8d8d8;
-}
-
 .tarea .input-group-addon {
   padding: 4px 10px;
 }
@@ -8621,6 +8601,29 @@ body {
   position: absolute;
   width: 100%;
   bottom: 0;
+}
+
+.desc-ot {
+  padding: 0 0 25px;
+  margin-bottom: 40px;
+}
+
+.desc-ot strong {
+  color: #15baee;
+}
+
+.desc-ot ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.desc-ot ul li {
+  margin: 7px 0;
+}
+
+.with-border {
+  border-bottom: 1px solid #d8d8d8;
 }
 
 .ver_tarea {

@@ -2,6 +2,9 @@
   .padding_ots{
         padding: 5%;
   }
+  .border-right{
+    border-right: 1px solid $borde-gris;
+  }
   .form-control{
     border-radius:0px;
   }
@@ -10,7 +13,6 @@
   }
 
   .campo_azul {
-    width: 40%;
     color: white;
     margin-top: 12px;
     text-align: center;

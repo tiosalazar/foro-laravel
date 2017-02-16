@@ -24,18 +24,18 @@ Route::group(['middleware' => 'auth'], function () {
     //    Route::get('/link1', function ()    {
 //        // Uses Auth Middleware
 //    });
- 
+
 
    Route::get('/','HomeController@index');
 
    //Ruta para cargar imagen de perfil
   Route::post('/usuariosuploadimagen','HomeController@SubirImagen');
 
-   
+
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
-   
+
    //OTS
 
     Route::get('/crear_ot', function()
@@ -48,7 +48,8 @@ Route::group(['middleware' => 'auth'], function () {
       });
 
 
-    Route::get('/editar_ot/{id}','OtController@show');
+    Route::get('/editar_ot/{id}','OtController@edit');
+    Route::get('/ver_ot/{id}','OtController@show');
 
     Route::get('/listar_ot', function()
       {
@@ -158,7 +159,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('editar_usuario/{id}','UserController@editar_usuario');
 
-    
+
 
 });
 

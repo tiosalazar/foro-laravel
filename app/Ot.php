@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Ot extends Model
 {
 
- 
+
   /**
   * The attributes that are mass assignable.
   *
   * @var array
   */
   protected $fillable = [
-    'nombre','referencia','fee','horas_totales','horas_disponibles','valor', 'observaciones', 'fecha_inicio', 'fecha_final', 'clientes_id', 'usuarios_id','estados_id',
+    'nombre','referencia','fee','horas_totales','horas_disponibles','total_horas_extra','valor', 'observaciones', 'fecha_inicio', 'fecha_final', 'clientes_id', 'usuarios_id','estados_id',
   ];
 
 

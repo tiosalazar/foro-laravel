@@ -23,24 +23,6 @@
 			}
 		}
 	}
-	.desc-ot{
-		padding: 0 0 25px;
-		margin-bottom: 40px;
-		strong{
-			color:$azul-claro;
-		}
-		ul{
-			padding: 0;
-			margin: 0;
-			list-style: none;
-			li{
-				margin: 7px 0;
-			}
-		}
-	}
-	.with-border{
-		border-bottom: 1px solid $borde-gris;
-	}
 	.input-group-addon{
 		padding: 4px 10px;
 	}
@@ -117,16 +99,33 @@
 	width: 100%;
 	bottom: 0;
 }
-
+.desc-ot{
+	padding: 0 0 25px;
+	margin-bottom: 40px;
+	strong{
+		color:$azul-claro;
+	}
+	ul{
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		li{
+			margin: 7px 0;
+		}
+	}
+}
+.with-border{
+	border-bottom: 1px solid $borde-gris;
+}
 //Ver tarea
 .ver_tarea{
-		
+
 	padding: 70px;
 	.desc-ot{
 		padding-bottom: 15px;
 	}
 	textarea{
-		min-height: 200px; 
+		min-height: 200px;
 	}
 	label{
 		color:$azul-claro;

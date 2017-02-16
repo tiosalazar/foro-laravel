@@ -12,7 +12,8 @@ class Historico_Ot extends Model
    * @var array
    */
   protected $fillable = [
-      'fecha_final', 'usuarios_id', 'ots_id', 'ots_estados_id',
+    'nombre','referencia','fee','horas_totales','horas_disponibles','total_horas_extra','valor', 'observaciones', 'fecha_inicio', 'fecha_final', 'clientes_id', 'usuarios_id','estados_id',
+ 'editor_id', 'ots_id',
   ];
 
   /**

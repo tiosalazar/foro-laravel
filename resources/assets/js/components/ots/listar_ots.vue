@@ -1,43 +1,43 @@
 <template>
 	<div>
-		
+
 		<table class="table table-striped table-hover datatable-foro table-bordered dataTable no-footer" id="tabla_usuarios">
 			<thead>
-				<tr>    
+				<tr>
 					<th >Num. OT </th>
 					<th >Nombre</th>
 					<th >Valor</th>
-					<th >Fee</th> 
-					<th >Horas Totales</th> 
+					<th >Fee</th>
+					<th >Horas Totales</th>
 					<th >Observaciones</th>
-					<th >Fecha Inicio</th> 
+					<th >Fecha Inicio</th>
 					<th >Fecha Final</th>
 					<th >Cliente</th>
 					<th >Usuario</th>
-					<th >Estado</th> 
-					<th >Acciones</th> 
+					<th >Estado</th>
+					<th >Acciones</th>
 				</tr>
 			</thead>
 
 		</table>
-		
 
 
-	</div>	
+
+	</div>
 </template>
 
 
 <script>
-	
+
 	import table from 'datatables.net';
 
 	module.exports={
-		
+
 		data(){
 			return{
 				list_usuarios:[],
 				boton_hidden:false,
-				
+
 			}
 		},
 		created: function(){
@@ -48,7 +48,7 @@
 		mounted () {
 
 
-		},  
+		},
 		methods:{
 
 			list_usuarios_api: function(){
@@ -70,7 +70,7 @@
 						{ data: 'fecha_final', name: 'fecha_final' },
 						{ data: 'cliente.nombre', name: 'cliente' },
 						{ data: 'usuario.nombre', name: 'usuario' }
-						], 
+						],
 						columnDefs: [
 						  {
 							"targets": [6],
@@ -112,17 +112,17 @@
 								"targets": [11],
 								"data": null,
 					      "render": function(data, type, full) { // Devuelve el contenido personalizado
-					      	return '<a href="visualizar_ot/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver OT</a>'+'<a href="editar_ot/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Editar OT</a>';
-					              
+					      	return '<a href="ver_ot/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver OT</a>'+'<a href="editar_ot/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Editar OT</a>';
+
 					      }
 					  }
-					 
+
 					],
 					autoWidth: true,
 					responsive: true,
 					language: {
 						"url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
-					},      
+					},
 
 				});
 

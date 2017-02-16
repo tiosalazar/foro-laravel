@@ -135,61 +135,20 @@ class OtController extends Controller
      */
     public function show($id)
     {
+        $ot=OT::findOrFail($id);
+        $ot->Tiempos_x_Area;
+        $ot->Usuario;
+        $ot->Cliente;
+        $ot->Estado;
+        $ot->Requerimiento_Ot;
+        $ot->Compras_Ot;
+        $listado_areas=[];
+        foreach ($ot->Tiempos_x_Area as  $value) {
+           array_push($listado_areas, $value->Area);
+       }
 
-         $ot=OT::findOrFail($id);
-         $data=[];
-         $data['datos_encabezado']=$ot;
-         $data['datos_encabezado']['cliente']=$ot->cliente;
-         $data['datos_encabezado']['ejecutivo']=$ot->Usuario;
-         $data['datos_encabezado']['estado']=$ot->Estado;
-         $data['compras']=[];
-         $data['final_req']=[];
-         $data['final_com']=[];
-         $array_temporal=[];
-         $data['listado_areas']=[];
-         $data['requerimientos']['requerimientos']=[];
-        // $requerimientos= $ot->Requerimiento_Ot;
-         foreach ($ot->Tiempos_x_Area as  $value) {
-            $area_actual=$value['areas_id'];
-            array_push($data['listado_areas'], $value->Area);
-            $data['requerimientos']['area']=$value['areas_id'];
-            $data['requerimientos']['horas']=$value['tiempo_estimado_ot'];
-            foreach ($ot->Requerimiento_Ot as  $value) {
-                if ($value['areas_id'] ==  $area_actual ) {
-                    $array_temporal= array('model_nom'=>$value['nombre'] ,'model_horas'=>(int)$value['horas']);
-                    $data['requerimientos']['requerimientos']=json_encode($array_temporal);
-                  /// array_push($data['requerimientos']['requerimientos'], json_encode($array_temporal));
-                }
-           }
-           $array_temporal=[];
-           $ingreso=[];
-           foreach ($ot->Compras_Ot as  $value) {
-               if ($value['areas_id'] ==  $area_actual ) {
-                $data['compras']['area']=$value['areas_id'];
-               $compra =Compras_Ot::findOrFail($value['id']);
-               $compra->Tipo_Compra;
-               $compra->Divisa;
-
-             // $array_temporal['area']=$value['areas_id'];
-               $array_temporal= array('tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'model_desc' => $value['descripcion'],
-                'model_provedor'=> $value['provedor'] , 'model_valor'=>  $value['valor'], 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
-                array_push($ingreso,$array_temporal);
-               $data['compras']['compras']=$ingreso;
-               //array_push($data['compras'],  $array_temporal);
-              }
-           }
-
-            array_push($data['final_req'], $data['requerimientos']);
-            array_push($data['final_com'], $data['compras']);
-         }
-
-
-        //var_dump( $data['final_com']);
-        //  return response()->json( $data['final_com']);
-
-
-        //var_dump($data);
-        return view('admin.ots.editar_ot')->with('arregloOT', json_encode($data));
+    // return response()->json( $ot);
+      return view('admin.ots.visualizar_ot')->with('ot', $ot)->with('listado_areas', $listado_areas);
     }
     /**
      * Show the form for editing the specified resource.
@@ -199,7 +158,61 @@ class OtController extends Controller
      */
     public function edit($id)
     {
-        //
+        $ot=OT::findOrFail($id);
+        $data=[];
+        $data['datos_encabezado']=$ot;
+        $data['datos_encabezado']['cliente']=$ot->cliente;
+        $data['datos_encabezado']['ejecutivo']=$ot->Usuario;
+        $data['datos_encabezado']['estado']=$ot->Estado;
+        $data['compras']=[];
+        $data['final_req']=[];
+        $data['final_com']=[];
+        $array_temporal=[];
+        $data['listado_areas']=[];
+        $data['requerimientos']['requerimientos']=[];
+       // $requerimientos= $ot->Requerimiento_Ot;
+        foreach ($ot->Tiempos_x_Area as  $value) {
+           $area_actual=$value['areas_id'];
+           array_push($data['listado_areas'], $value->Area);
+           $data['requerimientos']['area']=$value['areas_id'];
+           $data['requerimientos']['textra']=$value['tiempo_extra'];
+           $data['requerimientos']['horas']=$value['tiempo_estimado_ot'];
+           foreach ($ot->Requerimiento_Ot as  $value) {
+               if ($value['areas_id'] ==  $area_actual ) {
+                   $array_temporal= array('model_nom'=>$value['nombre'] ,'model_horas'=>(int)$value['horas']);
+                   $data['requerimientos']['requerimientos']=json_encode($array_temporal);
+                 /// array_push($data['requerimientos']['requerimientos'], json_encode($array_temporal));
+               }
+          }
+          $array_temporal=[];
+          $ingreso=[];
+          foreach ($ot->Compras_Ot as  $value) {
+              if ($value['areas_id'] ==  $area_actual ) {
+               $data['compras']['area']=$value['areas_id'];
+              $compra =Compras_Ot::findOrFail($value['id']);
+              $compra->Tipo_Compra;
+              $compra->Divisa;
+
+            // $array_temporal['area']=$value['areas_id'];
+              $array_temporal= array('tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'model_desc' => $value['descripcion'],
+               'model_provedor'=> $value['provedor'] , 'model_valor'=>  $value['valor'], 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
+               array_push($ingreso,$array_temporal);
+              $data['compras']['compras']=$ingreso;
+              //array_push($data['compras'],  $array_temporal);
+             }
+          }
+
+           array_push($data['final_req'], $data['requerimientos']);
+           array_push($data['final_com'], $data['compras']);
+        }
+
+
+       //var_dump( $data['final_com']);
+       //  return response()->json( $data['final_com']);
+
+
+       //var_dump($data);
+       return view('admin.ots.editar_ot')->with('arregloOT', json_encode($data));
     }
 
     /**
@@ -242,6 +255,7 @@ class OtController extends Controller
                          foreach ($requerimientos as $requerimiento) {
                          /*Agrego el tiempo por Area */
                          $tiempos_x_area[$index]->tiempo_estimado_ot=$requerimiento['horas'];
+                         $tiempos_x_area[$index]->tiempo_extra=$requerimiento['tiempo_extra'];
                          $tiempos_x_area[$index]->areas_id=$requerimiento['area'];
                          $tiempos_x_area[$index]->save();
                            /*El siguiente for recorre el listado de requerimientos y los agrega */

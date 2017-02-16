@@ -140,8 +140,10 @@
 					datos_requerimiento:[],
 					datos_compras:[],
 					descripcion_ot:'',
+					h_extra_total:0,
 					message:'',
 					h_area:0,
+					t_extra:0,
 					id_tab:'',
 					area_temporal:'',
 					limpiarDatos:false,
@@ -150,17 +152,6 @@
 					form_compras_validado: false,
 					validar_compras:false,
 					diabled_compras:true,
-					errors_return:{
-						'nombre':'',
-						'apellido':'',
-						'email':'',
-						'password':'',
-						'cargo':'',
-						'telefono':'',
-						'horas_disponible':'',
-						'fecha_nacimiento':''
-
-					},
 					option_toast:{
 						timeOut: 5000,
 						"positionClass": "toast-top-center",
@@ -200,10 +191,10 @@
 				*/
 				this.$on('horas_totales', function(v) {
 					this.horas_totales=parseInt(v);
-					console.log("Horas totales : "+this.horas_totales);
+					//console.log("Horas totales : "+this.horas_totales);
 					var resta_anterior=0;
 					resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(this.area_temporal);
-					console.log("Horas totales Resta : "+resta_anterior);
+					//console.log("Horas totales Resta : "+resta_anterior);
 					this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
 				});
 				/*
@@ -212,10 +203,10 @@
 				this.$on('horas_area', function(v,h) {
 					this.area_temporal=h;
 					this.h_area=parseInt(v);
-					console.log("This Area :"+h);
+					//console.log("This Area :"+h);
 					var resta_anterior=0;
 					resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(this.area_temporal);
-					console.log("Resta Anterio Horas AArea"+resta_anterior);
+					//console.log("Resta Anterio Horas AArea"+resta_anterior);
 					this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
 				});
 				/*
@@ -229,6 +220,20 @@
 				*/
 				this.$on('datos_requerimiento', function(v) {
 					this.datos_requerimiento=v;
+				});
+				/*
+				Escucha las horas extra del Area a Editar
+				*/
+				this.$on('horas_extra_area', function(v,h) {
+					this.area_temporal=h;
+					this.t_extra=parseInt(v);
+					console.log(this.t_extra);
+					var resta_anterior=0;
+					resta_anterior=(!this.realizarCalculoHorasExtra())?0:this.realizarCalculoHorasExtra(this.area_temporal);
+
+					this.h_extra_total= this.t_extra+resta_anterior;
+          console.log("Horas Extra T"+this.h_extra_total);
+					//this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
 				});
 				/*
 				Escucha el arreglo completo de los datos de las compras asociadas, si las tiene
@@ -302,6 +307,7 @@
 								fee: this.datos_encabezado.fee,
 								horas_totales:this.datos_encabezado.horas_totales,
 								horas_disponibles:this.datos_encabezado.horas_disponibles,
+								total_horas_extra:this.h_extra_total,
 								observaciones:this.descripcion_ot,
 								fecha_inicio: this.datos_encabezado.fecha_inicio,
 								fecha_final: this.datos_encabezado.fecha_fin,
@@ -427,9 +433,7 @@
 			realiza el calculo de lashoras por área
 			*/
 			realizarCalculoHoras:function (area) {
-
 				var total_areas  =this.$localStorage.get('listado_areas');
-				console.log(total_areas);
 				if (total_areas != null || total_areas != undefined ) {
 					var hora_a=0;
 					var total_a_restar=0;
@@ -440,6 +444,29 @@
 							hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
 							if (hora_a !=null && hora_a[0].horas !="") {
 								total_a_restar +=parseInt(hora_a[0].horas);
+							}
+						}
+
+					}
+					return total_a_restar;
+				}
+				return false;
+			},
+			/*
+			realiza el calculo de las Horas Extra
+			*/
+			realizarCalculoHorasExtra:function (area) {
+				var total_areas  =this.$localStorage.get('listado_areas');
+				if (total_areas != null || total_areas != undefined ) {
+					var hora_a=0;
+					var total_a_restar=0;
+					for (let f in total_areas) {
+						let idx = Number(f)
+						let p = total_areas[idx]
+						if(p.id != area ){
+							hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
+							if (hora_a !=null && hora_a[0].tiempo_extra !="") {
+								total_a_restar +=parseInt(hora_a[0].tiempo_extra);
 							}
 						}
 
@@ -476,6 +503,7 @@
 							var data={
 								area:p.id,
 								horas:hora_a[0].horas,
+								tiempo_extra:hora_a[0].tiempo_extra,
 								requerimientos:hora_a[0].requerimientos
 							};
 
@@ -540,8 +568,6 @@
 			guardarDatos: function(id){
 				var index = Object.keys(this.datos_requerimiento).length;
 				var requerimientos =this.datos_requerimiento;
-				console.log("requerimientos");
-				console.log(requerimientos);
 				if(this.comprobarDatosRequerimientos()==true) {
 
 					if(this.comprobarSiGuardoCompras() == true){
@@ -574,7 +600,6 @@
 					var index = Object.keys(this.datos_requerimiento).length;
 					var requerimientos =this.datos_requerimiento;
 				}
-				console.log(requerimientos);
 				if ( index == 0) {
 					toastr.error("Todos los campos son obligatorios","Error al Guardar Requerimientos",this.option_toast);
 					return false;
