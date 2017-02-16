@@ -13,18 +13,21 @@
 		    </thead>
         </table>
         <form method="POST" id="search-form" class="form-inline" role="form">
-			<select_estados tipo_estado="1"  :select="estado" ></select_estados>
-			<select name="estados" id="estados">
-	        	<!-- <option value="1">1</option>
-	        	<option value="2">2</option>
-	        	<option value="3">3</option> -->
+	        <select name="estados" id="estados"  class="form-control">
+	        	<option value="">Estados</option>
 	        </select>
-            <!-- <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" name="nombre_tarea" id="name" placeholder="search name" v-model="estado.id">
-            </div> -->
-
-            <button type="submit" class="btn btn-primary">Search</button>
+	        <select name="year" id="year"  class="form-control">
+	        	<option value="">Año</option>
+	        	<option value="2017">2017</option>
+	        	<option value="2016">2016</option>
+	        </select>
+	        <select name="month" id="month"  class="form-control">
+	        	<option value="">Mes</option>
+	        	<option value="01">enero</option>
+	        	<option value="02">febrero</option>
+	        	<option value="12">dic</option>
+	        </select>
+            <button type="submit" class="btn btn-primary">Buscar</button>
         </form>
 	</div>
 </template>
@@ -63,8 +66,9 @@
 				ajax: {
 					url: "/all_tareas/"+that.area,
 					data: function (d) {
-		                d.nombre_tarea = $('select[name=estados]').val();
-						console.log(d.nombre_tarea)
+		                d.estados = $('select[name=estados]').val();
+		                d.year = $('select[name=year]').val();
+		                d.month = $('select[name=month]').val();
 		            },
 				},
 				columns: [
@@ -105,22 +109,24 @@
 		    });
 		    // Agregar Selects al dibujar la tabla
 		    $('#tabla_tareas').on( 'draw.dt', function () {
+		    	// Llamar estados de las taras
 		    	 $.ajax( "/api/v1/estados/1" )
 		    	 .done(function(response) {
+		    	 	// limpiar el select
 		    	 	var option;
 		    	 	$('#estados')
 				    .find('option')
 				    .remove()
 				    .end()
+				    .append('<option value="">Estados</option>')
+				    // llenar select dinamicamente
 		    	 	response.forEach(function(item,index) {
-		    	 		// option.val(item.id).text(item.nombre);
 		    	 		option = $('<option>');
 		    	 		option.attr('value', item.id).text(item.nombre);
 		    	 		$('#estados').append(option);
 		    	 	})
-		    	 	$('#estados').appendTo('.selects');
-
-				    console.log(response)
+		    	 	// Agregar las opciones al select
+		    	 	$('#search-form').appendTo('.selects');
 				  })
 			    
 			} );
