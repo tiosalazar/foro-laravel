@@ -59,6 +59,7 @@ class User extends Authenticatable
   {
     return $this->hasMany('App\Tarea');
   }
+  
   /**
   * Obtiene los OTS que posee el usuario
   */

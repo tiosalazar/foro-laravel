@@ -63,6 +63,13 @@
         }else{
           this.usuarios_area();
         }
+       console.log(this.encargado); 
+        //Valido que la propiedad encargado que traigo de la tarea tenga datos
+        if (typeof this.select != 'undefined' || this.select != null) {
+          // this.value=this.select;
+          this.updateSelected(this.select);
+          this.id_ejecutivo=this.select.id;
+        }
         
       },
       methods:{
@@ -97,6 +104,7 @@
             if (newSelected != null && newSelected != undefined) {
              this.id_ejecutivo = newSelected.id;
              this.value=newSelected;
+             console.log(newSelected);
             this.$parent.$emit('select_ejecutivo',newSelected);
            }else {
              this.id_ejecutivo = 0;

@@ -36,7 +36,7 @@ class Tarea extends Model
   */
   public function Area()
   {
-    return $this->belongsTo('App\Area','areas_id','id');
+    return $this->belongsTo('App\Area','areas_id','id');  
   }
   /**
   * Obtiene el Usuario que esta asociada la Tarea
@@ -44,6 +44,14 @@ class Tarea extends Model
   public function Usuario()
   {
     return $this->belongsTo('App\User','usuarios_id','id');
+  }
+  /**
+  /**
+  * Obtiene el Usuario encargado
+  */
+  public function Usuarioencargado()
+  {
+    return $this->belongsTo('App\User','encargado_id','id');
   }
   /**
   * Obtiene la OT que esta asociada a la Tarea

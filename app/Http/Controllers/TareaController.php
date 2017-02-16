@@ -153,7 +153,53 @@ class TareaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $respuesta=[];
+
+        $vl=$this->validatorAsignarTarea($request->all());
+        if ($vl->fails()) {
+               $respuesta["error"]="Datos Incompletos";
+               $respuesta["codigo_error"]="Error con los datos";
+               $respuesta["mensaje"]="Error con los datos";
+               $respuesta["status"]= Response::HTTP_BAD_REQUEST;
+               $respuesta["msg"]="Datos Incompletos";
+               $respuesta["obj"]=$vl->errors();
+               $respuesta["request"]=$request;
+        }else{ 
+
+                try
+                    {
+                    //Busca el usuario en la BD
+                       $tarea=Tarea::findOrFail($id);
+
+                       //Asigna los nuevo datos
+                       $tarea->fill($request->all());
+
+                       //Guardamos el usuario
+                       $tarea->update();
+
+                      //Respuesta 
+                       $respuesta['dato']=$tarea;
+                       $respuesta["error"]=0;
+                       $respuesta["mensaje"]="OK"; 
+                       $respuesta["msg"]="Asignado con exito";
+
+                    }
+
+                    catch(Exception $e)
+                    {
+                       $respuesta["error"]="Error datos incorrectos";
+                       $respuesta["codigo_error"]="Error con la tarea";
+                       $respuesta["mensaje"]="Error con la tarea";
+                       $respuesta["consola"]=$e;
+                       $respuesta["msg"]="Error  datos incorrectos";
+                       $respuesta["request"]=$tarea;
+                       $respuesta["obj"]=$vl->errors();
+                        
+                    }
+
+            }
+
+         return response()->json($respuesta);
     }
 
     /**
@@ -221,6 +267,7 @@ class TareaController extends Controller
         $tarea->planeacion_fase;
         $tarea->area;
         $tarea->usuario;
+        $tarea->usuarioencargado;
 
         // return respo nse()->json($tarea);
         return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea);
@@ -257,6 +304,20 @@ class TareaController extends Controller
             'ots_id' => 'required',
             'encargado_id' => 'required',
             'planeacion_fases_id' => 'required',
+        ]);
+    }
+
+     /**
+    * Validar Asignar tarea
+    **/
+    protected function validatorAsignarTarea(array $data)
+    {
+        return Validator::make($data, [
+            'encargado_id' => 'required',
+            'estados_id' => 'required',
+            'tiempo_estimado' => 'required',
+            'fecha_entrega_area' => 'required',
+            'fecha_entrega_cuentas' => 'required',        
         ]);
     }
 }
