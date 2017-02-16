@@ -132,6 +132,7 @@
                 <label><strong>{{comentario.user.nombre}} &nbsp {{comentario.user.apellido}}</strong></label>
                 <span style="color:#a7a7a7;">({{comentario.user.email}})</span>
                 <p style="margin-top:5px;">{{comentario.created_at}}</p>
+                <p class="estado_comentario">{{comentario.estados.nombre}}</p>
               </div>
 
              </div> 
@@ -242,6 +243,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
 
           //Asignos los comentarios para el v-for
           this.comentarios_array=this.tarea_info.comentario;
+         console.log(this.comentarios_array);
         
     }
 

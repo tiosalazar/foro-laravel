@@ -180,24 +180,24 @@ class TareaController extends Controller
 
                        //Guardamos el comentario
                        $comentario = new Comentario;
-                       $validocomentario=$request->comentarios;
-                       if ($validocomentario!="" || $validocomentario!=null) {
-
-                            $comentario->fill($request->all());
-                            $comentario->save();
-                       }
+                       $comentario->fill($request->all());
+                       $comentario->save();
+                       
                       
 
                       //Respuesta 
                        $respuesta['dato']=$tarea;
                        $respuesta['user_coment']='';
+    
                        $respuesta["error"]=0;
                        $respuesta["mensaje"]="OK"; 
                        $respuesta["msg"]="Asignado con exito";
                        foreach ($tarea->comentario as $key => $value) {
                             if ($value->user->id==$request->usuarios_id) {
                                 $respuesta['user_coment']=$value;
+                                $value->estados;    
                             }
+                            
                          
                         }
 
@@ -288,6 +288,7 @@ class TareaController extends Controller
         $tarea->usuarioencargado;
         foreach ($tarea->comentario as $key => $value) {
             $value->user;
+            $value->estados;
         }
 
 

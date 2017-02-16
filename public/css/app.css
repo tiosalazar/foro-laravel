@@ -8631,6 +8631,11 @@ body {
   padding: 70px;
 }
 
+.ver_tarea .estado_comentario {
+  position: absolute;
+  right: 0;
+}
+
 .ver_tarea .desc-ot {
   padding-bottom: 15px;
 }

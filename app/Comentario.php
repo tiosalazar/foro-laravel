@@ -12,7 +12,7 @@ class Comentario extends Model
    * @var array
    */
   protected $fillable = [
-      'comentarios', 'usuarios_id', 'tareas_id',
+      'comentarios', 'usuarios_id', 'tareas_id', 'estados_id',
   ];
   /**
   * Obtiene el Usuario que esta asociado a un comentario
@@ -34,5 +34,12 @@ class Comentario extends Model
     public function Historico()
     {
       return $this->hasOne('App\Historico_Tarea');
+    }
+    /**
+    * Obtiene los estados refente a cada tarea
+    */
+    public function Estados()
+    {
+      return $this->belongsTo('App\Estado','estados_id','id');
     }
 }

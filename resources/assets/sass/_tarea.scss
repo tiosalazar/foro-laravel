@@ -122,7 +122,11 @@
 
 //Ver tarea
 .ver_tarea{
-
+	
+	.estado_comentario{
+		position: absolute;
+		right: 0;
+	}
 	padding: 70px;
 	.desc-ot{
 		padding-bottom: 15px;
