@@ -8544,6 +8544,7 @@ body {
 
 .tarea {
   padding: 15px;
+  box-shadow: none;
 }
 
 .tarea .multiselect {
@@ -8681,6 +8682,11 @@ body {
 
 .ver_tarea {
   padding: 70px;
+}
+
+.ver_tarea .estado_comentario {
+  position: absolute;
+  right: 0;
 }
 
 .ver_tarea .desc-ot {

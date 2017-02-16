@@ -15,9 +15,10 @@ class CreateComentariosTable extends Migration
     {
         Schema::create('comentarios', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('comentarios',255);
+            $table->string('comentarios',500);
             $table->integer('usuarios_id')->unsigned();
             $table->integer('tareas_id')->unsigned();
+            $table->integer('estados_id')->unsigned();
             $table->timestamps();
         });
     }

@@ -73,7 +73,7 @@ class Tarea extends Model
   */
   public function Comentario()
   {
-    return $this->hasMany('App\Comentario');
+    return $this->hasMany('App\Comentario','tareas_id','id');
   }
   /**
   * Obtiene los Historicos que están asociados a la Tarea

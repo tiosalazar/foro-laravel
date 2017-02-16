@@ -2,6 +2,7 @@
 // Crear Tarea
 .tarea{
 	padding: 15px;
+	box-shadow: none;
 	.multiselect{
 		border-radius: 0;
 		min-height: 25px;
@@ -119,9 +120,14 @@
 .with-border{
 	border-bottom: 1px solid $borde-gris;
 }
+
 //Ver tarea
 .ver_tarea{
-
+	
+	.estado_comentario{
+		position: absolute;
+		right: 0;
+	}
 	padding: 70px;
 	.desc-ot{
 		padding-bottom: 15px;
