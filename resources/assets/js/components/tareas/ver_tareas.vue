@@ -15,9 +15,9 @@
         <form method="POST" id="search-form" class="form-inline" role="form">
 			<select_estados tipo_estado="1"  :select="estado" ></select_estados>
 			<select name="estados" id="estados">
-	        	<option value="1">1</option>
+	        	<!-- <option value="1">1</option>
 	        	<option value="2">2</option>
-	        	<option value="3">3</option>
+	        	<option value="3">3</option> -->
 	        </select>
             <!-- <div class="form-group">
                 <label for="name">Name</label>
@@ -105,7 +105,24 @@
 		    });
 		    // Agregar Selects al dibujar la tabla
 		    $('#tabla_tareas').on( 'draw.dt', function () {
-			    $('#estados').appendTo('.selects');
+		    	 $.ajax( "/api/v1/estados/1" )
+		    	 .done(function(response) {
+		    	 	var option;
+		    	 	$('#estados')
+				    .find('option')
+				    .remove()
+				    .end()
+		    	 	response.forEach(function(item,index) {
+		    	 		// option.val(item.id).text(item.nombre);
+		    	 		option = $('<option>');
+		    	 		option.attr('value', item.id).text(item.nombre);
+		    	 		$('#estados').append(option);
+		    	 	})
+		    	 	$('#estados').appendTo('.selects');
+
+				    console.log(response)
+				  })
+			    
 			} );
 		    
 		},
