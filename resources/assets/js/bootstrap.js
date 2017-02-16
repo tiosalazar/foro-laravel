@@ -52,6 +52,8 @@ import Echo from "laravel-echo"
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: 'd6a13b3892fbcd4a53a2',
+    // cluster: 'eu',
+    // encrypted: true
 });
 
 Pusher.log = function(message) {

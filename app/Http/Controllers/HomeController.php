@@ -1,33 +1,11 @@
 <?php
 
-/*
- * Taken from
- * https://github.com/laravel/framework/blob/5.3/src/Illuminate/Auth/Console/stubs/make/controllers/HomeController.stub
- */
-
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\User;
-use App\Role;
-use Validator;
-use Zizaco\Entrust\Traits\EntrustUserTrait;
-use Illuminate\Support\Facades\Input;
-use Intervention\Image\ImageManagerStatic as Image;
-use Storage;
 
-
-
-
-/**
- * Class HomeController
- * @package App\Http\Controllers
- */
 class HomeController extends Controller
 {
-     use EntrustUserTrait; 
     /**
      * Create a new controller instance.
      *
@@ -35,68 +13,16 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     /**
      * Show the application dashboard.
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-    
-    
-        $userauth = Auth::user()->area->id;
-      
-        $role=Role::where('name','coordinador')->get();
-        $userdata= User::where('roles_id',$role[0]->id)
-                    ->where('areas_id', $userauth)->get();
-       
-        if ( isset($userdata[0])) {
-             $user=$userdata[0]->nombre;
-        }else{
-            $user='No asignado';
-        }
-
-        return view('adminlte::home')->with('user_encargado',$user);
-    }
-
-      public function SubirImagen(Request $request)
-    {
-
-
-       $user_actual=Auth::user()->nombre;
-       $user_id_actual=Auth::user()->id;
-      //NOmbre
-       $nombre= $user_actual. $user_id_actual;
-      //Archivo
-      $archivo= request()->file('image');
-      //Creo la imagen y la redimensiono
-      $make_image = Image::make($archivo);
-       $make_image->resize(230, 240,function ($constraint) {
-        $constraint->aspectRatio();
-        });
-      $file = $make_image->resizeCanvas(230, 240);
-      //Extension
-      $ext=$archivo->guessClientExtension();
-
-      if (($ext=='jpg') OR ($ext=='png') OR ($ext=='jpeg') OR( $ext=='gif') ) {
-        //Guardar imagen
-       $ext='png';
-
-       $path = public_path("images\avatars\\");
-       $userauth = Auth::user()->id;
-       $user= User::findOrFail($userauth);
-       $user->fill(['img_perfil'=>'/images/avatars/'.$nombre.'.'.$ext]);
-       $user->save();
-       $file->save($path.$nombre.'.'.$ext);
-       // $file->storeAs('/avatars/',$nombre.'.'.$ext,'public');
-        return back(); 
-      }else{
-        
-         return back(); 
-      }
-
+        return view('home');
     }
 }

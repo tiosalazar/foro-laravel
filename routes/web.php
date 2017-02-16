@@ -106,3 +106,7 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('/p', function () {
     return bcrypt('H1m4l4ya!');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
