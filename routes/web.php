@@ -98,6 +98,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/listar_tareas', function () {
            return view('admin.tareas.listar_tareas');
     });
+    Route::get('/years_tarea', 'TareaController@getYearTarea');
 
    /**
     * Foro por Área

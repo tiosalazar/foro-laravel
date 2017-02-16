@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="tarea">
         <table class="table table-striped table-hover datatable-foro table-bordered dataTable no-footer" id="tabla_tareas">
 		  <thead>
 		        <tr>    
@@ -13,18 +13,28 @@
 		    </thead>
         </table>
         <form method="POST" id="search-form" class="form-inline" role="form">
-			<select_estados tipo_estado="1"  :select="estado" ></select_estados>
-			<select name="estados" id="estados">
-	        	<!-- <option value="1">1</option>
-	        	<option value="2">2</option>
-	        	<option value="3">3</option> -->
+	        <select name="estados" id="estados"  class="form-control multiselect">
+	        	<option value="">Estados</option>
 	        </select>
-            <!-- <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" name="nombre_tarea" id="name" placeholder="search name" v-model="estado.id">
-            </div> -->
-
-            <button type="submit" class="btn btn-primary">Search</button>
+	        <select name="year" id="year"  class="form-control multiselect">
+	        	<option value="">Año</option>
+	        </select>
+	        <select name="month" id="month"  class="form-control multiselect">
+	        	<option value="">Mes</option>
+	        	<option value="01">Enero</option>
+	        	<option value="02">Febrero</option>
+	        	<option value="03">Marzo</option>
+	        	<option value="04">Abril</option>
+	        	<option value="05">Mayo</option>
+	        	<option value="06">Junio</option>
+	        	<option value="07">Julio</option>
+	        	<option value="08">Agosto</option>
+	        	<option value="09">Septiembre</option>
+	        	<option value="10">Octubre</option>
+	        	<option value="11">Noviembre</option>
+	        	<option value="12">Diciembre</option>
+	        </select>
+            <button type="submit" class="btn btn-primary btn-flat">Buscar</button>
         </form>
 	</div>
 </template>
@@ -63,8 +73,9 @@
 				ajax: {
 					url: "/all_tareas/"+that.area,
 					data: function (d) {
-		                d.nombre_tarea = $('select[name=estados]').val();
-						console.log(d.nombre_tarea)
+		                d.estados = $('select[name=estados]').val();
+		                d.year = $('select[name=year]').val();
+		                d.month = $('select[name=month]').val();
 		            },
 				},
 				columns: [
@@ -105,23 +116,44 @@
 		    });
 		    // Agregar Selects al dibujar la tabla
 		    $('#tabla_tareas').on( 'draw.dt', function () {
-		    	 $.ajax( "/api/v1/estados/1" )
-		    	 .done(function(response) {
+		    	// Llamar estados de las taras
+		    	$.ajax( "/api/v1/estados/1" )
+		    	.done(function(response) {
+		    	 	// limpiar el select
 		    	 	var option;
 		    	 	$('#estados')
 				    .find('option')
 				    .remove()
 				    .end()
+				    .append('<option value="">Estados</option>')
+				    // llenar select dinamicamente
 		    	 	response.forEach(function(item,index) {
-		    	 		// option.val(item.id).text(item.nombre);
 		    	 		option = $('<option>');
 		    	 		option.attr('value', item.id).text(item.nombre);
 		    	 		$('#estados').append(option);
 		    	 	})
-		    	 	$('#estados').appendTo('.selects');
-
-				    console.log(response)
-				  })
+		    	 	// Agregar las opciones al select
+		    	 	// $('#search-form').appendTo('.selects');
+				})
+				$.ajax( "/years_tarea" )
+		    	.done(function(response) {
+		    	 	// limpiar el select
+		    	 	var option;
+		    	 	$('#year')
+				    .find('option')
+				    .remove()
+				    .end()
+				    .append('<option value="">Año</option>')
+				    // llenar select dinamicamente
+		    	 	response.forEach(function(item,index) {
+		    	 		option = $('<option>');
+		    	 		option.attr('value', item).text(item);
+		    	 		$('#year').append(option);
+		    	 	})
+		    	 	// Agregar las opciones al select
+		    	 	// $('#search-form').appendTo('.selects');
+				})
+				$('#search-form').appendTo('.selects');
 			    
 			} );
 		    

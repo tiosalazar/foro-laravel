@@ -167,22 +167,39 @@ class TareaController extends Controller
         //
     }
     /**
-     * Mostrar todas las tareas con Datatable.
+     * Mostrar todas las tareas de un Área con Datatable.
      *
+     * @param  int  $id [Área]
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function showAllTareas($id,Request $request)
     {
         $output= array();
-
+        // Si no trae el mes y año en el $request 
+        // tomar el mes y el año actual
+        $year = '';
+        $month = '';
+        if ($request->has('year')) {
+            $year = $request->get('year');
+        }else{
+            $year = date('Y');
+        }
+        if ($request->has('month')) {
+            $month = $request->get('month');
+        }else{
+            $month = date('m');
+        }
         $tarea = Tarea::with(['ot.cliente','estado' => function ($query) use ($request) {
-            if ($request->has('nombre_tarea')) {
-                // $query->where('nombre_tarea', 'like', "%{$request->get('nombre_tarea')}%");
-                $query->where('id', '=', $request->get('nombre_tarea'));
+            if ($request->has('estados')) {
+                $query->where('id', '=', $request->get('estados'));
             }
         },'area' => function ($query) use ($id) {
             $query->where('id', '=', $id);
-        }])->get();
+        }])
+        ->whereYear('created_at', $year)
+        ->whereMonth('created_at', $month)
+        ->get();
 
         // selecciona solos los que tiene el area especifico
         foreach ($tarea as $key => $value) {
@@ -190,25 +207,13 @@ class TareaController extends Controller
                 array_push($output, $value);
             }
         }
+        // Se conviert en collection para que lo reciba el Datatable
         $output = collect($output);
         return Datatables::of($output)
-        ->editColumn('created_at', function ($user) {
-                return $user->updated_at->format('d-M-Y');
+        ->editColumn('created_at', function ($tarea) {
+                return $tarea->created_at->format('d-M-Y');
             })
-        /*->filterColumn('created_at', function ($query, $keyword) {
-                $query->whereRaw("DATE_FORMAT(created_at,'%d-%M-%Y') like ?", ["%$keyword%"]);
-            })*/
-        /*->filter(function ($query) use ($request) {
-                if ($request->has('nombre_tarea')) {
-                    $query->where('nombre_tarea', 'like', "%{$request->get('nombre_tarea')}%");
-                }
-
-                // if ($request->has('email')) {
-                //     $query->where('email', 'like', "%{$request->get('email')}%");
-                // }
-            })*/
         ->make(true);
-        // return $output;
 
     }
 
@@ -227,16 +232,28 @@ class TareaController extends Controller
     }
 
     /**
-    *   Metodos del Foro - Listar por Áreas
-    **/
-
-    public function showDesarrollo()
+     * Traer la primera tarea 
+     **/
+    public function getFirstTarea()
     {
-        $lista_tareas = Tarea::with(['area' => function ($query) {
-            $query->where('nombre', 'like', '%desarrollo%');
-        }])->get();
+        $tarea = Tarea::orderBy('created_at')->first();
+        return $tarea;
+    }
 
-        return Datatables::of($lista_tareas)->make(true);
+    /**
+     * Traer años de las tareas 
+     **/
+    public function getYearTarea()
+    {
+        $years = array();
+        $firstTarea = $this->getFirstTarea();
+        $tarea = Tarea::orderBy('created_at', 'desc')->first();
+        $lastYear = date('Y',strtotime($tarea->created_at));
+        $firstYear = date('Y',strtotime($firstTarea->created_at));
+        for ($i=$firstYear; $i <=  $lastYear; $i++) { 
+            array_push($years, (string)$i);
+        }
+        return $years;
     }
 
     /**
