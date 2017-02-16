@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="tarea">
         <table class="table table-striped table-hover datatable-foro table-bordered dataTable no-footer" id="tabla_tareas">
 		  <thead>
 		        <tr>    
@@ -13,21 +13,28 @@
 		    </thead>
         </table>
         <form method="POST" id="search-form" class="form-inline" role="form">
-	        <select name="estados" id="estados"  class="form-control">
+	        <select name="estados" id="estados"  class="form-control multiselect">
 	        	<option value="">Estados</option>
 	        </select>
-	        <select name="year" id="year"  class="form-control">
+	        <select name="year" id="year"  class="form-control multiselect">
 	        	<option value="">Año</option>
-	        	<option value="2017">2017</option>
-	        	<option value="2016">2016</option>
 	        </select>
-	        <select name="month" id="month"  class="form-control">
+	        <select name="month" id="month"  class="form-control multiselect">
 	        	<option value="">Mes</option>
-	        	<option value="01">enero</option>
-	        	<option value="02">febrero</option>
-	        	<option value="12">dic</option>
+	        	<option value="01">Enero</option>
+	        	<option value="02">Febrero</option>
+	        	<option value="03">Marzo</option>
+	        	<option value="04">Abril</option>
+	        	<option value="05">Mayo</option>
+	        	<option value="06">Junio</option>
+	        	<option value="07">Julio</option>
+	        	<option value="08">Agosto</option>
+	        	<option value="09">Septiembre</option>
+	        	<option value="10">Octubre</option>
+	        	<option value="11">Noviembre</option>
+	        	<option value="12">Diciembre</option>
 	        </select>
-            <button type="submit" class="btn btn-primary">Buscar</button>
+            <button type="submit" class="btn btn-primary btn-flat">Buscar</button>
         </form>
 	</div>
 </template>
@@ -110,8 +117,8 @@
 		    // Agregar Selects al dibujar la tabla
 		    $('#tabla_tareas').on( 'draw.dt', function () {
 		    	// Llamar estados de las taras
-		    	 $.ajax( "/api/v1/estados/1" )
-		    	 .done(function(response) {
+		    	$.ajax( "/api/v1/estados/1" )
+		    	.done(function(response) {
 		    	 	// limpiar el select
 		    	 	var option;
 		    	 	$('#estados')
@@ -126,8 +133,27 @@
 		    	 		$('#estados').append(option);
 		    	 	})
 		    	 	// Agregar las opciones al select
-		    	 	$('#search-form').appendTo('.selects');
-				  })
+		    	 	// $('#search-form').appendTo('.selects');
+				})
+				$.ajax( "/years_tarea" )
+		    	.done(function(response) {
+		    	 	// limpiar el select
+		    	 	var option;
+		    	 	$('#year')
+				    .find('option')
+				    .remove()
+				    .end()
+				    .append('<option value="">Año</option>')
+				    // llenar select dinamicamente
+		    	 	response.forEach(function(item,index) {
+		    	 		option = $('<option>');
+		    	 		option.attr('value', item).text(item);
+		    	 		$('#year').append(option);
+		    	 	})
+		    	 	// Agregar las opciones al select
+		    	 	// $('#search-form').appendTo('.selects');
+				})
+				$('#search-form').appendTo('.selects');
 			    
 			} );
 		    

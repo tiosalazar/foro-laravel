@@ -9,6 +9,10 @@
   /* Legacy iOS */
 }
 
+.btn {
+  padding: 2px 12px;
+}
+
 .estado-1-1 {
   background-color: #FF9A00;
 }
@@ -8497,7 +8501,8 @@ body {
 .tarea .multiselect {
   border-radius: 0;
   min-height: 25px;
-  height: 25px;
+  height: 23px;
+  padding: 0;
 }
 
 .tarea .multiselect input {

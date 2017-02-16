@@ -232,6 +232,31 @@ class TareaController extends Controller
     }
 
     /**
+     * Traer la primera tarea 
+     **/
+    public function getFirstTarea()
+    {
+        $tarea = Tarea::orderBy('created_at')->first();
+        return $tarea;
+    }
+
+    /**
+     * Traer años de las tareas 
+     **/
+    public function getYearTarea()
+    {
+        $years = array();
+        $firstTarea = $this->getFirstTarea();
+        $tarea = Tarea::orderBy('created_at', 'desc')->first();
+        $lastYear = date('Y',strtotime($tarea->created_at));
+        $firstYear = date('Y',strtotime($firstTarea->created_at));
+        for ($i=$firstYear; $i <=  $lastYear; $i++) { 
+            array_push($years, (string)$i);
+        }
+        return $years;
+    }
+
+    /**
     * Validar Crear Tarea
     **/
     protected function validatorCrearTarea(array $data)
