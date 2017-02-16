@@ -8492,6 +8492,7 @@ body {
 
 .tarea {
   padding: 15px;
+  box-shadow: none;
 }
 
 .tarea .multiselect {

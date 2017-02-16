@@ -107,7 +107,7 @@
 
             <div class="form-group required" v-bind:class="[errors_return.descripcion,{ 'has-error': errors.has('descripcion') }]">
               <label for="descripcion">Descripción</label>
-              <textarea class="form-control" rows="3"  name="descripcion"  id="descripcion" v-model="tarea_info.descripcion" placeholder="Descripción" required="required" v-validate data-vv-rules="required|min:4"></textarea>
+              <textarea class="form-control" rows="3"  name="descripcion"  id="descripcion" v-model="descripcion" placeholder="Descripción" required="required" v-validate data-vv-rules="required|min:4"></textarea>
               <span  class="help-block" v-show="errors.has('descripcion')">{{ errors.first('descripcion') }}</span>
             </div>
             
@@ -118,6 +118,32 @@
           <div class="box-footer text-center">
             <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Publicar</button>
           </div>
+
+         <div class="box box-widget" style="box-shadow:none;">
+           <div v-for="comentario in comentarios_array" style="margin-bottom:20px;margin-top:35px;">
+
+            <div style="display:flex;">
+              <div class="img_comentario">
+                <div v-if="comentario.user.img_perfil==null"><img   src="/images/perfil.jpg" style="width:50px;"></div>
+                <div v-else><img   v-bind:src="comentario.user.img_perfil" style="width:60px;"></div>
+              </div>
+
+              <div class="info_comentarios" style="display:flex; flex-direction:column;">
+                <label><strong>{{comentario.user.nombre}} &nbsp {{comentario.user.apellido}}</strong></label>
+                <span style="color:#a7a7a7;">({{comentario.user.email}})</span>
+                <p style="margin-top:5px;">{{comentario.created_at}}</p>
+              </div>
+
+             </div> 
+              <div class="caja_comentarios">
+                <p>{{comentario.comentarios}}</p>
+              </div>
+              
+
+           </div>
+         </div>
+      
+
       </div>
     </div>
   </div>
@@ -132,7 +158,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
 
   Vue.use(VeeValidate);
 	module.exports = {
-    props: ['arraytarea'],
+    props: ['arraytarea','id_usuario_actual'],
     components: {Datepicker,VeeValidate,Validator},
     data(){
       return{
@@ -140,6 +166,8 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
           nombre_tarea:this.arraytarea.nombre_tarea,
           enlaces_externos:this.arraytarea.enlaces_externos,
         },
+        comentarios_array:{},
+        descripcion:'',
         fecha_entrega_area:'',
         select_ot:this.arraytarea.ot,
         prioridad:'',
@@ -166,6 +194,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
               'nombre_contacto':'',
               'telefono':'',
               'email':'',
+              'descripcion':'',
             },
             option_toast:{
               timeOut: 5000,
@@ -186,12 +215,12 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
 
       this.$on('select_ejecutivo', function(v) {
         this.encargado=v;
-        console.log(this.encargado);
+       
       });
 
        this.$on('select_estado', function(v) {
         this.estado_solicitud=v;
-        console.log(this.estado_solicitud);
+        
       });
 
       //Recibe la propiedad arraytarea desde la vista y verifico si es indefinida o no
@@ -209,14 +238,18 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
 
           //Asigno toda la informacion traida del api a la variable tarea_info
           this.tarea_info=obj;
-          console.log( this.tarea_info);
+          console.log(this.tarea_info);
 
-
+          //Asignos los comentarios para el v-for
+          this.comentarios_array=this.tarea_info.comentario;
+        
     }
 
   },
   methods:{
      asignar_tarea:function(){
+
+      //Datos a enviar al asignar la tarea y comentarios
         var id_tarea= this.tarea_info.id;
         var id_encargado=this.encargado.id;
         var estado= this.estado_solicitud.id;
@@ -224,8 +257,11 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
         var descripcion_tarea=this.descripcion;
         var fecha_area=moment(this.tarea_info.fecha_entrega_area).format('YYYY-MM-DD');
         var fecha_cuentas=moment(this.tarea_info.fecha_entrega_cuentas).format('YYYY-MM-DD');
+        var id_user_actual= this.id_usuario_actual;
+        var tarea_id=this.tarea_info.id;
 
-        this.$http.put('/api/v1/tareas/'+id_tarea, {encargado_id:id_encargado,estados_id:estado,tiempo_estimado:horas_estimadas,descripcion:descripcion_tarea,fecha_entrega_area:fecha_area,fecha_entrega_cuentas:fecha_cuentas})
+        //Método que envia los datos al api rest
+        this.$http.put('/api/v1/tareas/'+id_tarea, {encargado_id:id_encargado,estados_id:estado,tiempo_estimado:horas_estimadas,fecha_entrega_area:fecha_area,fecha_entrega_cuentas:fecha_cuentas,usuarios_id:id_user_actual,tareas_id:tarea_id,comentarios:descripcion_tarea})
         .then(function (respuesta) {
 
             var that = this;
@@ -244,6 +280,10 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
             }else{
                   if (respuesta.body.error == 0) {
                       toastr.success(respuesta.body.msg,'',this.option_toast);
+                      this.descripcion="";
+                      console.log(respuesta.body.user_coment);
+
+                    this.comentarios_array.push(respuesta.body.user_coment);                       
                       
                     }else{
                         $.each(respuesta.body.obj, function(index, value) {

@@ -8,6 +8,6 @@
 @section('main-content')
 
 	<section>
-	   <ver_tarea arraytarea="{{$tareainfo}}" ></ver_tarea>			
+	   <ver_tarea arraytarea="{{$tareainfo}}" id_usuario_actual="{{Auth::user()->id}}"></ver_tarea>			
 	</section>
 @endsection

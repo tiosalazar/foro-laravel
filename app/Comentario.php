@@ -19,14 +19,14 @@ class Comentario extends Model
   */
   public function User()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User','usuarios_id','id');
     }
     /**
     * Obtiene la tarea a la que esta asociada el comentario
     */
   public function Tarea()
     {
-       return $this->belongsTo('App\Tarea');
+       return $this->belongsTo('App\Tarea','tareas_id','id');
     }
     /**
     * Obtiene los Historicos que estan asociados a un Comentario
