@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Tarea;
 use App\Ot;
 use App\Area;
+use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
 use Illuminate\Http\Response;
 use Exception;
 use Yajra\Datatables\Datatables;
+use Illuminate\Notifications\Notifiable;
+use App\Notifications\CrearOT;
 
 class TareaController extends Controller
 {
@@ -67,6 +71,7 @@ class TareaController extends Controller
         }else{
             try {
                 $tarea->save();
+                User::find(1)->notify(new CrearOT(Auth::user()));
                 return response([
                     'status' => Response::HTTP_OK,
                     'response_time' => microtime(true) - LARAVEL_START,
@@ -81,7 +86,7 @@ class TareaController extends Controller
                 'error' => 'ERR_04',
                 'msg' => 'excepcion, fallo la petición',
                 'consola' =>$e->getMessage(),
-                'obj' =>[]
+                'obj' =>Auth::user()
                 ],Response::HTTP_BAD_REQUEST);
            }
        }
