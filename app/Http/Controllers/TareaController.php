@@ -254,7 +254,7 @@ class TareaController extends Controller
         }else{
             $month = date('m');
         }
-        $tarea = Tarea::with(['ot.cliente','estado' => function ($query) use ($request) {
+        $tarea = Tarea::with(['ot.cliente','usuarioencargado','estado' => function ($query) use ($request) {
             if ($request->has('estados')) {
                 $query->where('id', '=', $request->get('estados'));
             }
