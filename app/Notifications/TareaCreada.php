@@ -6,19 +6,25 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Carbon\Carbon;
 
 class TareaCreada extends Notification
 {
     use Queueable;
 
+    public $user;
+    public $tarea;
+
     /**
      * Create a new notification instance.
-     *
+     * @param App/User $user
+     * @param App/Tarea $tarea
      * @return void
      */
-    public function __construct()
+    public function __construct($user,$tarea)
     {
-        //
+        $this->user = $user;
+        $this->tarea = $tarea;
     }
 
     /**
@@ -29,7 +35,7 @@ class TareaCreada extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['broadcast','database'];
     }
 
     /**
@@ -55,7 +61,12 @@ class TareaCreada extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'id_tarea' => $this->tarea->id,
+            'nombre' => $this->user->nombre,
+            'cargo' => $this->user->cargo,
+            'descripcion' => $this->user->nombre. ' a creado una Tarea',
+            'created_at' => Carbon::now(),
+            'img_perfil' => $this->user->img_perfil,
         ];
     }
 }

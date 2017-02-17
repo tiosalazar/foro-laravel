@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Carbon\Carbon;
 
 class CrearOT extends Notification
 {
@@ -63,7 +64,7 @@ class CrearOT extends Notification
             'nombre' => $this->user->nombre,
             'cargo' => $this->user->cargo,
             'descripcion' => $this->user->nombre. ' a creado una Tarea',
-            'created_at' => date("Y-m-d H:i:s"),
+            'created_at' => Carbon::now(),
             'img_perfil' => $this->user->img_perfil,
         ];
     }
