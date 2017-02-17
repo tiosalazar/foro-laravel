@@ -46,6 +46,12 @@
  color: #626262;
  font-weight: 600;
 }
+.form-control {
+    height: 28px ;
+}
+textarea.form-control {
+    height: auto;
+}
 
 #seccion_compra{
 .disabled{
@@ -75,21 +81,21 @@
 }
 .multiselect{
   border-radius: 0;
-  min-height: 33px;
-  height: 33px;
+  min-height: 28px;
+  height: 28px;
   font-style: italic;
   input{
     height: 22px;
   }
   .multiselect__tags{
-    min-height: 33px;
-    height: 33px;
+    min-height: 28px;
+    height: 28px;
     padding-top:2px;
     border-radius: 0;
   }
   .multiselect__select{
-    min-height: 33px;
-    height: 33px;
+    min-height: 28px;
+    height: 28px;
     &:before{
       color:$azul-claro;
       border-top-color: $azul-claro;

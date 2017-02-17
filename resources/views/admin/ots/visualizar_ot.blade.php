@@ -38,8 +38,8 @@
 										</div>
 									</div>
 									@else
-									<li><strong>Estado de OT:</strong><span> {{$ot['estado']['nombre']}}</span></li>	
-									@endif	
+									<li><strong>Estado de OT:</strong><span> {{$ot['estado']['nombre']}}</span></li>
+									@endif
 									<li><strong>Horas totales:</strong><span> {{$ot['horas_totales']}} Horas</span></li>
 									<li><strong>Horas disponibles:</strong><span> {{$ot['horas_disponibles']}} Horas</span></li>
 									<li><strong>Horas adicionales:</strong><span> {{$ot['total_horas_extra']}} Horas</span></li>
@@ -65,20 +65,20 @@
 												<div class="row desc-ot with-border">
 													<div class="col-sm-6 ">
 														<ul>
-															<div class="row"> 
-																<div class="form-group col-md-4 col-sm-6" ><li><strong>Horas  {{ $area['area']['nombre'] }}: </strong></li> </div> 
+															<div class="row">
+																<div class="form-group col-md-4 col-sm-6" ><li><strong>Horas  {{ $area['area']['nombre'] }}: </strong></li> </div>
 																<div class="form-group col-md-6 detalle_horas col-sm-6"><li><span> {{$area['tiempo_estimado_ot']}} Horas</span></li> </div>
 															</div>
-															<div class="row"> 
-																<div class="form-group col-md-4 col-sm-6" ><li><strong>Horas Adicionales: </strong></li></div> 
+															<div class="row">
+																<div class="form-group col-md-4 col-sm-6" ><li><strong>Horas Adicionales: </strong></li></div>
 																<div class="form-group col-md-6 detalle_horas col-sm-6"><li><span>{{$area['tiempo_extra']}} Horas</span> </li></div>
 															</div>
 														</ul>
 													</div>
 													<div class="col-sm-6 border-left">
 														<ul>
-															<div class="row"> 
-																<div class="form-group col-md-4 col-sm-6" ><li><strong>Horas Gastadas: </strong></li></div> 
+															<div class="row">
+																<div class="form-group col-md-4 col-sm-6" ><li><strong>Horas Gastadas: </strong></li></div>
 																<div class="form-group col-md-6 detalle_horas col-sm-6"><li><span> {{$area['tiempo_extra']}} Horas</span></li></div>
 															</div>
 														</ul>
@@ -101,7 +101,7 @@
 															</div>
 														</div>
 														<div class="row  ">
-															<div class="col-md-12"> 
+															<div class="col-md-12">
 																@foreach ($ot['requerimiento_ot'] as $requerimiento)
 																@if( $area['area']['id']==$requerimiento['areas_id'] )
 																<div class="listado_requerimientos_resumen">
@@ -114,7 +114,7 @@
 																</div>
 																@endif
 																@endforeach
-															</div>	
+															</div>
 														</div>
 													</div>
 												</div>
@@ -129,21 +129,21 @@
 													</div>
 												</div>
 												<div class="row">
-													<div class="col-md-12"> 
-														@foreach ($ot['compras_ot'] as $compra)
-														@if( $area['area']['id']==compra['areas_id'] )
+													<div class="col-md-12">
+														@foreach ($ot['Compras_Ot'] as $compra)
+														@if( $area['area']['id']==$compra['areas_id'] )
 														<div class="listado_requerimientos_resumen">
 															<ul>
 																<li><strong>Item:</strong></li>
-																<li><span> {{compra['tipos_compras_id'] }}</span></li>
+																<li><span> {{$compra['tipo_compra']['nombre'] }}</span></li>
 																<li><strong>Descripción:</strong></li>
-																<li><span> {{compra['descripcion'] }}</span></li>
+																<li><span> {{$compra['descripcion'] }}</span></li>
 																<li><strong>Provedor:</strong></li>
-																<li><span> {{compra['provedor'] }}</span></li>
+																<li><span> {{$compra['provedor'] }}</span></li>
 																<li><strong>Moneda:</strong></li>
-																<li><span> {{compra['divisas_id'] }}</span></li>
+																<li><span> {{$compra['divisa']['nombre'] }}</span></li>
 																<li><strong>Valor:</strong></li>
-																<li><span> {{compra['valor'] }} </span></li>
+																<li><span> ${{$compra['valor'] }} </span></li>
 															</ul>
 														</div>
 														@endif
@@ -192,12 +192,12 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">×</span></button>			
+									<span aria-hidden="true">×</span></button>
 					<div class="contenido_modal">
 						<div class="desc_modal">
 							¿Cuantas Horas adicionales necesita el Area de <span id="nombre_area" class="font-info"></span> para la<span class="font-info"> OT #{{$ot['referencia'] }}  {{$ot['nombre']}} ? </span>
 						</div>
-						<form action=""> 
+						<form action="">
 						<div class="form-group col-sm-6 col-sm-offset-3 col-xs-offset-3 ">
 							<input type="text"  class="form-control" required="required" pattern="^([0-9].[0-9]|[0-9]*){1,10}$" title="Ejemplo... 10 ó 10.5"  placeholder="No horas adicionales" name="horas_adicionales">
 						</div>
@@ -215,7 +215,7 @@
 			</div>
 		</div>
 
-		
+
 
 	</div>
 </div>
@@ -232,4 +232,3 @@
 	}
 
 </script>
-

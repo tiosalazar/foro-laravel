@@ -7913,6 +7913,14 @@
   font-weight: 600;
 }
 
+.Formulario_OT .form-control {
+  height: 28px;
+}
+
+.Formulario_OT textarea.form-control {
+  height: auto;
+}
+
 .Formulario_OT #seccion_compra .disabled {
   border: 0px;
   margin-bottom: 10px;
@@ -7945,8 +7953,8 @@
 
 .Formulario_OT .multiselect {
   border-radius: 0;
-  min-height: 33px;
-  height: 33px;
+  min-height: 28px;
+  height: 28px;
   font-style: italic;
 }
 
@@ -7955,15 +7963,15 @@
 }
 
 .Formulario_OT .multiselect .multiselect__tags {
-  min-height: 33px;
-  height: 33px;
+  min-height: 28px;
+  height: 28px;
   padding-top: 2px;
   border-radius: 0;
 }
 
 .Formulario_OT .multiselect .multiselect__select {
-  min-height: 33px;
-  height: 33px;
+  min-height: 28px;
+  height: 28px;
 }
 
 .Formulario_OT .multiselect .multiselect__select:before {

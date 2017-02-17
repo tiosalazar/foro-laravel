@@ -144,6 +144,7 @@ module.exports={
       var data_req= JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.id_area));//busca dependiendo del Área
       if (data_req != null) {
         var arreglo_requerimientos = data_req[0].requerimientos;
+      //  console.log(arreglo_requerimientos);
         this.requerimiento= arreglo_requerimientos;
         this.nhoras	= data_req[0].horas;
         this.nhextra	= data_req[0].tiempo_extra;
@@ -164,22 +165,25 @@ module.exports={
         var arreglo_visualizar =JSON.parse(this.$parent.arreglo_visualizar);
         // console.log(arreglo_visualizar);
         var arreglo_requerimientos=arreglo_visualizar.final_req;
+        var arreglo_temporal=[];
         for (let f in arreglo_requerimientos) {
           let idx = Number(f)
+          if(this.id_area ==arreglo_requerimientos[idx].area ){
           this.horas=parseInt(arreglo_requerimientos[idx].horas);
           this.h_pasadas=this.h_pasadas;
           this.nhextra= arreglo_requerimientos[idx].textra;
           this.emitirData();
           this.realizarCalculo();
+          //console.log(arreglo_requerimientos[idx]);
+        //  arreglo_temporal.push([JSON.parse(arreglo_requerimientos[idx].requerimientos)]);
           var datos=[{
-            requerimientos:[JSON.parse(arreglo_requerimientos[idx].requerimientos)],
+            requerimientos:arreglo_requerimientos[idx].requerimientos,
             horas: parseInt(arreglo_requerimientos[idx].horas),
             tiempo_extra:  this.nhextra,
             h_pasadas: this.h_pasadas
           }];
-
           this.$localStorage.set('datos_requerimiento_'+arreglo_requerimientos[idx].area,JSON.stringify(datos));//busca dependiendo del Área
-
+           }
         }
         /*
         var arreglo_requerimientos=arreglo_visualizar.final_req.requerimientos;

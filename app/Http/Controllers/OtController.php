@@ -70,7 +70,13 @@ class OtController extends Controller
        $vl=$this->validatorCrearOT($data['datos_encabezado']);
        if ($vl->fails())
        {
-        return response()->json($vl->errors());
+           return response([
+                   'status' => Response::HTTP_BAD_REQUEST,
+                   'response_time' => microtime(true) - LARAVEL_START,
+                   'msg' => 'Error al crear la OT',
+                   'error' => 'ERR_01',
+                   'obj' =>$vl->errors()
+                   ],Response::HTTP_BAD_REQUEST);
     }else
     {
         try
@@ -141,9 +147,9 @@ class OtController extends Controller
     public function show($id)
     {
         $ot=OT::findOrFail($id);
-        $fecha=new Carbon($ot->fecha_final); 
+        $fecha=new Carbon($ot->fecha_final);
         $ot->fecha_final= $fecha->format('Y | d | M');
-        $fecha=new Carbon($ot->fecha_inicio); 
+        $fecha=new Carbon($ot->fecha_inicio);
         $ot->fecha_inicio=$fecha->format('Y | d | M');
         $ot->valor=$this->formatMoney($ot->valor,false);
         $ot->Tiempos_x_Area;
@@ -157,7 +163,20 @@ class OtController extends Controller
            array_push($listado_areas, $value->Area);
        }
 
-    //return response()->json( $ot);
+       $array_temporal=[];
+       $ingreso=[];
+       foreach ($ot->Compras_Ot as  $value) {
+           $compra =Compras_Ot::findOrFail($value['id']);
+           $compra->Tipo_Compra;
+           $compra->Divisa;
+           $array_temporal= array('areas_id'=>$value['areas_id'],'tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'descripcion' => $value['descripcion'],
+               'provedor'=> $value['provedor'] , 'valor'=>  $this->formatMoney($value['valor'],false), 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
+           array_push($ingreso,$array_temporal);
+       }
+
+        $ot->Compras_Ot= $ingreso;
+
+     //return response()->json( $ot);
        return view('admin.ots.visualizar_ot')->with('ot', $ot)->with('listado_areas', $listado_areas);
    }
     /**
@@ -188,13 +207,19 @@ class OtController extends Controller
            $data['requerimientos']['area']=$value['areas_id'];
            $data['requerimientos']['textra']=$value['tiempo_extra'];
            $data['requerimientos']['horas']=$value['tiempo_estimado_ot'];
+           $array_temporal=[];
+           $ingreso=[];
            foreach ($ot->Requerimiento_Ot as  $value) {
                if ($value['areas_id'] ==  $area_actual ) {
                    $array_temporal= array('model_nom'=>$value['nombre'] ,'model_horas'=>(int)$value['horas']);
-                   $data['requerimientos']['requerimientos']=json_encode($array_temporal);
+                  //$data['requerimientos']['requerimientos']=json_encode($array_temporal);
+                   array_push($ingreso,$array_temporal);
+                   $data['requerimientos']['requerimientos']=$ingreso;
                  /// array_push($data['requerimientos']['requerimientos'], json_encode($array_temporal));
                }
+
            }
+           array_push($data['final_req'], $data['requerimientos']);
            $array_temporal=[];
            $ingreso=[];
            foreach ($ot->Compras_Ot as  $value) {
@@ -213,13 +238,12 @@ class OtController extends Controller
            }
        }
 
-       array_push($data['final_req'], $data['requerimientos']);
        array_push($data['final_com'], $data['compras']);
    }
 
 
        //var_dump( $data['final_com']);
-       //  return response()->json( $data['final_com']);
+        // return response()->json( $data['final_req']);
 
 
        //var_dump($data);
@@ -240,10 +264,16 @@ class OtController extends Controller
        //Validaciòn de las entradas por el metodo POST
      $data= $request->all();
 
-     $vl=$this->validatorCrearOT($data['datos_encabezado']);
+     $vl=$this->validatorEditarOT($data['datos_encabezado']);
      if ($vl->fails())
      {
-        return response()->json($vl->errors());
+        return response([
+                'status' => Response::HTTP_BAD_REQUEST,
+                'response_time' => microtime(true) - LARAVEL_START,
+                'msg' => 'Error al actualizar la OT',
+                'error' => 'ERR_01',
+                'obj' =>$vl->errors()
+                ],Response::HTTP_BAD_REQUEST);
     }else
     {
 
@@ -253,7 +283,7 @@ class OtController extends Controller
          $ot=  Ot::findOrFail($id);
          $ot->fill($data['datos_encabezado']);
          $ot->save();
-         
+
 
          $requerimientos=$data['requerimientos'];
          $compras=$data['compras'];
@@ -312,7 +342,7 @@ class OtController extends Controller
     return response([
         'status' => Response::HTTP_BAD_REQUEST,
         'response_time' => microtime(true) - LARAVEL_START,
-        'error' => 'fallo_en_la_creacion',
+        'error' => 'fallo_al_actualizar',
         'consola' =>$e->getMessage(),
         'request' =>$request->all()
         ],Response::HTTP_BAD_REQUEST);
@@ -366,7 +396,7 @@ class OtController extends Controller
             ],Response::HTTP_BAD_REQUEST);
     }
 
-}    
+}
 
     /**
     *
@@ -402,7 +432,7 @@ class OtController extends Controller
    {
     return Validator::make($data, [
         'nombre' => 'required|min:4|max:45',
-        'referencia' => 'required',
+        'referencia' => 'required|unique:ots,referencia',
         'valor' => 'required|min:4|max:45',
         'fecha_inicio' => 'required|date',
         'fecha_final' => 'required|date',
@@ -411,19 +441,35 @@ class OtController extends Controller
         'estados_id' => 'required',
         ]);
 }
+/*DSO 24-01-2016 Funcion para validar los campos al crear un usuario
+ * entra el arreglo de datos
+ * Sale un arreglo con los errores.
+ */
+protected function validatorEditarOT(array $data)
+{
+ return Validator::make($data, [
+     'nombre' => 'required|min:4|max:45',
+     'valor' => 'required|min:4|max:45',
+     'fecha_inicio' => 'required|date',
+     'fecha_final' => 'required|date',
+     'clientes_id' => 'required',
+     'usuarios_id' => 'required',
+     'estados_id' => 'required',
+     ]);
+}
 
-public function formatMoney($number, $fractional=false) { 
-    if ($fractional) { 
-        $number = sprintf('%.2f', $number); 
-    } 
-    while (true) { 
-        $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number); 
-        if ($replaced != $number) { 
-            $number = $replaced; 
-        } else { 
-            break; 
-        } 
-    } 
-    return $number; 
-} 
+public function formatMoney($number, $fractional=false) {
+    if ($fractional) {
+        $number = sprintf('%.2f', $number);
+    }
+    while (true) {
+        $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+        if ($replaced != $number) {
+            $number = $replaced;
+        } else {
+            break;
+        }
+    }
+    return $number;
+}
 }
