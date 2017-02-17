@@ -200,11 +200,17 @@ class EstadosTableSeeder extends Seeder {
     {
         DB::table('estados')->delete();
 
+          App\Estado::create(array('nombre' => 'OK','tipos_estados_id'=> 1));
           App\Estado::create(array('nombre' => 'Realizado','tipos_estados_id'=> 1));
-          App\Estado::create(array('nombre' => 'Espera','tipos_estados_id'=> 1) );
+          App\Estado::create(array('nombre' => 'Programado','tipos_estados_id'=> 1));
           App\Estado::create(array('nombre' => 'Atención Cuentas','tipos_estados_id'=> 1 ));
+          App\Estado::create(array('nombre' => 'Atención Área','tipos_estados_id'=> 1 ));
+          App\Estado::create(array('nombre' => 'Espera','tipos_estados_id'=> 1) );
+          App\Estado::create(array('nombre' => 'Pendiente','tipos_estados_id'=> 1 ));
+
           App\Estado::create(array('nombre' => 'On Going','tipos_estados_id'=> 2) );
           App\Estado::create(array('nombre' => 'En espera','tipos_estados_id'=> 2) );
+          
           App\Estado::create(array('nombre' => 'Alta','tipos_estados_id'=> 3) );
           App\Estado::create(array('nombre' => 'Media','tipos_estados_id'=> 3) );
           App\Estado::create(array('nombre' => 'Baja','tipos_estados_id'=> 3) );

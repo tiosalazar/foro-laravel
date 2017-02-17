@@ -133,8 +133,9 @@ Route::group(['middleware' => 'auth'], function () {
     })->name('contenido');
 
     Route::get('/all_tareas/{id}','TareaController@showAllTareas');
-
     Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
+
+    //
 
     Route::get('/list_fases','FaseController@listFases');
 
@@ -167,3 +168,8 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('/p', function () {
     return bcrypt('H1m4l4ya!');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
+

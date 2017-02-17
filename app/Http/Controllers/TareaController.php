@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Notifications\Notifiable;
+use App\Notifications\CrearOT;
+use App\Notifications\TareaPendiente;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use App\Tarea;
 use App\Ot;
 use App\Area;
@@ -12,12 +17,15 @@ use App\Comentario;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
-use Illuminate\Http\Response;
 use Exception;
 use Yajra\Datatables\Datatables;
 
 class TareaController extends Controller
 {
+    /*public function __construct()
+    {
+        $this->middleware('auth');
+    }*/
     /**
      * Display a listing of the resource.
      *
@@ -88,6 +96,8 @@ class TareaController extends Controller
             }else{
                 try {
                     $tarea->save();
+                    $maker = User::findOrFail($request->usuarios_id);
+                    User::find($tarea->usuarios_id)->notify(new CrearOT($maker,$tarea));
                     return response([
                         'status' => Response::HTTP_OK,
                         'response_time' => microtime(true) - LARAVEL_START,
@@ -172,11 +182,28 @@ class TareaController extends Controller
                     //Busca el usuario en la BD
                        $tarea=Tarea::findOrFail($id);
 
+                        // Creador de la solicitud
+                        $maker = User::findOrFail($request->usuarios_id);
+
+
                        //Asigna los nuevo datos
                        $tarea->fill($request->all());
 
                        //Guardamos la tarea
-                       $tarea->update();
+                       $tarea->save();
+
+                       //Guardamos el comentario
+                       $comentario = new Comentario;
+                       $comentario->fill($request->all());
+                       $comentario->save();
+
+                        // Si el estado es Pendiente (7)
+                       if ($tarea->estados_id == 7) {
+                            // Creador de la solicitud
+                            $maker = User::findOrFail($request->usuarios_id);
+                            // Enviar notificacion al nuevo encargado
+                            User::find($request->encargado_id)->notify(new TareaPendiente($maker,$tarea));
+                       }
 
                        //Guardamos el comentario
                        $comentario = new Comentario;
@@ -208,9 +235,9 @@ class TareaController extends Controller
                        $respuesta["error"]="Error datos incorrectos";
                        $respuesta["codigo_error"]="Error con la tarea";
                        $respuesta["mensaje"]="Error con la tarea";
-                       $respuesta["consola"]=$e;
+                       $respuesta["consola"]=$e->getMessage();
                        $respuesta["msg"]="Error  datos incorrectos";
-                       $respuesta["request"]=$tarea;
+                       $respuesta["request"]=$request->all();
                        $respuesta["obj"]=$vl->errors();
                         
                     }
