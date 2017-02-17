@@ -21,10 +21,10 @@
 				}, (error)=>{
 					console.log(error);
 				});
-				Echo.channel('orders')
+				/*Echo.channel('orders')
 			    .listen('OrderShipped', (e) => {
 			        console.log(e.order.name);
-			    });
+			    });*/
 			},
 		}
 	}

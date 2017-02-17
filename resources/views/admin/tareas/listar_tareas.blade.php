@@ -9,7 +9,7 @@
   
 	<section>
 
-	<notificacion :id="{{Auth::user()->id }}" ></notificacion>
+	
 	   <ver_tareas :area="-1"></ver_tareas>
 			
 	</section>
