@@ -50,7 +50,7 @@ class User extends Authenticatable
   */
   public function Comentario()
   {
-    return $this->hasMany('App\Comentario','usuarios_id','id');
+    return $this->hasMany('App\Comentario','usuarios_comentario_id','id');
   }
   /**
   * Obtiene los Tareas que posee el usuario

@@ -12,14 +12,14 @@ class Comentario extends Model
    * @var array
    */
   protected $fillable = [
-      'comentarios', 'usuarios_id', 'tareas_id', 'estados_id',
+      'comentarios', 'usuarios_comentario_id', 'tareas_id', 'estados_id',
   ];
   /**
   * Obtiene el Usuario que esta asociado a un comentario
   */
   public function User()
     {
-        return $this->belongsTo('App\User','usuarios_id','id');
+        return $this->belongsTo('App\User','usuarios_comentario_id','id');
     }
     /**
     * Obtiene la tarea a la que esta asociada el comentario

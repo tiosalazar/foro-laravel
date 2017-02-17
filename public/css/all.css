@@ -8579,7 +8579,7 @@ body {
 }
 
 .tarea .multiselect input {
-  height: 26px;
+  height: 25px;
 }
 
 .tarea .multiselect .multiselect__tags {
@@ -8746,9 +8746,41 @@ body {
   padding: 70px;
 }
 
+.ver_tarea .contenedor_fecha {
+  display: -webkit-box;
+  display: flex;
+}
+
+.ver_tarea .contenedor_fecha .input-group-addon {
+  width: 50px;
+}
+
+.ver_tarea .alert_ups {
+  background-color: #E94800 !important;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.ver_tarea .text_alert {
+  color: #E94800;
+  text-align: center;
+}
+
 .ver_tarea .estado_comentario {
   position: absolute;
   right: 0;
+}
+
+.ver_tarea .ruta_server {
+  padding-left: 15px;
+  padding-top: 50px;
+  padding-right: 15px;
+  margin-bottom: 35px;
+}
+
+.ver_tarea .columna2 {
+  padding-bottom: 30px;
 }
 
 .ver_tarea .desc-ot {
@@ -8795,6 +8827,7 @@ body {
 
 .ver_tarea .tiempo_estimado {
   height: 35px;
+  width: 90px;
 }
 
 /*# sourceMappingURL=app.css.map */

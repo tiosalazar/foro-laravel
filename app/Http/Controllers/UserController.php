@@ -204,7 +204,12 @@ class UserController extends Controller
                                 $user=  User::findOrFail($id);
 
                                 // Si la data es valida se la asignamos al usuario
+
                                 $user->fill($request->all());
+
+                                //Encriptamos la contraeña
+                                 $user->password=bcrypt($request->password);
+                                 
                                 // Guardamos el usuario
                                 $respuesta["obj"]=$request;
                                 $user->update();

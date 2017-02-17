@@ -156,65 +156,91 @@ class TareaController extends Controller
     {
         $respuesta=[];
 
-        $vl=$this->validatorAsignarTarea($request->all());
-        if ($vl->fails()) {
-               $respuesta["error"]="Datos Incompletos";
-               $respuesta["codigo_error"]="Error con los datos";
-               $respuesta["mensaje"]="Error con los datos";
-               $respuesta["status"]= Response::HTTP_BAD_REQUEST;
-               $respuesta["msg"]="Datos Incompletos";
-               $respuesta["obj"]=$vl->errors();
-               $respuesta["request"]=$request;
-        }else{ 
+        if($request->cuentas_comentario==1){
 
-                try
-                    {
-                    //Busca el usuario en la BD
-                       $tarea=Tarea::findOrFail($id);
+           $tarea=Tarea::findOrFail($id);
 
-                       //Asigna los nuevo datos
-                       $tarea->fill($request->all());
+           $comentario = new Comentario;
+           $comentario->fill($request->all());
+           $comentario->save();
 
-                       //Guardamos la tarea
-                       $tarea->update();
+            //Respuesta 
+           $respuesta['dato']=$tarea;
+           $respuesta['user_coment']='';
+           $respuesta["error"]=0;
+           $respuesta["mensaje"]="OK"; 
+           $respuesta["msg"]="Asignado con exito";
+           foreach ($tarea->comentario as $key => $value) {
+                if ($value->user->id==$request->usuarios_comentario_id) {
+                    $respuesta['user_coment']=$value;
+                    $value->estados;    
+                }
+                
+             
+            }
 
-                       //Guardamos el comentario
-                       $comentario = new Comentario;
-                       $comentario->fill($request->all());
-                       $comentario->save();
-                       
-                      
+        }else{
 
-                      //Respuesta 
-                       $respuesta['dato']=$tarea;
-                       $respuesta['user_coment']='';
-    
-                       $respuesta["error"]=0;
-                       $respuesta["mensaje"]="OK"; 
-                       $respuesta["msg"]="Asignado con exito";
-                       foreach ($tarea->comentario as $key => $value) {
-                            if ($value->user->id==$request->usuarios_id) {
-                                $respuesta['user_coment']=$value;
-                                $value->estados;    
+            $vl=$this->validatorAsignarTarea($request->all());
+            if ($vl->fails()) {
+                   $respuesta["error"]="Datos Incompletos";
+                   $respuesta["codigo_error"]="Error con los datos";
+                   $respuesta["mensaje"]="Error con los datos";
+                   $respuesta["status"]= Response::HTTP_BAD_REQUEST;
+                   $respuesta["msg"]="Datos Incompletos";
+                   $respuesta["obj"]=$vl->errors();
+                   $respuesta["request"]=$request;
+            }else{ 
+
+                    try
+                        {
+                        //Busca el usuario en la BD
+                           $tarea=Tarea::findOrFail($id);
+
+                           //Asigna los nuevo datos
+                           $tarea->fill($request->all());
+
+                           //Guardamos la tarea
+                           $tarea->update();
+
+                           //Guardamos el comentario
+                           $comentario = new Comentario;
+                           $comentario->fill($request->all());
+                           $comentario->save();
+                           
+                          
+
+                          //Respuesta 
+                           $respuesta['dato']=$tarea;
+                           $respuesta['user_coment']='';
+        
+                           $respuesta["error"]=0;
+                           $respuesta["mensaje"]="OK"; 
+                           $respuesta["msg"]="Asignado con exito";
+                           foreach ($tarea->comentario as $key => $value) {
+                                if ($value->user->id==$request->usuarios_comentario_id) {
+                                    $respuesta['user_coment']=$value;
+                                    $value->estados;    
+                                }
+                                
+                             
                             }
-                            
-                         
+
                         }
 
-                    }
+                        catch(Exception $e)
+                        {
+                           $respuesta["error"]="Error datos incorrectos";
+                           $respuesta["codigo_error"]="Error con la tarea";
+                           $respuesta["mensaje"]="Error con la tarea";
+                           $respuesta["consola"]=$e;
+                           $respuesta["msg"]="Error  datos incorrectos";
+                           $respuesta["request"]=$tarea;
+                           $respuesta["obj"]=$vl->errors();
+                            
+                        }
 
-                    catch(Exception $e)
-                    {
-                       $respuesta["error"]="Error datos incorrectos";
-                       $respuesta["codigo_error"]="Error con la tarea";
-                       $respuesta["mensaje"]="Error con la tarea";
-                       $respuesta["consola"]=$e;
-                       $respuesta["msg"]="Error  datos incorrectos";
-                       $respuesta["request"]=$tarea;
-                       $respuesta["obj"]=$vl->errors();
-                        
-                    }
-
+                }
             }
 
          return response()->json($respuesta);
