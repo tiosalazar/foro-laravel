@@ -12,15 +12,17 @@ class CrearOT extends Notification
     use Queueable;
 
     public $user;
+    public $tarea;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user,$tarea)
     {
         $this->user = $user;
+        $this->tarea = $tarea;
     }
 
     /**
@@ -31,7 +33,7 @@ class CrearOT extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['broadcast','database'];
     }
 
     /**
@@ -57,9 +59,12 @@ class CrearOT extends Notification
     public function toArray($notifiable)
     {
         return [
-            'name' => $this->user->nombre,
+            'id_tarea' => $this->tarea->id,
+            'nombre' => $this->user->nombre,
             'cargo' => $this->user->cargo,
-            'message' => $this->user->nombre. ' a creado una Tarea',
+            'descripcion' => $this->user->nombre. ' a creado una Tarea',
+            'created_at' => date("Y-m-d H:i:s"),
+            'img_perfil' => $this->user->img_perfil,
         ];
     }
 }

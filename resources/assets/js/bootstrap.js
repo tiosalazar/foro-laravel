@@ -10,6 +10,26 @@ window._ = require('lodash');
 window.$ = window.jQuery = require('jquery');
 require('bootstrap-less');
 
+
+var AdminLTEOptions = {
+    //Enable sidebar expand on hover effect for sidebar mini
+    //This option is forced to true if both the fixed layout and sidebar mini
+    //are used together
+    sidebarExpandOnHover: true,
+    //BoxRefresh Plugin
+    enableBoxRefresh: true,
+    //Bootstrap.js tooltip
+    enableBSToppltip: true,
+    //Add slimscroll to navbar menus
+  //This requires you to load the slimscroll plugin
+  //in every page before app.js
+  navbarMenuSlimscroll: true,
+  navbarMenuSlimscrollWidth: "3px", //The width of the scroll bar
+  //Activate sidebar slimscroll if the fixed layout is set (requires SlimScroll Plugin)
+  sidebarSlimScroll: true,
+  }
+
+require('jquery-slimscroll');
 require('admin-lte');
 window.toastr = require('toastr');
 require('icheck');
@@ -59,6 +79,7 @@ window.Echo = new Echo({
 Pusher.log = function(message) {
 	window.console.log(message)
 }
+
 
 $(document).ready(function(){
     $('[data-toggle="modal"]').tooltip(); 

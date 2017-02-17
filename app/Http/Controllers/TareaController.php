@@ -19,10 +19,10 @@ use Yajra\Datatables\Datatables;
 
 class TareaController extends Controller
 {
-    public function __construct()
+    /*public function __construct()
     {
         $this->middleware('auth');
-    }
+    }*/
     /**
      * Display a listing of the resource.
      *
@@ -75,7 +75,8 @@ class TareaController extends Controller
         }else{
             try {
                 $tarea->save();
-                User::find(1)->notify(new CrearOT(Auth::user()));
+                $maker = User::findOrFail($request->usuarios_id);
+                User::find(1)->notify(new CrearOT($maker,$tarea));
                 return response([
                     'status' => Response::HTTP_OK,
                     'response_time' => microtime(true) - LARAVEL_START,

@@ -6,7 +6,6 @@
 
 
 @section('main-content')
-<notificacion :id="{{Auth::user()->id }}" ></notificacion>
 	<section>
 	   <tarea :id_user="{{Auth::user()->id }}"></tarea>
 			
