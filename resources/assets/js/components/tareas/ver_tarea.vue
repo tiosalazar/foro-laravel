@@ -45,22 +45,31 @@
 
                 <div class="form-group">
                   <label ><strong>Persona Encargada</strong></label>
-                  <select_usuarios area="coordinador" :id_area_tarea='tarea_info.areas_id' :select="tarea_info.usuarioencargado"></select_usuarios>
+                  <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas'">
+                    {{tarea_info.usuarioencargado.nombre}} - {{tarea_info.usuarioencargado.apellido}}     
+                  </div>
+                  <div v-else>
+                    <select_usuarios area="coordinador"  :id_area_tarea='tarea_info.areas_id' :select="tarea_info.usuarioencargado"></select_usuarios>
+                  </div>
                 </div>
 
-                <div class="form-group">
-                  <label for="tiempo_mapa_cliente"><strong>Tiempo estimado cliente</strong></label>
-                  <div>{{tarea_info.tiempo_mapa_cliente}} Horas</div>
-                </div>
+             
                 
                  <label for=""><strong>Fecha entrega Área</strong></label>
                 <div class="form group input-group date" v-bind:class="{ 'has-error': errors.has('fecha_entrega_area') }">
-               
-                    <div class="input-group-addon" >
-                      <i class="fa fa-calendar"></i>
-                    </div>
+                    
+                      <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' ">
+                           {{tarea_info.fecha_entrega_area}}    
+                        </div>
+                       <div class="contenedor_fecha" v-else>
 
-                    <datepicker  style="height:26px;" language="es"  id="fecha_entrega_area" required="required"   v-validate data-vv-rules="required" data-vv-as="Fecha Entrega Area" placeholder="Fecha Entrega Area"  :disabled="state.disabled" v-model="tarea_info.fecha_entrega_area" class="form-control"  name="fecha_entrega_area" format="dd-MM-yyyy"></datepicker>  
+                         <div class="input-group-addon" >
+                          <i class="fa fa-calendar"></i>
+                        </div>
+
+                          <datepicker  style="height:26px;" language="es"  id="fecha_entrega_area" required="required"   v-validate data-vv-rules="required" data-vv-as="Fecha Entrega Area" placeholder="Fecha Entrega Area"  :disabled="state.disabled" v-model="tarea_info.fecha_entrega_area" class="form-control"  name="fecha_entrega_area" format="dd-MM-yyyy"></datepicker>     
+
+                       </div> 
                     <span  class="help-block" v-show="errors.has('fecha_entrega_area')">{{ errors.first('fecha_entrega_area') }}</span>
                 </div>
 
@@ -68,7 +77,7 @@
 
               </div>
 
-              <div class="col-sm-6">
+              <div class="col-sm-6 columna2">
 
                 <div class="form-group">
                   <label><strong>Fase del Projecto</strong></label>
@@ -85,46 +94,98 @@
                   <select_estados tipo_estado="1"  :select="tarea_info.estado"></select_estados>
                 </div>
 
-                <div class="form-group">
-                  <label for=""><strong>Tiempo estimado Jefe</strong></label>
-                  <input type="number" placeholder="horas estimadas" name="horas_estimadas" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_estimado" required="required">
-                </div>
                 
                 <label for=""><strong>Fecha entrega cuentas</strong></label>
                 <div class="form group input-group date" v-bind:class="{ 'has-error': errors.has('fecha_entrega_cuentas') }">
-
-                    <div class="input-group-addon" >
-                      <i class="fa fa-calendar"></i>
+                    <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas'">
+                           {{tarea_info.fecha_entrega_cuentas}}    
                     </div>
-                   
-                    <datepicker   language="es"  id="fecha_entrega_cuentas" required="required"   v-validate data-vv-rules="required" data-vv-as="Fecha Entrega Area" placeholder="Fecha Entrega Cuentas"  :disabled="state.disabled" v-model="tarea_info.fecha_entrega_cuentas" class="form-control"  name="fecha_entrega_cuentas" format="dd-MM-yyyy"></datepicker>  
+                  <div class="contenedor_fecha" v-else>
+                      <div class="input-group-addon" >
+                        <i class="fa fa-calendar"></i>
+                      </div>
+
+                      <datepicker   language="es"  id="fecha_entrega_cuentas" required="required"   v-validate data-vv-rules="required" data-vv-as="Fecha Entrega Area" placeholder="Fecha Entrega Cuentas"  :disabled="state.disabled" v-model="tarea_info.fecha_entrega_cuentas" class="form-control"  name="fecha_entrega_cuentas" format="dd-MM-yyyy"></datepicker>  
+                      
+                  </div>
                     <span  class="help-block" v-show="errors.has('fecha_entrega_cuentas')">{{ errors.first('fecha_entrega_cuentas') }}</span>
                 </div>
+              
+
 
               </div>
+
+                <div class="form-group ruta_server">
+                  <label><strong>Ruta server</strong></label>
+                  <p>{{tarea_info.enlaces_externos}}</p>
+                </div>
              
             </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="tiempo_mapa_cliente"><strong>Tiempo estimado cliente</strong></label>
+                  <div>{{tarea_info.tiempo_mapa_cliente}} Horas</div>
+                </div>
+              </div>
 
-            <div class="form-group required" v-bind:class="[errors_return.descripcion,{ 'has-error': errors.has('descripcion') }]">
+              <div class="col-sm-4"> 
+                <div class="form-group" v-bind:class="{ 'has-error': errors.has('fecha_entrega_cuentas') }">
+                  <label for=""><strong>Tiempo estimado Jefe</strong></label>
+                  <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas'">
+                      {{tarea_info.tiempo_estimado}}    
+                  </div>
+                  <div v-else>
+                    <input type="number" placeholder="horas estimadas" name="horas_estimadas" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_estimado" required="required">
+                  </div>
+                  
+                </div>
+                <span  class="help-block" v-show="errors.has('fecha_entrega_cuentas')">{{ errors.first('fecha_entrega_cuentas') }}</span>
+              </div>
+
+              <div class="col-sm-4">
+               <div v-if="rol_actual==='colaborador'">
+                  <div class="form-group" v-bind:class="{ 'has-error': errors.has('timepo_real') }">
+                      <label for=""><strong>Tiempo Real</strong></label>
+                      <input type="number" placeholder="Tiempo Real" name="timepo_real" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_real" required="required" v-validate data-vv-rules="required">
+                  </div>   
+              </div>               
+                <span  class="help-block" v-show="errors.has('timepo_real')">{{ errors.first('timepo_real') }}</span>
+              </div>
+            </div>
+
+            <div class="form-group required" >
+
+            <div v-bind:class="{ 'hidden': descripcion_requerida }">
+            <div class="alert alert-danger alert_ups"> Ups, ¿Que sucedio? </div>
+            <p class="text_alert">*Escribre que sucedió en el campo de observaciones, recuerda que es obligatorio</p>             
+            </div>
               <label for="descripcion">Descripción</label>
-              <textarea class="form-control" rows="3"  name="descripcion"  id="descripcion" v-model="descripcion" placeholder="Descripción" required="required" v-validate data-vv-rules="required|min:4"></textarea>
-              <span  class="help-block" v-show="errors.has('descripcion')">{{ errors.first('descripcion') }}</span>
+              <textarea class="form-control" rows="3"  name="descripcion"  id="descripcion" v-model="descripcion" placeholder="Descripción" required="required"></textarea>     
             </div>
             
             
           </div>
           <!-- /.box-body -->
 
-          <div class="box-footer text-center">
-            <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Publicar</button>
-          </div>
-
+           <div v-if="rol_actual==='cuentas' || usuario_actual_comentar!=tarea_info.encargado_id  ">
+                 <div class="box-footer text-center">
+                  <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Publicar</button>
+                </div>  
+           </div>
+           <div v-else>
+               <div class="box-footer text-center">
+                <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Publicar</button>
+              </div>
+           </div>
+          
+          <!-- Comentarios -->
          <div class="box box-widget" style="box-shadow:none;">
            <div v-for="comentario in comentarios_array" style="margin-bottom:20px;margin-top:35px;">
 
             <div style="display:flex;">
               <div class="img_comentario">
-                <div v-if="comentario.user.img_perfil==null"><img   src="/images/perfil.jpg" style="width:50px;"></div>
+                <div v-if="comentario.user.img_perfil==null"><img   src="/images/perfil.jpg" style="width:65px;"></div>
                 <div v-else><img   v-bind:src="comentario.user.img_perfil" style="width:60px;"></div>
               </div>
 
@@ -132,7 +193,9 @@
                 <label><strong>{{comentario.user.nombre}} &nbsp {{comentario.user.apellido}}</strong></label>
                 <span style="color:#a7a7a7;">({{comentario.user.email}})</span>
                 <p style="margin-top:5px;">{{comentario.created_at}}</p>
-                <p class="estado_comentario">{{comentario.estados.nombre}}</p>
+                <div v-if="comentario.estados!=null" class="estado_comentario">
+                  <p >{{comentario.estados.nombre}}</p>
+                </div>  
               </div>
 
              </div> 
@@ -159,14 +222,16 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
 
   Vue.use(VeeValidate);
 	module.exports = {
-    props: ['arraytarea','id_usuario_actual'],
+    props: ['arraytarea','id_usuario_actual','rol_usuario_actual'],
     components: {Datepicker,VeeValidate,Validator},
     data(){
       return{
+        rol_actual:'',
         tarea:{
           nombre_tarea:this.arraytarea.nombre_tarea,
           enlaces_externos:this.arraytarea.enlaces_externos,
         },
+        descripcion_requerida:true,
         comentarios_array:{},
         descripcion:'',
         fecha_entrega_area:'',
@@ -186,6 +251,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
           }
         },
         tarea_info:{},
+        usuario_actual_comentar:'',
         area:{},
         message:'',
         errors_return:{
@@ -219,9 +285,20 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
        
       });
 
-       this.$on('select_estado', function(v) {
+      this.$on('select_estado', function(v) {
         this.estado_solicitud=v;
-        
+       
+        if (this.estado_solicitud.nombre=="Atención Cuentas") {
+           this.descripcion_requerida=false;
+        }else{
+          this.descripcion_requerida=true;
+        } 
+
+        this.usuario_actual_comentar= this.id_usuario_actual;
+
+        this.rol_actual=this.rol_usuario_actual;
+        console.log("Rol actual: "+this.rol_actual);
+            
       });
 
       //Recibe la propiedad arraytarea desde la vista y verifico si es indefinida o no
@@ -251,6 +328,17 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
   methods:{
      asignar_tarea:function(){
 
+      this.$validator.validateAll();
+        if (this.errors.any()) {
+          return false
+        }
+
+        if (this.estado_solicitud.nombre=="Atención Cuentas" && this.descripcion=="" ) {
+         
+          return false
+          
+        }
+
       //Datos a enviar al asignar la tarea y comentarios
         var id_tarea= this.tarea_info.id;
         var id_encargado=this.encargado.id;
@@ -261,9 +349,10 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
         var fecha_cuentas=moment(this.tarea_info.fecha_entrega_cuentas).format('YYYY-MM-DD');
         var id_user_actual= this.id_usuario_actual;
         var tarea_id=this.tarea_info.id;
+        var tiempo_real_usuario=this.tarea_info.tiempo_real;
 
         //Método que envia los datos al api rest
-        this.$http.put('/api/v1/tareas/'+id_tarea, {encargado_id:id_encargado,estados_id:estado,tiempo_estimado:horas_estimadas,fecha_entrega_area:fecha_area,fecha_entrega_cuentas:fecha_cuentas,usuarios_id:id_user_actual,tareas_id:tarea_id,comentarios:descripcion_tarea})
+        this.$http.put('/api/v1/tareas/'+id_tarea, {encargado_id:id_encargado,estados_id:estado,tiempo_estimado:horas_estimadas,fecha_entrega_area:fecha_area,fecha_entrega_cuentas:fecha_cuentas,usuarios_comentario_id:id_user_actual,tareas_id:tarea_id,comentarios:descripcion_tarea,tiempo_real:tiempo_real_usuario})
         .then(function (respuesta) {
 
             var that = this;
@@ -306,6 +395,30 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
                     }
             }
           console.log(respuesta);
+        });
+     },
+     enviarcomentarios:function(){
+
+        var id_tarea= this.tarea_info.id;
+        var descripcion_tarea=this.descripcion;
+        var id_user_actual= this.id_usuario_actual;
+
+        if (this.descripcion=="") {
+          this.descripcion_requerida=false;
+          return false;
+        }
+
+        this.$http.put('/api/v1/tareas/'+id_tarea, {comentarios:descripcion_tarea,usuarios_comentario_id:id_user_actual,cuentas_comentario:1,tareas_id:id_tarea})
+        .then(function(respuesta){
+          // toastr.error(respuesta.body.msg,'',this.option_toast);
+           this.descripcion="";
+           this.descripcion_requerida=true;
+           this.comentarios_array.push(respuesta.body.user_coment);
+           toastr.success(respuesta.body.msg,'',this.option_toast);
+           console.log(respuesta);
+           console.log(this.comentarios_array);
+           
+
         });
      }
   }

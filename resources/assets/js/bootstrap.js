@@ -83,8 +83,5 @@ Pusher.log = function(message) {
 
 $(document).ready(function(){
     $('[data-toggle="modal"]').tooltip(); 
-
- 
-
 });
 

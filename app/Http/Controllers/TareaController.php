@@ -166,69 +166,85 @@ class TareaController extends Controller
     {
         $respuesta=[];
 
-        $vl=$this->validatorAsignarTarea($request->all());
-        if ($vl->fails()) {
-               $respuesta["error"]="Datos Incompletos";
-               $respuesta["codigo_error"]="Error con los datos";
-               $respuesta["mensaje"]="Error con los datos";
-               $respuesta["status"]= Response::HTTP_BAD_REQUEST;
-               $respuesta["msg"]="Datos Incompletos";
-               $respuesta["obj"]=$vl->errors();
-               $respuesta["request"]=$request;
-        }else{ 
 
-                try
-                    {
-                    //Busca el usuario en la BD
-                       $tarea=Tarea::findOrFail($id);
+        if($request->cuentas_comentario==1){
 
-                        // Creador de la solicitud
-                        $maker = User::findOrFail($request->usuarios_id);
+           $tarea=Tarea::findOrFail($id);
 
+           $comentario = new Comentario;
+           $comentario->fill($request->all());
+           $comentario->save();
 
-                       //Asigna los nuevo datos
-                       $tarea->fill($request->all());
+            //Respuesta 
+           $respuesta['dato']=$tarea;
+           $respuesta['user_coment']='';
+           $respuesta["error"]=0;
+           $respuesta["mensaje"]="OK"; 
+           $respuesta["msg"]="Asignado con exito";
+           foreach ($tarea->comentario as $key => $value) {
+                if ($value->user->id==$request->usuarios_comentario_id) {
+                    $respuesta['user_coment']=$value;
+                    $value->estados;    
+                }
+                
+             
+            }
 
-                       //Guardamos la tarea
-                       $tarea->save();
+        }else{
 
-                       //Guardamos el comentario
-                       $comentario = new Comentario;
-                       $comentario->fill($request->all());
-                       $comentario->save();
+            $vl=$this->validatorAsignarTarea($request->all());
+            if ($vl->fails()) {
+                   $respuesta["error"]="Datos Incompletos";
+                   $respuesta["codigo_error"]="Error con los datos";
+                   $respuesta["mensaje"]="Error con los datos";
+                   $respuesta["status"]= Response::HTTP_BAD_REQUEST;
+                   $respuesta["msg"]="Datos Incompletos";
+                   $respuesta["obj"]=$vl->errors();
+                   $respuesta["request"]=$request;
+            }else{ 
 
-                        // Si el estado es Pendiente (7)
-                       if ($tarea->estados_id == 7) {
-                            // Creador de la solicitud
-                            $maker = User::findOrFail($request->usuarios_id);
-                            // Enviar notificacion al nuevo encargado
-                            User::find($request->encargado_id)->notify(new TareaPendiente($maker,$tarea));
-                       }
+                    try
+                        {
+                        //Busca el usuario en la BD
+                           $tarea=Tarea::findOrFail($id);
 
-                       //Guardamos el comentario
-                       $comentario = new Comentario;
-                       $comentario->fill($request->all());
-                       $comentario->save();
-                       
-                      
+                           //Asigna los nuevo datos
+                           $tarea->fill($request->all());
 
-                      //Respuesta 
-                       $respuesta['dato']=$tarea;
-                       $respuesta['user_coment']='';
-    
-                       $respuesta["error"]=0;
-                       $respuesta["mensaje"]="OK"; 
-                       $respuesta["msg"]="Asignado con exito";
-                       foreach ($tarea->comentario as $key => $value) {
-                            if ($value->user->id==$request->usuarios_id) {
-                                $respuesta['user_coment']=$value;
-                                $value->estados;    
+                           //Guardamos la tarea
+                           $tarea->update();
+
+                           //Guardamos el comentario
+                           $comentario = new Comentario;
+                           $comentario->fill($request->all());
+                           $comentario->save();
+                           
+                            // Si el estado es Pendiente (7)
+                             if ($tarea->estados_id == 7) {
+                                  // Creador de la solicitud
+                                  $maker = User::findOrFail($request->usuarios_comentario_id);
+                                  // Enviar notificacion al nuevo encargado
+                                  User::find($request->encargado_id)->notify(new TareaPendiente($maker,$tarea));
+                             }
+
+                          //Respuesta 
+                           $respuesta['dato']=$tarea;
+                           $respuesta['user_coment']='';
+        
+                           $respuesta["error"]=0;
+                           $respuesta["mensaje"]="OK"; 
+                           $respuesta["msg"]="Asignado con exito";
+                           foreach ($tarea->comentario as $key => $value) {
+                                if ($value->user->id==$request->usuarios_comentario_id) {
+                                    $respuesta['user_coment']=$value;
+                                    $value->estados;    
+                                }
+                                
+                             
+
                             }
-                            
-                         
-                        }
 
-                    }
+                        }
 
                     catch(Exception $e)
                     {
@@ -242,6 +258,7 @@ class TareaController extends Controller
                         
                     }
 
+                }
             }
 
          return response()->json($respuesta);
