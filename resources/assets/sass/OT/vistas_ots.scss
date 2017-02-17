@@ -8,9 +8,7 @@
   .border-left {
       border-left: 1px solid $borde-gris;
   }
-  .form-control{
-    border-radius:0px;
-  }
+
   .form-group{
      color: #3c3939;
   }
@@ -22,13 +20,7 @@
     font-size: 20px;
     background: #15baee;
 }
-.boton_foro {
-  border-radius: 0px;
-  font-size: 16px;
-}
-.boton_foro.succes{
-   background: #3b9600;
-}
+
 .boton_foro.error{
   background: #da0724;
   font-style: italic;
@@ -46,12 +38,7 @@
  color: #626262;
  font-weight: 600;
 }
-.form-control {
-    height: 28px ;
-}
-textarea.form-control {
-    height: auto;
-}
+
 
 #seccion_compra{
 .disabled{
@@ -245,7 +232,23 @@ input[type=radio]:checked + label:before {
 
 }
 
-
+.form-control {
+    height: 28px ;
+    border-radius:0px;
+}
+textarea.form-control {
+    height: auto;
+}
+.boton_foro {
+  border-radius: 0px;
+  font-size: 16px;
+}
+.boton_foro.succes{
+   background: #3b9600;
+}
+.boton_foro.succes:hover{
+   color:white;
+}
 #encabezado_ot{
   .form-group {
     padding: 12px 0px 46px 0px;

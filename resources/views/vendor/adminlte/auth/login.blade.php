@@ -5,12 +5,14 @@
 @endsection
 
 @section('content')
-<body class="hold-transition login-page" style="background: #b7cde6">
+<body class="hold-transition login-page" >
+ <div class="logo_sherpa">
+        </div>
     <div id="app">
         <div class="login-box">
             <div class="login-logo">
                 <a href="{{ url('/home') }}">
-                <img src="{{ asset('images/logo_himalaya.png') }}">
+                <img src="{{ asset('images/logo-himalaya-login.png') }}">
                 </a>
             </div><!-- /.login-logo -->
 
@@ -24,8 +26,8 @@
                 </ul>
             </div>
         @endif
-
         <div class="login-box-body">
+        <h2>!Bienvenido!</h2>
         <p class="login-box-msg"> {{ trans('adminlte_lang::message.siginsession') }} </p>
         <form action="{{ url('/login') }}" method="post">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -41,12 +43,12 @@
                 <div class="col-xs-7">
                     <div class="checkbox icheck">
                         <label>
-                            <input type="checkbox" name="remember"> {{ trans('adminlte_lang::message.remember') }}
+                            <input type="checkbox" name="remember"> <span class="span_check">{{ trans('adminlte_lang::message.remember') }}</span>
                         </label>
                     </div>
                 </div><!-- /.col -->
                 <div class="col-xs-5">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">{{ trans('adminlte_lang::message.buttonsign') }}</button>
+                    <button type="submit" class="btn  btn-block boton_foro succes">{{ trans('adminlte_lang::message.buttonsign') }}</button>
                 </div><!-- /.col -->
             </div>
         </form>
@@ -58,6 +60,7 @@
     </div><!-- /.login-box-body -->
 
     </div><!-- /.login-box -->
+
     </div>
     @include('adminlte::layouts.partials.scripts_auth')
 

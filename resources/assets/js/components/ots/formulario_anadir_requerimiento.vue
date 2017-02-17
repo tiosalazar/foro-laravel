@@ -207,6 +207,7 @@
 					resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(this.area_temporal);
 					//console.log("Horas totales Resta : "+resta_anterior);
 					this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
+					//this.h_Disponibles += this.h_extra_total;
 				});
 				/*
 				Escucha las horas del area actual emitidas por Añadir requerimiento y realiza el calculo
@@ -219,6 +220,7 @@
 					resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(this.area_temporal);
 					//console.log("Resta Anterio Horas AArea"+resta_anterior);
 					this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
+					//this.h_Disponibles += this.h_extra_total;
 				});
 				/*
 				Escucha el arreglo completo de los datos generales de la OT
@@ -241,7 +243,9 @@
 					var resta_anterior=0;
 					resta_anterior=(!this.realizarCalculoHorasExtra())?0:this.realizarCalculoHorasExtra(this.area_temporal);
 					this.h_extra_total= this.t_extra+resta_anterior;
-					//this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
+
+					//resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(this.area_temporal);
+					//this.h_Disponibles=((this.horas_totales- this.h_area)-resta_anterior)+this.h_extra_total;
 				});
 				/*
 				Escucha el arreglo completo de los datos de las compras asociadas, si las tiene
@@ -335,6 +339,7 @@
 							compras: this.procesarTodosCompras()
 						};
 						console.log(datos_procesados);
+
 						if(this.visualizacion != 'true'){
 							this.$http.post('/api/v1/ots', datos_procesados)
 							.then(function(respuesta){
@@ -348,6 +353,7 @@
 									toastr.success(respuesta.body.msg,'',this.option_toast);
 									this.h_Disponibles=0;
 									this.horas_totales=0;
+									this.h_extra_total=0;
 									this.descripcion_ot='';
 									this.message='';
 									this.h_area=0;
@@ -400,6 +406,8 @@
 								toastr.error(this.message,response.body.msg,this.option_toast);
 							});
 						}
+
+
 					} catch (e) {
 						console.log(e);
 						toastr.error("Revise que todos los datos esten bien, y vuelva a intentar","Error al Guardar",this.option_toast);
@@ -571,7 +579,7 @@
 				var index = Object.keys(this.datos_requerimiento).length;
 				var requerimientos =this.datos_requerimiento;
 				if(this.comprobarDatosRequerimientos()==true) {
-
+					this.area_temporal=id;
 					if(this.comprobarSiGuardoCompras() == true){
 						//this.validar_compras=true;
 						//this.validar_requerimientos=true;
@@ -654,6 +662,9 @@
 			},
 			comprobarSiGuardoCompras: function () {
 				if (this.datos_compras ==[] || this.datos_compras[0] == null || this.datos_compras[0] == undefined ) {
+					return false;
+				}
+				if(this.datos_compras[0].id_area != this.area_temporal){
 					return false;
 				}
 				var compras =this.datos_compras[0].compras;

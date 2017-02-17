@@ -30,8 +30,8 @@ class CreateHistoricoOtsTable extends Migration
             $table->decimal('horas_disponibles',5,2);
             $table->decimal('total_horas_extra',5,2)->nullable();
             $table->string('observaciones',255)->nullable();
-            $table->string('requerimientos_ot',255);
-            $table->string('compras_ot',255);
+            $table->string('requerimientos_ot',2050);
+            $table->string('compras_ot',2050);
             $table->dateTime('fecha_inicio');
             $table->dateTime('fecha_final');
             $table->integer('clientes_id')->unsigned();

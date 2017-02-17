@@ -88,6 +88,7 @@ module.exports={
       model_nom:'',
       nhextra:0,
       model_horas:0,
+      horas_extra_area:0,
       v_resta:'',
       h_pasadas:false
     }
@@ -150,6 +151,8 @@ module.exports={
         this.nhextra	= data_req[0].tiempo_extra;
         this.h_pasadas	= data_req[0].h_pasadas;
         this.emitirData();
+        this.realizarCalculo();
+
 
         var datos=[{
           requerimientos:this.requerimiento,
@@ -172,8 +175,6 @@ module.exports={
           this.horas=parseInt(arreglo_requerimientos[idx].horas);
           this.h_pasadas=this.h_pasadas;
           this.nhextra= arreglo_requerimientos[idx].textra;
-          this.emitirData();
-          this.realizarCalculo();
           //console.log(arreglo_requerimientos[idx]);
         //  arreglo_temporal.push([JSON.parse(arreglo_requerimientos[idx].requerimientos)]);
           var datos=[{
@@ -252,12 +253,13 @@ module.exports={
         }
       }
     }
-    if (this.nhoras < sumatoria) {
+     var horas =parseInt(this.nhoras)+parseInt(this.nhextra);
+    if ( horas < sumatoria ) {
       this.h_pasadas=true;
     }else {
       this.h_pasadas=false;
     }
-    this.v_resta= this.nhoras-sumatoria;
+    this.v_resta= (this.nhoras-sumatoria)+parseInt(this.nhextra);
   }
 
 

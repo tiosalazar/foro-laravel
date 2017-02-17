@@ -19,6 +19,7 @@ use Validator;
 use Illuminate\Http\Response;
 use Exception;
 use Carbon\Carbon;
+use Yajra\Datatables\Datatables;
 class OtController extends Controller
 {
 
@@ -31,17 +32,25 @@ class OtController extends Controller
      */
     public function index()
     {
-     $ots= Ot::all();
-     $data=[];
+     $ots= Ot::orderBy('created_at', 'ASC')->get();
+    /* $data=[];
      foreach ( $ots as $key =>  $ot) {
         $ot->Cliente;
         $ot->Usuario;
         $ot->Estado;
         array_push($data, $ot);
+    }*/
+              // $tareas= Tarea::all();
+        $ots = Ot::with('cliente','usuario','estado')->get();
+        /*foreach ($tareas as $key => $value) {
+            $value->Ot->Cliente;
+            $value->Estado;
+        }*/
+        // return response()->json($tareas);
+        // return array('recordsTotal'=>count($tareas),'recordsFiltered'=>count($tareas),'data'=>$tareas);
+        return Datatables::of( $ots)->make(true);
 
-    }
-
-    return array('recordsTotal'=>count($data),'recordsFiltered'=>count($data),'data'=>$data);
+   // return array('recordsTotal'=>count($data),'recordsFiltered'=>count($data),'data'=>$data);
 }
 
 
@@ -238,12 +247,12 @@ class OtController extends Controller
            }
        }
 
-       array_push($data['final_com'], $data['compras']);
+      
    }
-
+    array_push($data['final_com'], $data['compras']);
 
        //var_dump( $data['final_com']);
-        // return response()->json( $data['final_req']);
+    // return response()->json( $data['final_com']);
 
 
        //var_dump($data);

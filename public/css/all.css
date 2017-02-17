@@ -7854,10 +7854,6 @@
   border-left: 1px solid #d8d8d8;
 }
 
-.Formulario_OT .form-control {
-  border-radius: 0px;
-}
-
 .Formulario_OT .form-group {
   color: #3c3939;
 }
@@ -7868,15 +7864,6 @@
   text-align: center;
   font-size: 20px;
   background: #15baee;
-}
-
-.Formulario_OT .boton_foro {
-  border-radius: 0px;
-  font-size: 16px;
-}
-
-.Formulario_OT .boton_foro.succes {
-  background: #3b9600;
 }
 
 .Formulario_OT .boton_foro.error {
@@ -7911,14 +7898,6 @@
 .Formulario_OT .titulo_interna_ot {
   color: #626262;
   font-weight: 600;
-}
-
-.Formulario_OT .form-control {
-  height: 28px;
-}
-
-.Formulario_OT textarea.form-control {
-  height: auto;
 }
 
 .Formulario_OT #seccion_compra .disabled {
@@ -8112,6 +8091,28 @@
   padding: 20px 21%;
 }
 
+.form-control {
+  height: 28px;
+  border-radius: 0px;
+}
+
+textarea.form-control {
+  height: auto;
+}
+
+.boton_foro {
+  border-radius: 0px;
+  font-size: 16px;
+}
+
+.boton_foro.succes {
+  background: #3b9600;
+}
+
+.boton_foro.succes:hover {
+  color: white;
+}
+
 #encabezado_ot .form-group {
   padding: 12px 0px 46px 0px;
 }
@@ -8167,6 +8168,75 @@ body {
   font-family: 'iconforo';
   font-size: 18px;
   font-style: normal;
+}
+
+.login-logo {
+  padding: 10px 0px 25px;
+  margin-bottom: 0px;
+  background: white;
+}
+
+.login-box-body {
+  background: rgba(0, 46, 96, 0.75);
+  color: white;
+  /*.glyphicon{
+		color: $azul-claro;
+	}*/
+}
+
+.login-box-body h2 {
+  text-align: center;
+  color: #15baee;
+}
+
+.login-box-body .checkbox label {
+  padding-left: 0px;
+}
+
+.login-box-body .checkbox {
+  margin-top: 0px;
+}
+
+.login-box-body .span_check {
+  margin-left: 5px;
+}
+
+.login-page {
+  background: #003675;
+}
+
+.logo_sherpa {
+  background: url(../images/Sherpa.png) no-repeat;
+  width: 100%;
+  margin-top: -5%;
+  background-position: 0% 0%;
+  position: absolute;
+  height: 100%;
+}
+
+.login-box {
+  position: relative;
+  z-index: 99999;
+}
+
+@media screen and (min-width: 1680px) {
+  .logo_sherpa {
+    height: 80%;
+  }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1360px) {
+  .logo_sherpa {
+    margin-top: -7%;
+    background-position: -24% 0%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .logo_sherpa {
+    background-position: 60% 24%;
+    margin-top: 0%;
+  }
 }
 
 .skin-blue .main-header .navbar {
