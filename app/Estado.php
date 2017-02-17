@@ -50,5 +50,12 @@ class Estado extends Model
   {
     return $this->hasMany('App\Historico_Tarea');
   }
+   /**
+  * Obtiene los comentarios de tareas asociados a un estado
+  */
+  public function Comentarios()
+  {
+    return $this->hasMany('App\Comentario','estados_id','id');
+  }
 
 }

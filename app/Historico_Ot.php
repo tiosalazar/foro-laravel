@@ -6,14 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Historico_Ot extends Model
 {
+
+    public $table = "historicos_ots";
   /**
    * The attributes that are mass assignable.
    *
    * @var array
    */
   protected $fillable = [
-    'nombre','referencia','fee','horas_totales','horas_disponibles','total_horas_extra','valor', 'observaciones', 'fecha_inicio', 'fecha_final', 'clientes_id', 'usuarios_id','estados_id',
- 'editor_id', 'ots_id',
+    'requerimientos_ot', 'compras_ot','nombre','referencia','fee','horas_totales','horas_disponibles','total_horas_extra','valor', 'observaciones', 'fecha_inicio', 'fecha_final', 'clientes_id', 'usuarios_id','estados_id','editor_id', 'ots_id',
   ];
 
   /**

@@ -152,6 +152,17 @@
 					form_compras_validado: false,
 					validar_compras:false,
 					diabled_compras:true,
+					message:'',
+					errors_return:{
+						'nombre' : '',
+						'referencia' : '',
+						'valor' : '',
+						'fecha_inicio' : '',
+						'fecha_final' : '',
+						'clientes_id' : '',
+						'usuarios_id' : '',
+						'estados_id' : '',
+					},
 					option_toast:{
 						timeOut: 5000,
 						"positionClass": "toast-top-center",
@@ -227,12 +238,9 @@
 				this.$on('horas_extra_area', function(v,h) {
 					this.area_temporal=h;
 					this.t_extra=parseInt(v);
-					console.log(this.t_extra);
 					var resta_anterior=0;
 					resta_anterior=(!this.realizarCalculoHorasExtra())?0:this.realizarCalculoHorasExtra(this.area_temporal);
-
 					this.h_extra_total= this.t_extra+resta_anterior;
-          console.log("Horas Extra T"+this.h_extra_total);
 					//this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
 				});
 				/*
@@ -289,6 +297,14 @@
 				}
 
 			},
+			setErrors:function(object) {
+				this.message='';
+				var that = this;
+				$.each(object, function(index, value) {
+					that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+					that.errors_return[index] = 'has-warning';
+				});
+			},
 			GuardarOt: function (){
 				if ( !this.validarDatos(this.datos_encabezado) ) {
 					toastr.error('Error en el Detalle de la OT',"Error al guardar los datos",this.option_toast);
@@ -306,7 +322,7 @@
 								valor :this.datos_encabezado.valor_total,
 								fee: this.datos_encabezado.fee,
 								horas_totales:this.datos_encabezado.horas_totales,
-								horas_disponibles:this.datos_encabezado.horas_disponibles,
+								horas_disponibles:this.h_Disponibles,
 								total_horas_extra:this.h_extra_total,
 								observaciones:this.descripcion_ot,
 								fecha_inicio: this.datos_encabezado.fecha_inicio,
@@ -324,10 +340,10 @@
 							.then(function(respuesta){
 								console.log(respuesta);
 								if (respuesta.status != '200') {
-									if (Object.keys(respuesta.obj).length>0) {
-										toastr.error("Revise que todos los datos esten bien, y vuelva a intentar",respuesta.body.msg,this.option_toast);
-										return false;
+									if (Object.keys(respuesta.body.obj).length>0) {
+										this.setErrors(respuesta.body.obj);
 									}
+									toastr.warning(this.message,respuesta.body.msg,this.option_toast);
 								}else{
 									toastr.success(respuesta.body.msg,'',this.option_toast);
 									this.h_Disponibles=0;
@@ -340,64 +356,50 @@
 									this.validar_requerimientos=false;
 									this.form_compras_validado= false;
 									this.validar_compras=false;
-
 									this.limpiarDatos=true;
 									this.$localStorage.remove('datos_encabezado');
 									this.limpiarComprasRequerimientos();
 									this.datos_requerimiento=[];
 									this.datos_compras=[];
 								}
-							},(respuesta) => {
-								var that = this;
-								that.message ='';
-								console.log(respuesta);
-								//toastr.error(that.message,respuesta.body.msg,this.option_toast);
-								toastr.error("Revise que todos los datos esten bien, y vuelva a intentar",respuesta.body.msg,this.option_toast);
-								return false;
+							},(response) => {
+								if (response.body.error) {
+									toastr.error("Ocurrio un error del sistema por favor contacte con Soporte",response.body.error,this.option_toast);
+									return false;
+								}
+								if (Object.keys(response.body.obj).length>0) {
+									this.setErrors(response.body.obj);
+									console.log(response);
+								}
+								toastr.error(this.message,response.body.msg,this.option_toast);
 							});
 						}else{
 							var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
+							datos_procesados.datos_encabezado.editor_id=arreglo_visualizar.editor_id;
 							console.log(datos_procesados);
 							this.$http.put('/api/v1/ots/'+arreglo_visualizar.datos_encabezado.id, datos_procesados)
 							.then(function(respuesta){
 								console.log(respuesta);
 								if (respuesta.status != '200') {
-									if (Object.keys(respuesta.obj).length>0) {
-										toastr.error("Revise que todos los datos esten bien, y vuelva a intentar",respuesta.body.msg,this.option_toast);
-										return false;
+									if (Object.keys(respuesta.body.obj).length>0) {
+										this.setErrors(respuesta.body.obj);
 									}
+									toastr.warning(this.message,respuesta.body.msg,this.option_toast);
 								}else{
 									toastr.success(respuesta.body.msg,'',this.option_toast);
-									/*
-									this.h_Disponibles=0;
-									this.horas_totales=0;
-									this.descripcion_ot='';
-									this.message='';
-									this.h_area=0;
-									this.id_tab='';
-									this.form_requerimiento_validado=false;
-									this.validar_requerimientos=false;
-									this.form_compras_validado= false;
-									this.validar_compras=false;
-
-									this.limpiarDatos=true;
-									this.$localStorage.remove('datos_encabezado');
-									this.limpiarComprasRequerimientos();*/
 								}
-							},(respuesta) => {
-								console.log(respuesta);
-								var that = this;
-								that.message ='';
-								//if (Object.keys(respuesta.body.obj).length>0) {
-								//toastr.error(that.message,respuesta.body.msg,this.option_toast);
-								toastr.error("Revise que todos los datos esten bien, y vuelva a intentar",respuesta.body.msg,this.option_toast);
-								return false;
-								//   }
+							},(response) => {
+								console.log(response);
+								if (response.body.error) {
+									toastr.error("Ocurrio un error del sistema por favor contacte con Soporte",response.body.error,this.option_toast);
+									return false;
+								}
+								if (Object.keys(response.body.obj).length>0) {
+									this.setErrors(response.body.obj);
+								}
+								toastr.error(this.message,response.body.msg,this.option_toast);
 							});
 						}
-
-
-
 					} catch (e) {
 						console.log(e);
 						toastr.error("Revise que todos los datos esten bien, y vuelva a intentar","Error al Guardar",this.option_toast);

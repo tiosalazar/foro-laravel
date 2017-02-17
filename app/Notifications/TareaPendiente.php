@@ -6,7 +6,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Carbon\Carbon;
 
 class TareaPendiente extends Notification
 {
@@ -65,7 +64,7 @@ class TareaPendiente extends Notification
             'nombre' => $this->user->nombre,
             'cargo' => $this->user->cargo,
             'descripcion' => $this->user->nombre. ' a creado una Tarea',
-            'created_at' => Carbon::now('Y-m-d H:i:s'),
+            'created_at' => date('Y-m-d H:i:s'),
             'img_perfil' => $this->user->img_perfil,
         ];
     }

@@ -13,6 +13,7 @@ use App\Ot;
 use App\Area;
 use App\User;
 use App\Role;
+use App\Comentario;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
@@ -182,25 +183,50 @@ class TareaController extends Controller
                        $tarea=Tarea::findOrFail($id);
 
                         // Creador de la solicitud
-                        $maker = User::findOrFail($request->encargado_id);
+                        $maker = User::findOrFail($request->usuarios_id);
 
 
                        //Asigna los nuevo datos
                        $tarea->fill($request->all());
 
-                       //Guardamos el usuario
-                       $tarea->update();
+                       //Guardamos la tarea
+                       $tarea->save();
+
+                       //Guardamos el comentario
+                       $comentario = new Comentario;
+                       $comentario->fill($request->all());
+                       $comentario->save();
+
                         // Si el estado es Pendiente (7)
                        if ($tarea->estados_id == 7) {
+                            // Creador de la solicitud
+                            $maker = User::findOrFail($request->usuarios_id);
                             // Enviar notificacion al nuevo encargado
-                            User::find($tarea->usuarios_id)->notify(new TareaPendiente($maker,$tarea));
+                            User::find($request->encargado_id)->notify(new TareaPendiente($maker,$tarea));
                        }
+
+                       //Guardamos el comentario
+                       $comentario = new Comentario;
+                       $comentario->fill($request->all());
+                       $comentario->save();
+                       
+                      
 
                       //Respuesta 
                        $respuesta['dato']=$tarea;
+                       $respuesta['user_coment']='';
+    
                        $respuesta["error"]=0;
                        $respuesta["mensaje"]="OK"; 
                        $respuesta["msg"]="Asignado con exito";
+                       foreach ($tarea->comentario as $key => $value) {
+                            if ($value->user->id==$request->usuarios_id) {
+                                $respuesta['user_coment']=$value;
+                                $value->estados;    
+                            }
+                            
+                         
+                        }
 
                     }
 
@@ -211,7 +237,7 @@ class TareaController extends Controller
                        $respuesta["mensaje"]="Error con la tarea";
                        $respuesta["consola"]=$e->getMessage();
                        $respuesta["msg"]="Error  datos incorrectos";
-                       $respuesta["request"]=$tarea;
+                       $respuesta["request"]=$request->all();
                        $respuesta["obj"]=$vl->errors();
                         
                     }
@@ -292,6 +318,11 @@ class TareaController extends Controller
         $tarea->area;
         $tarea->usuario;
         $tarea->usuarioencargado;
+        foreach ($tarea->comentario as $key => $value) {
+            $value->user;
+            $value->estados;
+        }
+
 
         // return respo nse()->json($tarea);
         return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea);
