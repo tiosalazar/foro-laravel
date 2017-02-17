@@ -29,7 +29,7 @@
 							</div>
 							<div class="col-sm-6 border-left">
 								<ul>
-									@if(Auth::user()->hasRole('cuentas') )
+									@if(Auth::user()->hasRole('desarrollo') )
 									<div class="row">
 										<div class="col-sm-6">
 											<strong>Estado de OT:</strong>
