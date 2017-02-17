@@ -65,7 +65,7 @@ class TareaPendiente extends Notification
             'nombre' => $this->user->nombre,
             'cargo' => $this->user->cargo,
             'descripcion' => $this->user->nombre. ' a creado una Tarea',
-            'created_at' => Carbon::now(),
+            'created_at' => Carbon::now('Y-m-d H:i:s'),
             'img_perfil' => $this->user->img_perfil,
         ];
     }

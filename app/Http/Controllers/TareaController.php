@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\CrearOT;
+use App\Notifications\TareaPendiente;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -95,7 +96,7 @@ class TareaController extends Controller
                 try {
                     $tarea->save();
                     $maker = User::findOrFail($request->usuarios_id);
-                    User::find(1)->notify(new CrearOT($maker,$tarea));
+                    User::find($tarea->usuarios_id)->notify(new CrearOT($maker,$tarea));
                     return response([
                         'status' => Response::HTTP_OK,
                         'response_time' => microtime(true) - LARAVEL_START,
@@ -180,11 +181,20 @@ class TareaController extends Controller
                     //Busca el usuario en la BD
                        $tarea=Tarea::findOrFail($id);
 
+                        // Creador de la solicitud
+                        $maker = User::findOrFail($request->encargado_id);
+
+
                        //Asigna los nuevo datos
                        $tarea->fill($request->all());
 
                        //Guardamos el usuario
                        $tarea->update();
+                        // Si el estado es Pendiente (7)
+                       if ($tarea->estados_id == 7) {
+                            // Enviar notificacion al nuevo encargado
+                            User::find($tarea->usuarios_id)->notify(new TareaPendiente($maker,$tarea));
+                       }
 
                       //Respuesta 
                        $respuesta['dato']=$tarea;
@@ -199,7 +209,7 @@ class TareaController extends Controller
                        $respuesta["error"]="Error datos incorrectos";
                        $respuesta["codigo_error"]="Error con la tarea";
                        $respuesta["mensaje"]="Error con la tarea";
-                       $respuesta["consola"]=$e;
+                       $respuesta["consola"]=$e->getMessage();
                        $respuesta["msg"]="Error  datos incorrectos";
                        $respuesta["request"]=$tarea;
                        $respuesta["obj"]=$vl->errors();
