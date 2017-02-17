@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Notifications\Notifiable;
+use App\Notifications\CrearOT;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use App\Tarea;
 use App\Ot;
 use App\Area;
@@ -11,12 +15,15 @@ use App\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
-use Illuminate\Http\Response;
 use Exception;
 use Yajra\Datatables\Datatables;
 
 class TareaController extends Controller
 {
+    /*public function __construct()
+    {
+        $this->middleware('auth');
+    }*/
     /**
      * Display a listing of the resource.
      *
@@ -87,6 +94,8 @@ class TareaController extends Controller
             }else{
                 try {
                     $tarea->save();
+                    $maker = User::findOrFail($request->usuarios_id);
+                    User::find(1)->notify(new CrearOT($maker,$tarea));
                     return response([
                         'status' => Response::HTTP_OK,
                         'response_time' => microtime(true) - LARAVEL_START,
