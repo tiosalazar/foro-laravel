@@ -25,7 +25,8 @@
     <script>
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
-            'baseUrl' => url('/')
+            'baseUrl' => url('/'),
+            'api_token' => (Auth::user())?Auth::user()->api_token:'',
         ]) !!};
     </script>
 </head>

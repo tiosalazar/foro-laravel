@@ -145,7 +145,8 @@
 		    // Agregar Selects al dibujar la tabla
 		    $('#tabla_tareas').on( 'draw.dt', function () {
 		    	// Llamar estados de las taras
-		    	$.ajax( window._apiURL+"estados/1" )
+		    	$.ajax({ url:window._apiURL+"estados/1",headers: {
+        'Authorization':'Bearer '+Laravel.api_token}})
 		    	.done(function(response) {
 		    	 	// limpiar el select
 		    	 	var option;

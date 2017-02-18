@@ -187,8 +187,6 @@ return [
         /*DSO Instalación de CORS*/
         Barryvdh\Cors\ServiceProvider::class,
         //Custom Providers
-        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-        Laravel\Passport\PassportServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
 
@@ -246,8 +244,6 @@ return [
         * Acacha AdminLTE template alias
         */
         'AdminLTE' => Acacha\AdminLTETemplateLaravel\Facades\AdminLTE::class,
-        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
-        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         // Datatables
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,

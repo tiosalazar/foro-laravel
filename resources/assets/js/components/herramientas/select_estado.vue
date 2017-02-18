@@ -62,7 +62,9 @@
       //Valido que la propiedad encargado que traigo de la tarea tenga datos
         if (typeof this.select != 'undefined' || this.select != null) {
           // this.value=this.select;
-          this.updateSelected(this.select);
+            if (this.cambiar_estado == '' && this.cambiar_estado == null ) {
+               this.updateSelected(this.select);
+             }
           this.id_estado=this.select.id;
         }
 

@@ -57,9 +57,13 @@ import table from 'datatables.net-bs/js/dataTables.bootstrap.js';
 
 Vue.http.interceptors.push((request, next) => {
     request.headers.set('X-CSRF-TOKEN', Laravel.csrfToken);
+    request.headers.set('Authorization', 'Bearer '+Laravel.api_token);
+
 
 next();
 });
+//console.log(Laravel.api_token);
+window._apiToken = Laravel.api_token;
 window._baseURL = Laravel.baseUrl;
 window._apiURL = Laravel.baseUrl+'/api/v1/';
 /**

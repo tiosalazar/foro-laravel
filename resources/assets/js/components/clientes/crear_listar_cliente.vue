@@ -86,7 +86,13 @@
       var tableClientes = $('#tabla_clientes').DataTable({
               processing: true,
               serverSide: false,
-              ajax: "api/v1/clientes",
+              'ajax': {
+                 'url': window._apiURL+"clientes",
+                 'type': 'GET',
+                 'beforeSend': function (request) {
+                     request.setRequestHeader("Authorization", 'Bearer '+Laravel.api_token);
+                 }
+             },
               columns: [
 
                   { data: 'nit', name: 'nit' },

@@ -166,7 +166,8 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::get('/p', function () {
-    return bcrypt('H1m4l4ya!');
+  return str_random(60);
+  //  return bcrypt('H1m4l4ya!');
 });
 
 Auth::routes();

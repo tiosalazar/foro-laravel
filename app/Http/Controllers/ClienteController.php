@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Cliente;
-use JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
 use Validator;
 use Illuminate\Http\Response;
 use Exception;

@@ -58,7 +58,13 @@
 					$('#tabla_usuarios').DataTable({
 						processing: true,
 						serverSide: false,
-						ajax: window._apiURL+"ots",
+						'ajax': {
+						    'url': window._apiURL+"ots",
+						    'type': 'GET',
+						    'beforeSend': function (request) {
+						        request.setRequestHeader("Authorization", 'Bearer '+Laravel.api_token);
+						    }
+						},
 						columns: [
 						{ data: 'referencia', name: 'referencia' },
 						{ data: 'nombre', name: 'nombre' },

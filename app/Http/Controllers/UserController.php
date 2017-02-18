@@ -70,39 +70,10 @@ class UserController extends Controller
                 try
                 {
                     $user->remember_token = str_random(60);
+                    $user->api_token=str_random(60);
 
                     $user->save();
                     $user->attachRole($request->roles_id);
-                    /*$rol=$user->roles;
-                    if($rol[0]->name="colaborador"){
-                        $area=$user->Area;
-
-                        switch ($area['nombre']) {
-                            case 'Creatividad':
-                                # code...
-                                break;
-                            case 'Diseño':
-                                # code...
-                                break;
-                            case 'Desarrollo':
-                                # code...
-                                break;
-                            case 'Contenidos':
-                                # code...
-                                break; 
-                            case 'Digital Performance':
-                                # code...
-                                break;             
-                            
-                            default:
-                                # code...
-                                break;
-                        }
-
-                    }
-
-                    */
-
                       return response([
                             'status' => Response::HTTP_OK,
                             'response_time' => microtime(true) - LARAVEL_START,
@@ -209,7 +180,7 @@ class UserController extends Controller
 
                                 //Encriptamos la contraeña
                                  $user->password=bcrypt($request->password);
-                                 
+
                                 // Guardamos el usuario
                                 $respuesta["obj"]=$request;
                                 $user->update();
@@ -318,6 +289,11 @@ class UserController extends Controller
                 'areas_id' => 'required'
         ]);
     }
+
+    public function Debug()
+   {
+       var_dump('holip');
+   }
 
      public function AgregarRoll()
     {

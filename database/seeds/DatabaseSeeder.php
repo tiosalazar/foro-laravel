@@ -151,28 +151,28 @@ class UsuariosTableSeeder extends Seeder {
         $rol= App\Role::where('name','desarrollo')->first();
         $area= App\Area::where('nombre','Desarrollo')->first();
         App\User::create(array('nombre' => 'Desarrollo','apellido' => 'Himalaya','cargo' => 'Tester','telefono' => '1111111','email' => 'desarrollo@himalayada.com',
-        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' =>$area['id']));
+        'estado'=>1,'horas_disponible' => 1,'api_token'=> str_random(60),'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' =>$area['id']));
         $user =   App\User::where('email','desarrollo@himalayada.com')->first();
         $user->attachRole($rol);
 
         $rol= App\Role::where('name','cuentas')->first();
         $area= App\Area::where('nombre','Cuentas')->first();
         App\User::create(array('nombre' => 'Ejecutiva 1','apellido' => 'Himalaya','cargo' => 'Ejecutiva','telefono' => '22222222','email' => 'ejecutiva@himalayada.com',
-        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' => $area['id']));
+        'estado'=>1,'horas_disponible' => 1,'api_token'=> str_random(60),'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' => $area['id']));
         $user =   App\User::where('email','ejecutiva@himalayada.com')->first();
         $user->attachRole($rol);
 
         $rol= App\Role::where('name','coordinador')->first();
         $area= App\Area::where('nombre','Diseño')->first();
         App\User::create(array('nombre' => 'Coordinador 1','apellido' => 'Himalaya','cargo' => 'Coordinador Diseño','telefono' => '22222222','email' => 'coordinador1@himalayada.com',
-        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' => $area['id']));
+        'estado'=>1,'horas_disponible' => 1,'api_token'=>str_random(60),'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' => $area['id']));
         $user =   App\User::where('email','coordinador1@himalayada.com')->first();
         $user->attachRole($rol);
 
         $rol= App\Role::where('name','colaborador')->first();
         $area= App\Area::where('nombre','Diseño')->first();
         App\User::create(array('nombre' => 'Colaborador 1','apellido' => 'Himalaya','cargo' => 'Colaborador Diseño','telefono' => '22222222','email' => 'colaborador1@himalayada.com',
-        'estado'=>1,'horas_disponible' => 1,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' => $area['id']));
+        'estado'=>1,'horas_disponible' => 1,'api_token'=>str_random(60) ,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' => $area['id']));
         $user =   App\User::where('email','colaborador1@himalayada.com')->first();
         $user->attachRole($rol);
 
@@ -210,7 +210,7 @@ class EstadosTableSeeder extends Seeder {
 
           App\Estado::create(array('nombre' => 'On Going','tipos_estados_id'=> 2) );
           App\Estado::create(array('nombre' => 'En espera','tipos_estados_id'=> 2) );
-          
+
           App\Estado::create(array('nombre' => 'Alta','tipos_estados_id'=> 3) );
           App\Estado::create(array('nombre' => 'Media','tipos_estados_id'=> 3) );
           App\Estado::create(array('nombre' => 'Baja','tipos_estados_id'=> 3) );
@@ -275,7 +275,7 @@ class Permission_Role extends Seeder {
 
          //El Rol Desarrollo tiene todos los permisos
          $rol= App\Role::where('name','desarrollo')->first();
-         $permisos= App\Permission::all(); 
+         $permisos= App\Permission::all();
          $rol->attachPermissions($permisos);
         //El Rol owner tiene todos los permisos
          $rol= App\Role::where('name','owner')->first();
@@ -291,29 +291,29 @@ class Permission_Role extends Seeder {
                                    ->orWhere('name','ver_foro_desarrollo')
                                    ->orWhere('name','ver_foro_diseno')
                                    ->orWhere('name','ver_foro_contenidos')
-                                   ->orWhere('name','ver_foro_digital') 
+                                   ->orWhere('name','ver_foro_digital')
                                    ->orWhere('name','crear_clientes')
                                    ->orWhere('name','editar_clientes')->get();
-         //El Rol Coordinador                           
-         $rol->attachPermissions($permisos);         
+         //El Rol Coordinador
+         $rol->attachPermissions($permisos);
          $rol= App\Role::where('name','coordinador')->first();
          $permisos= App\Permission::where('name','ver_ots')
-                                   ->orWhere('name','ver_clientes') 
-                                   ->orWhere('name','ver_listado_areas') 
-                                   ->orWhere('name','ver_foro_creatividad') 
-                                   ->orWhere('name','ver_foro_desarrollo') 
-                                   ->orWhere('name','ver_foro_diseno') 
-                                   ->orWhere('name','ver_foro_contenidos') 
-                                   ->orWhere('name','ver_foro_digital') 
+                                   ->orWhere('name','ver_clientes')
+                                   ->orWhere('name','ver_listado_areas')
+                                   ->orWhere('name','ver_foro_creatividad')
+                                   ->orWhere('name','ver_foro_desarrollo')
+                                   ->orWhere('name','ver_foro_diseno')
+                                   ->orWhere('name','ver_foro_contenidos')
+                                   ->orWhere('name','ver_foro_digital')
                                    ->orWhere('name','editar_tareas')
-                                   ->get(); 
-        //El Rol Colaborador  
+                                   ->get();
+        //El Rol Colaborador
          $rol->attachPermissions($permisos);
          $rol= App\Role::where('name','colaborador')->first();
          $permisos= App\Permission::where('name','ver_listado_areas')
-                                   ->orWhere('name','ver_foro_colaborador') 
+                                   ->orWhere('name','ver_foro_colaborador')
                                    ->orWhere('name','editar_tareas')
-                                   ->get(); 
+                                   ->get();
          $rol->attachPermissions($permisos);
 
     }

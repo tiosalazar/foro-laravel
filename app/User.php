@@ -1,14 +1,14 @@
 <?php
 
 namespace App;
-use Laravel\Passport\HasApiTokens;
+
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Role;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 class User extends Authenticatable
 {
-  use HasApiTokens,Notifiable,EntrustUserTrait; 
+  use Notifiable,EntrustUserTrait;
 
   /**
   * The attributes that are mass assignable.
@@ -16,7 +16,7 @@ class User extends Authenticatable
   * @var array
   */
   protected $fillable = [
-    'nombre', 'apellido', 'cargo', 'telefono', 'email', 'horas_disponible', 'password', 'roles_id', 'areas_id','estado','fecha_nacimiento','img_perfil'
+    'nombre', 'apellido', 'cargo', 'telefono', 'email','api_token','horas_disponible', 'password', 'roles_id', 'areas_id','estado','fecha_nacimiento','img_perfil'
   ];
 
   /**
@@ -36,7 +36,7 @@ class User extends Authenticatable
   {
     return $this->belongsTo('App\Role','roles_id','id');
   }
-  
+
   /**
   * Obtiene el Area que esta asociada a un Usuario
   */
@@ -59,7 +59,7 @@ class User extends Authenticatable
   {
     return $this->hasMany('App\Tarea');
   }
-  
+
   /**
   * Obtiene los OTS que posee el usuario
   */

@@ -60,7 +60,13 @@
                  	$('#tabla_usuarios').DataTable({
                  	   processing: true,
 				       serverSide: false,
-				       ajax: window._apiURL+"usuarios",
+							 'ajax': {
+	 						    'url': window._apiURL+"usuarios",
+	 						    'type': 'GET',
+	 						    'beforeSend': function (request) {
+	 						        request.setRequestHeader("Authorization", 'Bearer '+Laravel.api_token);
+	 						    }
+	 						},
 						   columns: [
 
 						       { data: 'nombre', name: 'nombre' },

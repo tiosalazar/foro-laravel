@@ -17,7 +17,11 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('cors');
 
-Route::group(['prefix' => 'v1','middleware' => 'cors'], function () {
+
+
+
+
+Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
     //    Route::resource('task', 'TasksController');
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
@@ -47,6 +51,8 @@ Route::group(['prefix' => 'v1','middleware' => 'cors'], function () {
                  return response()->json($divisas);
     });
 
-
+    /*Route::get('debug', function (Request $request) {
+        return response()->json(Auth::guard('api')->user());
+    })->middleware('auth:api');*/
 
 });
