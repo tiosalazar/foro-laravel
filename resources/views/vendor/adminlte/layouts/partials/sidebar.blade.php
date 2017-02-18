@@ -8,12 +8,12 @@
         @if (! Auth::guest())
         <div class="user-panel">
           <div class="pull-left image">
-                 <!-- Mostrar imagen de perfil si la ruta existe en la base de datos--> 
-                  @if(Auth::user()->img_perfil!=null) 
+                 <!-- Mostrar imagen de perfil si la ruta existe en la base de datos-->
+                  @if(Auth::user()->img_perfil!=null)
                     <img src="{{Auth::user()->img_perfil}}" class="img-circle" alt="User Image" >
                   @else 
-                    <img src="{{asset('images/perfil.jpg')}}" class="img-circle" alt="User Image"> 
-                  @endif 
+                    <img src="{{asset('images/perfil.jpg')}}" class="img-circle" alt="User Image">
+                  @endif
           </div>
           <div class="pull-left info">
             <p>{{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</p>
@@ -54,25 +54,25 @@
         <ul class="treeview-menu">
         @if(Auth::user()->can('ver_foro_colaborador'))
           <li><a href="{{route('foro')}}">{{ trans('texto_menu.ver_foro') }}</a></li>
-         @endif 
+         @endif
         @if(Auth::user()->can('ver_foro_creatividad'))
           <li><a href="{{route('creatividad')}}">{{ trans('texto_menu.creatividad') }}</a></li>
-         @endif 
+         @endif
         @if(Auth::user()->can('ver_foro_diseno'))
           <li><a href="{{route('diseno')}}">{{ trans('texto_menu.diseno') }}</a></li>
-        @endif  
-        @if(Auth::user()->can('ver_foro_desarrollo'))  
+        @endif
+        @if(Auth::user()->can('ver_foro_desarrollo'))
           <li><a href="{{route('desarrollo')}}">{{ trans('texto_menu.desarrollo') }}</a></li>
-         @endif 
-        @if(Auth::user()->can('ver_foro_contenidos'))  
+         @endif
+        @if(Auth::user()->can('ver_foro_contenidos'))
           <li><a href="{{route('contenido')}}">{{ trans('texto_menu.contenido') }}</a></li>
-         @endif 
-        @if(Auth::user()->can('ver_foro_digital'))  
+         @endif
+        @if(Auth::user()->can('ver_foro_digital'))
           <li><a href="{{route('digital')}}">{{ trans('texto_menu.digital') }}</a></li>
-         @endif 
-         @if(Auth::user()->can('ver_foro_cuentas')) 
+         @endif
+         @if(Auth::user()->can('ver_foro_cuentas'))
          <li><a href="{{route('cuentas')}}">{{ trans('texto_menu.cuentas') }}</a></li>
-         @endif 
+         @endif
           @if( Auth::user()->can('crear_tareas') )
           <li><a href="{{ url('crear_tarea') }}">{{ trans('texto_menu.creacion_tareas') }}</a></li>
           @endif

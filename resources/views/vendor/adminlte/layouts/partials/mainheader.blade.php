@@ -33,7 +33,7 @@
                       </li>
                       <li class="footer"><a href="#">See All Messages</a></li>
                     </ul>
-                </li><!-- /.messages-menu --> 
+                </li><!-- /.messages-menu -->
 
                 <!-- Notifications Menu -->
                 <!-- <li class="dropdown notifications-menu">
@@ -94,25 +94,25 @@
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
-                             <!-- Mostrar imagen de perfil si la ruta existe en la base de datos--> 
-                                @if(Auth::user()->img_perfil!=null) 
+                             <!-- Mostrar imagen de perfil si la ruta existe en la base de datos-->
+                                @if(Auth::user()->img_perfil!=null)
                                     <img src="{{Auth::user()->img_perfil}}" class="user-image" alt="User Image" >
-                                  @else 
+                                  @else
                                     <img src="{{asset('images/perfil.jpg')}}" class="user-image" alt="User Image"> 
-                                  @endif 
-                          
+                                  @endif
+
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
                             <span class="hidden-xs">{{ Auth::user()->nombre }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
                             <li class="user-header">
-                             <!-- Mostrar imagen de perfil si la ruta existe en la base de datos--> 
-                                  @if(Auth::user()->img_perfil!=null) 
+                             <!-- Mostrar imagen de perfil si la ruta existe en la base de datos-->
+                                  @if(Auth::user()->img_perfil!=null)
                                     <img src="{{Auth::user()->img_perfil}}" class="img-circle" alt="User Image" >
-                                  @else 
-                                    <img src="{{asset('images/perfil.jpg')}}" class="img-circle" alt="User Image"> 
-                                  @endif 
+                                  @else
+                                    <img src="{{asset('images/perfil.jpg')}}" class="img-circle" alt="User Image">
+                                  @endif
                                 <p>
                                     {{ Auth::user()->nombre }}
                                     <small>{{ Auth::user()->rol->name}}</small>

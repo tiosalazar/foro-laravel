@@ -4,11 +4,12 @@
 			<li v-for="notificacion in notificaciones" >
 				<a  v-on:click="goTarea(notificacion.id_tarea)">
 					<div class="pull-left" v-if="notificacion.img_perfil == null">
-						<img src="/images/perfil.jpg" class="img-circle" alt="User Image" >
+						<img :src="_baseURL+'/images/perfil.jpg'" class="img-circle" alt="User Image" >
 					</div>
 					<div class="pull-left" v-else>
 						<img v-bind:src="notificacion.img_perfil" class="img-circle" alt="User Image" >
 					</div>
+
 					<h4>
 						{{notificacion.nombre}}
 						<small><i class="fa fa-clock-o"></i> {{notificacion.created_at}}</small>
@@ -21,7 +22,7 @@
 </template>
 <script>
 	module.exports= {
-		props:['id'], 
+		props:['id'],
 	    data () {
 		      return {
 		      	notificaciones:[

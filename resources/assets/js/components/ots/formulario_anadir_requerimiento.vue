@@ -195,7 +195,7 @@
 			created: function(){
 				this.fetchTips();
 				this.llenarDatosSiesVisualizacion();
-console.log(window._apiURL);
+
 				/*
 				Escucha las horas totales emitidas por el encabezado y realiza el calculo
 				*/
