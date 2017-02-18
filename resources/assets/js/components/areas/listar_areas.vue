@@ -14,7 +14,7 @@
                   <th class="col-md-2">Nombre</th>
                   <th class="col-md-9">Extencion</th>
                   <th class="col-md-9">Estado</th>
-                  <th class="col-md-9">Editar</th>               
+                  <th class="col-md-9">Editar</th>
                 </tr>
                 <tr v-for="list_area in list_areas">
                   <td class="col-md-1">{{list_area.id}}</td>
@@ -29,10 +29,10 @@
                   </td>
 
                   <td class="col-md-9"><button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal_area" @click="pasardatosmodalarea(list_area.id,list_area.nombre,list_area.extencion_tel,list_area.estado)">Editar</button></td>
-                  
+
                 </tr>
                 <tr>
-              
+
               </tbody>
               </table>
             </div>
@@ -50,17 +50,17 @@
                         <h4 class="modal-title">Edición de Área</h4>
                       </div>
                       <div class="modal-body">
-                       
+
                           <label for="id_area_edit">ID</label>
                           <input type="text" class="form-control" id="id_area_edit" v-model="areaedit.id_area_edit" disabled>
-                       
-                        
+
+
                         <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]">
                           <label for="nombre_area_edit">Editar nombre del área</label>
                           <input type="text" class="form-control" id="nombre_area_edit" name="nombre" v-model="areaedit.nombre" placeholder="Editar nombre" v-validate data-vv-rules="required|alpha_num|max:30">
                           <span  class="help-block error_absolute" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
                         </div>
-                        
+
                        <div class="form-group" v-bind:class="[errors_return.extencion_tel,{ 'has-error': errors.has('extencion_tel') }]">
                         <label for="area_ext_edit">Editar extención</label>
                         <input type="text" class="form-control" id="area_ext_edit" name="extencion_tel" v-model="areaedit.extencion" placeholder="Editar extención" v-validate data-vv-rules="required|numeric|min:2">
@@ -83,7 +83,7 @@
                   <!-- /.modal-dialog -->
                 </div>
                 <!-- /.modal -->
-             </div>  
+             </div>
 
 </template>
 
@@ -97,7 +97,7 @@ import VeeValidate, { Validator } from 'vee-validate';
   module.exports={
     props:['id_parent_area'],
      created: function(){
-      this.list_areas_api();    
+      this.list_areas_api();
      },
 
      data(){
@@ -112,7 +112,7 @@ import VeeValidate, { Validator } from 'vee-validate';
               timeOut: 5000,
               "positionClass": "toast-top-center",
               "closeButton": true
-            } 
+            }
         }
      },
       watch : {
@@ -122,45 +122,45 @@ import VeeValidate, { Validator } from 'vee-validate';
       },
      methods:{
         list_areas_api: function(){
-            this.$http.get('api/v1/areas')
+            this.$http.get(window._apiURL+'areas')
               .then(function(respuesta){
                 this.list_areas=respuesta.body;
               });
           },
            pasardatosmodalarea:function(id,nombre,ext,estado){
 
-            
+
             this.areaedit.push(this.areaedit.id_area_edit=id);
             this.areaedit.push(this.areaedit.nombre=nombre);
              this.areaedit.push(this.areaedit.extencion=ext);
             this.areaedit.push(this.areaedit.estado=estado);
 
-          }, 
+          },
            updatearea:function(){
 
             this.$validator.validateAll();
               if (this.errors.any()) {
                 return false
-              }  
+              }
 
             var idmodal=this.areaedit.id_area_edit;
             var nombremodal=this.areaedit.nombre;
             var extmodal=this.areaedit.extencion;
             var estadomodal=this.areaedit.estado;
- 
-            this.$http.put('api/v1/areas/'+idmodal+'',{nombre: nombremodal, extencion_tel:extmodal,estado:estadomodal})
+
+            this.$http.put(window._apiURL+'areas/'+idmodal+'',{nombre: nombremodal, extencion_tel:extmodal,estado:estadomodal})
             .then(function(respuesta){
 
                 if (respuesta.status != '200') {
                   if (Object.keys(respuesta.body.datos).length>0) {
                     this.setErrors(respuesta.body.datos);
                   }
-                 
+
                   toastr.warning(this.message,respuesta.body.msg,this.option_toast);
                 }else{
-                  
+
                   //Cambion el front con los datos editados
-                     for (var i = 0; i < this.list_areas.length; i++) { 
+                     for (var i = 0; i < this.list_areas.length; i++) {
                        if (this.list_areas[i].id==respuesta.body.id) {
                            this.list_areas[i].nombre=respuesta.body.datos.nombre;
                            this.list_areas[i].extencion_tel=respuesta.body.datos.extencion_tel;
@@ -168,22 +168,22 @@ import VeeValidate, { Validator } from 'vee-validate';
                       }
                     }
 
-                  
+
                     if (respuesta.body.error == 0) {
                       toastr.success(respuesta.body.msg,'',this.option_toast);
                         $('#myModal_area').modal().hide();
                     }else{
                       toastr.error(respuesta.body.msg,'',this.option_toast);
                     }
-                    
+
                 }
 
-      
+
             },(response) => {
-              
+
               toastr.error(this.message,response.body.error,this.option_toast);
             });
-            
+
           }
 
      }

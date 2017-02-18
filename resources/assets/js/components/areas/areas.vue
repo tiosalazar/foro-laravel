@@ -1,5 +1,5 @@
 <template >
-   <div> 
+   <div>
       <div class="box box-default collapsed-box" id="main-app">
 
         <div class="box-header with-border">
@@ -10,7 +10,7 @@
            </div>
 
         </div>
-    
+
       <div class="box-body">
           <div   role="form" class="form-area"  >
                 <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]">
@@ -18,25 +18,25 @@
                     <input type="text" v-model="areaarray.nombre" class="form-control" id="nombre_area" name="nombre" placeholder="Nombre area" v-validate data-vv-rules="required|alpha_num|min:3">
                     <span  class="help-block error_absolute" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
                 </div>
-               
+
                  <div class="form-group" v-bind:class="[errors_return.extencion_tel,{ 'has-error': errors.has('extencion') }]">
                     <label for="nombre_ext">Extención</label>
-                    <input type="text" v-model="areaarray.extencion_tel" class="form-control" id="nombre_ext" name="extencion" placeholder="Extención" v-validate data-vv-rules="required|numeric|min:3"> 
-                     <span  class="help-block" v-show="errors.has('extencion')">{{ errors.first('extencion') }}</span>  
+                    <input type="text" v-model="areaarray.extencion_tel" class="form-control" id="nombre_ext" name="extencion" placeholder="Extención" v-validate data-vv-rules="required|numeric|min:3">
+                     <span  class="help-block" v-show="errors.has('extencion')">{{ errors.first('extencion') }}</span>
                 </div>
-                      
+
                 <div class="form-group">
                    <button class="btn btn-primary" @click="crear_area">Guardar</button>
-                </div>  
-                 
+                </div>
+
             </div>
-               
+
       </div>
-      
+
     </div>
       <listar-areas :id_parent_area="id_area_passing"></listar-areas>
     </div>
-    
+
 </template>
 
 <script>
@@ -68,9 +68,9 @@
             timeOut: 5000,
             "positionClass": "toast-top-center",
             "closeButton": true
-          }          
+          }
         }
-       },      
+       },
         methods:{
           setErrors:function(object) {
             this.message='';
@@ -84,16 +84,16 @@
              this.$validator.validateAll();
               if (this.errors.any()) {
                 return false
-              }  
+              }
             this.areaarray.estado=1;
             var input = this.areaarray;
-            this.$http.post('api/v1/areas',input)
-            .then(function(respuesta){ 
+            this.$http.post(window._apiURL+'areas',input)
+            .then(function(respuesta){
                 var that = this;
                 that.message ='';
                 if (respuesta.status != '200') {
                    if (Object.keys(respuesta.body.request).length>0) {
-                   
+
                     $.each(respuesta.body.request, function(index, value) {
                       that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
                       that.errors_return[index] = 'has-warning';
@@ -102,18 +102,18 @@
                   toastr.warning(that.message,respuesta.body.msg,this.option_toast);
                 }else{
                   toastr.success(respuesta.body.msg,'',this.option_toast);
-                  this.id_area_passing={'id':respuesta.body.area.id,'nombre':respuesta.body.area.nombre,'extencion_tel':respuesta.body.area.extencion_tel,'estado':respuesta.body.area.estado} 
+                  this.id_area_passing={'id':respuesta.body.area.id,'nombre':respuesta.body.area.nombre,'extencion_tel':respuesta.body.area.extencion_tel,'estado':respuesta.body.area.estado}
                   this.areaarray={}
-                } 
-                
-                        
+                }
+
+
             },(response) => {
                var that = this;
                 that.message ='';
-                
+
                 console.log(response);
                   if (Object.keys(response.body.request).length>0) {
-                   
+
                     $.each(response.body.request, function(index, value) {
                       that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
                       that.errors_return[index] = 'has-warning';

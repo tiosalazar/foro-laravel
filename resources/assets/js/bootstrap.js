@@ -60,7 +60,8 @@ Vue.http.interceptors.push((request, next) => {
 
 next();
 });
-
+window._baseURL = Laravel.baseUrl;
+window._apiURL = Laravel.baseUrl+'/api/v1/';
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -82,6 +83,5 @@ Pusher.log = function(message) {
 
 
 $(document).ready(function(){
-    $('[data-toggle="modal"]').tooltip(); 
+    $('[data-toggle="modal"]').tooltip();
 });
-

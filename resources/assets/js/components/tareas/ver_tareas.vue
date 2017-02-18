@@ -2,13 +2,13 @@
 	<div class="tarea">
         <table class="table table-striped table-hover datatable-foro table-bordered dataTable no-footer" id="tabla_tareas">
 		  <thead>
-		        <tr>    
+		        <tr>
 		          <th >OT</th>
 		          <th >Cliente</th>
 		          <th >Requerimiento</th>
-		          <th >Fecha de Solicitud</th> 
-		          <th >Encargado</th> 
-		          <th >Estado</th> 
+		          <th >Fecha de Solicitud</th>
+		          <th >Encargado</th>
+		          <th >Estado</th>
 		          <th >Acciones</th>
 		        </tr>
 		    </thead>
@@ -91,7 +91,7 @@
 					{ data: 'nombre_tarea', name: 'nombre_tarea' },
 					{ data: 'created_at', name: 'created_at' },
 					{ data: 'usuarioencargado.nombre', name: 'usuarioencargado.nombre' },
-				], 
+				],
 				columnDefs: [
 					{
 						"targets": [5],
@@ -105,7 +105,7 @@
 						"targets": [6],
 						"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
-						    	return '<a href="/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block"   aria-label="View">Ver tarea</a>';        
+						    	return '<a href="/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block"   aria-label="View">Ver tarea</a>';
 						   	}
 					}
 				],
@@ -134,7 +134,7 @@
 				        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
 				        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
 				    }
-			    },      
+			    },
 
 			});
 			// Enviar los datos del filtro personalizado
@@ -145,7 +145,7 @@
 		    // Agregar Selects al dibujar la tabla
 		    $('#tabla_tareas').on( 'draw.dt', function () {
 		    	// Llamar estados de las taras
-		    	$.ajax( "/api/v1/estados/1" )
+		    	$.ajax( window._apiURL+"estados/1" )
 		    	.done(function(response) {
 		    	 	// limpiar el select
 		    	 	var option;
@@ -179,9 +179,9 @@
 				})
 				// Agregar las formulario a datatable
 				$('#search-form').appendTo('.selects');
-			    
+
 			} );
-		    
+
 		},
 		methods:{
 			getTareass:function() {},

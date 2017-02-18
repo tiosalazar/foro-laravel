@@ -40,7 +40,7 @@
                ejecutivo_seleccionado: {
                  type: Object,
                }
-             }, 
+             },
       data () {
           return {
             usuarios:[],
@@ -63,20 +63,20 @@
         }else{
           this.usuarios_area();
         }
-       
+
         //Valido que la propiedad encargado que traigo de la tarea tenga datos
         if (typeof this.select != 'undefined' || this.select != null) {
           // this.value=this.select;
           this.updateSelected(this.select);
           this.id_ejecutivo=this.select.id;
         }
-        
+
       },
       methods:{
           fetchTips: function(){
             /*Si se necesita agregar más opciones de busqueda agregar un switch aquí */
 
-              this.$http.get('/api/v1/usuarios/'+this.area) //Consulta a la Base de datos por GET
+              this.$http.get(window._apiURL+'usuarios/'+this.area) //Consulta a la Base de datos por GET
              .then(function(respuesta){
                      this.usuarios=respuesta.body;
              }.bind(this));
@@ -85,7 +85,7 @@
            usuarios_area: function(){
             /*Si se necesita agregar más opciones de busqueda agregar un switch aquí */
 
-              this.$http.get('/api/v1/usuarios_tarea/'+this.id_area_tarea) //Consulta a la Base de datos por GET
+              this.$http.get(window._apiURL+'usuarios_tarea/'+this.id_area_tarea) //Consulta a la Base de datos por GET
              .then(function(respuesta){
                 this.usuarios=respuesta.body;
              }.bind(this));
@@ -104,7 +104,7 @@
             if (newSelected != null && newSelected != undefined) {
              this.id_ejecutivo = newSelected.id;
              this.value=newSelected;
-             
+
             this.$parent.$emit('select_ejecutivo',newSelected);
            }else {
              this.id_ejecutivo = 0;

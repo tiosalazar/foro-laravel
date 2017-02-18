@@ -50,7 +50,7 @@
       },
       methods:{
           fetchTips: function(){
-               this.$http.get('/api/v1/estados/3')
+               this.$http.get(window._apiURL+'estados/3')
              .then(function(respuesta){
                 this.estados=respuesta.body;
              }.bind(this));

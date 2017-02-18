@@ -2,12 +2,12 @@
 	<div>
         <table class="table table-striped table-hover datatable-foro table-bordered dataTable no-footer" id="tabla_tareas">
 		  <thead>
-		        <tr>    
+		        <tr>
 		          <th >OT</th>
 		          <th >Cliente</th>
 		          <th >Requerimiento</th>
-		          <th >Fecha de Solicitud</th> 
-		          <th >Estado</th> 
+		          <th >Fecha de Solicitud</th>
+		          <th >Estado</th>
 		          <th >Acciones</th>
 		        </tr>
 		    </thead>
@@ -31,7 +31,7 @@
 		watch:{},
 		methods:{
 			getTareass:function() {
-				this.$http.get('api/v1/tareas').then(function(respuesta){
+				this.$http.get(window._apiURL+'tareas').then(function(respuesta){
 					console.log(respuesta);
 					this.tareas = respuesta.body;
 				},function(error) {
@@ -43,13 +43,13 @@
 					$('#tabla_tareas').DataTable({
 						processing: true,
 						serverSide: true,
-						ajax: "/api/v1/tareas",
+						ajax: window._apiURL+"tareas",
 						columns: [
 						{ data: 'ot.referencia', name: 'ot.referencia' },
 						{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre' },
 						{ data: 'nombre_tarea', name: 'nombre_tarea' },
 						{ data: 'created_at', name: 'created_at' },
-						], 
+						],
 						columnDefs: [
 						{
 							"targets": [4],
@@ -64,7 +64,7 @@
 						   	"targets": [5],
 						   	"data": null,
 						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-						       	return '<a href="ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver tarea</a>';        
+						       	return '<a href="ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver tarea</a>';
 						       }
 						   }
 						   ],
@@ -72,7 +72,7 @@
 						   responsive: true,
 						   language: {
 						   	"url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
-						   },      
+						   },
 
 						});
 				}, 0);

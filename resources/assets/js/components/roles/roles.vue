@@ -100,7 +100,7 @@ import VeeValidate, { Validator } from 'vee-validate';
               return false
             }
           var input = this.rolarray;
-            this.$http.post('api/v1/roles',input)
+            this.$http.post(window._apiURL+'roles',input)
             .then(function(respuesta){
                 var that = this;
                 that.message ='';

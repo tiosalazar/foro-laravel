@@ -106,7 +106,6 @@
 							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</template>
@@ -196,7 +195,7 @@
 			created: function(){
 				this.fetchTips();
 				this.llenarDatosSiesVisualizacion();
-
+console.log(window._apiURL);
 				/*
 				Escucha las horas totales emitidas por el encabezado y realiza el calculo
 				*/
@@ -272,7 +271,7 @@
 				fetchTips: function(){
 					if (this.visualizacion !='true') {
 						//if(this.$localStorage.get('listado_areas') ==null){
-						this.$http.get('/api/v1/areas/')
+						this.$http.get( window._apiURL+'areas')
 						.then(function(respuesta){
 							this.listado_areas=respuesta.body;
 							this.$localStorage.set('listado_areas',respuesta.body);
@@ -341,7 +340,7 @@
 						console.log(datos_procesados);
 
 						if(this.visualizacion != 'true'){
-							this.$http.post('/api/v1/ots', datos_procesados)
+							this.$http.post(window._apiURL+'ots', datos_procesados)
 							.then(function(respuesta){
 								console.log(respuesta);
 								if (respuesta.status != '200') {
@@ -383,7 +382,7 @@
 							var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
 							datos_procesados.datos_encabezado.editor_id=arreglo_visualizar.editor_id;
 							console.log(datos_procesados);
-							this.$http.put('/api/v1/ots/'+arreglo_visualizar.datos_encabezado.id, datos_procesados)
+							this.$http.put(window._apiURL+'ots/'+arreglo_visualizar.datos_encabezado.id, datos_procesados)
 							.then(function(respuesta){
 								console.log(respuesta);
 								if (respuesta.status != '200') {

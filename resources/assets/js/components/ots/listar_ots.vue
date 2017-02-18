@@ -58,7 +58,7 @@
 					$('#tabla_usuarios').DataTable({
 						processing: true,
 						serverSide: false,
-						ajax: "/api/v1/ots",
+						ajax: window._apiURL+"ots",
 						columns: [
 						{ data: 'referencia', name: 'referencia' },
 						{ data: 'nombre', name: 'nombre' },

@@ -42,8 +42,8 @@
 					</div>
 				</div>
 			</div>
-			
-			
+
+
 			<div class="row">
 				<div class="col-sm-4">
 					<label>Fecha entrega cliente</label>
@@ -62,7 +62,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="form-group" v-bind:class="[errors_return.enlaces_externos,{ 'has-error': errors.has('enlaces_externos') }]">
 				<label for="enlaces_externos">Ruta del server</label>
 				<!-- <textarea class="form-control" rows="3" name="enlaces_externos"  id="enlaces_externos" v-model="tarea.enlaces_externos" placeholder="Ruta del server" v-validate data-vv-rules="required|min:4"></textarea> -->
@@ -70,7 +70,7 @@
 				<!-- <span  class="help-block" v-show="errors.has('enlaces_externos')">{{ errors.first('enlaces_externos') }}</span> -->
 			</div>
 
-			
+
 			<div class="row">
 				<div class="col-sm-6">
 					<div class="form-group required">
@@ -90,8 +90,8 @@
 				<textarea class="form-control" rows="3"  name="descripcion"  id="descripcion" v-model="tarea.descripcion" placeholder="Descripción" required="required" v-validate data-vv-rules="required|min:4"></textarea>
 				<span  class="help-block" v-show="errors.has('descripcion')">{{ errors.first('descripcion') }}</span>
 			</div>
-			
-			
+
+
 		</div>
 		<!-- /.box-body -->
 
@@ -151,13 +151,13 @@
 			}
 		},
 		created: function() {
-			this.$on('send-ot', function(obj) { 
+			this.$on('send-ot', function(obj) {
 				this.ot= obj;
 				console.log('cliente',obj.cliente.nombre)
 				console.log('ot',obj.usuario.nombre)
 				this.select_ot= obj;
 			});
-			this.$on('area_option', function(obj) { 
+			this.$on('area_option', function(obj) {
 				this.area= obj;
 			});
 			this.$on('select_estado', function(v) {
@@ -191,24 +191,24 @@
 					var dd = today.getDate();
 					var mm = today.getMonth()+1; //January is 0!
 					var yyyy = today.getFullYear();
-					var HH = today.getHours(); 
-					var MM = today.getMinutes(); 
+					var HH = today.getHours();
+					var MM = today.getMinutes();
 					var ss = today.getSeconds();
 					if(dd<10) {
 						dd='0'+dd
-					} 
+					}
 					if(mm<10) {
 						mm='0'+mm
-					} 
+					}
 					if(HH<10) {
 						HH='0'+HH
-					} 
+					}
 					if(MM<10) {
 						MM='0'+MM
 					}
 					if(ss<10) {
 						ss='0'+ss
-					} 
+					}
 					today = yyyy +'-' + dd+'-'+ mm +' '+ HH + ':' + MM + ':' + ss;
 				} else {
 					today = new Date(data)
@@ -217,7 +217,7 @@
 					console.log(arreglo_nuevo[0]);
 					today = arreglo_nuevo[0];
 				}
-				
+
 				return today;
 			},
 			agregarTarea:function(e) {
@@ -233,9 +233,9 @@
 				this.tarea.usuarios_id = this.user;
 				this.tarea.prioridad_id=this.prioridad.id;
 				// console.log(this.prioridad);
-				
+
 				console.log(this.tarea);
-				this.$http.post('api/v1/tareas',this.tarea)
+				this.$http.post(window._apiURL+'tareas',this.tarea)
 		         .then(function(respuesta){
 		           if (respuesta.status != '200') {
 			            if (Object.keys(respuesta.body.obj).length>0) {

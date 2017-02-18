@@ -40,7 +40,7 @@
           },*/
       methods:{
           listarClientes: function(){
-             this.$http.get('api/v1/clientes')
+             this.$http.get(window._apiURL+'clientes')
              .then(function(respuesta){
                this.clientes=respuesta.body;
              });

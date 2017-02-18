@@ -2,9 +2,9 @@
       <div class="box box-primary" id="crear_user">
         <div class="box-header">
             <h3>{{titulo}}</h3>
-          
+
         </div>
-        
+
         <div class="box-body">
             <form  role="form">
                 <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]">
@@ -25,7 +25,7 @@
                  <div class="form-group" v-bind:class="[errors_return.password,{ 'has-error': errors.has('password') }]">
                     <label for="contrasena_usuario">Contraseña</label>
                     <input type="text" class="form-control" id="contrasena_usuario" name="password" v-model="usuarios.password"  placeholder="Contraseña" v-validate :data-vv-rules="validacioncontrasena">
-                    
+
                      <span  class="help-block error_absolute" v-show="errors.has('password')">{{ errors.first('password') }}</span>
                 </div>
                  <div class="form-group" v-bind:class="[errors_return.cargo,{ 'has-error': errors.has('cargo') }]">
@@ -66,15 +66,15 @@
                     </select>
                  </div>
 
-            </form> 
+            </form>
         </div>
 
         <div class="box-footer">
-         
+
            <button class="btn btn-primary" v-bind:class="{ 'hidden': valorboton }" @click="addUser">Guardar</button>
            <button class="btn btn-primary" v-bind:class="{ 'hidden': valorboton2 }" @click="updateaddUser">Actualizar</button>
            <a href="/listar_areas/" v-bind:class="{ 'hidden': valorboton2 }"><button class="btn btn-default">Volver a listado áreas</button></a>
-          
+
         </div>
     </div>
 </template>
@@ -106,7 +106,7 @@
             timeOut: 5000,
             "positionClass": "toast-top-center",
             "closeButton": true
-           }, 
+           },
            errors_return:{
             'nombre':'',
             'apellido':'',
@@ -128,16 +128,16 @@
           this.$on('area_option', function(b) {
             this.usuarios.areas_id=b.id;
           });
-          
+
           //Valido la opcion de editar o guardar para mostrar el boto correspondiente con su función
           if (this.comando==1) {
             this.valorboton2=true;
           }else if(this.comando==2){
-            
+
              this.valorboton=true;
           }
           //Valido que recibo los datos para editar, si es el caso lleno el componente del formulario
-          
+
           if (this.edituserdata!=undefined) {
             this.validacioncontrasena='';
             console.log(this.edituserdata);
@@ -147,22 +147,22 @@
              this.dato_refres=obj;
               this.dato_refres2=obj;
             }
-          
-          
-          this.titulo=this.titulor;   
+
+
+          this.titulo=this.titulor;
       },
        methods:{
         addUser:function(user) {
           this.$validator.validateAll();
             if (this.errors.any()) {
               return false
-            } 
-          this.$http.post('api/v1/usuarios',this.usuarios)
+            }
+          this.$http.post(window._apiURL+'usuarios',this.usuarios)
           .then(function (response) {
 
                 if (response.status != '200') {
                    if (Object.keys(response.obj).length>0) {
-                   
+
                     $.each(respuesta.body.obj, function(index, value) {
                       that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
                       that.errors_return[index] = 'has-warning';
@@ -179,10 +179,10 @@
                 },(response) => {
                    var that = this;
                     that.message ='';
-                    
+
                     console.log(response);
                       if (Object.keys(response.body.obj).length>0) {
-                       
+
                         $.each(response.body.obj, function(index, value) {
                           that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
                           that.errors_return[index] = 'has-warning';
@@ -194,22 +194,22 @@
         },
         updateaddUser:function(){
           console.log('Actualizar');
-          //Valido los campos 
+          //Valido los campos
            this.$validator.validateAll();
             if (this.errors.any()) {
               return false
-            } 
+            }
 
 
-            var estado = parseInt(this.usuarios.estado); 
-            this.usuarios.estado= estado;        
+            var estado = parseInt(this.usuarios.estado);
+            this.usuarios.estado= estado;
             var iduser=this.usuarios.id;
-    
+
             //Peticion enviando los datos actualizados
-            this.$http.put('/api/v1/usuarios/'+iduser+'', this.usuarios).then(function(response){
+            this.$http.put(window._apiURL+'usuarios/'+iduser+'', this.usuarios).then(function(response){
                 if (response.status != '200') {
                    if (Object.keys(response.obj).length>0) {
-                   
+
                     $.each(respuesta.body.obj, function(index, value) {
                       that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
                       that.errors_return[index] = 'has-warning';
@@ -217,18 +217,18 @@
                   }
                   toastr.warning(that.message,respuesta.body.msg,this.option_toast);
                 }else{
-                   
+
                     toastr.success(response.body.msg,'',this.option_toast);
                     console.log(response);
-                 
+
                 }
             },(response) => {
                    var that = this;
                     that.message ='';
-                    
+
                     console.log(response);
                       if (Object.keys(response.body.obj).length>0) {
-                       
+
                         $.each(response.body.obj, function(index, value) {
                           that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
                           that.errors_return[index] = 'has-warning';
@@ -240,8 +240,8 @@
 
         }
        }
-       
-        
+
+
     }
-   
+
 </script>

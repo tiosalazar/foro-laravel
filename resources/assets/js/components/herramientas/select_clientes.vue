@@ -53,7 +53,7 @@
     },
     methods:{
       fetchTips: function(){
-        this.$http.get('/api/v1/select_clientes') //realizo la consulta de todos los clientes
+        this.$http.get(window._apiURL+'select_clientes') //realizo la consulta de todos los clientes
         .then(function(respuesta){
           this.clientes=respuesta.body;
         }.bind(this));

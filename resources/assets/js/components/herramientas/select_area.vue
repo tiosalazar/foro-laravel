@@ -42,7 +42,7 @@
       },
       computed:{
         /*value: function (val) {
-          
+
           return this.area;
         },*/
         isInvalid () {
@@ -61,7 +61,7 @@
       },
       methods:{
           fetchTips: function(){
-               this.$http.get('/api/v1/areas/')
+               this.$http.get(window._apiURL+'areas/')
              .then(function(respuesta){
                      this.areas=respuesta.body;
              }.bind(this));

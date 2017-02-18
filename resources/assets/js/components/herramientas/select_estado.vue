@@ -46,7 +46,7 @@
         "closeButton": true,
         }
       }
-      
+
     },
     computed:{
       isInvalid () {
@@ -57,7 +57,7 @@
         },
     },
     created: function(){
-     
+
       this.fetchTips();
       //Valido que la propiedad encargado que traigo de la tarea tenga datos
         if (typeof this.select != 'undefined' || this.select != null) {
@@ -65,11 +65,11 @@
           this.updateSelected(this.select);
           this.id_estado=this.select.id;
         }
-        
+
     },
     methods:{
       fetchTips: function(){
-        this.$http.get('/api/v1/estados/'+this.tipo_estado)
+        this.$http.get(window._apiURL+'estados/'+this.tipo_estado)
         .then(function(respuesta){
           this.estados=respuesta.body;
         }.bind(this));
@@ -83,7 +83,7 @@
           this.value=newSelected;
           this.$parent.$emit('select_estado',newSelected);
           if (this.cambiar_estado != '' && this.cambiar_estado != null ) {
-            this.$http.put('/api/v1/actualizar_estado_ot/'+this.cambiar_estado, newSelected.id)
+            this.$http.put(window._apiURL+'actualizar_estado_ot/'+this.cambiar_estado, newSelected.id)
             .then(function(respuesta){
               if (respuesta.status != '200') {
                   if (Object.keys(respuesta.obj).length>0) {

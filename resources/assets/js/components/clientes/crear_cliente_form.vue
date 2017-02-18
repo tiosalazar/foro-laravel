@@ -51,7 +51,7 @@
 	import messages from '../../es/es';
 
        //Realizando los Use
-	
+
 		// Merge the locales.
 		Validator.updateDictionary({es: { messages }});
 		// Install the plugin and set the locale.
@@ -102,7 +102,7 @@
 			        return false
 			    }
 				console.log(this.cliente);
-				this.$http.post('api/v1/clientes', this.cliente)
+				this.$http.post(window._apiURL+'clientes', this.cliente)
 	             .then(function(respuesta){
 	             	var that = this;
 	             	that.message ='';
@@ -124,7 +124,7 @@
 				  });
 			},
 			editCliente: function(client) {
-		        this.$http.put('/api/v1/clientes/'+client.id, client)
+		        this.$http.put(window._apiURL+'clientes/'+client.id, client)
 		        .then(function(response) {
 		          if (response.status != '200') {
 		            if (Object.keys(response.body.obj).length>0) {

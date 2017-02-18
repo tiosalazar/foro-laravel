@@ -6,7 +6,7 @@
     <section class="col-xs-12">
          <table class="table table-bordered table-striped table-hover datatable-foro" id="tabla_clientes">
           <thead>
-            <tr>    
+            <tr>
               <th>NIT</th>
               <th>Cliente</th>
               <th>Nombre de Contacto</th>
@@ -17,7 +17,7 @@
             </tr>
         </thead>
         </table>
-   </section> 
+   </section>
    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -45,7 +45,7 @@
   Vue.use(VeeValidate);
   module.exports =  {
     components: {VeeValidate,Validator},
-    
+
     data () {
       return {
         clientes:[],
@@ -68,7 +68,7 @@
       }
     },created:function () {
       this.listarClientes();
-      this.$on('edit-cliente', function(obj) { 
+      this.$on('edit-cliente', function(obj) {
         this.agregar= obj;
       });
     },
@@ -80,7 +80,7 @@
               id = id.split('-');
               console.log(id[1]);
                 $('#id_cliente').val(id[1]);
-      
+
         })
       })
       var tableClientes = $('#tabla_clientes').DataTable({
@@ -95,14 +95,14 @@
                   { data: 'email', name: 'email' },
                   { data: 'telefono', name: 'telefono' },
                   // {data: 'action', name: 'action', orderable: false, searchable: false}
-              ], 
+              ],
               columnDefs: [
               {
                   "targets": [5],
                   "data": null,
                   "className":      'details-control',
                   "render": function(data, type, full) { // Devuelve el contenido personalizado
-                    return '<a href="editar_cliente/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Editar</a><button type="button" id="cli-'+full.id+'" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente" data-toggle="modal" data-target="#myModal">Borrar</button>'; 
+                    return '<a href="editar_cliente/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Editar</a><button type="button" id="cli-'+full.id+'" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente" data-toggle="modal" data-target="#myModal">Borrar</button>';
                   }
               },
               ],
@@ -131,7 +131,7 @@
                           "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
                           "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                       }
-                  },      
+                  },
 
       });
       this.table = tableClientes;
@@ -139,7 +139,7 @@
     },
     ready: function(){
       console.log('ready')
-           
+
     },
     methods:{
       setErrors:function(object) {
@@ -155,14 +155,14 @@
         this.cliente = {};
       },
       listarClientes: function(){
-         this.$http.get('api/v1/clientes')
+         this.$http.get(window._apiURL+'clientes')
          .then(function(respuesta){
            this.clientes=respuesta.body;
            console.log(this.clientes);
          });
       },
       editCliente: function(client) {
-        this.$http.put('api/v1/clientes/'+client.id, client)
+        this.$http.put(window._apiURL+'clientes/'+client.id, client)
         .then(function(response) {
           if (response.status != '200') {
             if (Object.keys(response.body.obj).length>0) {
@@ -184,7 +184,7 @@
         // this.$http.delete('api/v1/clientes/'+client.id)
         let index = $('#id_cliente').val()
         console.log(index);
-        this.$http.delete('api/v1/clientes/'+index)
+        this.$http.delete(window._apiURL+'clientes/'+index)
         .then(function(response) {
           if (response.status != '200') {
             if (Object.keys(response.body.obj).length>0) {

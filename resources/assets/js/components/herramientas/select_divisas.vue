@@ -55,7 +55,7 @@ module.exports= {
   },
   methods:{
     fetchTips: function(){
-      this.$http.get('/api/v1/divisas') //Consulta a la Base de datos por GET
+      this.$http.get(window._apiURL+'divisas') //Consulta a la Base de datos por GET
       .then(function(respuesta){
         this.divisa=respuesta.body;
       }.bind(this));

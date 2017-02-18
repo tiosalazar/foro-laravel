@@ -29,7 +29,7 @@
   import Multiselect from 'vue-multiselect'
 
 
- 
+
     module.exports= {
        components: { Multiselect},
        props: ['refresh'],
@@ -55,7 +55,7 @@
         this.value={id: this.refresh.id, display_name: this.refresh.id_rol};
         this.id_rol=this.refresh.id;
         // console.log(this.refresh);
-       
+
       },
       watch : {
         refresh : function (value) {
@@ -64,7 +64,7 @@
       },
       methods:{
           fetchTips: function(){
-               this.$http.get('/api/v1/roles/')
+               this.$http.get(window._apiURL+'roles/')
              .then(function(respuesta){
                  this.roles=respuesta.body;
              }.bind(this));

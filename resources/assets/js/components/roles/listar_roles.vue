@@ -116,7 +116,7 @@ import VeeValidate, { Validator } from 'vee-validate';
           },
         methods:{
           consumerApi_listRol: function(){
-            this.$http.get('api/v1/roles')
+            this.$http.get(window._apiURL+'roles')
               .then(function(respuesta){
                 this.listroles=respuesta.body;
               });
@@ -142,7 +142,7 @@ import VeeValidate, { Validator } from 'vee-validate';
             var descriptionmodal=this.nombre_rol_edit.description;
 
 
-            this.$http.put('/api/v1/roles/'+idmodal+'',{display_name:  display_namemodal,description: descriptionmodal})
+            this.$http.put(window._apiURL+'roles/'+idmodal+'',{display_name:  display_namemodal,description: descriptionmodal})
             .then(function(respuesta){
 
                 var that = this;

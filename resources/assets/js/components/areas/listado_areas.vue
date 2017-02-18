@@ -1,6 +1,6 @@
 <template>
   <div>
-  
+
     <div class="row listar_areas_modulo">
       <div class="col-md-12">
        <div class="col-md-2 columnas_listar_areas">
@@ -8,11 +8,11 @@
           <ul>
             <a href="#" v-for="area in areas"><li  @click="consultarApiusuarios(area.id)" >{{area.nombre}}</li></a>
           </ul>
-          
+
         </div>
         <div class="col-md-5 columnas_listar_areas">
           <h3 class="titulo_listar_user">Usuarios</h3>
-          
+
             <ul class="listado_usuarios">
             <a href="#" v-for="usuario in itemsUserArea(usuarios,idareaUser)" v-bind:key="usuario" class="list-usuario">
               <li class="listado_usuarios_item"  :key="usuario.nombre" @click="userviewinfo(usuario.horas_disponible,usuario.id)" >
@@ -20,7 +20,7 @@
               <div v-else><img   v-bind:src="usuario.img_perfil"></div>
               <div class="text_user_listado"><p>{{usuario.nombre}} {{usuario.apellido}}</p><p>{{usuario.cargo}}</p><p>{{usuario.email}}</p><div></li></a>
             </ul>
-          
+
         </div>
 
         <div class="col-md-5 columnas_listar_areas" >
@@ -50,7 +50,7 @@
           </div>
         </div>
       </div>
-     
+
     </div>
 
      <div class="modal fade " id="confirm_delete_user">
@@ -65,24 +65,24 @@
                 <button class="btn btn-primary btn-flat" @click="eliminarUsuario(id_user_eliminar)" data-dismiss="modal">SI</button>
               </div>
               <div class="modal-footer">
-             
+
               </div>
-          
+
          </div>
        </div>
      </div>
     </div>
 
- </div>  
+ </div>
 
 </template>
 
 <script>
 
- 
+
 
    module.exports={
-   
+
      data(){
         return{
           areas:[],
@@ -97,13 +97,13 @@
         }
      },
      created: function(){
-        this.consultarApiAreas();  
-      },     
+        this.consultarApiAreas();
+      },
       methods:{
         //Consultar api de areas
         consultarApiAreas:function(){
 
-          this.$http.get('/api/v1/listar_areas')
+          this.$http.get(window._apiURL+'listar_areas')
               .then(function(respuesta){
                 this.areas=respuesta.body;
                 // console.log(respuesta);
@@ -112,7 +112,7 @@
         },
         consultarApiusuarios:function(areaid){
 
-          this.$http.get('/api/v1/usuarios')
+          this.$http.get(window._apiURL+'usuarios')
           .then(function(respuesta){
             //asigno los usuarios y el id del area para hacer el filtro en el v-for
             this.usuarios=respuesta.body.data;
@@ -123,17 +123,17 @@
           });
 
           //Consulto la api de areas con el id para traer los datos en la columna infomacion
-          this.$http.get('/api/v1/areas/'+areaid)
+          this.$http.get(window._apiURL+'areas/'+areaid)
           .then(function(respuesta){
             this.areas_info=respuesta.body;
-            
+
           });
         },
         //FUncion con filtro personalizado para traer los usuarios por io del area
         itemsUserArea: function(items,idareaUser) {
             return items.filter(function(item) {
             return item.id_area==idareaUser;
-          });  
+          });
         },
         userviewinfo:function(horas,id_user){
            this.switcharea_user=2;
@@ -141,11 +141,11 @@
            this.id_user="/editar_usuario/"+id_user;
            this.id_user_eliminar=id_user;
            console.log(this);
- 
-           
+
+
          },
         eliminarUsuario:function(id_usuario_eliminar){
-           this.$http.delete('/api/v1/usuarios/'+id_usuario_eliminar)
+           this.$http.delete(window._apiURL+'usuarios/'+id_usuario_eliminar)
             .then(function(respuesta){
               var id_usuario_respuesta=respuesta.body.obj.id;
               console.log(id_usuario_respuesta);
@@ -156,10 +156,10 @@
                 }
                 i++;
               });
-              
+
             });
-        }              
-      
+        }
+
       }
 
      }
