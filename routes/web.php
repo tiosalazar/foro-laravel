@@ -172,4 +172,3 @@ Route::get('/p', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
-

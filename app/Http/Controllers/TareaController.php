@@ -61,7 +61,7 @@ class TareaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
 
         //id Rol coordinador
         $role=Role::where('name','coordinador')->get();
@@ -71,8 +71,8 @@ class TareaController extends Controller
                     ->where('areas_id', $request->areas_id)->get();
 
         if ($userdata!=null and isset($userdata[0])) {
-  
-            //Id del usuario            
+
+            //Id del usuario
             $idusuario=$userdata[0]->id;
 
             //Agrego al request el id
@@ -175,19 +175,19 @@ class TareaController extends Controller
            $comentario->fill($request->all());
            $comentario->save();
 
-            //Respuesta 
+            //Respuesta
            $respuesta['dato']=$tarea;
            $respuesta['user_coment']='';
            $respuesta["error"]=0;
-           $respuesta["mensaje"]="OK"; 
+           $respuesta["mensaje"]="OK";
            $respuesta["msg"]="Asignado con exito";
            foreach ($tarea->comentario as $key => $value) {
                 if ($value->user->id==$request->usuarios_comentario_id) {
                     $respuesta['user_coment']=$value;
-                    $value->estados;    
+                    $value->estados;
                 }
-                
-             
+
+
             }
 
         }else{
@@ -201,7 +201,7 @@ class TareaController extends Controller
                    $respuesta["msg"]="Datos Incompletos";
                    $respuesta["obj"]=$vl->errors();
                    $respuesta["request"]=$request;
-            }else{ 
+            }else{
 
                     try
                         {
@@ -218,7 +218,7 @@ class TareaController extends Controller
                            $comentario = new Comentario;
                            $comentario->fill($request->all());
                            $comentario->save();
-                           
+
                             // Si el estado es Pendiente (7)
                              if ($tarea->estados_id == 7) {
                                   // Creador de la solicitud
@@ -227,20 +227,20 @@ class TareaController extends Controller
                                   User::find($request->encargado_id)->notify(new TareaPendiente($maker,$tarea));
                              }
 
-                          //Respuesta 
+                          //Respuesta
                            $respuesta['dato']=$tarea;
                            $respuesta['user_coment']='';
-        
+
                            $respuesta["error"]=0;
-                           $respuesta["mensaje"]="OK"; 
+                           $respuesta["mensaje"]="OK";
                            $respuesta["msg"]="Asignado con exito";
                            foreach ($tarea->comentario as $key => $value) {
                                 if ($value->user->id==$request->usuarios_comentario_id) {
                                     $respuesta['user_coment']=$value;
-                                    $value->estados;    
+                                    $value->estados;
                                 }
-                                
-                             
+
+
 
                             }
 
@@ -255,7 +255,7 @@ class TareaController extends Controller
                        $respuesta["msg"]="Error  datos incorrectos";
                        $respuesta["request"]=$request->all();
                        $respuesta["obj"]=$vl->errors();
-                        
+
                     }
 
                 }
@@ -284,7 +284,7 @@ class TareaController extends Controller
     public function showAllTareas($id,Request $request)
     {
         $output= array();
-        // Si no trae el mes y año en el $request 
+        // Si no trae el mes y año en el $request
         // tomar el mes y el año actual
         $year = '';
         $month = '';
@@ -346,7 +346,7 @@ class TareaController extends Controller
     }
 
     /**
-     * Traer la primera tarea 
+     * Traer la primera tarea
      **/
     public function getFirstTarea()
     {
@@ -355,19 +355,22 @@ class TareaController extends Controller
     }
 
     /**
-     * Traer años de las tareas 
+     * Traer años de las tareas
      **/
     public function getYearTarea()
     {
         $years = array();
         $firstTarea = $this->getFirstTarea();
         $tarea = Tarea::orderBy('created_at', 'desc')->first();
+        if($tarea != null ){
         $lastYear = date('Y',strtotime($tarea->created_at));
         $firstYear = date('Y',strtotime($firstTarea->created_at));
-        for ($i=$firstYear; $i <=  $lastYear; $i++) { 
+        for ($i=$firstYear; $i <=  $lastYear; $i++) {
             array_push($years, (string)$i);
         }
         return $years;
+      }
+      return [];
     }
 
     /**
@@ -401,7 +404,7 @@ class TareaController extends Controller
             'estados_id' => 'required',
             'tiempo_estimado' => 'required',
             'fecha_entrega_area' => 'required',
-            'fecha_entrega_cuentas' => 'required',        
+            'fecha_entrega_cuentas' => 'required',
         ]);
     }
 }
