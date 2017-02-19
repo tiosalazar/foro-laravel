@@ -24,7 +24,7 @@
             </div>
             
           </div>
-          <div style="text-align:center;"><span  @click="cargar_mas" style="cursor:pointer;">Ver mas</span></div>
+          <div  class="ver_mas"><span class="ver_mas_texto"  @click="cargar_mas" >Ver mas</span></div>
 
         </div>
       </div>
