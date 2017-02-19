@@ -41,6 +41,6 @@ class Area extends Model
   */
   public function Tiempos_x_Area()
   {
-    return $this->hasMany('App\Tiempos_x_Area');
+    return $this->hasMany('App\Tiempos_x_Area','areas_id','id');
   }
 }
