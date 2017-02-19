@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\CrearOT;
+use App\Notifications\TareaCreada;
 use App\Notifications\TareaPendiente;
 use App\Notifications\TareaProgramada;
 use App\Notifications\TareaRealizada;
@@ -100,8 +101,8 @@ class TareaController extends Controller
             }else{
                 try {
                     $tarea->save();
-                    // $maker = User::findOrFail($request->usuarios_id);
-                    // User::find($tarea->usuarios_id)->notify(new CrearOT($maker,$tarea));
+                    $maker = User::findOrFail($request->usuarios_id);
+                    User::find($tarea->encargado_id)->notify(new TareaCreada($maker,$tarea));
                     return response([
                         'status' => Response::HTTP_OK,
                         'response_time' => microtime(true) - LARAVEL_START,
@@ -209,30 +210,28 @@ class TareaController extends Controller
 
                     try
                         {
-                        //Busca el usuario en la BD
-                           $tarea=Tarea::findOrFail($id);
+                            //Busca la Tarea en la BD
+                            $tarea=Tarea::findOrFail($id);
 
-                           // Encargado antes de actualizar la tarea
-                           $makerBefore = User::findOrFail($request->encargado_id);
+                            // Encargado antes de actualizar la tarea
+                            $makerBefore = User::findOrFail($request->encargado_id);
 
-                           //Asigna los nuevo datos
-                           $tarea->fill($request->all());
+                            //Asigna los nuevo datos
+                            $tarea->fill($request->all());
                         
 
 
                             // Si el estado es Pendiente (7)
                             // Poner como encargado el coordinado del Área
                                $encargado_area = '';
-                            if ($request->estados_id == 7) {
+                            if ($request->estados_id == 7 || $request->estados_id == 5) {
 
-                                // Poner como encargado al coordinado del area 
                                 $encargado_area= User::where('roles_id',4)
                                                       ->where('areas_id', $tarea->areas_id)
                                                       ->first();
                                 $tarea->encargado_id = $encargado_area->id;
-
-
-                                
+                            }else if($request->estados_id == 4){
+                                $tarea->encargado_id = $tarea->usuarios_id;
                             }
                             
                            //Guardamos la tarea
@@ -243,34 +242,79 @@ class TareaController extends Controller
                            $comentario->fill($request->all());
                            $comentario->save();
 
-                            
+                            /**
+                             *
+                             * Recibe el estado de la tarea y envia la notificacion
+                             * al usuario correspondiente
+                             *
+                             * 1 - OK 
+                             * 2 - Realizada
+                             * 3 - Programada
+                             * 4 - Atencion Cuentas
+                             * 5 - Atencion Area
+                             * 6 - Espera
+                             * 7 - Pendiente
+                             */
+                            switch ($request->estados_id) {
+                                case '2':
+                                    // Enviar notificacion al nuevo encargado
+                                    User::findOrFail($request->encargado_id)
+                                    ->notify(new TareaRealizada($makerBefore,$tarea));
+                                    break;
+                                case '3':
+                                    // Enviar notificacion al nuevo encargado
+                                    User::findOrFail($request->encargado_id)
+                                    ->notify(new TareaProgramada($makerBefore,$tarea));
+                                    break;
+                                case '4':
+                                    // Enviar notificacion al nuevo encargado
+                                    User::findOrFail($tarea->usuarios_id)
+                                    ->notify(new TareaAtencionCuentas($makerBefore,$tarea));
+                                    break;
+                                case '5':
+                                    // Enviar notificacion al nuevo encargado
+                                    User::findOrFail($tarea->encargado_id)
+                                    ->notify(new TareaAtencionArea($makerBefore,$tarea));
+                                    break;
+                                case '7':
+                                    // Creador de la solicitud - Ejecutiva
+                                    $maker = User::findOrFail($tarea->usuarios_id);
+
+                                    // Enviar notificacion al nuevo encargado
+                                    User::findOrFail($tarea->encargado_id)->notify(new TareaPendiente($maker,$tarea));
+                                    break;
+                                
+                                default:
+                                    return response([
+                                        'status' => Response::HTTP_BAD_REQUEST,
+                                        'response_time' => microtime(true) - LARAVEL_START,
+                                        'msg' => 'Error al actualizar la tarea. No se envio la notificacion',
+                                        'error' => 'ERR_05',
+                                        'obj' =>$vl->errors(),
+                                        'tarea' =>$tarea,
+                                        'request' =>$request,
+                                        ],Response::HTTP_BAD_REQUEST);
+                                    break;
+                            }
                             // Si el estado es Pendiente (7)
                             if ($request->estados_id == 7) {
-                                // Creador de la solicitud - Ejecutiva
-                                $maker = User::findOrFail($tarea->usuarios_id);
-
-                                // Enviar notificacion al nuevo encargado
-                                User::findOrFail($tarea->encargado_id)->notify(new TareaPendiente($maker,$tarea));
+                                
                             }
                             // Si el estado es Atencion Cuentas (4)
                             if ($tarea->estados_id == 4) {
-                                // Enviar notificacion al nuevo encargado
-                                User::findOrFail($tarea->usuarios_id)->notify(new TareaPendiente($makerBefore,$tarea));
+                                
                             }
                             // Si el estado es Atencion Area (5)
                             if ($tarea->estados_id == 5) {
-                                // Enviar notificacion al nuevo encargado
-                                User::findOrFail($request->encargado_id)->notify(new TareaPendiente($makerBefore,$tarea));
+                                
                             }
                             // Si el estado es Programado (3)
                             if ($tarea->estados_id == 3) {
-                                // Enviar notificacion al nuevo encargado
-                                User::findOrFail($request->encargado_id)->notify(new TareaPendiente($makerBefore,$tarea));
+                                
                             }
                             // Si el estado es Realizado (2)
                             if ($tarea->estados_id == 2) {
-                                // Enviar notificacion al nuevo encargado
-                                User::findOrFail($request->encargado_id)->notify(new TareaPendiente($makerBefore,$tarea));
+                                
                             }
 
                           //Respuesta
