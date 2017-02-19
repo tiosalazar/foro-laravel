@@ -100,17 +100,20 @@
                   { data: 'nombre_contacto', name: 'nombre_contacto' },
                   { data: 'email', name: 'email' },
                   { data: 'telefono', name: 'telefono' },
-                  // {data: 'action', name: 'action', orderable: false, searchable: false}
+                  {data: 'action', name: 'action', orderable: false, searchable: false}
               ],
               columnDefs: [
-              {
-                  "targets": [5],
-                  "data": null,
-                  "className":      'details-control',
-                  "render": function(data, type, full) { // Devuelve el contenido personalizado
-                    return '<a href="editar_cliente/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Editar</a><button type="button" id="cli-'+full.id+'" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente" data-toggle="modal" data-target="#myModal">Borrar</button>';
-                  }
-              },
+  						  {
+  							"targets": [5],
+              //  "visible": (tableClientes.data.action == '')?false:true,
+  							"data": null,
+  						       "render": function(data, type, full) { // Devuelve el contenido personalizado
+                       if(data =='')
+                           var column =   tableClientes.column(5)
+                           column.visible(false);
+  						       	     return '';
+  						       }
+  						   }
               ],
               autoWidth: true,
               responsive: true,

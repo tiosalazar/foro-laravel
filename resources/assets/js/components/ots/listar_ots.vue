@@ -75,33 +75,17 @@
 						{ data: 'fecha_inicio', name: 'fecha_inicio' },
 						{ data: 'fecha_final', name: 'fecha_final' },
 						{ data: 'cliente.nombre', name: 'cliente' },
-						{ data: 'usuario.nombre', name: 'usuario' }
+						{ data: 'usuario.nombre', name: 'usuario' },
+						{ data: 'estado.id', name: 'estado.id' },
+						{ data: 'acciones', name: 'acciones', orderable: false, searchable: false }
 						],
 						columnDefs: [
-						  {
-							"targets": [6],
-							"data": null,
-						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-						       	var fecha= full.fecha_inicio;
-						       	var arreglo_nuevo=fecha.split(" ");
-									return arreglo_nuevo[0];
-						       }
-						   },
-						   {
-							"targets": [7],
-							"data": null,
-						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-						       		var fecha= full.fecha_final;
-						       var arreglo_nuevo=fecha.split(" ");
-									return arreglo_nuevo[0];
-						       }
-						   },
 						   {
 							"targets": [3],
 							"data": null,
 						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-                                 var checked=(full.fee==1)?'checked':'';
-						       	return  '<input type="radio" " value="'+full.fee+'"  required="required" '+checked+' disabled >';
+                                 var checked=(data==1)?'checked':'';
+						       	return  '<input type="radio" " value="'+data+'"  required="required" '+checked+' disabled >';
 
 						       }
 						   },
@@ -113,15 +97,7 @@
 							      // return (full.estado==1)? 'Activo' : 'Inactivo';
 
 							  }
-							},
-							{
-								"targets": [11],
-								"data": null,
-					      "render": function(data, type, full) { // Devuelve el contenido personalizado
-					      	return '<a href="ver_ot/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver OT</a>'+'<a href="editar_ot/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Editar OT</a>';
-
-					      }
-					  }
+							}
 
 					],
 					autoWidth: true,

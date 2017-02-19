@@ -40,6 +40,7 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
      // OTs
      Route::resource('ots', 'OtController');
      Route::put('actualizar_estado_ot/{id}', 'OtController@updateEstadoOT');
+     Route::post('solicitarHoras', 'OtController@solicitarHoras');
 
      Route::get('tipos_compra', function (Request $request) {
                  $tipo_compra= App\Tipos_Compra::all();

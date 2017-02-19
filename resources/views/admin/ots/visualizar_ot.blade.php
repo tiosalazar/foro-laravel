@@ -29,7 +29,7 @@
 							</div>
 							<div class="col-sm-6 border-left">
 								<ul>
-									@if(Auth::user()->hasRole('desarrollo') )
+									@if(Auth::user()->hasRole('cuentas') )
 									<div class="row">
 										<div class="col-sm-6">
 											<strong>Estado de OT:</strong>
@@ -79,7 +79,12 @@
 														<ul>
 															<div class="row">
 																<div class="form-group col-md-4 col-sm-6" ><li><strong>Horas Gastadas: </strong></li></div>
-																<div class="form-group col-md-6 detalle_horas col-sm-6"><li><span> {{$area['tiempo_extra']}} Horas</span></li></div>
+																<div class="form-group col-md-6 detalle_horas col-sm-6"><li> <div class="
+																	{{{ ($area['tiempo_real']+$area['tiempo_extra']>$area['tiempo_estimado_ot'] )?'campo rojo':'campo verde'}}}
+																	{{{ ($area['tiempo_real']+$area['tiempo_extra'] >=$area['tiempo_estimado_ot']*0.8)?'campo amarillo':''}}}
+																	  ">
+																	<span>{{ $area['tiempo_real']+$area['tiempo_extra']  }}   Horas</span>
+																</div></li></div>
 															</div>
 														</ul>
 													</div>
@@ -143,7 +148,7 @@
 																<li><strong>Moneda:</strong></li>
 																<li><span> {{$compra['divisa']['nombre'] }}</span></li>
 																<li><strong>Valor:</strong></li>
-																<li><span> ${{$compra['valor'] }} </span></li>
+																<li><span> <span class="campo_fecha"> ${{$compra['valor'] }} </span></li>
 															</ul>
 														</div>
 														@endif
@@ -197,9 +202,10 @@
 						<div class="desc_modal">
 							¿Cuantas Horas adicionales necesita el Area de <span id="nombre_area" class="font-info"></span> para la<span class="font-info"> OT #{{$ot['referencia'] }}  {{$ot['nombre']}} ? </span>
 						</div>
-						<form action="">
+						<form action="" name="solicitarHoras">
 						<div class="form-group col-sm-6 col-sm-offset-3 col-xs-offset-3 ">
 							<input type="text"  class="form-control" required="required" pattern="^([0-9].[0-9]|[0-9]*){1,10}$" title="Ejemplo... 10 ó 10.5"  placeholder="No horas adicionales" name="horas_adicionales">
+              <input type="hidden" name="id" value="{{$ot['id']}}" />
 						</div>
 						<div class="row">
 							<div class="col-sm-4 col-sm-offset-4 col-xs-offset-4 col-xs-6 col-xs-4">
@@ -228,7 +234,31 @@
 	function abriModal(nombre) {
 		$('#nombre_area').text(nombre);
 		$('.editarModal').modal('show');
-		console.log("entrooo2");
+
+		var form = $('form[name=solicitarHoras]');
+		form.submit( function (e) {
+			 e.preventDefault();
+
+			 $.ajax({
+				   url: window._apiURL+"solicitarHoras",
+					 data:form.serialize(),
+					 'type': 'POST',
+					 'beforeSend': function (request) {
+							 request.setRequestHeader("Authorization", 'Bearer '+Laravel.api_token);
+					 }
+				 }).done(function(data) {
+					 	toastr.success(data.msg,'',{timeOut: 5000,"positionClass": "toast-top-center","closeButton": true});
+						$('form[name=solicitarHoras]')[0].reset();
+						$('.editarModal').modal('toggle');
+           console.log(data);
+					 return true;
+				 })
+				 .fail(function(data) {
+					 	toastr.error('se ha presentado un error en el sistema por favor contacte a soporte',data.error,{timeOut: 5000,"positionClass": "toast-top-center","closeButton": true});
+			     console.log(data);
+			  });
+
+		});
 	}
 
 </script>

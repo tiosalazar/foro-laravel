@@ -21,6 +21,7 @@
 	</div>
 </template>
 <script>
+import Push from 'push.js'
 	module.exports= {
 		props:['id'],
 	    data () {
@@ -42,7 +43,23 @@
 		      }
 		},
 		mounted(){
-			this.listen();
+			if (!('Notification' in window)) {
+		// el navegador no soporta la API de notificaciones
+                        alert('Su navegador no soporta la API de Notificaciones :(');
+                        return;
+                    }
+			Push.Permission.request();
+			Push.Permission.get();
+			Push.create("Notifiación Prueba", {
+		    body: "Hola, ya has activado las notifiaciones",
+		    icon: 'icon.png',
+		    timeout: 4000,
+		    onClick: function () {
+		        window.focus();
+		        this.close();
+		    }
+		 });
+		this.listen();
 			$('.menu').slimScroll({});
 		},
 		methods:{
@@ -55,6 +72,16 @@
 					// notification.created_at = Math.abs(notification.created_at - hoy);
 					this.notificaciones.push(notification);
 					toastr.success(notification.descripcion,'',this.option_toast);
+
+					Push.create("Hello world!", {
+				  body: notification.descripcion,
+				    icon: notification.img_perfil,
+				    timeout: 4000,
+				    onClick: function () {
+				        window.focus();
+				        this.close();
+				    }
+				});
 				}, (error)=>{
 					console.log(error);
 				});

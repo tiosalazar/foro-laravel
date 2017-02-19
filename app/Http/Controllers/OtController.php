@@ -10,10 +10,12 @@ use App\Tiempos_x_Area;
 use App\Requerimientos_Ot;
 use App\Compras_Ot;
 use App\Area;
+use App\Role;
 use Illuminate\Support\Facades\Auth;
 use App\Historico_Ot;
 use Illuminate\Support\Facades\DB;
-
+use App\Notifications\OtTiempoExtra;
+use App\Notifications\OtCreada;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
 use Illuminate\Http\Response;
@@ -39,11 +41,20 @@ class OtController extends Controller
       $ots = Ot::with('cliente','usuario','estado')->get();
 
       return Datatables::of( $ots)
-      /*->addColumn('acciones', function($ots) {
-             //return url('/editar_cliente/' . $ots->id);
-             return '<a href="ver_ot/'+$ots->id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver OT</a>'+'<a href="editar_ot/'+$ots->id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Editar OT</a>';
-        })*/
-        ->make(true);
+      ->addColumn('fecha_inicio', function($ots) {
+             $fecha=new Carbon($ots->fecha_inicio);
+             return $fecha->format('Y-m-d');
+        })
+        ->addColumn('fecha_final', function($ots) {
+              $fecha=new Carbon($ots->fecha_final);
+              return $fecha->format('Y-m-d');
+         })
+       ->addColumn('acciones', function($ots) {
+              $ver_ot='<a href="ver_ot/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver OT</a>';
+              $editar_ot=(Auth::user()->can('editar_ot') )?'<a href="editar_ot/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit" aria-label="View">Editar OT</a>':'';
+              return $ver_ot.$editar_ot;
+         })
+         ->make(true);
    }
 
 
@@ -119,6 +130,12 @@ class OtController extends Controller
                $model_compras->save();
             }
             DB::commit();
+            $maker=Auth::user();
+
+            $Rol=Role::where('name','owner')->first();
+            $owner=User::where('roles_id',$Rol->id)->first();
+
+            $owner->notify(new OtCreada($maker,$ot));
             return response([
                'status' => Response::HTTP_OK,
                'response_time' => microtime(true) - LARAVEL_START,
@@ -467,11 +484,43 @@ class OtController extends Controller
    **/
    public function showOtEnTareas()
    {
-      // Muestra todas las Ot con el cliente 
+      // Muestra todas las Ot con el cliente
       // y usuario que la creó
       $ot=  Ot::with(['cliente','usuario'])
       ->get();
       return response()->json($ot);
+   }
+   /**
+   *
+   **/
+   public function solicitarHoras(Request $request)
+   {
+      // Muestra todas las Ot con el cliente
+      // y usuario que la creó
+      try {
+         $ot= OT::findOrFail($request->id);
+         $maker=Auth::user();
+
+         $Rol=Role::where('name','owner')->first();
+         $owner=User::where('roles_id',$Rol->id)->first();
+
+         $owner->notify(new OtTiempoExtra($maker,$ot));
+         return response([
+            'status' => Response::HTTP_OK,
+            'response_time' => microtime(true) - LARAVEL_START,
+            'msg' => 'Se ha Notificado correctamente',
+            'obj' =>$ot
+         ],Response::HTTP_OK);
+      } catch (Exception $e) {
+         return response([
+            'status' => Response::HTTP_BAD_REQUEST,
+            'response_time' => microtime(true) - LARAVEL_START,
+            'error' => 'fallo_en_la_notificacion',
+            'consola' =>$e->getMessage(),
+            'request' => $request->all()
+         ],Response::HTTP_BAD_REQUEST);
+      }
+
    }
 
    /**

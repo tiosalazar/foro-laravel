@@ -8,7 +8,7 @@ use Validator;
 use Illuminate\Http\Response;
 use Exception;
 use Yajra\Datatables\Datatables;
-
+use Illuminate\Support\Facades\Auth;
 class ClienteController extends Controller
 {
     /**
@@ -22,11 +22,15 @@ class ClienteController extends Controller
       $clientes = Cliente::where('estado', 1)->get();
       // return response()->json($clientes);
       return Datatables::of($clientes)
-      /*->addColumn('action', function($cliente) {
+      ->addColumn('action', function($cliente) {
             // return url('/editar_cliente/' . $cliente->id);
-            return '<a href="#edit-'.$cliente->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
-        })*/
+
+            return (Auth::user()->hasRole('owner'))?'<a href="editar_cliente/'.$cliente->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Editar</a><button type="button" id="cli-'.$cliente->id.'" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente" data-toggle="modal" data-target="#myModal">Borrar</button>':'';
+
+        })
+
         ->make(true);
+
     }
     /**
      * Display a listing of the resource.
