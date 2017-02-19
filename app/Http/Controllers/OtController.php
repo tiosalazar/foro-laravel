@@ -462,10 +462,9 @@ class OtController extends Controller
    **/
    public function showOtEnTareas()
    {
-      $ot= DB::table('ots')
-      ->join('clientes', 'ots.clientes_id', '=', 'clientes.id')
-      ->join('users', 'ots.usuarios_id', '=', 'users.id')
-      ->select('ots.*', 'clientes.nombre as nombre_cli', 'users.nombre as nombre_ej')
+      // Muestra todas las Ot con el cliente 
+      // y usuario que la creó
+      $ot=  Ot::with(['cliente','usuario'])
       ->get();
       return response()->json($ot);
    }
@@ -475,6 +474,8 @@ class OtController extends Controller
    **/
    public function showOtEnTareasByQuery($query)
    {
+      // Si empieza con valor numerico buscar por referencia
+      // de lo contrario por nombre
       if (is_numeric($query)) {
          $ot = Ot::with(['cliente','usuario'])->where('referencia', 'like', '%'.$query.'%')->get();
       } else {

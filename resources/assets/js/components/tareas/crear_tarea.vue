@@ -153,8 +153,8 @@
 		created: function() {
 			this.$on('send-ot', function(obj) {
 				this.ot= obj;
-				console.log('cliente',obj.cliente.nombre)
-				console.log('ot',obj.usuario.nombre)
+				// console.log('cliente',obj.cliente.nombre)
+				console.log('ot',obj.usuario)
 				this.select_ot= obj;
 			});
 			this.$on('area_option', function(obj) {

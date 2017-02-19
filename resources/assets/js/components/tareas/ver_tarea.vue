@@ -346,7 +346,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
       //Datos a enviar al asignar la tarea y comentarios
         var id_tarea= this.tarea_info.id;
         // var id_encargado=this.encargado.id;
-        var id_encargado=(this.estado_solicitud.id == 4)? this.tarea_info.usuarios_id: this.encargado.id;
+        var id_encargado= this.encargado.id;
         var estado= this.estado_solicitud.id;
         var horas_estimadas=this.tarea_info.tiempo_estimado;
         var descripcion_tarea=this.descripcion;
