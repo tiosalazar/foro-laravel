@@ -168,14 +168,15 @@
           </div>
           <!-- /.box-body -->
 
-           <div v-if="rol_actual==='cuentas' || usuario_actual_comentar!=tarea_info.encargado_id  ">
+           <!-- <div v-if="rol_actual==='cuentas' || usuario_actual_comentar!=tarea_info.encargado_id  "> -->
+           <div v-if="id_usuario_actual!=tarea_info.encargado_id  ">
                  <div class="box-footer text-center">
-                  <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Publicar</button>
+                  <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Comentar</button>
                 </div>
            </div>
            <div v-else>
                <div class="box-footer text-center">
-                <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Publicar</button>
+                <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Actualizar</button>
               </div>
            </div>
 
@@ -323,6 +324,9 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
          console.log(this.comentarios_array);
 
     }
+    console.log('*-----------------*')
+    console.log(this.tarea_info)
+    console.log(this.id_usuario_actual)
 
   },
   methods:{
@@ -341,7 +345,8 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
 
       //Datos a enviar al asignar la tarea y comentarios
         var id_tarea= this.tarea_info.id;
-        var id_encargado=this.encargado.id;
+        // var id_encargado=this.encargado.id;
+        var id_encargado=(this.estado_solicitud.id == 4)? this.tarea_info.usuarios_id: this.encargado.id;
         var estado= this.estado_solicitud.id;
         var horas_estimadas=this.tarea_info.tiempo_estimado;
         var descripcion_tarea=this.descripcion;
@@ -351,8 +356,23 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
         var tarea_id=this.tarea_info.id;
         var tiempo_real_usuario=this.tarea_info.tiempo_real;
 
+        //Datos a enviar
+        let data = 
+            {
+              encargado_id:id_encargado,
+              estados_id:estado,
+              tiempo_estimado:horas_estimadas,
+              fecha_entrega_area:fecha_area,
+              fecha_entrega_cuentas:fecha_cuentas,
+              usuarios_comentario_id:id_user_actual,
+              tareas_id:tarea_id,
+              comentarios:descripcion_tarea,
+              tiempo_real:tiempo_real_usuario,
+            };
+        
         //Método que envia los datos al api rest
-        this.$http.put(window._apiURL+'tareas/'+id_tarea, {encargado_id:id_encargado,estados_id:estado,tiempo_estimado:horas_estimadas,fecha_entrega_area:fecha_area,fecha_entrega_cuentas:fecha_cuentas,usuarios_comentario_id:id_user_actual,tareas_id:tarea_id,comentarios:descripcion_tarea,tiempo_real:tiempo_real_usuario})
+        this.$http.put(window._apiURL+'tareas/'+id_tarea, data)
+        // this.$http.put(window._apiURL+'tareas/'+id_tarea, {encargado_id:id_encargado,estados_id:estado,tiempo_estimado:horas_estimadas,fecha_entrega_area:fecha_area,fecha_entrega_cuentas:fecha_cuentas,usuarios_comentario_id:id_user_actual,tareas_id:tarea_id,comentarios:descripcion_tarea,tiempo_real:tiempo_real_usuario})
         .then(function (respuesta) {
 
             var that = this;

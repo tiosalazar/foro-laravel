@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\CrearOT;
 use App\Notifications\TareaPendiente;
+use App\Notifications\TareaProgramada;
+use App\Notifications\TareaRealizada;
+use App\Notifications\TareaAtencionCuentas;
+use App\Notifications\TareaAtencionArea;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -96,8 +100,8 @@ class TareaController extends Controller
             }else{
                 try {
                     $tarea->save();
-                    $maker = User::findOrFail($request->usuarios_id);
-                    User::find($tarea->usuarios_id)->notify(new CrearOT($maker,$tarea));
+                    // $maker = User::findOrFail($request->usuarios_id);
+                    // User::find($tarea->usuarios_id)->notify(new CrearOT($maker,$tarea));
                     return response([
                         'status' => Response::HTTP_OK,
                         'response_time' => microtime(true) - LARAVEL_START,
@@ -180,7 +184,7 @@ class TareaController extends Controller
            $respuesta['user_coment']='';
            $respuesta["error"]=0;
            $respuesta["mensaje"]="OK";
-           $respuesta["msg"]="Asignado con exito";
+           $respuesta["msg"]="Asignado con exito - comentario";
            foreach ($tarea->comentario as $key => $value) {
                 if ($value->user->id==$request->usuarios_comentario_id) {
                     $respuesta['user_coment']=$value;
@@ -208,9 +212,29 @@ class TareaController extends Controller
                         //Busca el usuario en la BD
                            $tarea=Tarea::findOrFail($id);
 
+                           // Encargado antes de actualizar la tarea
+                           $makerBefore = User::findOrFail($request->encargado_id);
+
                            //Asigna los nuevo datos
                            $tarea->fill($request->all());
+                        
 
+
+                            // Si el estado es Pendiente (7)
+                            // Poner como encargado el coordinado del Área
+                               $encargado_area = '';
+                            if ($request->estados_id == 7) {
+
+                                // Poner como encargado al coordinado del area 
+                                $encargado_area= User::where('roles_id',4)
+                                                      ->where('areas_id', $tarea->areas_id)
+                                                      ->first();
+                                $tarea->encargado_id = $encargado_area->id;
+
+
+                                
+                            }
+                            
                            //Guardamos la tarea
                            $tarea->update();
 
@@ -219,13 +243,35 @@ class TareaController extends Controller
                            $comentario->fill($request->all());
                            $comentario->save();
 
+                            
                             // Si el estado es Pendiente (7)
-                             if ($tarea->estados_id == 7) {
-                                  // Creador de la solicitud
-                                  $maker = User::findOrFail($request->usuarios_comentario_id);
-                                  // Enviar notificacion al nuevo encargado
-                                  User::find($request->encargado_id)->notify(new TareaPendiente($maker,$tarea));
-                             }
+                            if ($request->estados_id == 7) {
+                                // Creador de la solicitud - Ejecutiva
+                                $maker = User::findOrFail($tarea->usuarios_id);
+
+                                // Enviar notificacion al nuevo encargado
+                                User::findOrFail($tarea->encargado_id)->notify(new TareaPendiente($maker,$tarea));
+                            }
+                            // Si el estado es Atencion Cuentas (4)
+                            if ($tarea->estados_id == 4) {
+                                // Enviar notificacion al nuevo encargado
+                                User::findOrFail($tarea->usuarios_id)->notify(new TareaPendiente($makerBefore,$tarea));
+                            }
+                            // Si el estado es Atencion Area (5)
+                            if ($tarea->estados_id == 5) {
+                                // Enviar notificacion al nuevo encargado
+                                User::findOrFail($request->encargado_id)->notify(new TareaPendiente($makerBefore,$tarea));
+                            }
+                            // Si el estado es Programado (3)
+                            if ($tarea->estados_id == 3) {
+                                // Enviar notificacion al nuevo encargado
+                                User::findOrFail($request->encargado_id)->notify(new TareaPendiente($makerBefore,$tarea));
+                            }
+                            // Si el estado es Realizado (2)
+                            if ($tarea->estados_id == 2) {
+                                // Enviar notificacion al nuevo encargado
+                                User::findOrFail($request->encargado_id)->notify(new TareaPendiente($makerBefore,$tarea));
+                            }
 
                           //Respuesta
                            $respuesta['dato']=$tarea;
@@ -234,6 +280,7 @@ class TareaController extends Controller
                            $respuesta["error"]=0;
                            $respuesta["mensaje"]="OK";
                            $respuesta["msg"]="Asignado con exito";
+                           $respuesta["usuario"]=$encargado_area;
                            foreach ($tarea->comentario as $key => $value) {
                                 if ($value->user->id==$request->usuarios_comentario_id) {
                                     $respuesta['user_coment']=$value;
