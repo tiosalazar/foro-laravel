@@ -330,7 +330,7 @@ class TareaController extends Controller
                           //Respuesta
                            $respuesta['dato']=$tarea;
                            $respuesta['user_coment']='';
-                           $respuesta['historico']=$tarea_historico;
+                           // $respuesta['historico']=$tarea_historico;
                            $respuesta["error"]=0;
                            $respuesta["mensaje"]="OK";
                            $respuesta["msg"]="Asignado con exito";
