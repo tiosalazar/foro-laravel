@@ -73,7 +73,13 @@ class HomeController extends Controller
 
         }else{
           //Si No es un coordinador muestro las tareas del area si el id del encargado es igual al usuario logeado
-           $tareas = Tarea::where('areas_id', $userauth)->where('estados_id', $estado)->where('encargado_id', Auth::user()->id)->get();
+           $tareas = Tarea::where('encargado_id', Auth::user()->id)->get();
+           foreach ($tareas as $key => $value) {
+            $value->ot->cliente;
+            $value['url']="/ver_tarea/".$value->id;
+            $value->ot['cliente_inicial']=substr($value->ot->cliente->nombre, 0,1); // Devuelvo la inicial del cliente           
+          }
+
         }
 
         return view('adminlte::home')->with('user_encargado',$user)->with('tareas',$tareas);

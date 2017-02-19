@@ -325,7 +325,7 @@ class TareaController extends Controller
                             // Si el estado es Realizado (2)
                             if ($tarea->estados_id == 2) {
                                 
-                            }
+                            } 
 
                           //Respuesta
                            $respuesta['dato']=$tarea;
