@@ -8239,6 +8239,10 @@ body {
   }
 }
 
+.skin-blue .main-header {
+  width: 100%;
+}
+
 .skin-blue .main-header .navbar {
   background-color: #004EA4;
 }

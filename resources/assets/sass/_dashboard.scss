@@ -73,9 +73,10 @@ body{
  }	
 }
 
-
 .skin-blue{
 	.main-header{
+	
+	width: 100%;
 		.navbar{
 			background-color: #004EA4;
 		}
@@ -95,6 +96,7 @@ body{
 		background-color: #002E60;
 		color: white;
 		font-size: 14px;
+
 		.user-panel{
 			margin-top: 15%;
 			margin-bottom: 10%;
