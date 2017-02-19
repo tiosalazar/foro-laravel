@@ -38,7 +38,12 @@ class OtController extends Controller
 
       $ots = Ot::with('cliente','usuario','estado')->get();
 
-      return Datatables::of( $ots)->make(true);
+      return Datatables::of( $ots)
+      /*->addColumn('acciones', function($ots) {
+             //return url('/editar_cliente/' . $ots->id);
+             return '<a href="ver_ot/'+$ots->id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver OT</a>'+'<a href="editar_ot/'+$ots->id+'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Editar OT</a>';
+        })*/
+        ->make(true);
    }
 
 
