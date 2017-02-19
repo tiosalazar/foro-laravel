@@ -54,7 +54,8 @@ class OtController extends Controller
               $editar_ot=(Auth::user()->can('editar_ot') )?'<a href="editar_ot/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit" aria-label="View">Editar OT</a>':'';
               return $ver_ot.$editar_ot;
          })
-         ->make(true);
+        ->make(true);
+
    }
 
 
