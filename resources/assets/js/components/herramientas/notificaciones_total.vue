@@ -1,5 +1,8 @@
 <template>
-	<span class="label label-success" v-on:click="readNotifications">{{no_leidas}}</span>
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown" v-on:click="readNotifications">
+		<i class="fa fa-bell-o"></i>
+		<span class="label label-success" v-if="no_leidas!=0">{{no_leidas}}</span>
+	</a>
 </template>
 <script>
 	module.exports= {
@@ -14,6 +17,10 @@
 				this.no_leidas= obj;
 				console.log('total',obj)
 			});
+			let that = this;
+			this.$parent.$on('new_notify', function(obj) {
+				that.no_leidas += obj;
+			});
 	    },
 	    methods:{
 	    	readNotifications:function() {
@@ -21,7 +28,7 @@
 	    		// this.$parent.$emit('asd','asd');
 	    		this.$http.get(window._baseURL+'/leer_notificaciones/').then(response => {
 					console.log(response.body)
-		            // this.no_leidas = response.body;
+		            this.no_leidas=0;
 		        })
 	    	},
 	    	getUnReadNotifications:function() {
@@ -31,6 +38,9 @@
 		            // this.$parent.$emit('total_notificaciones',this.no_leidas);
 		          })
 			},
+			asd:function() {
+				this.$parent.$emit('asd','asd');
+			}
 	    }
 	}
 </script>

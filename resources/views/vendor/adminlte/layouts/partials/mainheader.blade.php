@@ -21,11 +21,11 @@
                 <!-- Messages: style can be found in dropdown.less-->
                  <li class="dropdown messages-menu">
                     <!-- Menu toggle button -->
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-bell-o"></i>
+                    <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-bell-o"></i> -->
                         <!-- <span class="label label-success">4</span> -->
                         <notificaciones_total></notificaciones_total>
-                    </a>
+                    <!-- </a> -->
                     <ul class="dropdown-menu">
                       <!-- <li class="header">You have 4 messages</li> -->
                       <li>

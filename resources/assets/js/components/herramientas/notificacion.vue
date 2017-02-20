@@ -3,6 +3,7 @@
 		<ul class="menu">
 			<li v-for="notificacion in notificaciones" >
 				<a  v-on:click="goTarea(notificacion.data)">
+				<!-- <a  v-on:click="sumNotify(notificacion.data)"> -->
 					<div class="pull-left" v-if="notificacion.data.img_perfil == null">
 						<img :src="_baseURL+'/images/perfil.jpg'" class="img-circle" alt="User Image" >
 					</div>
@@ -23,6 +24,7 @@
 <script>
 import Push from 'push.js'
 import moment from 'moment'
+// import notificaciones_total from './notificaciones_total.vue'
 	module.exports= {
 		props:['id'],
 	    data () {
@@ -39,7 +41,7 @@ import moment from 'moment'
 		created: function(){
 	        this.getNotifications();
 	        // this.getUnReadNotifications();
-	        this.$on('asd', function(obj) {
+	        this.$parent.$on('asd', function(obj) {
 				console.log('-----------------------',obj)
 			});
 	    },
@@ -72,7 +74,7 @@ import moment from 'moment'
 					this.notificaciones.push({data:notification,time_ago:moment().fromNow()});
 					toastr.success(notification.descripcion,'',this.option_toast);
 
-					Push.create("Nueva Notifiación", {
+					Push.create("Notification", {
 					  body: notification.descripcion,
 					    icon: notification.img_perfil,
 					    timeout: 4000,
@@ -82,6 +84,7 @@ import moment from 'moment'
 					        this.close();
 					    }
 					});
+					this.$parent.$emit('new_notify',1);
 				}, (error)=>{
 					console.log(error);
 				});
@@ -100,7 +103,11 @@ import moment from 'moment'
 			},*/
 			goTarea:function(data) {
 				window.location.href = data.link;
-			}
+			},
+			sumNotify:function() {
+				this.$parent.$emit('new_notify',1);
+			},
 		}
 	}
+	// Vue.component('notificaciones_total', notificaciones_total);
 </script>

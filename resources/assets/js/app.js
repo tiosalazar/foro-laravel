@@ -44,6 +44,5 @@ Vue.component('listado_areas', require('./components/areas/listado_areas.vue'));
 
 const app = new Vue({
     el: '#app',
-    total:0,
 
 });
