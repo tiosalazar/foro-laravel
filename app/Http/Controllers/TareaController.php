@@ -211,8 +211,8 @@ class TareaController extends Controller
     {
         $respuesta=[];
 
-
-        if($request->cuentas_comentario==1){
+        // Valida si es un comentario
+        if($request->is_comment==1){
 
            $tarea=Tarea::findOrFail($id);
 
@@ -225,7 +225,7 @@ class TareaController extends Controller
            $respuesta['user_coment']='';
            $respuesta["error"]=0;
            $respuesta["mensaje"]="OK";
-           $respuesta["msg"]="Asignado con exito - comentario";
+           $respuesta["msg"]="Comentario agregado con exito";
            foreach ($tarea->comentario as $key => $value) {
                 if ($value->user->id==$request->usuarios_comentario_id) {
                     $respuesta['user_coment']=$value;
@@ -234,7 +234,7 @@ class TareaController extends Controller
 
 
             }
-
+        // Es una actualziacion de la tarea
         }else{
 
             $vl=$this->validatorAsignarTarea($request->all());
@@ -322,8 +322,11 @@ class TareaController extends Controller
                              */
                             switch ($request->estados_id) {
                                 case '2':
+                                    $encargado_area= User::where('roles_id',4)
+                                                      ->where('areas_id', $tarea->areas_id)
+                                                      ->first();
                                     // Enviar notificacion al nuevo encargado
-                                    User::findOrFail($request->encargado_id)
+                                    User::findOrFail($encargado_area->id)
                                     ->notify(new TareaRealizada($makerBefore,$tarea));
                                     break;
                                 case '3':
@@ -357,14 +360,14 @@ class TareaController extends Controller
                                         'error' => 'ERR_05',
                                         'obj' =>$vl->errors(),
                                         'tarea' =>$tarea,
-                                        'tarea_historico' =>$tarea_historico,
+                                        // 'tarea_historico' =>$tarea_historico,
                                         'request' =>$request,
                                         ],Response::HTTP_BAD_REQUEST);
                                     break;
                             }
 
                             //Guardar en el historial
-                           $tarea_historico = new Historico_Tarea;
+                           /*$tarea_historico = new Historico_Tarea;
                            
                            $data['comentarios_id']=$comentario->id;
                            $data['usuarios_id']=$request->usuarios_id;
@@ -374,12 +377,12 @@ class TareaController extends Controller
                            $data['usuarios_id']=$request->usuario->id;
                            $data['encargado_id']=$request->usuarioencargado->id;
                            $tarea_historico->fill($data);
-                           $tarea_historico->save();
+                           $tarea_historico->save();*/
 
                           //Respuesta
                            $respuesta['dato']=$tarea;
                            $respuesta['user_coment']='';
-                           $respuesta['historico']=$tarea_historico;
+                           // $respuesta['historico']=$tarea_historico;
                            $respuesta["error"]=0;
                            $respuesta["mensaje"]="OK";
                            $respuesta["msg"]="Asignado con exito";
@@ -404,7 +407,7 @@ class TareaController extends Controller
                        $respuesta["error"]="Error datos incorrectos";
                        $respuesta["codigo_error"]="Error con la tarea";
                        $respuesta["mensaje"]="Error con la tarea";
-                       $respuesta["tarea_historico"]=$tarea_historico;
+                       // $respuesta["tarea_historico"]=$tarea_historico;
                        $respuesta["consola"]=$e->getMessage();
                        $respuesta["msg"]="Error  datos incorrectos";
                        $respuesta["request"]=$request->all();

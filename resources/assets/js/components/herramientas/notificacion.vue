@@ -74,11 +74,10 @@ import moment from 'moment'
 					this.notificaciones.push({data:notification,time_ago:moment().fromNow()});
 					toastr.success(notification.descripcion,'',this.option_toast);
 
-					Push.create("Notification", {
-					  body: notification.descripcion,
-					    icon: notification.img_perfil,
-					    timeout: 4000,
-					    link: notification.link,
+					Push.create(notification.nombre, {
+					    body: notification.descripcion,
+					    icon: window._baseURL+notification.img_perfil,
+					    timeout: 10000,
 					    onClick: function () {
 					        window.focus();
 					        this.close();
@@ -102,7 +101,7 @@ import moment from 'moment'
 		          })
 			},*/
 			goTarea:function(data) {
-				window.location.href = data.link;
+				window.location.href = window._baseURL+data.link;
 			},
 			sumNotify:function() {
 				this.$parent.$emit('new_notify',1);

@@ -20,7 +20,7 @@
               <p >{{listado_tarea.descripcion}}</p>
             </div>
             <div class="box-footer footer_tarea" >             
-             <a v-bind:href="listado_tarea.url"> <button class="btn btn-primary button_tarea" >Ver tarea</button></a>
+             <a v-bind:href="_baseURL+listado_tarea.url"> <button class="btn btn-primary button_tarea" >Ver tarea</button></a>
             </div>
             
           </div>

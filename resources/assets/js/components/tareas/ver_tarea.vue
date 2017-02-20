@@ -326,6 +326,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
         this.rol_actual=this.rol_usuario_actual;
         console.log("Rol actual: "+this.rol_actual);
         console.log(this.tarea_info.usuarioencargado);
+        this.encargado = {id:this.tarea_info.usuarioencargado.id}
 
         if (this.rol_actual=="colaborador") {
           this.encargado=this.tarea_info.usuarioencargado;
@@ -350,7 +351,6 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
       //Datos a enviar al asignar la tarea y comentarios
         var id_tarea= this.tarea_info.id;
         var id_encargado=this.encargado.id;
-        var id_encargado= this.encargado.id;
         var estado= this.estado_solicitud.id;
         var horas_estimadas=this.tarea_info.tiempo_estimado;
         var descripcion_tarea=this.descripcion;
@@ -376,7 +376,6 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
         
         //Método que envia los datos al api rest
         this.$http.put(window._apiURL+'tareas/'+id_tarea, data)
-        // this.$http.put(window._apiURL+'tareas/'+id_tarea, {encargado_id:id_encargado,estados_id:estado,tiempo_estimado:horas_estimadas,fecha_entrega_area:fecha_area,fecha_entrega_cuentas:fecha_cuentas,usuarios_comentario_id:id_user_actual,tareas_id:tarea_id,comentarios:descripcion_tarea,tiempo_real:tiempo_real_usuario})
         .then(function (respuesta) {
 
             var that = this;
@@ -432,7 +431,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
           return false;
         }
 
-        this.$http.put(window._apiURL+'tareas/'+id_tarea, {comentarios:descripcion_tarea,usuarios_comentario_id:id_user_actual,cuentas_comentario:1,tareas_id:id_tarea})
+        this.$http.put(window._apiURL+'tareas/'+id_tarea, {comentarios:descripcion_tarea,usuarios_comentario_id:id_user_actual,is_comment:1,tareas_id:id_tarea})
         .then(function(respuesta){
           // toastr.error(respuesta.body.msg,'',this.option_toast);
            this.descripcion="";
