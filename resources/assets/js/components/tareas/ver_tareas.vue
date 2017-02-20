@@ -14,7 +14,7 @@
 		    </thead>
         </table>
         <form method="POST" id="search-form" class="form-inline" role="form">
-	        <div class="drop">
+	        <div class="drop" v-show="typeof(this.area) != 'undefined'">
 	        	<select name="estados" id="estados"  class="form-control multiselect">
 		        	<option value="">Estados</option>
 		        </select>

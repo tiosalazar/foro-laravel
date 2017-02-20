@@ -97,6 +97,18 @@
   });
   Route::get('/years_tarea', 'TareaController@getYearTarea');
 
+
+ /*
+  Vista trafico
+ */
+ Route::get('/trafico', function () {
+   // check the current user
+   if (!Auth::user()->can('ver_trafico')) {
+     return Redirect::to('home');
+   }
+   return view('admin.trafico.trafico');
+ })->name('trafico');
+
   /**
   * Foro por Área
   */

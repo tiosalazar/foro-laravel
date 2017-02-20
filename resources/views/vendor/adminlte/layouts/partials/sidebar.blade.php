@@ -11,7 +11,7 @@
                  <!-- Mostrar imagen de perfil si la ruta existe en la base de datos-->
                   @if(Auth::user()->img_perfil!=null)
                     <img src="{{Auth::user()->img_perfil}}" class="img-circle" alt="User Image" >
-                  @else 
+                  @else
                     <img src="{{asset('images/perfil.jpg')}}" class="img-circle" alt="User Image">
                   @endif
           </div>
@@ -48,6 +48,7 @@
       <li class="treeview"><a href="{{ url('roles') }}"><i class='fuente-icon'>c</i><span>{{  trans('texto_menu.crear_roles') }}</span></a></li>
       @endif
 
+
       <!--Foro -->
       <li class="treeview">
         <a href="#"><i class='fuente-icon'>f</i> <span>{{ trans('texto_menu.foro') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
@@ -78,6 +79,10 @@
           @endif
         </ul>
       </li>
+      @if( Auth::user()->can('ver_trafico') )
+      <!--Trafico -->
+      <li class="treeview"><a href="{{ url('trafico') }}"><i class='fa fa-calendar'></i><span>{{  trans('texto_menu.trafico') }}</span></a></li>
+      @endif
 
       @if( Auth::user()->can('ver_clientes') )
       <li class="treeview">

@@ -20,6 +20,7 @@ use App\Tiempos_x_Area;
 use App\Area;
 use App\User;
 use App\Role;
+use App\Estado;
 use App\Comentario;
 use App\Historico_Tarea;
 use Illuminate\Support\Facades\DB;
@@ -111,7 +112,7 @@ class TareaController extends Controller
                     ->first();
 
                     // Validar si tiene horas suficientes para hacer la Tarea
-                    if (!is_null($horas_area->tiempo_estimado_ot) && 
+                    if (!is_null($horas_area->tiempo_estimado_ot) &&
                         $horas_area->tiempo_estimado_ot >= $horas_area->tiempo_real) {
 
                         $tarea->save();
@@ -143,9 +144,9 @@ class TareaController extends Controller
                             'msg' => 'No tienes tiempo suficiente para esta tarea.',
                             ],Response::HTTP_BAD_REQUEST);
                     }
-                    
 
-                    
+
+
                 } catch (Exception $e) {
                    return response([
                     'status' => Response::HTTP_BAD_REQUEST,
@@ -254,7 +255,7 @@ class TareaController extends Controller
 
                             //Asigna los nuevo datos
                             $tarea->fill($request->all());
-                        
+
 
 
                             // Si el estado es Pendiente (7)
@@ -269,7 +270,7 @@ class TareaController extends Controller
                             }else if($request->estados_id == 4){
                                 $tarea->encargado_id = $tarea->usuarios_id;
                             }
-                            
+
 
                             // Si la tarea se Realizo (2)
                             // sume Horas Reales en Tiempos_x_area
@@ -316,7 +317,7 @@ class TareaController extends Controller
                              * Recibe el estado de la tarea y envia la notificacion
                              * al usuario correspondiente
                              *
-                             * 1 - OK 
+                             * 1 - OK
                              * 2 - Realizada
                              * 3 - Programada
                              * 4 - Atencion Cuentas
@@ -352,7 +353,7 @@ class TareaController extends Controller
                                     // Enviar notificacion al nuevo encargado
                                     User::findOrFail($tarea->encargado_id)->notify(new TareaPendiente($maker,$tarea));
                                     break;
-                                
+
                                 default:
                                     return response([
                                         'status' => Response::HTTP_BAD_REQUEST,
@@ -439,13 +440,19 @@ class TareaController extends Controller
         }else{
             $month = date('m');
         }
-        $tarea = Tarea::with(['ot.cliente','usuarioencargado','estado' => function ($query) use ($request) {
+        $tarea = Tarea::with(['ot.cliente','usuarioencargado','estado' => function ($query) use ($request,$id) {
             if ($request->has('estados')) {
                 $query->where('id', '=', $request->get('estados'));
             }
+             if($id == -1){
+                 $estado_programado= Estado::where('nombre','Programado')->first();
+                $query->where('id', '=', $estado_programado->id);
+             }
         },'area' => function ($query) use ($id) {
+             if($id != -1){
             $query->where('id', '=', $id);
-        }])
+           }
+       }])
         ->whereYear('created_at', $year)
         ->whereMonth('created_at', $month)
         ->get();
