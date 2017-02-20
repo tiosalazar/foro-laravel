@@ -150,6 +150,13 @@ class UsuariosTableSeeder extends Seeder {
     public function run()
     {
         DB::table('users')->delete();
+        $rol= App\Role::where('name','owner')->first();
+        $area= App\Area::where('nombre','Cuentas')->first();
+        App\User::create(array('nombre' => 'Maria Isabel','apellido' => 'Himalaya','cargo' => 'Proyect Owner','telefono' => '1111111','email' => 'owner@himalayada.com',
+        'estado'=>1,'horas_disponible' => 120,'api_token'=> str_random(60),'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' =>$area['id']));
+        $user =   App\User::where('email','owner@himalayada.com')->first();
+        $user->attachRole($rol);
+
         $rol= App\Role::where('name','desarrollo')->first();
         $area= App\Area::where('nombre','Desarrollo')->first();
         App\User::create(array('nombre' => 'Desarrollo','apellido' => 'Himalaya','cargo' => 'Tester','telefono' => '1111111','email' => 'desarrollo@himalayada.com',

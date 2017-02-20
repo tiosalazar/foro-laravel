@@ -51,7 +51,7 @@ class OtController extends Controller
          })
        ->addColumn('acciones', function($ots) {
               $ver_ot='<a href="ver_ot/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver OT</a>';
-              $editar_ot=(Auth::user()->can('editar_ot') )?'<a href="editar_ot/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit" aria-label="View">Editar OT</a>':'';
+              $editar_ot=(Auth::user()->can('editar_ots') )?'<a href="editar_ot/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit" aria-label="View">Editar OT</a>':'';
               return $ver_ot.$editar_ot;
          })
         ->make(true);
@@ -149,7 +149,7 @@ class OtController extends Controller
             return response([
                'status' => Response::HTTP_BAD_REQUEST,
                'response_time' => microtime(true) - LARAVEL_START,
-               'error' => 'fallo_en_la_creacion',
+               'error_creacion' => 'fallo_en_la_creacion',
                'consola' =>$e->getMessage(),
                'request' => $request->all()
             ],Response::HTTP_BAD_REQUEST);
@@ -505,7 +505,7 @@ class OtController extends Controller
          $Rol=Role::where('name','owner')->first();
          $owner=User::where('roles_id',$Rol->id)->first();
 
-         $owner->notify(new OtTiempoExtra($maker,$ot));
+         $owner->notify(new OtTiempoExtra($maker,$ot,$request->horas_adicionales,$request->area_nombre));
          return response([
             'status' => Response::HTTP_OK,
             'response_time' => microtime(true) - LARAVEL_START,
