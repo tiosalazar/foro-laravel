@@ -19,27 +19,39 @@
 
 // Estados Datatable
 .estado-1-1{
-	background-color: $estado-realizado;
+	background-color: $estado-ok;
 }
 .estado-1-2{
-	background-color: $estado-espera;
+	background-color: $estado-realizado;
 }
 .estado-1-3{
+	background-color: $estado-programado;
+}
+.estado-1-4{
 	background-color: $estado-at-cuentas;
 }
-.estado-2-4{
+.estado-1-5{
+	background-color: $estado-at-cuentas;
+}
+.estado-1-6{
+	background-color: $estado-espera;
+}
+.estado-1-7{
+	background-color: $estado-pendiente;
+}
+.estado-2-8{
 	background-color: $estado-ongoing;
 }
-.estado-2-5{
+.estado-2-9{
 	background-color: $estado-en-espera;
 }
-.estado-3-6{
+.estado-3-10{
 	background-color: $estado-alta;
 }
-.estado-3-7{
+.estado-3-11{
 	background-color: $estado-media;
 }
-.estado-3-8{
+.estado-3-12{
 	background-color: $estado-baja;
 }
 
