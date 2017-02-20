@@ -50,7 +50,7 @@ import Push from 'push.js'
                     }
 			Push.Permission.request();
 			Push.Permission.get();
-			Push.create("Notifiación Prueba", {
+			/*Push.create("Notifiación Prueba", {
 		    body: "Hola, ya has activado las notifiaciones",
 		    icon: 'icon.png',
 		    timeout: 4000,
@@ -58,7 +58,7 @@ import Push from 'push.js'
 		        window.focus();
 		        this.close();
 		    }
-		 });
+		 });*/
 		this.listen();
 			$('.menu').slimScroll({});
 		},
