@@ -8773,6 +8773,38 @@ body {
   background-color: #56C716;
 }
 
+.tarea .estados .multiselect__element {
+  color: #fff;
+}
+
+.tarea .estados .multiselect__element:nth-child(1) {
+  background-color: #61B100;
+}
+
+.tarea .estados .multiselect__element:nth-child(2) {
+  background-color: #FF9A00;
+}
+
+.tarea .estados .multiselect__element:nth-child(3) {
+  background-color: #15BAEE;
+}
+
+.tarea .estados .multiselect__element:nth-child(4) {
+  background-color: #BF1112;
+}
+
+.tarea .estados .multiselect__element:nth-child(5) {
+  background-color: #BF1112;
+}
+
+.tarea .estados .multiselect__element:nth-child(6) {
+  background-color: #9800C5;
+}
+
+.tarea .estados .multiselect__element:nth-child(7) {
+  background-color: #BABABA;
+}
+
 .label-estado {
   display: block;
   padding: 3px 5px;

@@ -7,6 +7,7 @@
         <th>Cargo</th>
         <th>Descripcion</th>
         <th>Fecha</th>
+        <th>Acciones</th>
       </tr>
     </thead>
   </table>
@@ -47,6 +48,13 @@
          { data: 'data.created_at', name: 'created_at' },
          ],
          columnDefs: [
+         {
+            "targets": [4],
+            "data": null,
+               "render": function(data, type, full) { // Devuelve el contenido personalizado
+                  return '<a href="'+data.data.link+'" class="btn btn-primary btn-xs btn-flat btn-block"   aria-label="View">Ver item</a>';
+                }
+          }
                    ],
           autoWidth: true,
                    responsive: true,
