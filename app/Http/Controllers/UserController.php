@@ -12,6 +12,7 @@ use Illuminate\Http\Response;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
 
 
 class UserController extends Controller
@@ -327,6 +328,10 @@ class UserController extends Controller
         if (is_null($all)) {
             $notifications=$notifications->slice(0,4);
             $notifications->all();
+            $today = Carbon::now();
+            foreach ($notifications as $key => $notify) {
+                $notify->time_ago = $today->diffForHumans($notify->created_at);    
+            }
             return response()->json($notifications);
         }else{
             return Datatables::of($notifications)->make(true);
@@ -339,8 +344,6 @@ class UserController extends Controller
         $notifications = $user->unreadNotifications;
 
         $total =$notifications->count();
-        // $notifications->markAsRead();
-        // $notifications->all();
         return response()->json($total);
     }
 

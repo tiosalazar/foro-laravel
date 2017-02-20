@@ -12,7 +12,7 @@
 
 					<h4>
 						{{notificacion.data.nombre}}
-						<small><i class="fa fa-clock-o"></i> {{notificacion.data.created_at}}</small>
+						<small><i class="fa fa-clock-o"></i> {{notificacion.time_ago}}</small>
 					</h4>
 					<p>{{notificacion.data.descripcion}}</p>
 				</a>
@@ -22,6 +22,7 @@
 </template>
 <script>
 import Push from 'push.js'
+import moment from 'moment'
 	module.exports= {
 		props:['id'],
 	    data () {
@@ -68,9 +69,7 @@ import Push from 'push.js'
 				Echo.private('App.User.'+this.id)
 				.notification( (notification) => {
 					console.log(notification);
-					// let hoy = new Date();
-					// notification.created_at = Math.abs(notification.created_at - hoy);
-					this.notificaciones.push({data:notification});
+					this.notificaciones.push({data:notification,time_ago:moment().fromNow()});
 					toastr.success(notification.descripcion,'',this.option_toast);
 
 					Push.create("Nueva Notifiación", {
@@ -78,10 +77,10 @@ import Push from 'push.js'
 					    icon: notification.img_perfil,
 					    timeout: 4000,
 					    link: notification.link,
-					    /*onClick: function () {
+					    onClick: function () {
 					        window.focus();
 					        this.close();
-					    }*/
+					    }
 					});
 				}, (error)=>{
 					console.log(error);
@@ -89,7 +88,6 @@ import Push from 'push.js'
 			},
 			getNotifications:function() {
 				this.$http.get('/notificaciones/').then(response => {
-					console.log(response.body)
 		            this.notificaciones = response.body;
 		          })
 			},
