@@ -36,6 +36,6 @@ return [
     'contenido' => 'Contenido',
     'cuentas' => 'Cuentas',
     'ver_foro' => 'Ver Foro',
-    'trafico' => 'Trafico',
+    'trafico' => 'Tráfico',
 
 ];
