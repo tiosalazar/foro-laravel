@@ -10,7 +10,7 @@
           <div class="pull-left image">
                  <!-- Mostrar imagen de perfil si la ruta existe en la base de datos-->
                   @if(Auth::user()->img_perfil!=null)
-                    <img src="{{Auth::user()->img_perfil}}" class="img-circle" alt="User Image" >
+                    <img src="{{asset(Auth::user()->img_perfil)}}" class="img-circle" alt="User Image" >
                   @else
                     <img src="{{asset('images/perfil.jpg')}}" class="img-circle" alt="User Image">
                   @endif
@@ -73,6 +73,9 @@
          @endif
          @if(Auth::user()->can('ver_foro_cuentas'))
          <li><a href="{{route('cuentas')}}">{{ trans('texto_menu.cuentas') }}</a></li>
+         @endif
+          @if(Auth::user()->can('ver_foro_soporte'))
+         <li><a href="{{route('soporte')}}">{{ trans('texto_menu.soporte') }}</a></li>
          @endif
           @if( Auth::user()->can('crear_tareas') )
           <li><a href="{{ url('crear_tarea') }}">{{ trans('texto_menu.creacion_tareas') }}</a></li>

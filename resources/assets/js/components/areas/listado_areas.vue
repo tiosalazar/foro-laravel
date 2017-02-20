@@ -16,7 +16,7 @@
             <ul class="listado_usuarios">
             <a href="#" v-for="usuario in itemsUserArea(usuarios,idareaUser)" v-bind:key="usuario" class="list-usuario">
               <li class="listado_usuarios_item"  :key="usuario.nombre" @click="userviewinfo(usuario.horas_disponible,usuario.id)" >
-              <div v-if="usuario.img_perfil==null"><img   src="/images/perfil.jpg"></div>
+              <div v-if="usuario.img_perfil==null"><img   :src="_baseURL+'/images/perfil.jpg'"></div>
               <div v-else><img   v-bind:src="usuario.img_perfil"></div>
               <div class="text_user_listado"><p>{{usuario.nombre}} {{usuario.apellido}}</p><p>{{usuario.cargo}}</p><p>{{usuario.email}}</p><div></li></a>
             </ul>

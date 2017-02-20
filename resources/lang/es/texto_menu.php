@@ -37,5 +37,6 @@ return [
     'cuentas' => 'Cuentas',
     'ver_foro' => 'Ver Foro',
     'trafico' => 'Tráfico',
+    'soporte' => 'Soporte',
 
 ];
