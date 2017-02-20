@@ -43,7 +43,7 @@
 					            <div class="box_perfil_foto_img-2" >
 
 									@if(Auth::user()->img_perfil!=null) 
-										<img src="{{Auth::user()->img_perfil}}" alt="imagen perfil" class="img-responsive img_perfil" >
+										<img src="{{asset(Auth::user()->img_perfil)}}" alt="imagen perfil" class="img-responsive img_perfil" >
 									@else 
 										<img src="{{asset('images/perfil.jpg')}}" alt="imagen perfil" class="img-responsive img_perfil"> 
 									@endif 

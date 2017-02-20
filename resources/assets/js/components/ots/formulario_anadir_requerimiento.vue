@@ -377,6 +377,7 @@
 									console.log(response);
 								}
 								toastr.error(this.message,response.body.msg,this.option_toast);
+								console.log(response);
 							});
 						}else{
 							var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
