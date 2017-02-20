@@ -10,7 +10,7 @@
           <div class="pull-left image">
                  <!-- Mostrar imagen de perfil si la ruta existe en la base de datos-->
                   @if(Auth::user()->img_perfil!=null)
-                    <img src="{{Auth::user()->img_perfil}}" class="img-circle" alt="User Image" >
+                    <img src="{{asset(Auth::user()->img_perfil)}}" class="img-circle" alt="User Image" >
                   @else
                     <img src="{{asset('images/perfil.jpg')}}" class="img-circle" alt="User Image">
                   @endif
