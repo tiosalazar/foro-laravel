@@ -60,12 +60,13 @@ class TareaAtencionArea extends Notification
     public function toArray($notifiable)
     {
         return [
-            'id_tarea' => $this->tarea->id,
-            'nombre' => $this->user->nombre,
-            'cargo' => $this->user->cargo,
-            'descripcion' => $this->user->nombre. ' a devuelto una Tarea',
-            'created_at' => date('Y-m-d H:i:s'),
-            'img_perfil' => $this->user->img_perfil,
+            'id_tarea'      => $this->tarea->id,
+            'nombre'        => $this->user->nombre,
+            'cargo'         => $this->user->cargo,
+            'descripcion'   => $this->user->nombre. ' a devuelto una Tarea',
+            'created_at'    => date('Y-m-d H:i:s'),
+            'img_perfil'    => $this->user->img_perfil,
+            'link'          => '/ver_tarea/'.$this->tarea->id,
         ];
     }
 }

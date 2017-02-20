@@ -60,12 +60,13 @@ class OtSinTiempo extends Notification
     public function toArray($notifiable)
     {
         return [
-            'id_tarea' => $this->ot->id,
-            'nombre' => $this->user->nombre,
-            'cargo' => $this->user->cargo,
-            'descripcion' => $this->user->nombre. ' intento crear una tarea pero no posee más tiempo disponible',
-            'created_at' => date('Y-m-d H:i:s'),
-            'img_perfil' => $this->user->img_perfil,
+            'id_tarea'      => $this->ot->id,
+            'nombre'        => $this->user->nombre,
+            'cargo'         => $this->user->cargo,
+            'descripcion'   => $this->user->nombre. ' intento crear una tarea pero no posee más tiempo disponible',
+            'created_at'    => date('Y-m-d H:i:s'),
+            'img_perfil'    => $this->user->img_perfil,
+            'link'          => '/ver_ot/'.$this->ot->id
         ];
     }
 }

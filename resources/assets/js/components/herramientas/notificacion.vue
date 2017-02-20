@@ -2,19 +2,19 @@
 	<div>
 		<ul class="menu">
 			<li v-for="notificacion in notificaciones" >
-				<a  v-on:click="goTarea(notificacion.id_tarea)">
-					<div class="pull-left" v-if="notificacion.img_perfil == null">
+				<a  v-on:click="goTarea(notificacion.data.id_tarea)">
+					<div class="pull-left" v-if="notificacion.data.img_perfil == null">
 						<img :src="_baseURL+'/images/perfil.jpg'" class="img-circle" alt="User Image" >
 					</div>
 					<div class="pull-left" v-else>
-						<img v-bind:src="notificacion.img_perfil" class="img-circle" alt="User Image" >
+						<img v-bind:src="notificacion.data.img_perfil" class="img-circle" alt="User Image" >
 					</div>
 
 					<h4>
-						{{notificacion.nombre}}
-						<small><i class="fa fa-clock-o"></i> {{notificacion.created_at}}</small>
+						{{notificacion.data.nombre}}
+						<small><i class="fa fa-clock-o"></i> {{notificacion.data.created_at}}</small>
 					</h4>
-					<p>{{notificacion.descripcion}}</p>
+					<p>{{notificacion.data.descripcion}}</p>
 				</a>
 			</li>
 		</ul>
@@ -25,15 +25,8 @@
 		props:['id'],
 	    data () {
 		      return {
-		      	notificaciones:[
-		      		{
-		      			'id_tarea':'5',
-		      			'nombre':'OT creada',
-		      			'created_at': '5 mins',
-		      			'descripcion':'Why not buy a new awesome theme?',
-		      			'img_perfil':null,
-		      		}
-		      	],
+		      	notificaciones:[],
+		      	no_leidas:0,
 		      	option_toast:{
 		          timeOut: 5000,
 		          "positionClass": "toast-bottom-right",
@@ -41,6 +34,13 @@
 		        },
 		      }
 		},
+		created: function(){
+	        this.getNotifications();
+	        // this.getUnReadNotifications();
+	        this.$on('asd', function(obj) {
+				console.log('-----------------------',obj)
+			});
+	    },
 		mounted(){
 			this.listen();
 			$('.menu').slimScroll({});
@@ -63,6 +63,19 @@
 			        console.log(e.order.name);
 			    });*/
 			},
+			getNotifications:function() {
+				this.$http.get('/notificaciones/').then(response => {
+					console.log(response.body)
+		            this.notificaciones = response.body;
+		          })
+			},
+			/*getUnReadNotifications:function() {
+				this.$http.get('/notificaciones_no_leidas/').then(response => {
+					console.log(response.body)
+		            this.no_leidas = response.body;
+		            this.$parent.$emit('total_notificaciones',this.no_leidas);
+		          })
+			},*/
 			goTarea:function(id) {
 				window.location.href = '/ver_tarea/'+id;
 			}

@@ -10,6 +10,7 @@ use Validator;
 use App\Http\Requests\StoreUsers;
 use Illuminate\Http\Response;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 
 class UserController extends Controller
@@ -314,6 +315,30 @@ class UserController extends Controller
        //var_dump($rol->User);
         var_dump($user->can('crear_usuarios') );
         //return view('adminlte::home',array('usuario' =>$user));
+    }
+
+    public function getNotifications($all = null)
+    {
+        $user = User::findOrFail(Auth::id());
+
+        $notifications = $user->notifications;
+
+        if (is_null($all)) {
+            $notifications=$notifications->slice(0,4);
+            $notifications->all();
+        }
+        return response()->json($notifications);
+    }
+    public function getUnReadNotifications()
+    {
+        $user = User::findOrFail(Auth::id());
+
+        $notifications = $user->unreadNotifications;
+
+        $total =$notifications->count();
+        // $notifications->markAsRead();
+        // $notifications->all();
+        return response()->json($total);
     }
 
 

@@ -66,6 +66,7 @@ class TareaPendiente extends Notification
             'descripcion' => $this->user->nombre. ' asigno una Tarea',
             'created_at' => date('Y-m-d H:i:s'),
             'img_perfil' => $this->user->img_perfil,
+            'link'          => '/ver_tarea/'.$this->tarea->id,
         ];
     }
 }

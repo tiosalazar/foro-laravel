@@ -126,6 +126,8 @@ class TareaController extends Controller
                             'msg' => 'Tarea creada con exito',
                             ],Response::HTTP_OK);
                     } else {
+                        // Enviar notificacion a los Project Owner
+                        // cuando el tiempo se haya acabado para un Área en la OT
                         $admins = User::where('roles_id',1)->get();
                         $maker = User::findOrFail($tarea->usuarios_id);
                         foreach ($admins as $key => $admin) {
