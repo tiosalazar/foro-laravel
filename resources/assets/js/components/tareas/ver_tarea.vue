@@ -283,24 +283,27 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
 
       this.$on('select_ejecutivo', function(v) {
         this.encargado=v;
-
       });
 
       this.$on('select_estado', function(v) {
         this.estado_solicitud=v;
 
+        //ALerta atencion cuentas, descripcion o comentario obligatorio
         if (this.estado_solicitud.nombre=="Atención Cuentas") {
            this.descripcion_requerida=false;
         }else{
           this.descripcion_requerida=true;
         }
+      });
 
+        //Asigno el rol actual
         this.usuario_actual_comentar= this.id_usuario_actual;
-
         this.rol_actual=this.rol_usuario_actual;
         console.log("Rol actual: "+this.rol_actual);
 
-      });
+        if (this.rol_actual=="colaborador") {
+          this.encargado=this.tarea_info.usuarioencargado;
+        }
 
       //Recibe la propiedad arraytarea desde la vista y verifico si es indefinida o no
       if (this.arraytarea!=undefined) {

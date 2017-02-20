@@ -24,7 +24,7 @@
             </div>
             
           </div>
-          <div  class="ver_mas"><span class="ver_mas_texto"  @click="cargar_mas" >Ver mas</span></div>
+          <div  class="ver_mas" ><span class="ver_mas_texto" v-show="cargar_ok"  @click="cargar_mas" >Ver mas</span></div>
 
         </div>
       </div>
@@ -34,6 +34,7 @@
     props: ['lista_tareas'],
     data(){
       return{
+        cargar_ok:false,
         listado_tareas:[],
         inicial_cliente:'',
         variable:3,
@@ -48,6 +49,11 @@
       datos= JSON.parse(this.lista_tareas);
       this.listado_tareas=datos;
       console.log(this.listado_tareas);
+
+      //Si el listado de tareas es mayor que 4 muestro el ver mas
+      if (this.listado_tareas.length>3) {
+        this.cargar_ok=true;
+      }
     },
     methods:{
       //Con esta funcion muestro otros cuatro elementos al dar clic sobre el boton ver mas
