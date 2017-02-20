@@ -78,7 +78,7 @@
 				serverSide: true,
 				// ajax: "/api/v1/tareas",
 				ajax: {
-					url: "/all_tareas/"+that.area,
+					url: window._baseURL+"/all_tareas/"+that.area,
 					data: function (d) {
 		                d.estados = $('select[name=estados]').val();
 		                d.year = $('select[name=year]').val();
@@ -162,7 +162,7 @@
 		    	 		$('#estados').append(option);
 		    	 	})
 				})
-				$.ajax( "/years_tarea" )
+				$.ajax( window._baseURL+"/years_tarea" )
 		    	.done(function(response) {
 		    	 	// limpiar el select
 		    	 	var option;

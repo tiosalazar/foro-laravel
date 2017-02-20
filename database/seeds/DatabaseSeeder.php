@@ -77,6 +77,7 @@ class PermisosTableSeeder extends Seeder {
         App\Permission::create(array('name' => 'ver_foro_desarrollo','display_name'=>'Ver Foro de Desarrollo','description'=>'Puede Ver' ));
         App\Permission::create(array('name' => 'ver_foro_contenidos','display_name'=>'Ver Foro de Contenidos','description'=>'Puede Ver' ));
         App\Permission::create(array('name' => 'ver_foro_digital','display_name'=>'Ver Foro de Digital','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'ver_foro_soporte','display_name'=>'Ver Foro de Soporte','description'=>'Puede Ver' ));
         App\Permission::create(array('name' => 'ver_foro_colaborador','display_name'=>'Ver Foro Colaborador','description'=>'Muestra el foro dependiendo del area del colaborador' ));
         //Permisos Sobre Areas
         App\Permission::create(array('name' => 'ver_listado_areas','display_name'=>'Ver Areas','description'=>'Puede Ver' ));
@@ -116,6 +117,7 @@ class AreasTableSeeder extends Seeder {
         App\Area::create(array('nombre' => 'Contenidos','extencion_tel' => '0281','estado' => '1') );
         App\Area::create(array('nombre' => 'Digital Performance','extencion_tel' => '0581','estado' => '1') );
         App\Area::create(array('nombre' => 'Cuentas','extencion_tel' => '0581','estado' => '1') );
+        App\Area::create(array('nombre' => 'Soporte','extencion_tel' => '07881','estado' => '1') );
 
     }
 
@@ -171,6 +173,14 @@ class UsuariosTableSeeder extends Seeder {
         $user =   App\User::where('email','ejecutiva@himalayada.com')->first();
         $user->attachRole($rol);
 
+        $rol= App\Role::where('name','cuentas')->first();
+        $area= App\Area::where('nombre','Cuentas')->first();
+        App\User::create(array('nombre' => 'Ejecutiva 2','apellido' => 'Himalaya 2','cargo' => 'Ejecutiva 2','telefono' => '445548751','email' => 'ejecutiva2@himalayada.com',
+        'estado'=>1,'horas_disponible' => 40,'api_token'=> str_random(60),'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' => $area['id']));
+        $user =   App\User::where('email','ejecutiva2@himalayada.com')->first();
+        $user->attachRole($rol);
+
+
         $rol= App\Role::where('name','coordinador')->first();
         $area= App\Area::where('nombre','Diseño')->first();
         App\User::create(array('nombre' => 'Coordinador 1','apellido' => 'Himalaya','cargo' => 'Coordinador Diseño','telefono' => '22222222','email' => 'coordinador1@himalayada.com',
@@ -178,11 +188,25 @@ class UsuariosTableSeeder extends Seeder {
         $user =   App\User::where('email','coordinador1@himalayada.com')->first();
         $user->attachRole($rol);
 
+          $rol= App\Role::where('name','coordinador')->first();
+        $area= App\Area::where('nombre','Desarrollo')->first();
+        App\User::create(array('nombre' => 'Coordinador 2','apellido' => 'Area Desarrollo','cargo' => 'Coordinador Desarrollo','telefono' => '22222222','email' => 'coordinador2@himalayada.com',
+        'estado'=>1,'horas_disponible' => 120,'api_token'=>str_random(60),'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' => $area['id']));
+        $user =   App\User::where('email','coordinador2@himalayada.com')->first();
+        $user->attachRole($rol);
+
         $rol= App\Role::where('name','colaborador')->first();
         $area= App\Area::where('nombre','Diseño')->first();
         App\User::create(array('nombre' => 'Colaborador 1','apellido' => 'Himalaya','cargo' => 'Colaborador Diseño','telefono' => '22222222','email' => 'colaborador1@himalayada.com',
         'estado'=>1,'horas_disponible' => 1,'api_token'=>str_random(60) ,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' => $area['id']));
         $user =   App\User::where('email','colaborador1@himalayada.com')->first();
+        $user->attachRole($rol);
+
+         $rol= App\Role::where('name','colaborador')->first();
+        $area= App\Area::where('nombre','Desarrollo')->first();
+        App\User::create(array('nombre' => 'Colaborador 2','apellido' => 'Himalaya','cargo' => 'Colaborador Desarrollo','telefono' => '22222222','email' => 'colaborador2@himalayada.com',
+        'estado'=>1,'horas_disponible' => 1,'api_token'=>str_random(60) ,'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' => $area['id']));
+        $user =   App\User::where('email','colaborador2@himalayada.com')->first();
         $user->attachRole($rol);
 
 

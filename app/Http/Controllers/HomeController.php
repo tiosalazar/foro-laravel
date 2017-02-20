@@ -34,7 +34,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('auth');
+         $this->middleware('auth');
     }
 
     /**
@@ -92,7 +92,7 @@ class HomeController extends Controller
        $user_actual=Auth::user()->nombre;
        $user_id_actual=Auth::user()->id;
       //NOmbre
-       $nombre= $user_actual. $user_id_actual;
+       $nombre= $user_actual.'_'.$user_id_actual;
       //Archivo
       $archivo= request()->file('image');
       //Creo la imagen y la redimensiono

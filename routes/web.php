@@ -11,14 +11,14 @@
   |
   */
 
-  Route::get('/', function () {
+  /*Route::get('/', function () {
     return view('vendor.adminlte.auth.login');
-  });
+  });*/
 
 
   Route::get('/console','UserController@AgregarRoll');
 
-
+    Auth::routes();
 
   Route::group(['middleware' => 'auth'], function () {
 
@@ -140,6 +140,10 @@
   Route::get('/foro/contenido', function () {
     return view('admin.foro.contenido');
   })->name('contenido');
+  // Soporte
+  Route::get('/foro/soporte', function () {
+    return view('admin.foro.soporte');
+  })->name('soporte');
 
   Route::get('/all_tareas/{id}','TareaController@showAllTareas');
   Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
@@ -187,4 +191,4 @@
     //  return bcrypt('H1m4l4ya!');
   });
 
-  Auth::routes();
+
