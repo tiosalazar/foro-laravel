@@ -158,6 +158,10 @@
 
   Route::get('editar_usuario/{id}','UserController@editar_usuario');
 
+  // Notificaciones
+  Route::get('/notificaciones/{all?}','UserController@getNotifications');
+  Route::get('/notificaciones_no_leidas/','UserController@getUnReadNotifications');
+
 
 
   });

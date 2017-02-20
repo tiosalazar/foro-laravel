@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\CrearOT;
+use App\Notifications\OtSinTiempo;
 use App\Notifications\TareaCreada;
 use App\Notifications\TareaPendiente;
 use App\Notifications\TareaProgramada;
@@ -15,6 +16,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Tarea;
 use App\Ot;
+use App\Tiempos_x_Area;
 use App\Area;
 use App\User;
 use App\Role;
@@ -100,16 +102,49 @@ class TareaController extends Controller
                     ],Response::HTTP_BAD_REQUEST);
             }else{
                 try {
-                    $tarea->save();
-                    $maker = User::findOrFail($request->usuarios_id);
-                    User::find($tarea->encargado_id)->notify(new TareaCreada($maker,$tarea));
-                    return response([
-                        'status' => Response::HTTP_OK,
-                        'response_time' => microtime(true) - LARAVEL_START,
-                        'obj' => $tarea,
-                        'error' => null,
-                        'msg' => 'Tarea creada con exito',
-                        ],Response::HTTP_OK);
+                    // Obtengo las horas de la OT
+                    // segun el area correspondiente a la Tarea
+                    $horas_area = Tiempos_x_Area::with('area','ots')
+                    ->where('ots_id',$tarea->ots_id)
+                    ->where('areas_id',$tarea->areas_id)
+                    ->first();
+
+                    // Validar si tiene horas suficientes para hacer la Tarea
+                    if (!is_null($horas_area->tiempo_estimado_ot) && 
+                        $horas_area->tiempo_estimado_ot >= $horas_area->tiempo_real) {
+
+                        $tarea->save();
+                        $maker = User::findOrFail($request->usuarios_id);
+                        User::find($tarea->encargado_id)->notify(new TareaCreada($maker,$tarea));
+
+                        return response([
+                            'status' => Response::HTTP_OK,
+                            'response_time' => microtime(true) - LARAVEL_START,
+                            'obj' => $tarea,
+                            'horas_area ' => $horas_area,
+                            'error' => null,
+                            'msg' => 'Tarea creada con exito',
+                            ],Response::HTTP_OK);
+                    } else {
+                        // Enviar notificacion a los Project Owner
+                        // cuando el tiempo se haya acabado para un Área en la OT
+                        $admins = User::where('roles_id',1)->get();
+                        $maker = User::findOrFail($tarea->usuarios_id);
+                        foreach ($admins as $key => $admin) {
+                            $admin->notify(new OtSinTiempo($maker,$horas_area->ots));
+                        }
+                        return response([
+                            'status' => Response::HTTP_BAD_REQUEST,
+                            'response_time' => microtime(true) - LARAVEL_START,
+                            'obj' => [],
+                            'horas_area ' => $horas_area,
+                            'error' => 'ERR_04',
+                            'msg' => 'No tienes tiempo suficiente para esta tarea.',
+                            ],Response::HTTP_BAD_REQUEST);
+                    }
+                    
+
+                    
                 } catch (Exception $e) {
                    return response([
                     'status' => Response::HTTP_BAD_REQUEST,
@@ -234,13 +269,37 @@ class TareaController extends Controller
                                 $tarea->encargado_id = $tarea->usuarios_id;
                             }
                             
-                           //Guardamos la tarea
-                           $tarea->update();
 
-                           //Guardamos el comentario
-                           $comentario = new Comentario;
-                           $comentario->fill($request->all());
-                           $comentario->save();
+                            // Si la tarea se Realizo (2)
+                            // sume Horas Reales en Tiempos_x_area
+                            if ($tarea->estados_id == 2) {
+                                $horas_area = Tiempos_x_Area::where('ots_id',$tarea->ots_id)
+                                ->where('areas_id',$tarea->areas_id)
+                                ->first();
+
+                                if (!is_null($tarea->tiempo_real) && $tarea->tiempo_real !=0) {
+                                    // $horas_area->increment('tiempo_real',$tarea->tiempo_real);
+                                    $horas_area->tiempo_real +=$tarea->tiempo_real;
+                                    $horas_area->save();
+                                }else{
+                                    return response([
+                                        'status' => Response::HTTP_BAD_REQUEST,
+                                        'response_time' => microtime(true) - LARAVEL_START,
+                                        'msg' => 'Tiempo real vacio o nulo',
+                                        'error' => 'ERR_06',
+                                        'obj' =>$vl->errors(),
+                                        'tarea' =>$tarea,
+                                    ],Response::HTTP_BAD_REQUEST);
+                                }
+                            }
+
+                            //Guardamos la tarea
+                            $tarea->update();
+
+                            //Guardamos el comentario
+                            $comentario = new Comentario;
+                            $comentario->fill($request->all());
+                            $comentario->save();
 
                             /**
                              *
@@ -296,26 +355,6 @@ class TareaController extends Controller
                                         ],Response::HTTP_BAD_REQUEST);
                                     break;
                             }
-                            // Si el estado es Pendiente (7)
-                            if ($request->estados_id == 7) {
-                                
-                            }
-                            // Si el estado es Atencion Cuentas (4)
-                            if ($tarea->estados_id == 4) {
-                                
-                            }
-                            // Si el estado es Atencion Area (5)
-                            if ($tarea->estados_id == 5) {
-                                
-                            }
-                            // Si el estado es Programado (3)
-                            if ($tarea->estados_id == 3) {
-                                
-                            }
-                            // Si el estado es Realizado (2)
-                            if ($tarea->estados_id == 2) {
-                                
-                            }
 
                           //Respuesta
                            $respuesta['dato']=$tarea;
@@ -325,6 +364,7 @@ class TareaController extends Controller
                            $respuesta["mensaje"]="OK";
                            $respuesta["msg"]="Asignado con exito";
                            $respuesta["usuario"]=$encargado_area;
+                           $respuesta["horas"]=$horas_area;
                            foreach ($tarea->comentario as $key => $value) {
                                 if ($value->user->id==$request->usuarios_comentario_id) {
                                     $respuesta['user_coment']=$value;
