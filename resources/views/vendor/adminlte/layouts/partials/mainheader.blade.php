@@ -97,7 +97,7 @@
                             <!-- The user image in the navbar-->
                              <!-- Mostrar imagen de perfil si la ruta existe en la base de datos-->
                                 @if(Auth::user()->img_perfil!=null)
-                                    <img src="{{Auth::user()->img_perfil}}" class="user-image" alt="User Image" >
+                                    <img src="{{asset(Auth::user()->img_perfil)}}" class="user-image" alt="User Image" >
                                   @else
                                     <img src="{{asset('images/perfil.jpg')}}" class="user-image" alt="User Image"> 
                                   @endif
@@ -110,7 +110,7 @@
                             <li class="user-header">
                              <!-- Mostrar imagen de perfil si la ruta existe en la base de datos-->
                                   @if(Auth::user()->img_perfil!=null)
-                                    <img src="{{Auth::user()->img_perfil}}" class="img-circle" alt="User Image" >
+                                    <img src="{{asset(Auth::user()->img_perfil)}}" class="img-circle" alt="User Image" >
                                   @else
                                     <img src="{{asset('images/perfil.jpg')}}" class="img-circle" alt="User Image">
                                   @endif

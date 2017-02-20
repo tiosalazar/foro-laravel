@@ -181,21 +181,21 @@
            </div>
 
           <!-- Comentarios -->
-         <div class="box box-widget" style="box-shadow:none;">
+         <div class="box box-widget comentario_box">
            <div v-for="comentario in comentarios_array" style="margin-bottom:20px;margin-top:35px;">
 
-            <div style="display:flex;">
+            <div  class="comentario_box_container">
               <div class="img_comentario">
-                <div v-if="comentario.user.img_perfil==null"><img   src="/images/perfil.jpg" style="width:65px;"></div>
-                <div v-else><img   v-bind:src="comentario.user.img_perfil" style="width:60px;"></div>
+                <div v-if="comentario.user.img_perfil==null"><img   src="/images/perfil.jpg" class="img_comentario_src"></div>
+                <div v-else><img   v-bind:src="comentario.user.img_perfil" class="img_comentario_src"></div>
               </div>
 
-              <div class="info_comentarios" style="display:flex; flex-direction:column;">
+              <div class="info_comentarios">
                 <label><strong>{{comentario.user.nombre}} &nbsp {{comentario.user.apellido}}</strong></label>
-                <span style="color:#a7a7a7;">({{comentario.user.email}})</span>
-                <p style="margin-top:5px;">{{comentario.created_at}}</p>
+                <span >({{comentario.user.email}})</span>
+                <p class="comentario_created" >{{comentario.created_at}}</p>
                 <div v-if="comentario.estados!=null" class="estado_comentario">
-                  <p >{{comentario.estados.nombre}}</p>
+                  <p >{{comentario.estados.nombre}}<span :class="comentario.estados"></span></p>
                 </div>
               </div>
 
@@ -296,14 +296,6 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
         }
       });
 
-        //Asigno el rol actual
-        this.usuario_actual_comentar= this.id_usuario_actual;
-        this.rol_actual=this.rol_usuario_actual;
-        console.log("Rol actual: "+this.rol_actual);
-
-        if (this.rol_actual=="colaborador") {
-          this.encargado=this.tarea_info.usuarioencargado;
-        }
 
       //Recibe la propiedad arraytarea desde la vista y verifico si es indefinida o no
       if (this.arraytarea!=undefined) {
@@ -327,9 +319,18 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
          console.log(this.comentarios_array);
 
     }
-    console.log('*-----------------*')
-    console.log(this.tarea_info)
-    console.log(this.id_usuario_actual)
+
+
+     //Asigno el rol actual
+        this.usuario_actual_comentar= this.id_usuario_actual;
+        this.rol_actual=this.rol_usuario_actual;
+        console.log("Rol actual: "+this.rol_actual);
+        console.log(this.tarea_info.usuarioencargado);
+
+        if (this.rol_actual=="colaborador") {
+          this.encargado=this.tarea_info.usuarioencargado;
+        }
+
 
   },
   methods:{
@@ -348,7 +349,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
 
       //Datos a enviar al asignar la tarea y comentarios
         var id_tarea= this.tarea_info.id;
-        // var id_encargado=this.encargado.id;
+        var id_encargado=this.encargado.id;
         var id_encargado= this.encargado.id;
         var estado= this.estado_solicitud.id;
         var horas_estimadas=this.tarea_info.tiempo_estimado;

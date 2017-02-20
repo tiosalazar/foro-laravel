@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Historico_Tarea extends Model
 {
+  public $table='historico_tareas';
   /**
    * The attributes that are mass assignable.
    *

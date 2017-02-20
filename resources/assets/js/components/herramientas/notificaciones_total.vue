@@ -1,7 +1,7 @@
 <template>
 	<a href="#" class="dropdown-toggle" data-toggle="dropdown" v-on:click="readNotifications">
 		<i class="fa fa-bell-o"></i>
-		<span class="label label-success" v-if="no_leidas!=0">{{no_leidas}}</span>
+		<span class="label label-danger" v-if="no_leidas!=0">{{no_leidas}}</span>
 	</a>
 </template>
 <script>

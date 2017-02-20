@@ -200,6 +200,26 @@
 		font-size:  16px;
 		font-weight: bold;
 	}
+	.comentario_box{
+		box-shadow:none;
+		.comentario_box_container{
+			display: flex;
+			.img_comentario_src{
+				width:65px;
+			}
+			.info_comentarios{
+				display:flex; 
+				flex-direction:column;
+				margin-left: 10px;
+				span{
+					color:#a7a7a7;
+				}
+				.comentario_created{
+					margin-top: 5px;
+				}
+			}
+		}
+	}
 	.text_alert{
 		color: #E94800;
 		text-align: center;

@@ -13,12 +13,15 @@
         <div class="col-md-5 columnas_listar_areas">
           <h3 class="titulo_listar_user">Usuarios</h3>
 
+
             <ul class="listado_usuarios">
-            <a href="#" v-for="usuario in itemsUserArea(usuarios,idareaUser)" v-bind:key="usuario" class="list-usuario">
+            <a href="#" v-for="usuario in itemsUserArea(usuarios,idareaUser)" v-bind:key="usuario" class="list-usuario" transition="fade">
+            <transition name="fade" mode="out-in">
               <li class="listado_usuarios_item"  :key="usuario.nombre" @click="userviewinfo(usuario.horas_disponible,usuario.id)" >
-              <div v-if="usuario.img_perfil==null"><img   src="/images/perfil.jpg"></div>
-              <div v-else><img   v-bind:src="usuario.img_perfil"></div>
+              <div v-if="usuario.img_perfil==null"><img   v-bind:src="url_imagen_defecto"></div>
+              <div v-else><img   v-bind:src="url+usuario.img_perfil"></div>
               <div class="text_user_listado"><p>{{usuario.nombre}} {{usuario.apellido}}</p><p>{{usuario.cargo}}</p><p>{{usuario.email}}</p><div></li></a>
+            </transition>
             </ul>
 
         </div>
@@ -77,6 +80,16 @@
 
 </template>
 
+<style>
+  .fade-enter-active, .fade-leave-active {
+  transition: opacity 5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
+}
+
+</style>
+
 <script>
 
 
@@ -85,6 +98,8 @@
 
      data(){
         return{
+          url:'',
+          url_imagen_defecto:'',
           areas:[],
           usuarios:[],
           idareaUser:'',
@@ -98,6 +113,8 @@
      },
      created: function(){
         this.consultarApiAreas();
+        this.url=_baseURL;
+        this.url_imagen_defecto=_baseURL+"/images/perfil.jpg";
       },
       methods:{
         //Consultar api de areas
