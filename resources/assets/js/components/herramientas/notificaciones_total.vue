@@ -1,5 +1,5 @@
 <template>
-	<span class="label label-success" v-on:click="asd">{{no_leidas}}</span>
+	<span class="label label-success" v-on:click="readNotifications">{{no_leidas}}</span>
 </template>
 <script>
 	module.exports= {
@@ -16,9 +16,13 @@
 			});
 	    },
 	    methods:{
-	    	asd:function() {
-	    		console.log('fucker')
-	    		this.$parent.$emit('asd','asd');
+	    	readNotifications:function() {
+	    		// console.log('fucker')
+	    		// this.$parent.$emit('asd','asd');
+	    		this.$http.get('/leer_notificaciones/').then(response => {
+					console.log(response.body)
+		            // this.no_leidas = response.body;
+		        })
 	    	},
 	    	getUnReadNotifications:function() {
 				this.$http.get('/notificaciones_no_leidas/').then(response => {

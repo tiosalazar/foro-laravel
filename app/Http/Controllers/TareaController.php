@@ -374,7 +374,7 @@ class TareaController extends Controller
                            $respuesta["mensaje"]="OK";
                            $respuesta["msg"]="Asignado con exito";
                            $respuesta["usuario"]=$encargado_area;
-                           $respuesta["horas"]=$horas_area;
+                           // $respuesta["horas"]=$horas_area;
                            foreach ($tarea->comentario as $key => $value) {
                                 if ($value->user->id==$request->usuarios_comentario_id) {
                                     $respuesta['user_coment']=$value;

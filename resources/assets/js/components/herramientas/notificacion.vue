@@ -2,7 +2,7 @@
 	<div>
 		<ul class="menu">
 			<li v-for="notificacion in notificaciones" >
-				<a  v-on:click="goTarea(notificacion.data.id_tarea)">
+				<a  v-on:click="goTarea(notificacion.data)">
 					<div class="pull-left" v-if="notificacion.data.img_perfil == null">
 						<img :src="_baseURL+'/images/perfil.jpg'" class="img-circle" alt="User Image" >
 					</div>
@@ -42,53 +42,50 @@ import Push from 'push.js'
 				console.log('-----------------------',obj)
 			});
 	    },
-		mounted(){
-			if (!('Notification' in window)) {
-		// el navegador no soporta la API de notificaciones
-                        alert('Su navegador no soporta la API de Notificaciones :(');
-                        return;
-                    }
+	    mounted(){
+	    	if (!('Notification' in window)) {
+				// el navegador no soporta la API de notificaciones
+				alert('Su navegador no soporta la API de Notificaciones :(');
+				return;
+			}
 			Push.Permission.request();
 			Push.Permission.get();
-			Push.create("Notifiación Prueba", {
-		    body: "Hola, ya has activado las notifiaciones",
-		    icon: 'icon.png',
-		    timeout: 4000,
-		    onClick: function () {
-		        window.focus();
-		        this.close();
-		    }
-		 });
-		this.listen();
+				/*Push.create("Notifiación Prueba", {
+			    body: "Hola, ya has activado las notifiaciones",
+			    icon: 'icon.png',
+			    timeout: 4000,
+			    link: 'home',
+			    onClick: function () {
+			        window.focus();
+			        this.close();
+			    }
+			});*/
+			this.listen();
 			$('.menu').slimScroll({});
 		},
 		methods:{
 			listen:function() {
 				Echo.private('App.User.'+this.id)
 				.notification( (notification) => {
-					// alert('New notification');
 					console.log(notification);
 					// let hoy = new Date();
 					// notification.created_at = Math.abs(notification.created_at - hoy);
-					this.notificaciones.push(notification);
+					this.notificaciones.push({data:notification});
 					toastr.success(notification.descripcion,'',this.option_toast);
 
-					Push.create("Hello world!", {
-				  body: notification.descripcion,
-				    icon: notification.img_perfil,
-				    timeout: 4000,
-				    onClick: function () {
-				        window.focus();
-				        this.close();
-				    }
-				});
+					Push.create("Nueva Notifiación", {
+					  body: notification.descripcion,
+					    icon: notification.img_perfil,
+					    timeout: 4000,
+					    link: notification.link,
+					    /*onClick: function () {
+					        window.focus();
+					        this.close();
+					    }*/
+					});
 				}, (error)=>{
 					console.log(error);
 				});
-				/*Echo.channel('orders')
-			    .listen('OrderShipped', (e) => {
-			        console.log(e.order.name);
-			    });*/
 			},
 			getNotifications:function() {
 				this.$http.get('/notificaciones/').then(response => {
@@ -103,8 +100,8 @@ import Push from 'push.js'
 		            this.$parent.$emit('total_notificaciones',this.no_leidas);
 		          })
 			},*/
-			goTarea:function(id) {
-				window.location.href = '/ver_tarea/'+id;
+			goTarea:function(data) {
+				window.location.href = data.link;
 			}
 		}
 	}

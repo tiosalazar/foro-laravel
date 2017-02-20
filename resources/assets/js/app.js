@@ -27,6 +27,7 @@ Vue.component('tareas_perfil', require('./components/tareas/tareas_perfil.vue'))
 // Notificaciones
 Vue.component('notificacion',require('./components/herramientas/notificacion.vue'));
 Vue.component('notificaciones_total',require('./components/herramientas/notificaciones_total.vue'));
+Vue.component('listar_notificaciones',require('./components/notificaciones/listar_notificaciones.vue'));
 
 //Componentes Dsalazar
 Vue.component('formulario_anadir_requerimiento', require('./components/ots/formulario_anadir_requerimiento.vue'));

@@ -11,6 +11,7 @@ use App\Http\Requests\StoreUsers;
 use Illuminate\Http\Response;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Yajra\Datatables\Datatables;
 
 
 class UserController extends Controller
@@ -326,8 +327,10 @@ class UserController extends Controller
         if (is_null($all)) {
             $notifications=$notifications->slice(0,4);
             $notifications->all();
+            return response()->json($notifications);
+        }else{
+            return Datatables::of($notifications)->make(true);
         }
-        return response()->json($notifications);
     }
     public function getUnReadNotifications()
     {
@@ -339,6 +342,21 @@ class UserController extends Controller
         // $notifications->markAsRead();
         // $notifications->all();
         return response()->json($total);
+    }
+
+    public function readNotifications()
+    {
+        $user = User::findOrFail(Auth::id());
+
+        $notifications = $user->unreadNotifications->markAsRead();
+    }
+    public function listNotifications()
+    {
+        $user = User::findOrFail(Auth::id());
+
+        $notifications = $user->notifications;
+
+        
     }
 
 

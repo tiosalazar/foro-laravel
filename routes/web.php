@@ -161,6 +161,10 @@
   // Notificaciones
   Route::get('/notificaciones/{all?}','UserController@getNotifications');
   Route::get('/notificaciones_no_leidas/','UserController@getUnReadNotifications');
+  Route::get('/leer_notificaciones/','UserController@readNotifications');
+  Route::get('/listar_notificaciones/',function ($value=''){
+    return view('admin.notificaciones.listar_notificaciones');
+  });
 
 
 
