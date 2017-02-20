@@ -8258,6 +8258,10 @@ body {
   }
 }
 
+.skin-blue .main-header {
+  width: 100%;
+}
+
 .skin-blue .main-header .navbar {
   background-color: #004EA4;
 }
@@ -8342,7 +8346,7 @@ body {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   background-color: white;
   height: 200px;
-  display: inline-block;
+  display: inline-table;
   margin-left: 4%;
   margin-top: 2%;
 }
@@ -8649,6 +8653,17 @@ body {
 .perfil-box .info_perfil strong span {
   color: black;
   margin-left: 2%;
+}
+
+.ver_mas {
+  text-align: center;
+}
+
+.ver_mas .ver_mas_texto {
+  cursor: pointer;
+  font-size: 16px;
+  color: #06ACE2;
+  font-weight: bold;
 }
 
 .boton_hidden {

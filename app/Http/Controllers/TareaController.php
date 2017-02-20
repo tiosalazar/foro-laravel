@@ -21,6 +21,7 @@ use App\Area;
 use App\User;
 use App\Role;
 use App\Comentario;
+use App\Historico_Tarea;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
@@ -301,6 +302,15 @@ class TareaController extends Controller
                             $comentario->fill($request->all());
                             $comentario->save();
 
+                           //Guardar en el historial
+                           // $tarea_historico = new Historico_Tarea;
+                           // $request['tareas_id']=1;
+                           // $request['comentarios_id']=1;
+                           // $request['usuarios_id']=1;
+                           // $tarea_historico->fill($request->all());
+                           // $tarea_historico->save();
+
+
                             /**
                              *
                              * Recibe el estado de la tarea y envia la notificacion
@@ -359,7 +369,7 @@ class TareaController extends Controller
                           //Respuesta
                            $respuesta['dato']=$tarea;
                            $respuesta['user_coment']='';
-
+                           // $respuesta['historico']=$tarea_historico;
                            $respuesta["error"]=0;
                            $respuesta["mensaje"]="OK";
                            $respuesta["msg"]="Asignado con exito";

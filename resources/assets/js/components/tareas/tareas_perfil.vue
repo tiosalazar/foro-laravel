@@ -1,27 +1,30 @@
 <template>
 	 <div>
         <div class="row tarea_perfil">
-          <div v-for="listado_area in listado_areas" class="box tarea_perfil_box">
+        
+          <div v-for="(listado_tarea, key, index) in listado_tareas" class="box tarea_perfil_box" v-if="key<=variable">
+          
             <div class="box-header">
               <div class="box-header-tittle" >
-                <div class="img-circle" >M</div>
+                <div class="img-circle" >{{listado_tarea.ot.cliente_inicial}}</div>
                 <div class="box-header-content">
-                  <h4>Manitoba</h4>
-                  <p>{{listado_area.nombre_tarea}}</p>
-                  <span>OT 1234 20/ene/2017</span>
+                  <h4>{{listado_tarea.ot.cliente.nombre}}</h4>
+                  <p>{{listado_tarea.nombre_tarea}}</p>
+                  <span>{{listado_tarea.created_at}}7</span>
                 </div>
                 
               </div>
               
             </div>
             <div class="box-body" >
-              <p >{{listado_area.descripcion}}</p>
+              <p >{{listado_tarea.descripcion}}</p>
             </div>
             <div class="box-footer footer_tarea" >             
-              <button class="btn btn-primary button_tarea" >Ver tarea</button>
+             <a v-bind:href="listado_tarea.url"> <button class="btn btn-primary button_tarea" >Ver tarea</button></a>
             </div>
             
           </div>
+          <div  class="ver_mas"><span class="ver_mas_texto"  @click="cargar_mas" >Ver mas</span></div>
 
         </div>
       </div>
@@ -31,14 +34,32 @@
     props: ['lista_tareas'],
     data(){
       return{
-        listado_areas:[]
+        listado_tareas:[],
+        inicial_cliente:'',
+        variable:3,
+        option_toast:{
+          timeOut: 5000,
+          "positionClass": "toast-top-center",
+          "closeButton": true,
+        }
       }
     },
     created: function() {
       datos= JSON.parse(this.lista_tareas);
-      this.listado_areas=datos;
-      console.log(this.listado_areas);
+      this.listado_tareas=datos;
+      console.log(this.listado_tareas);
     },
+    methods:{
+      //Con esta funcion muestro otros cuatro elementos al dar clic sobre el boton ver mas
+      cargar_mas: function(){
+        numero_datos_array=this.listado_tareas.length;
+        if (numero_datos_array<=this.variable) {
+           toastr.warning('No hay mas tareas por cargar',this.option_toast);
+        }else{
+          this.variable=this.variable+4;
+        }
+      }
+    }
 
   }
 
