@@ -306,14 +306,6 @@ class TareaController extends Controller
                             $comentario->fill($request->all());
                             $comentario->save();
 
-                           //Guardar en el historial
-                           // $tarea_historico = new Historico_Tarea;
-                           // $request['tareas_id']=1;
-                           // $request['comentarios_id']=1;
-                           // $request['usuarios_id']=1;
-                           // $tarea_historico->fill($request->all());
-                           // $tarea_historico->save();
-
 
                             /**
                              *
@@ -365,15 +357,29 @@ class TareaController extends Controller
                                         'error' => 'ERR_05',
                                         'obj' =>$vl->errors(),
                                         'tarea' =>$tarea,
+                                        'tarea_historico' =>$tarea_historico,
                                         'request' =>$request,
                                         ],Response::HTTP_BAD_REQUEST);
                                     break;
                             }
 
+                            //Guardar en el historial
+                           $tarea_historico = new Historico_Tarea;
+                           
+                           $data['comentarios_id']=$comentario->id;
+                           $data['usuarios_id']=$request->usuarios_id;
+                           $data['tareas_id']=$tarea->id;
+                           $data['tiempo_estimado']=$request->tiempo_estimado;
+                           $data['tiempo_real']=$request->tiempo_real;
+                           $data['usuarios_id']=$request->usuario->id;
+                           $data['encargado_id']=$request->usuarioencargado->id;
+                           $tarea_historico->fill($data);
+                           $tarea_historico->save();
+
                           //Respuesta
                            $respuesta['dato']=$tarea;
                            $respuesta['user_coment']='';
-                           // $respuesta['historico']=$tarea_historico;
+                           $respuesta['historico']=$tarea_historico;
                            $respuesta["error"]=0;
                            $respuesta["mensaje"]="OK";
                            $respuesta["msg"]="Asignado con exito";
@@ -389,6 +395,8 @@ class TareaController extends Controller
 
                             }
 
+
+
                         }
 
                     catch(Exception $e)
@@ -396,6 +404,7 @@ class TareaController extends Controller
                        $respuesta["error"]="Error datos incorrectos";
                        $respuesta["codigo_error"]="Error con la tarea";
                        $respuesta["mensaje"]="Error con la tarea";
+                       $respuesta["tarea_historico"]=$tarea_historico;
                        $respuesta["consola"]=$e->getMessage();
                        $respuesta["msg"]="Error  datos incorrectos";
                        $respuesta["request"]=$request->all();

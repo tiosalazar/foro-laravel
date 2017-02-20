@@ -7843,8 +7843,8 @@
 }
 
 .fade-enter-active, .fade-leave-active {
-  -webkit-transition: opacity .5s;
-  transition: opacity .5s;
+  -webkit-transition: opacity 2s;
+  transition: opacity 2s;
 }
 
 .fade-enter, .fade-leave-to {
@@ -8376,7 +8376,7 @@ body {
   margin-top: 4%;
   font-size: 20px;
   font-style: 25px;
-  background: gray;
+  background: #002E60;
   color: white;
   -ms-display: flex;
   display: -webkit-box;
@@ -8880,6 +8880,36 @@ body {
   text-align: center;
   font-size: 16px;
   font-weight: bold;
+}
+
+.ver_tarea .comentario_box {
+  box-shadow: none;
+}
+
+.ver_tarea .comentario_box .comentario_box_container {
+  display: -webkit-box;
+  display: flex;
+}
+
+.ver_tarea .comentario_box .comentario_box_container .img_comentario_src {
+  width: 65px;
+}
+
+.ver_tarea .comentario_box .comentario_box_container .info_comentarios {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.ver_tarea .comentario_box .comentario_box_container .info_comentarios span {
+  color: #a7a7a7;
+}
+
+.ver_tarea .comentario_box .comentario_box_container .info_comentarios .comentario_created {
+  margin-top: 5px;
 }
 
 .ver_tarea .text_alert {

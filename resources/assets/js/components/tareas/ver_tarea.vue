@@ -181,21 +181,21 @@
            </div>
 
           <!-- Comentarios -->
-         <div class="box box-widget" style="box-shadow:none;">
+         <div class="box box-widget comentario_box">
            <div v-for="comentario in comentarios_array" style="margin-bottom:20px;margin-top:35px;">
 
-            <div style="display:flex;">
+            <div  class="comentario_box_container">
               <div class="img_comentario">
-                <div v-if="comentario.user.img_perfil==null"><img   src="/images/perfil.jpg" style="width:65px;"></div>
-                <div v-else><img   v-bind:src="comentario.user.img_perfil" style="width:60px;"></div>
+                <div v-if="comentario.user.img_perfil==null"><img   src="/images/perfil.jpg" class="img_comentario_src"></div>
+                <div v-else><img   v-bind:src="comentario.user.img_perfil" class="img_comentario_src"></div>
               </div>
 
-              <div class="info_comentarios" style="display:flex; flex-direction:column;">
+              <div class="info_comentarios">
                 <label><strong>{{comentario.user.nombre}} &nbsp {{comentario.user.apellido}}</strong></label>
-                <span style="color:#a7a7a7;">({{comentario.user.email}})</span>
-                <p style="margin-top:5px;">{{comentario.created_at}}</p>
+                <span >({{comentario.user.email}})</span>
+                <p class="comentario_created" >{{comentario.created_at}}</p>
                 <div v-if="comentario.estados!=null" class="estado_comentario">
-                  <p >{{comentario.estados.nombre}}</p>
+                  <p >{{comentario.estados.nombre}}<span :class="comentario.estados"></span></p>
                 </div>
               </div>
 

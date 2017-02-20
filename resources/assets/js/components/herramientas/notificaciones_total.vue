@@ -1,5 +1,5 @@
 <template>
-	<span class="label label-success" v-on:click="readNotifications">{{no_leidas}}</span>
+	<span class="label label-danger" v-on:click="readNotifications">{{no_leidas}}</span>
 </template>
 <script>
 	module.exports= {
