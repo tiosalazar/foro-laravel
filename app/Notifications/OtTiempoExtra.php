@@ -13,6 +13,8 @@ class OtTiempoExtra extends Notification
 
     public $user;
     public $ot;
+    public $horas;
+    public $area;
 
     /**
      * Create a new notification instance.
@@ -20,10 +22,12 @@ class OtTiempoExtra extends Notification
      * @param App/Ot $ot
      * @return void
      */
-    public function __construct($user,$ot)
+    public function __construct($user,$ot,$horas,$area)
     {
         $this->user = $user;
         $this->ot = $ot;
+        $this->horas = $horas;
+        $this->area=$area;
     }
 
     /**
@@ -63,9 +67,10 @@ class OtTiempoExtra extends Notification
             'id_tarea' => $this->ot->id,
             'nombre' => $this->user->nombre,
             'cargo' => $this->user->cargo,
-            'descripcion' => $this->user->nombre. ' a solicitado tiempo para una ot',
+            'descripcion' => $this->user->nombre. ' a solicitado '.$this->horas.' adicionales para el area de'.$this->area.' ',
             'created_at' => date('Y-m-d H:i:s'),
             'img_perfil' => $this->user->img_perfil,
+            'link'          => '/ver_ot/'.$this->ot->id,
         ];
     }
 }

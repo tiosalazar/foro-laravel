@@ -368,16 +368,17 @@
 									this.datos_compras=[];
 								}
 							},(response) => {
-								if (response.body.error) {
+								console.log(response);
+								if (response.body.error_creacion) {
 									toastr.error("Ocurrio un error del sistema por favor contacte con Soporte",response.body.error,this.option_toast);
 									return false;
 								}
 								if (Object.keys(response.body.obj).length>0) {
 									this.setErrors(response.body.obj);
 									console.log(response);
+									toastr.error(this.message,response.body.msg,this.option_toast);
+									return false;
 								}
-								toastr.error(this.message,response.body.msg,this.option_toast);
-								console.log(response);
 							});
 						}else{
 							var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);

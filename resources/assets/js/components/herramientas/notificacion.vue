@@ -87,7 +87,7 @@ import moment from 'moment'
 				});
 			},
 			getNotifications:function() {
-				this.$http.get('/notificaciones/').then(response => {
+				this.$http.get(window._baseURL+'/notificaciones').then(response => {
 		            this.notificaciones = response.body;
 		          })
 			},

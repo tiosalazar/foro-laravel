@@ -19,13 +19,13 @@
 	    	readNotifications:function() {
 	    		// console.log('fucker')
 	    		// this.$parent.$emit('asd','asd');
-	    		this.$http.get('/leer_notificaciones/').then(response => {
+	    		this.$http.get(window._baseURL+'/leer_notificaciones/').then(response => {
 					console.log(response.body)
 		            // this.no_leidas = response.body;
 		        })
 	    	},
 	    	getUnReadNotifications:function() {
-				this.$http.get('/notificaciones_no_leidas/').then(response => {
+				this.$http.get(window._baseURL+'/notificaciones_no_leidas').then(response => {
 					console.log(response.body)
 		            this.no_leidas = response.body;
 		            // this.$parent.$emit('total_notificaciones',this.no_leidas);

@@ -205,7 +205,8 @@
 						<form action="" name="solicitarHoras">
 						<div class="form-group col-sm-6 col-sm-offset-3 col-xs-offset-3 ">
 							<input type="text"  class="form-control" required="required" pattern="^([0-9].[0-9]|[0-9]*){1,10}$" title="Ejemplo... 10 ó 10.5"  placeholder="No horas adicionales" name="horas_adicionales">
-              <input type="hidden" name="id" value="{{$ot['id']}}" />
+                         <input type="hidden" name="id" value="{{$ot['id']}}" />
+                         <input type="hidden" name="area_nombre" value="" />
 						</div>
 						<div class="row">
 							<div class="col-sm-4 col-sm-offset-4 col-xs-offset-4 col-xs-6 col-xs-4">
@@ -233,6 +234,7 @@
 
 	function abriModal(nombre) {
 		$('#nombre_area').text(nombre);
+		$('input[name=area_nombre]').val(nombre);
 		$('.editarModal').modal('show');
 
 		var form = $('form[name=solicitarHoras]');
