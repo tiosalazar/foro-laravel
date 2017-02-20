@@ -3,7 +3,7 @@
   <!-- Fecha : Enero 2017  -->
   <template>
     <div>
-      <div :class="{ 'select-error': isInvalid }">
+      <div :class="{ 'select-error': isInvalid }" class="estados">
         <multiselect
         :options="estados"
         selected-label=""
