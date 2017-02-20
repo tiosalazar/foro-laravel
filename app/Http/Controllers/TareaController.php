@@ -110,6 +110,7 @@ class TareaController extends Controller
                     ->where('ots_id',$tarea->ots_id)
                     ->where('areas_id',$tarea->areas_id)
                     ->first();
+                    $admins='';
 
                     // Validar si tiene horas suficientes para hacer la Tarea
                     if (!is_null($horas_area->tiempo_estimado_ot) &&
@@ -154,6 +155,8 @@ class TareaController extends Controller
                     'error' => 'ERR_04',
                     'msg' => 'excepcion, fallo la petición',
                     'consola' =>$e->getMessage(),
+                    'hroas' =>$horas_area,
+                    'admins' =>$admins,
                     'obj' =>[]
                     ],Response::HTTP_BAD_REQUEST);
                }
