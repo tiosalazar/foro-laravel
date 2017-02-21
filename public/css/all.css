@@ -8918,6 +8918,10 @@ body {
   box-shadow: none;
 }
 
+.ver_tarea .comentario_box .caja_comentarios {
+  margin-top: 20px;
+}
+
 .ver_tarea .comentario_box .comentario_box_container {
   display: -webkit-box;
   display: flex;
@@ -8951,7 +8955,16 @@ body {
 
 .ver_tarea .estado_comentario {
   position: absolute;
-  right: 0;
+  right: 25px;
+}
+
+.ver_tarea .estado_comentario .estado_comentario_circle {
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  border-radius: 7px;
+  margin-left: 8px;
+  margin-top: 3px;
 }
 
 .ver_tarea .ruta_server {

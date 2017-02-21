@@ -202,6 +202,9 @@
 	}
 	.comentario_box{
 		box-shadow:none;
+		.caja_comentarios{
+			margin-top: 20px;
+		}
 		.comentario_box_container{
 			display: flex;
 			.img_comentario_src{
@@ -226,7 +229,16 @@
 	}
 	.estado_comentario{
 		position: absolute;
-		right: 0;
+		right: 25px;
+
+		.estado_comentario_circle{
+			 width: 15px;
+		    height: 15px;
+		    position: absolute;
+		    border-radius: 7px;
+		    margin-left: 8px;
+		    margin-top: 3px;
+		}
 	}
 	.ruta_server{
 		padding-left: 15px;

@@ -195,7 +195,7 @@
                 <span >({{comentario.user.email}})</span>
                 <p class="comentario_created" >{{comentario.created_at}}</p>
                 <div v-if="comentario.estados!=null" class="estado_comentario">
-                  <p >{{comentario.estados.nombre}}<span :class="comentario.estados"></span></p>
+                  <p >{{comentario.estados.nombre}}<span :class="'estado_comentario_circle estado-'+comentario.estados.tipos_estados_id+'-'+comentario.estados.id"></span></p>
                 </div>
               </div>
 

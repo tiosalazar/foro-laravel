@@ -155,7 +155,6 @@ class TareaController extends Controller
                     'error' => 'ERR_04',
                     'msg' => 'excepcion, fallo la petición',
                     'consola' =>$e->getMessage(),
-                    'hroas' =>$horas_area,
                     'admins' =>$admins,
                     'obj' =>[]
                     ],Response::HTTP_BAD_REQUEST);
@@ -366,18 +365,18 @@ class TareaController extends Controller
                                     break;
                             }
 
-                            //Guardar en el historial
-                           /*$tarea_historico = new Historico_Tarea;
+                           //Guardar en el historial
+                           // $tarea_historico = new Historico_Tarea;
                            
-                           $data['comentarios_id']=$comentario->id;
-                           $data['usuarios_id']=$request->usuarios_id;
-                           $data['tareas_id']=$tarea->id;
-                           $data['tiempo_estimado']=$request->tiempo_estimado;
-                           $data['tiempo_real']=$request->tiempo_real;
-                           $data['usuarios_id']=$request->usuario->id;
-                           $data['encargado_id']=$request->usuarioencargado->id;
-                           $tarea_historico->fill($data);
-                           $tarea_historico->save();*/
+                           // $data['comentarios_id']=$comentario->id;
+                           // $data['usuarios_id']=$request->usuarios_id;
+                           // $data['tareas_id']=$tarea->id;
+                           // $data['tiempo_estimado']=$request->tiempo_estimado;
+                           // $data['tiempo_real']=$request->tiempo_real;
+                           // $data['usuarios_id']=$request->usuario->id;
+                           // $data['encargado_id']=$request->usuarioencargado->id;
+                           // $tarea_historico->fill($data);
+                           // $tarea_historico->save();
 
                           //Respuesta
                            $respuesta['dato']=$tarea;
