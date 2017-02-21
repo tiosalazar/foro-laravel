@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Estado;
+use App\Rol;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class EstadoController extends Controller
 {
@@ -46,8 +49,17 @@ class EstadoController extends Controller
      */
     public function show($id)
     {
-      $Estado= Estado::where('tipos_estados_id',$id)->get();
-      return response()->json($Estado);
+      // $Estado= Estado::where('tipos_estados_id',$id)->get();
+      // return response()->json($Estado);
+        if ($id == 1) {
+            $rol = Auth::user()->rol;
+            $estados = $rol->estados;
+        } else {
+            $estados= Estado::where('tipos_estados_id',$id)->get();
+        }
+        
+     
+      return response()->json($estados);
     }
 
     /**
