@@ -1,7 +1,7 @@
 <template>
 	<div class="row">
   <section class="titulo">
-    <h2>Crear Tarea</h2>
+    <h3 class="box-title"><span class="span_descripcion1">Crear</span> <span class="span_descripcion2">Tarea</span></h3>
   </section>
 		<div class="col-md-8 col-md-offset-2">
 			<div class="box box-widget tarea">

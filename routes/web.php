@@ -139,12 +139,19 @@
 
   // Equipo
  Route::get('equipo/areas', function () {
+   if (!Auth::user()->can('crear_areas')) {
+      return Redirect::to('home');
+    }
     return view('admin.areas.crear_areas');
   });
   Route::get('equipo/usuarios', function () {
+    if (!Auth::user()->can('crear_usuarios')) {
+      return Redirect::to('home');
+    }
     return view('admin.equipo.usuarios');
   });
   Route::get('/crear_usuario', function () {
+
     return view('admin.equipo.crear_usuario');
   });
   Route::get('equipo/directorio', function () {

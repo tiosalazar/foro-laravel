@@ -1,7 +1,10 @@
 <template>
   <div>
-
+    
     <div class="row listar_areas_modulo">
+    <div  class="user_created_and_area" v-show="this.administrador=='1'">
+       <a :href="url+'/equipo/usuarios'"><span>Crear usuario</span> + </a>    |   <a :href="url+'/equipo/areas'"><span>Crear area</span> + </a>
+    </div>
       <div class="col-md-12">
        <div class="col-md-2 columnas_listar_areas">
           <h3 class="titulo_listar_area">Áreas</h3>
@@ -12,8 +15,6 @@
         </div>
         <div class="col-md-5 columnas_listar_areas">
           <h3 class="titulo_listar_user">Usuarios</h3>
-
-
             <ul class="listado_usuarios">
             <a href="#" v-for="usuario in itemsUserArea(usuarios,idareaUser)" v-bind:key="usuario" class="list-usuario" transition="fade">
             <transition name="fade" mode="out-in">
