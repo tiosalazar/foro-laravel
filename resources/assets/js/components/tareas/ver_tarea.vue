@@ -167,9 +167,12 @@
 
           </div>
           <!-- /.box-body -->
-
-           <!-- <div v-if="rol_actual==='cuentas' || usuario_actual_comentar!=tarea_info.encargado_id  "> -->
-           <div v-if="id_usuario_actual!=tarea_info.encargado_id  ">
+           <div v-if=" (estado_solicitud.id==1 && rol_actual =='coordinador')" >
+                <div class="box-footer text-center">
+                  <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Actualizar</button>
+                </div>
+           </div>
+           <div v-else-if="id_usuario_actual!=tarea_info.encargado_id">
                  <div class="box-footer text-center">
                   <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Comentar</button>
                 </div>
