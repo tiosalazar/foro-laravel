@@ -7,5 +7,5 @@
 
 @section('main-content')
 	<h3>Listar areas</h3>
-	<listado_areas :administrador="{{Auth::user()->can('editar_usuarios') }}"></listado_areas>
+	<listado_areas administrador="{{Auth::user()->can('editar_usuarios') }}"></listado_areas>
 @endsection

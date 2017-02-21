@@ -6,7 +6,7 @@
        <div class="col-md-2 columnas_listar_areas">
           <h3 class="titulo_listar_area">Áreas</h3>
           <ul>
-            <a href="#" v-for="area in areas"><li  @click="consultarApiusuarios(area.id)" >{{area.nombre}}</li></a>
+            <a href="#" v-for="area in areas"><li  @click="consultarApiusuarios(area.id)" class="list_areas" :id="'area_'+area.id" >{{area.nombre}}</li></a>
           </ul>
 
         </div>
@@ -17,20 +17,20 @@
             <ul class="listado_usuarios">
             <a href="#" v-for="usuario in itemsUserArea(usuarios,idareaUser)" v-bind:key="usuario" class="list-usuario" transition="fade">
             <transition name="fade" mode="out-in">
-              <li class="listado_usuarios_item"  :key="usuario.nombre" @click="userviewinfo(usuario.horas_disponible,usuario.id)" >
+              <li class="listado_usuarios_item"  :key="usuario.nombre" @click="userviewinfo(usuario)" >
               <div v-if="usuario.img_perfil==null"><img   v-bind:src="url_imagen_defecto"></div>
               <div v-else><img   v-bind:src="url+usuario.img_perfil"></div>
-              <div class="text_user_listado"><p>{{usuario.nombre}} {{usuario.apellido}}</p><p>{{usuario.cargo}}</p><p>{{usuario.email}}</p><div></li></a>
+              <div class="text_user_listado"><p><strong>{{usuario.nombre}} {{usuario.apellido}}</strong></p><p>{{usuario.cargo}}</p><p>{{usuario.email}}</p><div></li></a>
             </transition>
             </ul>
 
         </div>
 
         <div class="col-md-5 columnas_listar_areas" >
-          <h3 class="titulo_listar_info">Informacion</h3>
+          <h3 class="titulo_listar_info">Información</h3>
           <div class="info_content">
-            <h3>Area</h3>
-            <p>{{areas_info.nombre}}<span> / Ext {{areas_info.extencion_tel}}</span></p>
+            <h3>Área</h3>
+            <p>{{areas_info.nombre}} <span style="padding:0px 10px;">/ </span> <span> Ext: {{areas_info.extencion_tel}}</span></p>
           </div>
           <div class="info_content">
             <h3>Encargado</h3>
@@ -40,12 +40,12 @@
           <div class="info_content" v-if="switcharea_user == '1'">
             <h3>Horas</h3>
             <p>Horas área: <span>{{areas_info.total_horas}}</span></p>
-            <p>Horas disponible área: <span>20</span></p>
+            <p>Horas disponible área: <span>{{parseInt(areas_info.total_horas)-parseInt(areas_info.horas_consumidas)}}</span></p>
           </div>
           <div class="info_content" v-if="switcharea_user == '2'">
             <h3>Horas</h3>
-            <p>Horas usuario: <span >{{horas_user}}</span></p>
-            <p>Horas disponible usuario: <span>20</span></p>
+            <p>Horas usuario mes: <span >{{horas_user}}</span></p>
+            <p>Horas disponibles usuario: <span>{{horas_disponible_user}}</span></p>
           </div>
           <div class="info_content" v-if="switcharea_user == '2'" v-show="this.administrador=='1'" >
             <a v-bind:href="id_user" ><button class="btn btn-primary btn-flat editar_usuarios_area" >Editar usuario</button></a>
@@ -106,6 +106,7 @@
           areas_info:[],
           switcharea_user:'',
           horas_user:'',
+          horas_disponible_user:0,
           id_user:'',
           id_user_eliminar:'',
           i:1
@@ -128,6 +129,12 @@
               });
         },
         consultarApiusuarios:function(areaid){
+          $('.list_areas').removeClass( "active" );
+          $('#area_'+areaid).addClass('active');
+          // The .each() method is unnecessary here:
+          
+
+
 
           this.$http.get(window._apiURL+'usuarios')
           .then(function(respuesta){
@@ -143,6 +150,7 @@
           this.$http.get(window._apiURL+'areas/'+areaid)
           .then(function(respuesta){
             this.areas_info=respuesta.body;
+             console.log(this.areas_info);
 
           });
         },
@@ -152,13 +160,13 @@
             return item.id_area==idareaUser;
           });
         },
-        userviewinfo:function(horas,id_user){
+        userviewinfo:function(usuario){
+          console.log(usuario);
            this.switcharea_user=2;
-           this.horas_user=horas;
-           this.id_user="/editar_usuario/"+id_user;
-           this.id_user_eliminar=id_user;
-           console.log(this);
-
+           this.horas_user=usuario.horas_disponible;
+           this.horas_disponible_user=parseInt(usuario.horas_disponible)-parseInt(usuario.horas_gastadas);
+           this.id_user="usuarios/editar/"+usuario.id;
+           this.id_user_eliminar=usuario.id;
 
          },
         eliminarUsuario:function(id_usuario_eliminar){

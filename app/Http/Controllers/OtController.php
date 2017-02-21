@@ -50,8 +50,8 @@ class OtController extends Controller
               return $fecha->format('Y-m-d');
          })
        ->addColumn('acciones', function($ots) {
-              $ver_ot='<a href="ver_ot/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver OT</a>';
-              $editar_ot=(Auth::user()->can('editar_ots') )?'<a href="editar_ot/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit" aria-label="View">Editar OT</a>':'';
+              $ver_ot='<a href="ots/visualizar/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver OT</a>';
+              $editar_ot=(Auth::user()->can('editar_ots') )?'<a href="ots/editar/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit" aria-label="View">Editar OT</a>':'';
               return $ver_ot.$editar_ot;
          })
         ->make(true);

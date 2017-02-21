@@ -66,7 +66,7 @@ class OtSinTiempo extends Notification
             'descripcion'   => $this->user->nombre. ' intento crear una tarea pero no posee más tiempo disponible',
             'created_at'    => date('Y-m-d H:i:s'),
             'img_perfil'    => $this->user->img_perfil,
-            'link'          => '/ver_ot/'.$this->ot->id
+            'link'          => 'ots/visualizar/'.$this->ot->id
         ];
     }
 }

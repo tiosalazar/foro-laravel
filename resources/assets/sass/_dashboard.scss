@@ -72,6 +72,12 @@ body{
     margin-top: 0%;
  }	
 }
+.sidebar-menu .treeview.active .fa-caret-left {
+	 margin-right: 9px;
+    transition-timing-function: linear;
+	-webkit-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+}
 
 .skin-blue{
 	.main-header{
@@ -91,7 +97,12 @@ body{
 			}
 		}
 	}
-
+.skin-blue .main-sidebar .sidebar-menu li a {
+    color: white;
+    font-weight: 300;
+    font-size: 1.1em;
+    text-decoration: none;
+}
 	.main-sidebar{
 		background-color: #002E60;
 		color: white;
@@ -105,6 +116,7 @@ body{
 			li{
 				a{
 					text-decoration: none;
+					color: white;
 
 				}
 				&:hover > a{
