@@ -267,7 +267,7 @@ class TareaController extends Controller
                             $tarea=Tarea::findOrFail($id);
 
                             // Encargado antes de actualizar la tarea
-                            $makerBefore = User::findOrFail($request->encargado_id);
+                            $makerBefore = User::findOrFail($tarea->encargado_id);
 
                             //Asigna los nuevo datos
                             $tarea->fill($request->all());
@@ -592,7 +592,7 @@ class TareaController extends Controller
             'ots_id' => 'required',
             'encargado_id' => 'required',
             'planeacion_fases_id' => 'required',
-        ]);
+        ], $this->messages());
     }
 
      /**
@@ -606,6 +606,38 @@ class TareaController extends Controller
             'tiempo_estimado' => 'required',
             'fecha_entrega_area' => 'required',
             'fecha_entrega_cuentas' => 'required',
-        ]);
+        ],$this->messages());
+    }
+    /**
+     * Mensajes validacion Crear Tarea.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        /*return [
+            'nombre_tarea.required' => 'El nombre es requerido',
+            'nombre_tarea.min' => 'El nombre debe tener minimo 4 caracteres.',
+            'descripcion.required' => 'La descripcion es requerida',
+            'descripcion.min' => 'La descripcion debe tener minimo 4 caracteres.',
+            'enlaces_externos.min' => 'Enlaces externos debe tener al menos 4 caracteres',
+            'tiempo_estimado.min' => 'Tiempo estimado debe tener al menos 4 caracteres',
+            'tiempo_estimado.numeric' => 'Tiempo estimado debe ser numerico',
+            'tiempo_real.min' => 'Tiempo real debe tener al menos 4 caracteres',
+            'tiempo_real.numeric' => 'Tiempo real debe ser numerico',
+            'tiempo_mapa_cliente.min' => 'Tiempo mapa cliente debe tener minimo un caracter',
+            'tiempo_mapa_cliente.numeric' => 'Tiempo mapa de cliente debe ser numerico',
+            'estados_id' => 'Estado es requerido',
+            'areas_id' => 'Area es requerido',
+            'usuarios_id' => 'Usuario es requerido',
+            'ots_id' => 'OT es requerido',
+            'encargado_id' => 'Encargado es requerido',
+            'planeacion_fases_id' => 'Fase de planeacion es requerido',
+        ];*/
+        return [
+            'required' => 'El campo :attribute es requerido.',
+            'min' => 'El campo :attribute debe tener minimo 3 caracteres.',
+            'numeric' => 'El campo :attribute debe ser numerico.',
+        ];
     }
 }
