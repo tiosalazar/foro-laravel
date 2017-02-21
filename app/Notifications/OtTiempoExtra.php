@@ -67,10 +67,10 @@ class OtTiempoExtra extends Notification
             'id_tarea' => $this->ot->id,
             'nombre' => $this->user->nombre,
             'cargo' => $this->user->cargo,
-            'descripcion' => $this->user->nombre. ' a solicitado '.$this->horas.' adicionales para el area de'.$this->area.' ',
+            'descripcion' => $this->user->nombre. ' a solicitado '.$this->horas.' adicionales para el area de '.$this->area.' ',
             'created_at' => date('Y-m-d H:i:s'),
             'img_perfil' => $this->user->img_perfil,
-            'link'          => '/ver_ot/'.$this->ot->id,
+            'link'          => '/ots/visualizar/'.$this->ot->id,
         ];
     }
 }

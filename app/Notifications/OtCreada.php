@@ -66,7 +66,7 @@ class OtCreada extends Notification
             'descripcion' => $this->user->nombre. ' a creado una ot',
             'created_at' => date('Y-m-d H:i:s'),
             'img_perfil' => $this->user->img_perfil,
-            'link'          => 'ots/visualizar/'.$this->ot->id,
+            'link'          => '/ots/visualizar/'.$this->ot->id,
         ];
     }
 }

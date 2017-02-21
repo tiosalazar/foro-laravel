@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Date\Date;
+use Carbon\Carbon;
 
 class Ot extends Model
 {
@@ -16,8 +18,18 @@ class Ot extends Model
   protected $fillable = [
     'nombre','referencia','fee','horas_totales','horas_disponibles','total_horas_extra','valor', 'observaciones', 'fecha_inicio', 'fecha_final', 'clientes_id', 'usuarios_id','estados_id',
   ];
-
-
+   
+   public function getFormatFecha($fecha_ingreso)
+  {
+       $fecha= new Date($fecha_ingreso);
+      return ucwords($fecha->format('Y-m-d'));
+  }
+  public function getFormatFechaShow($fecha_ingreso)
+  {
+       $fecha= new Date($fecha_ingreso);
+      return $fecha->format('Y | d | M');
+  }
+ 
 
   /**
   * Obtiene el Cliente que esta asociado a una OT

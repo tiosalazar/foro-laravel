@@ -8240,6 +8240,10 @@ body {
   margin-left: 5px;
 }
 
+.slimScrollDiv {
+  cursor: pointer;
+}
+
 .login-page {
   background: #003675;
 }
@@ -8672,7 +8676,7 @@ body {
 }
 
 .perfil-box .cargo_user {
-  color: #BEBEBE;
+  color: #727272;
 }
 
 .perfil-box .img_perfil {
@@ -8689,7 +8693,7 @@ body {
 
 .perfil-box .info_perfil strong {
   margin-bottom: 8px;
-  color: #DCDCDC;
+  color: #727272;
   font-weight: normal;
 }
 
