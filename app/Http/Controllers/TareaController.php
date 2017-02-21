@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\CrearOT;
 use App\Notifications\OtSinTiempo;
+use App\Notifications\OtExcedeTiempo;
 use App\Notifications\TareaCreada;
 use App\Notifications\TareaPendiente;
 use App\Notifications\TareaProgramada;
@@ -107,7 +108,7 @@ class TareaController extends Controller
                 try {
                     // Obtengo las horas de la OT
                     // segun el area correspondiente a la Tarea
-                    $horas_area = Tiempos_x_Area::with('area','ots')
+                    $horas_area = Tiempos_x_Area::with('area','ots.area')
                     ->where('ots_id',$tarea->ots_id)
                     ->where('areas_id',$tarea->areas_id)
                     ->first();
@@ -316,7 +317,7 @@ class TareaController extends Controller
 
                                     if ( $horas_area->tiempo_real + $tarea->tiempo_real > $horas_area->tiempo_estimado_ot) {
                                         User::findOrFail($tarea->usuarios_id)
-                                        ->notify(new OtSinTiempo($makerBefore,$horas_area->ots));
+                                        ->notify(new OtExcedeTiempo($makerBefore,$horas_area->ots));
                                     }
                                     $horas_area->tiempo_real +=$tarea->tiempo_real;
                                     $horas_area->save();

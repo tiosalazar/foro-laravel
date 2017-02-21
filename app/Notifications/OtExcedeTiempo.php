@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class OtSinTiempo extends Notification
+class OtExcedeTiempo extends Notification
 {
     use Queueable;
 
@@ -63,7 +63,7 @@ class OtSinTiempo extends Notification
             'id_tarea'      => $this->ot->id,
             'nombre'        => $this->user->nombre,
             'cargo'         => $this->user->cargo,
-            'descripcion'   => $this->user->nombre. ' intento crear una tarea pero no posee más tiempo disponible.',
+            'descripcion'   => $this->ot->nombre. ' a excedido el tiempo asignado para el Área',
             'created_at'    => date('Y-m-d H:i:s'),
             'img_perfil'    => $this->user->img_perfil,
             'link'          => 'ots/visualizar/'.$this->ot->id
