@@ -189,6 +189,8 @@ return [
         //Custom Providers
         Zizaco\Entrust\EntrustServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
+        //Traducción de Fechas
+        Jenssegers\Date\DateServiceProvider::class,
 
     ],
 
@@ -247,6 +249,8 @@ return [
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         // Datatables
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+        //tradución de fechas
+        'Date' => Jenssegers\Date\Date::class,
 
     ],
 

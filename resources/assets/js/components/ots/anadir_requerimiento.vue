@@ -160,7 +160,7 @@ module.exports={
           tiempo_extra:  this.nhextra,
           h_pasadas: this.h_pasadas
         }];
-        this.$parent.$emit('datos_requerimiento',datos);//Emite los datos al padre
+        this.$parent.$emit('datos_requerimiento',datos,true);//Emite los datos al padre
       }
     },
     llenarDatosSiesVisualizacion: function(){

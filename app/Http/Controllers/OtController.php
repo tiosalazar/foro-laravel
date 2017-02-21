@@ -15,19 +15,19 @@ use Illuminate\Support\Facades\Auth;
 use App\Historico_Ot;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\OtTiempoExtra;
+use App\Notifications\OtTiempoExtraAprobado;
 use App\Notifications\OtCreada;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
 use Illuminate\Http\Response;
 use Exception;
-use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
+
 class OtController extends Controller
 {
 
 
-
-
+   
 
    /**
    * Display a listing of the resource.
@@ -42,16 +42,14 @@ class OtController extends Controller
 
       return Datatables::of( $ots)
       ->addColumn('fecha_inicio', function($ots) {
-             $fecha=new Carbon($ots->fecha_inicio);
-             return $fecha->format('Y-m-d');
+             return  $ots->getFormatFecha($ots->fecha_inicio);
         })
         ->addColumn('fecha_final', function($ots) {
-              $fecha=new Carbon($ots->fecha_final);
-              return $fecha->format('Y-m-d');
+              return $ots->getFormatFecha($ots->fecha_final); 
          })
        ->addColumn('acciones', function($ots) {
-              $ver_ot='<a href="ots/visualizar/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver OT</a>';
-              $editar_ot=(Auth::user()->can('editar_ots') )?'<a href="ots/editar/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit" aria-label="View">Editar OT</a>':'';
+              $ver_ot='<a href="visualizar/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver OT</a>';
+              $editar_ot=(Auth::user()->can('editar_ots') )?'<a href="editar/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit" aria-label="View">Editar OT</a>':'';
               return $ver_ot.$editar_ot;
          })
         ->make(true);
@@ -131,12 +129,13 @@ class OtController extends Controller
                $model_compras->save();
             }
             DB::commit();
+            
+            //Notificar al usuario Owner cuando se cree una OT
             $maker=Auth::user();
-
             $Rol=Role::where('name','owner')->first();
             $owner=User::where('roles_id',$Rol->id)->first();
-
             $owner->notify(new OtCreada($maker,$ot));
+
             return response([
                'status' => Response::HTTP_OK,
                'response_time' => microtime(true) - LARAVEL_START,
@@ -167,10 +166,8 @@ class OtController extends Controller
    public function show($id)
    {
       $ot=OT::findOrFail($id);
-      $fecha=new Carbon($ot->fecha_final);
-      $ot->fecha_final= $fecha->format('Y | d | M');
-      $fecha=new Carbon($ot->fecha_inicio);
-      $ot->fecha_inicio=$fecha->format('Y | d | M');
+      $ot->fecha_final=$ot->getFormatFechaShow($ot->fecha_final);
+      $ot->fecha_inicio= $ot->getFormatFechaShow( $ot->fecha_inicio);
       $ot->valor=$this->formatMoney($ot->valor,false);
       $ot->Tiempos_x_Area;
       $ot->Usuario;
@@ -348,6 +345,13 @@ class OtController extends Controller
             $historico->requerimientos_ot=json_encode($data['requerimientos']);
             $historico->compras_ot=json_encode($compras);
             $historico->save();
+
+
+
+            //Notificar a la ejecutiva cuando se modifique su tarea
+            $maker=Auth::user();
+            $user= User::findOrFail($ot->usuarios_id);
+            $user->notify(new OtTiempoExtraAprobado($maker,$ot));
 
 
             return response([

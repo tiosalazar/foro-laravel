@@ -36,6 +36,8 @@
     </form>-->
     <!-- /.search form -->
 
+    <div style="height: 32px;"></div>
+
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">
       <!-- <li class="header">Menú</li> -->

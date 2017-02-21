@@ -6,6 +6,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Role;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Jenssegers\Date\Date;
+use Carbon\Carbon;
+
 class User extends Authenticatable
 {
   use Notifiable,EntrustUserTrait;
@@ -28,6 +31,11 @@ class User extends Authenticatable
     'password', 'remember_token',
   ];
 
+  public function getFechaNacimiento($fecha_nacimiento)
+  {
+       $fecha= new Date($fecha_nacimiento);
+      return ucwords($fecha->format('M / d / Y'));
+  }
 
   /**
   * Obtiene el Rol que esta asociado a un Usuario

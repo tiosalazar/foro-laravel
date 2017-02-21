@@ -16,9 +16,9 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Illuminate\Support\Facades\Input;
 use Intervention\Image\ImageManagerStatic as Image;
 use Storage;
+use Carbon\Carbon;
 
-
-
+setlocale(LC_TIME, 'es_CO');
 
 /**
  * Class HomeController

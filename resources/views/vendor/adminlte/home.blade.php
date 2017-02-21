@@ -55,7 +55,7 @@
 					            <!-- /.box-header -->
 					            <div class="box-header header_perfil">
 									<h3 class="nombre_user">{{Auth::user()->nombre}} {{Auth::user()->apellido}}</h3>
-									<h4 class="area_user">Area &nbsp| {{Auth::user()->area->nombre}}</h4>
+									<h4 class="area_user">Área &nbsp| {{Auth::user()->area->nombre}}</h4>
 									<h5 class="cargo_user">Cargo &nbsp| {{Auth::User()->cargo}}</h5>									
 								</div>
 					             <div class="box-body">
@@ -63,11 +63,8 @@
 					              	 <strong ><i class="fuente-icon margin-r-5">p</i> Encargado &nbsp| <span>{{$user_encargado}}</span> </strong>
 					              	 <strong><i class="fuente-icon margin-r-5">b</i> Correo &nbsp| <span>{{Auth::user()->email}}</span> </strong>
 					              	 <strong><i class="fuente-icon margin-r-5">t</i> Teléfono &nbsp|  <span>{{Auth::user()->telefono}}</span></strong>
-					              	 <strong><i class="fuente-icon margin-r-5">d</i> Cumpleaños &nbsp| <span>{{Auth::user()->fecha_nacimiento}}</span> </strong>			
+					              	 <strong><i class="fuente-icon margin-r-5">d</i> Cumpleaños &nbsp| <span> {{Auth::user()->getFechaNacimiento(Auth::user()->fecha_nacimiento) }}</span> </strong>	
 					               </div>
-					           
-
-
 					            </div>
 					            <!-- /.box-body -->
 							</div>
