@@ -1,6 +1,9 @@
 <template>
+
+
 	<div>
-		<ul class="menu">
+	<audio id="chatAudio"><source :src="_baseURL+'/media/alert.mp3'" type="audio/mp3"></audio>
+		<ul class="menu" id="menur">
 			<li v-for="notificacion in notificaciones" >
 				<a  v-on:click="goTarea(notificacion.data)">
 				<!-- <a  v-on:click="sumNotify(notificacion.data)"> -->
@@ -65,6 +68,8 @@ import moment from 'moment'
 			});*/
 			this.listen();
 			$('.menu').slimScroll({});
+			
+
 		},
 		methods:{
 			listen:function() {
@@ -84,6 +89,7 @@ import moment from 'moment'
 					    }
 					});
 					this.$parent.$emit('new_notify',1);
+					$('#chatAudio')[0].play();
 				}, (error)=>{
 					console.log(error);
 				});
