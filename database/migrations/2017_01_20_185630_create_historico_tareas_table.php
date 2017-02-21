@@ -22,6 +22,7 @@ class CreateHistoricoTareasTable extends Migration
             $table->integer('estados_id')->nullable();
             $table->integer('usuarios_id')->unsigned();
             $table->integer('tareas_id')->unsigned();
+            $table->integer('editor_id')->unsigned();
             $table->timestamps();
         });
     }

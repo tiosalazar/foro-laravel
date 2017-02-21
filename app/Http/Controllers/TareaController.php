@@ -219,6 +219,19 @@ class TareaController extends Controller
            $comentario->fill($request->all());
            $comentario->save();
 
+            //Guardar en el historial
+            $tarea_historico = new Historico_Tarea;
+            $data['tiempo_estimado']=$tarea->tiempo_estimado;
+            $data['tiempo_real']=$tarea->tiempo_real;
+            $data['comentarios_id']=$comentario->id; 
+            $data['encargado_id']=$tarea->encargado_id; 
+            $data['estados_id']=$tarea->estados_id; 
+            $data['usuarios_id']=$tarea->usuarios_id;                           
+            $data['tareas_id']=$tarea->id;
+            $data['editor_id']=Auth::user()->id;
+            $tarea_historico->fill($data);
+            $tarea_historico->save();
+
             //Respuesta
            $respuesta['dato']=$tarea;
            $respuesta['user_coment']='';
@@ -306,6 +319,7 @@ class TareaController extends Controller
                             $comentario->save();
 
 
+
                             /**
                              *
                              * Recibe el estado de la tarea y envia la notificacion
@@ -365,23 +379,24 @@ class TareaController extends Controller
                                     break;
                             }
 
-                           //Guardar en el historial
-                           // $tarea_historico = new Historico_Tarea;
-                           
-                           // $data['comentarios_id']=$comentario->id;
-                           // $data['usuarios_id']=$request->usuarios_id;
-                           // $data['tareas_id']=$tarea->id;
-                           // $data['tiempo_estimado']=$request->tiempo_estimado;
-                           // $data['tiempo_real']=$request->tiempo_real;
-                           // $data['usuarios_id']=$request->usuario->id;
-                           // $data['encargado_id']=$request->usuarioencargado->id;
-                           // $tarea_historico->fill($data);
-                           // $tarea_historico->save();
+                            //Guardar en el historial
+                            $tarea_historico = new Historico_Tarea;
+                            $data['tiempo_estimado']=$tarea->tiempo_estimado;
+                            $data['tiempo_real']=$tarea->tiempo_real;
+                            $data['comentarios_id']=$comentario->id; 
+                            $data['encargado_id']=$tarea->encargado_id; 
+                            $data['estados_id']=$tarea->estados_id; 
+                            $data['usuarios_id']=$tarea->usuarios_id;                           
+                            $data['tareas_id']=$tarea->id;
+                            $data['editor_id']=Auth::user()->id;
+                            $tarea_historico->fill($data);
+                            $tarea_historico->save();
+
 
                           //Respuesta
                            $respuesta['dato']=$tarea;
                            $respuesta['user_coment']='';
-                           // $respuesta['historico']=$tarea_historico;
+                           $respuesta['historico']=$comentario->id;
                            $respuesta["error"]=0;
                            $respuesta["mensaje"]="OK";
                            $respuesta["msg"]="Asignado con exito";
@@ -390,6 +405,7 @@ class TareaController extends Controller
                            foreach ($tarea->comentario as $key => $value) {
                                 if ($value->user->id==$request->usuarios_comentario_id) {
                                     $respuesta['user_coment']=$value;
+
                                     $value->estados;
                                 }
 

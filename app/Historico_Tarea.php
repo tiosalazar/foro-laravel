@@ -13,7 +13,7 @@ class Historico_Tarea extends Model
    * @var array
    */
   protected $fillable = [
-      'tiempo_estimado', 'tiempo_real', 'comentarios_id', 'encargado_id', 'estados_id', 'usuarios_id', 'tareas_id',
+      'tiempo_estimado', 'tiempo_real', 'comentarios_id', 'encargado_id', 'estados_id', 'usuarios_id', 'tareas_id', 'editor_id',
   ];
 
   /**
