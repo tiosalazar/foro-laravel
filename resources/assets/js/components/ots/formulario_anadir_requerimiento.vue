@@ -78,7 +78,7 @@
 								<div class="separador"> </div>
 								<div style="height:30px"></div>
 								<div class="col-md-4 col-md-offset-4" >
-									<button type="button"  @click="GuardarOt" class="btn btn-block text-center btn-success boton_foro succes  col-sm-3">Guardar OT</button>
+									<button type="button"  @click="GuardarOt"  :class="{'disabled' : !can_save }"  class="btn btn-block text-center btn-success boton_foro succes  col-sm-3">Guardar OT</button>
 								</div>
 							</div>
 						</div>
@@ -152,6 +152,7 @@
 					validar_compras:false,
 					diabled_compras:true,
 					message:'',
+					can_save:false,
 					errors_return:{
 						'nombre' : '',
 						'referencia' : '',
@@ -230,8 +231,10 @@
 				/*
 				Escucha el arreglo completo de los datos de los requerimientos
 				*/
-				this.$on('datos_requerimiento', function(v) {
+				this.$on('datos_requerimiento', function(v,save) {
 					this.datos_requerimiento=v;
+					this.can_save=save;
+					console.log(save);
 				});
 				/*
 				Escucha las horas extra del Area a Editar
@@ -407,6 +410,7 @@
 								toastr.error(this.message,response.body.msg,this.option_toast);
 							});
 						}
+						
 
 
 					} catch (e) {
@@ -590,6 +594,7 @@
 							this.$localStorage.set('datos_requerimiento_'+id,JSON.stringify(requerimientos) );
 							//this.validar_requerimientos=false;
 							//}
+					        this.can_save=true;
 							this.$localStorage.set('datos_compra_'+id,JSON.stringify(this.datos_compras) );
 						}
 
@@ -597,6 +602,7 @@
 						//	this.validar_requerimientos=true;
 						toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
 						this.$localStorage.set('datos_requerimiento_'+id,JSON.stringify(requerimientos) );
+						this.can_save=true;
 						//	this.validar_requerimientos=false;
 					}
 
@@ -604,6 +610,7 @@
 
 			},
 			comprobarDatosRequerimientos: function(arreglo){
+				console.log(arreglo);
 				if( arreglo != null && arreglo != undefined ){
 					var index = Object.keys(arreglo).length;
 					var requerimientos =arreglo;
@@ -644,6 +651,8 @@
 						hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
 						retorno=this.comprobarDatosRequerimientos(hora_a);
 					}
+					return retorno;
+				}else{
 					return retorno;
 				}
 			},
@@ -705,6 +714,9 @@
 			},
 			/*Función la cual valida los datos del arreglo de datos, comprueba que ningun campo este vacio*/
 			validarDatos: function(arreglo){
+				if(arreglo == null){
+					return false;
+				}
 				for (var k in arreglo){
 					if (typeof arreglo[k] == '') {
 						return false;

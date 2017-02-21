@@ -14,7 +14,7 @@
 		    </thead>
         </table>
         <form method="POST" id="search-form" class="form-inline" role="form">
-	        <div class="drop" v-show="typeof(this.area) != 'undefined'">
+	        <div class="drop" v-show="this.area !='' ">
 	        	<select name="estados" id="estados"  class="form-control multiselect">
 		        	<option value="">Estados</option>
 		        </select>
@@ -145,6 +145,7 @@
 		    // Agregar Selects al dibujar la tabla
 		    $('#tabla_tareas').on( 'draw.dt', function () {
 		    	// Llamar estados de las taras
+
 		    	$.ajax({ url:window._apiURL+"estados/1",headers: {
         'Authorization':'Bearer '+Laravel.api_token}})
 		    	.done(function(response) {
@@ -162,6 +163,7 @@
 		    	 		$('#estados').append(option);
 		    	 	})
 				})
+
 				$.ajax( window._baseURL+"/years_tarea" )
 		    	.done(function(response) {
 		    	 	// limpiar el select
