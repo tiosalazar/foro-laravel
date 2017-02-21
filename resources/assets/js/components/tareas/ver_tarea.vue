@@ -189,8 +189,8 @@
 
             <div  class="comentario_box_container">
               <div class="img_comentario">
-                <div v-if="comentario.user.img_perfil==null"><img   src="/images/perfil.jpg" class="img_comentario_src"></div>
-                <div v-else><img   v-bind:src="comentario.user.img_perfil" class="img_comentario_src"></div>
+                <div v-if="comentario.user.img_perfil==null"><img   :src="_baseURL+'/images/perfil.jpg'" class="img_comentario_src"></div>
+                <div v-else><img   v-bind:src="_baseURL+comentario.user.img_perfil" class="img_comentario_src"></div>
               </div>
 
               <div class="info_comentarios">

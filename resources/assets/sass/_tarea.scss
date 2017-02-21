@@ -1,5 +1,15 @@
 
 // Crear Tarea
+.titulo{
+	h3{
+		margin-left: 15%;
+		margin-bottom: 30px;
+		span{
+			font-weight: bold;
+			font-size: 27px;
+		}
+	}
+}
 .tarea{
 	padding: 15px;
 	box-shadow: none;
@@ -183,6 +193,27 @@
 }
 .with-border{
 	border-bottom: 1px solid $borde-gris;
+}
+
+.user_created_and_area{
+	position:relative; 
+	float:right;
+	 margin-right:18px;
+	 margin-bottom: 20px;
+	a{
+		text-decoration: none;
+		font-size: 18px;
+		font-weight: bold;
+		span{
+			font-size: 15px;
+			font-weight: normal;
+			color: black;
+			&:hover{
+				color: $azul-claro;
+			}
+		}
+	}
+
 }
 
 //Ver tarea

@@ -8322,6 +8322,7 @@ body {
 .skin-blue .main-sidebar .user-panel {
   margin-top: 15%;
   margin-bottom: 10%;
+  padding: 17px;
 }
 
 .skin-blue .main-sidebar .sidebar-menu li a {
@@ -8717,6 +8718,16 @@ body {
   display: none;
 }
 
+.titulo h3 {
+  margin-left: 15%;
+  margin-bottom: 30px;
+}
+
+.titulo h3 span {
+  font-weight: bold;
+  font-size: 27px;
+}
+
 .tarea {
   padding: 15px;
   box-shadow: none;
@@ -8918,6 +8929,29 @@ body {
 
 .with-border {
   border-bottom: 1px solid #d8d8d8;
+}
+
+.user_created_and_area {
+  position: relative;
+  float: right;
+  margin-right: 18px;
+  margin-bottom: 20px;
+}
+
+.user_created_and_area a {
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.user_created_and_area a span {
+  font-size: 15px;
+  font-weight: normal;
+  color: black;
+}
+
+.user_created_and_area a span:hover {
+  color: #15baee;
 }
 
 .ver_tarea {
