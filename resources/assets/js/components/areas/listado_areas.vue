@@ -47,7 +47,7 @@
             <p>Horas usuario: <span >{{horas_user}}</span></p>
             <p>Horas disponible usuario: <span>20</span></p>
           </div>
-          <div class="info_content" v-if="switcharea_user == '2'">
+          <div class="info_content" v-if="switcharea_user == '2'" v-show="this.administrador=='1'" >
             <a v-bind:href="id_user" ><button class="btn btn-primary btn-flat editar_usuarios_area" >Editar usuario</button></a>
             <button class="btn btn-danger btn-flat eliminar_usuario_area" v-bind:value="id_user_eliminar" data-target="#confirm_delete_user" data-toggle="modal"  >Eliminar suario</button>
           </div>
@@ -95,7 +95,7 @@
 
 
    module.exports={
-
+     props:['administrador'],
      data(){
         return{
           url:'',

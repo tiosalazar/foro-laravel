@@ -324,6 +324,7 @@ class Permission_Role extends Seeder {
                                    ->orWhere('name','ver_foro_desarrollo')
                                    ->orWhere('name','ver_foro_diseno')
                                    ->orWhere('name','ver_foro_contenidos')
+                                   ->orWhere('name','ver_foro_soporte')
                                    ->orWhere('name','ver_foro_digital')
                                    ->orWhere('name','crear_clientes')
                                    ->orWhere('name','editar_clientes')->get();
@@ -337,6 +338,7 @@ class Permission_Role extends Seeder {
                                    ->orWhere('name','ver_foro_desarrollo')
                                    ->orWhere('name','ver_foro_diseno')
                                    ->orWhere('name','ver_foro_contenidos')
+                                   ->orWhere('name','ver_foro_soporte')
                                    ->orWhere('name','ver_foro_digital')
                                    ->orWhere('name','editar_tareas')
                                    ->get();

@@ -60,7 +60,7 @@
 		created: function(){
 			this.list_tareas_api();
 			this.getTareass();
-			if (typeof(this.area) == 'undefined') {
+			if ( (typeof(this.area) == 'undefined') || this.area=="" ) {
 				this.area = -1;
 			}
 			this.$on('select_estado', function(v) {
@@ -68,7 +68,7 @@
 			});
 		},
 		watch:{},
-		mounted() {
+		mounted(){
 			let that = this;
 			var oTable = $('#tabla_tareas').DataTable({
 				 dom: "<'row'<'col-xs-12'<'row filtros'<'col-xs-4 selects'><'col-xs-6'f><'col-xs-2'l>>>r>"+

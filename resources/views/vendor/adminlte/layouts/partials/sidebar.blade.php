@@ -53,7 +53,7 @@
       <li class="treeview">
         <a href="#"><i class='fuente-icon'>f</i> <span>{{ trans('texto_menu.foro') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
         <ul class="treeview-menu">
-        @if(Auth::user()->can('ver_foro_colaborador'))
+        @if(Auth::user()->hasRole('colaborador'))
           <li><a href="{{route('foro')}}">{{ trans('texto_menu.ver_foro') }}</a></li>
          @endif
         @if(Auth::user()->can('ver_foro_creatividad'))
