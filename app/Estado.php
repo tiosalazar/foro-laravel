@@ -58,4 +58,12 @@ class Estado extends Model
     return $this->hasMany('App\Comentario','estados_id','id');
   }
 
+  /**
+  * Obtiene los roles asociados a un estado
+  */
+  public function Roles()
+  {
+    return $this->belongsToMany('App\Role', 'estados_x_roles', 'estados_id', 'roles_id');
+  }
+
 }

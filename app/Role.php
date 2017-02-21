@@ -30,5 +30,12 @@ class Role extends EntrustRole
   {
       return $this->hasMany('App\Trafico_tarea');
   }
+  /**
+  * Obtiene los roles asociados a un estado
+  */
+  public function Estados()
+  {
+    return $this->belongsToMany('App\Estado', 'estados_x_roles', 'roles_id', 'estados_id');
+  }
 
 }

@@ -37,6 +37,8 @@ class DatabaseSeeder extends Seeder
      $this->command->info('Planeacion_tipos table seeded!');
       $this->call('Permission_Role');
      $this->command->info('Permisos Generados seeded!');
+     $this->call('Estados_Roles');
+     $this->command->info('Roles en Estados Generados seeded!');
     }
 }
 class RolesTableSeeder extends Seeder {
@@ -352,5 +354,51 @@ class Permission_Role extends Seeder {
          $rol->attachPermissions($permisos);
 
     }
+
+}
+class Estados_Roles extends Seeder {
+
+  public function run()
+  {
+    DB::table('estados_x_roles')->delete();
+
+    //El Rol Owner tiene todos los permisos
+    $rol= App\Role::where('id','1')
+                    ->first();
+    $estados= App\Estado::where('tipos_estados_id','1')->get();
+    $rol->Estados()->saveMany($estados);
+
+    //El Rol Desarrollo tiene todos los permisos
+    $rol= App\Role::where('id','2')->first();
+    $rol->Estados()->saveMany($estados);
+
+    //El Rol Cuentas tiene todos los permisos
+    $rol= App\Role::where('id','3')->first();
+    $estados= App\Estado::where('id','5')
+                          ->where('tipos_estados_id','1')
+                          ->orWhere('id','6')
+                          ->orWhere('id','7')
+                          ->get();
+    $rol->Estados()->saveMany($estados);
+
+    //El Rol Coordinador tiene todos los permisos
+    $rol= App\Role::where('id','4')->first();
+    $estados= App\Estado::where('id','1')
+                          ->where('tipos_estados_id','1')
+                          ->orWhere('id','2')
+                          ->orWhere('id','3')
+                          ->orWhere('id','4')
+                          ->get();
+    $rol->Estados()->saveMany($estados);
+
+    //El Rol Colaborador tiene todos los permisos
+    $rol= App\Role::where('id','5')->first();
+    $estados= App\Estado::where('id','2')
+                          ->where('tipos_estados_id','1')
+                          ->orWhere('id','5')
+                          ->get();
+    $rol->Estados()->saveMany($estados);
+
+  }
 
 }

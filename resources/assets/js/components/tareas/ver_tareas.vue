@@ -76,6 +76,7 @@
 			            "<'row'<'col-xs-12'<'row'<'col-xs-6'i><'col-xs-6'p>>>>",
 				processing: true,
 				serverSide: true,
+				deferRender: true,
 				// ajax: "/api/v1/tareas",
 				ajax: {
 					url: window._baseURL+"/all_tareas/"+that.area,
