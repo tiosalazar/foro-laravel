@@ -16,7 +16,8 @@
                   @endif
           </div>
           <div class="pull-left info">
-            <p>{{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</p>
+            <p>{{ Auth::user()->nombre }}</p>
+            <p>{{ Auth::user()->apellido }}</p>
 
             <!-- Status -->
             <a href="#"><i class="fa fa-circle text-success"></i> {{ trans('adminlte_lang::message.online') }}</a>
@@ -41,17 +42,17 @@
       <!-- Optionally, you can add icons to the links -->
 
       <!--Home -->
-      <li class="active treeview"><a href="{{ url('home') }}"><i class='fuente-icon'>p</i> <span>{{ trans('texto_menu.perfil') }}</span></a></li>
+      <li class="treeview {{ Request::is('home') ? 'active' : '' }}"  ><a href="{{ url('home') }}"><i class='fuente-icon'>p</i> <span>{{ trans('texto_menu.perfil') }}</span></a></li>
 
       @if( Auth::user()->can('ver_roles') )
       <!--Roles -->
-      <li class="treeview"><a href="{{ url('roles') }}"><i class='fuente-icon'>c</i><span>{{  trans('texto_menu.crear_roles') }}</span></a></li>
+      <li class="treeview {{ Request::is('roles') ? 'active' : '' }}"><a href="{{ url('roles') }}"><i class='fuente-icon'>c</i><span>{{  trans('texto_menu.crear_roles') }}</span></a></li>
       @endif
 
 
       <!--Foro -->
-      <li class="treeview">
-        <a href="#"><i class='fuente-icon'>f</i> <span>{{ trans('texto_menu.foro') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
+      <li class="treeview {{ Request::is('foro/*') ? 'active' : '' }}">
+        <a href="#"><i class='fuente-icon'>f</i> <span>{{ trans('texto_menu.foro') }}</span> <i class="fa fa-caret-left  fa-lg pull-right"></i></a>
         <ul class="treeview-menu">
         @if(Auth::user()->hasRole('colaborador'))
           <li><a href="{{route('foro')}}">{{ trans('texto_menu.ver_foro') }}</a></li>
@@ -82,53 +83,51 @@
           @endif
         </ul>
       </li>
-      @if( Auth::user()->can('ver_trafico') )
-      <!--Trafico -->
-      <li class="treeview"><a href="{{ url('trafico') }}"><i class='fa fa-calendar'></i><span>{{  trans('texto_menu.trafico') }}</span></a></li>
+
+       <!--Ots-->
+      @if(Auth::user()->can('ver_ots'))
+      <li class="treeview {{ Request::is('ots/*') ? 'active' : '' }}">
+        <a href="#"><i class='fuente-icon'>o</i> <span>{{ trans('texto_menu.ots') }}</span> <i class="fa fa-caret-left  fa-lg pull-right"></i></a>
+        <ul class="treeview-menu">
+         <li><a href="{{ url('ots/listado') }}">{{  trans('texto_menu.listar_ot') }}</a></li>
+          @if(Auth::user()->can('crear_ots'))
+          <li><a href="{{ url('ots/crear') }}">{{  trans('texto_menu.crear_ot') }}</a></li>
+          @endif
+        </ul>
+      </li>
       @endif
 
+      <!--Clientes -->
       @if( Auth::user()->can('ver_clientes') )
-      <li class="treeview">
-        <a href="#"><i class='fuente-icon'>a</i> <span>Clientes</span> <i class="fa fa-angle-left pull-right"></i></a>
+      <li class="treeview {{ Request::is('clientes/*') ? 'active' : '' }}">
+        <a href="#"><i class='fuente-icon'>a</i> <span>Clientes</span> <i class="fa fa-caret-left pull-right fa-lg"></i></a>
         <ul class="treeview-menu">
           @if(Auth::user()->can('crear_clientes'))
-          <li><a href="{{ url('crear_cliente') }}">Crear cliente</a></li>
+          <li><a href="{{ url('clientes/crear') }}">Crear cliente</a></li>
           @endif
-          <li><a href="{{ url('listar_clientes') }}">Listar clientes</a></li>
+          <li><a href="{{ url('clientes/listado') }}">Listar clientes</a></li>
         </ul>
       </li>
       @endif
-
-      <!--Ots-->
-      @if(Auth::user()->can('ver_ots'))
-      <li class="treeview">
-        <a href="#"><i class='fuente-icon'>o</i> <span>{{ trans('texto_menu.ots') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
-        <ul class="treeview-menu">
-         <li><a href="{{ url('listar_ot') }}">{{  trans('texto_menu.listar_ot') }}</a></li>
-          @if(Auth::user()->can('crear_ots'))
-          <li><a href="{{ url('crear_ot') }}">{{  trans('texto_menu.crear_ot') }}</a></li>
-          @endif
-        </ul>
-      </li>
-      @endif
-
-      <li class="treeview">
-        <a href="#"><i class='fuente-icon'>e</i> <span>{{ trans('texto_menu.usuarios') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
+     <!-- Equipo -->
+      <li class="treeview {{ Request::is('equipo/*') ? 'active' : '' }}">
+        <a href="#"><i class='fuente-icon'>e</i> <span>{{ trans('texto_menu.usuarios') }}</span> <i class="fa fa-caret-left pull-right fa-lg"></i></a>
         <ul class="treeview-menu">
           @if(Auth::user()->can('crear_areas'))
-          <li><a href="{{ url('areas') }}">{{  trans('texto_menu.crear_areas') }}</a></li>
+          <li><a href="{{ url('equipo/areas') }}">{{  trans('texto_menu.crear_areas') }}</a></li>
           @endif
           @if(Auth::user()->can('crear_usuarios'))
-          <li><a href="{{ url('crear_usuario') }}">{{  trans('texto_menu.crear_usuarios') }}</a></li>
-          @endif
-          @if(Auth::user()->can('crear_usuarios'))
-          <li><a href="{{ url('usuarios') }}">{{  trans('texto_menu.listar_usuarios') }}</a></li>
+          <li><a href="{{ url('equipo/usuarios') }}">{{  trans('texto_menu.listar_usuarios') }}</a></li>
           @endif
           @if(Auth::user()->can('ver_listado_areas'))
-          <li><a href="{{ url('listar_areas') }}">{{  trans('texto_menu.listar_areas') }}</a></li>
+          <li><a href="{{ url('equipo/directorio') }}">{{  trans('texto_menu.listar_areas') }}</a></li>
           @endif
         </ul>
       </li>
+     <!--Trafico -->
+      @if( Auth::user()->can('ver_trafico') )
+      <li class="treeview  {{ Request::is('trafico') ? 'active' : '' }}"><a href="{{ url('trafico') }}"><i class='fa fa-calendar'></i><span>{{  trans('texto_menu.trafico') }}</span></a></li>
+      @endif
 
 
     </ul><!-- /.sidebar-menu -->

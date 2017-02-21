@@ -95,6 +95,10 @@
   color: #fff !important;
 }
 
+a:hover, a:focus {
+  text-decoration: none;
+}
+
 /*!
   Ionicons, v3.0.0-alpha.3
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/
@@ -8274,6 +8278,14 @@ body {
   }
 }
 
+.sidebar-menu .treeview.active .fa-caret-left {
+  margin-right: 9px;
+  -webkit-transition-timing-function: linear;
+  transition-timing-function: linear;
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
 .skin-blue .main-header {
   width: 100%;
 }
@@ -8294,6 +8306,13 @@ body {
   width: 107px;
 }
 
+.skin-blue .skin-blue .main-sidebar .sidebar-menu li a {
+  color: white;
+  font-weight: 300;
+  font-size: 1.1em;
+  text-decoration: none;
+}
+
 .skin-blue .main-sidebar {
   background-color: #002E60;
   color: white;
@@ -8307,6 +8326,7 @@ body {
 
 .skin-blue .main-sidebar .sidebar-menu li a {
   text-decoration: none;
+  color: white;
 }
 
 .skin-blue .main-sidebar .sidebar-menu li:hover > a {
@@ -8420,6 +8440,11 @@ body {
   background-color: #EDEDED;
 }
 
+.listar_areas_modulo .columnas_listar_areas .active {
+  background-color: #15BAEE;
+  color: white;
+}
+
 .listar_areas_modulo .columnas_listar_areas:nth-child(1) ul {
   margin-top: 15%;
   list-style: none;
@@ -8436,6 +8461,7 @@ body {
 .listar_areas_modulo .columnas_listar_areas:nth-child(1) ul li:hover {
   background-color: #15BAEE;
   color: white;
+  text-decoration: none;
 }
 
 .listar_areas_modulo .columnas_listar_areas:nth-child(1) ul a:focus {
@@ -8489,6 +8515,10 @@ body {
   padding-left: 5%;
 }
 
+.listar_areas_modulo .columnas_listar_areas:nth-child(2) ul li .text_user_listado strong {
+  color: #626262;
+}
+
 .listar_areas_modulo .columnas_listar_areas:nth-child(2) ul li img {
   width: 60px;
   height: 60px;
@@ -8500,6 +8530,7 @@ body {
   background-color: #15BAEE;
   color: white;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .listar_areas_modulo .columnas_listar_areas .info_content {

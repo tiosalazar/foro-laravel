@@ -12,7 +12,7 @@ class Area extends Model
   * @var array
   */
   protected $fillable = [
-    'nombre', 'extencion_tel', 'estado',
+    'nombre', 'extencion_tel','horas_consumidas','estado',
   ];
 
   /**

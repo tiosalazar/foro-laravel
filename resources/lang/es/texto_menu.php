@@ -13,15 +13,15 @@ return [
     |
     */
 
-    'ots'   => 'OTS',
+    'ots'   => 'Orden de Trabajo',
     'crear_ot' => 'Crear OT',
     'listar_ot' => 'Listar OT',
     'usuarios' => 'Equipo',
-    'listar_usuarios' => 'Listar Usuarios',
+    'listar_usuarios' => 'Usuarios',
     'crear_usuarios' => 'Crear Usuarios',
     'crear_roles' => 'Crear Roles',
-    'crear_areas' => 'Crear Areas',
-    'listar_areas' => 'Listado de Areas',
+    'crear_areas' => 'Areas',
+    'listar_areas' => 'Directorio',
     'organizacion' => 'Roles',
     'foro' => 'Foro',
     'ver_foro' => 'Ver Foro',

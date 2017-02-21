@@ -88,13 +88,13 @@ class AreaController extends Controller
     public function show($id)
     {
         $area = Area::findOrFail($id);
-        $area["total_horas"]='';
+        $area["total_horas"]=0;
         $area["coordinador"]='';
         $area["apellido_coordinador"]='';
         $area["email"]='';
         foreach ($area->User as $key => $value) {
             if ($value->estado != 0) {
-                $area["total_horas"] += $value['horas_disponible'];
+                $area["total_horas"] += (int)$value['horas_disponible'];
             }
             $value->Rol;
             if ($value->rol->name=='coordinador') {

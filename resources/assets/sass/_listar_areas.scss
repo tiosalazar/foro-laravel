@@ -21,7 +21,10 @@
 		padding-left: 0;
 		height: 450px;
 		background-color: #EDEDED;
-
+        .active{
+        	background-color: #15BAEE;
+			color: white;
+        }
 		//ul areas
 		&:nth-child(1){
 			ul{
@@ -36,6 +39,7 @@
 			    	&:hover{
 			    		background-color: #15BAEE;
 			    		color: white;
+			    		text-decoration: none;
 			    	}
 			    	
 			    }
@@ -89,6 +93,9 @@
 			    	.text_user_listado{
 			    		padding-top: 17px;
     					padding-left: 5%;
+    					strong{
+    						color: #626262;
+    					}
 			    	}
 			    	img{
 			    		width: 60px;
@@ -100,6 +107,7 @@
 			    		background-color: #15BAEE;
 			    		color: white;
 			    		cursor:pointer;
+			    		text-decoration: none;
 			    	}			    	
     			
 			    }

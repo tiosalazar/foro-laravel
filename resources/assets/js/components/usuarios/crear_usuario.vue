@@ -1,6 +1,6 @@
 <template >
-      <div class="box box-primary" id="crear_user">
-        <div class="box-header">
+      <div  :class="{'box box-primary': visualizar != 1 }" id="crear_user">
+        <div class="box-header" v-show="visualizar != 1">
             <h3>{{titulo}}</h3>
 
         </div>
@@ -9,7 +9,7 @@
             <form  role="form">
                 <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]">
                     <label for="nombre_usuario">Nombre</label>
-                    <input type="text" class="form-control" id="nombre_usuario" name="nombre" v-model="usuarios.nombre" placeholder="Nombre" v-validate data-vv-rules="required|alpha_spaces|max:50">
+                    <input type="text" class="form-control" id="nombre_usuario" name="nombre" v-model="usuarios.nombre" placeholder="Nombre" v-validate data-vv-rules="required|alpha_num_spaces|max:50">
                     <span  class="help-block error_absolute" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
                 </div>
                 <div class="form-group" v-bind:class="[errors_return.appelido,{ 'has-error': errors.has('appelido') }]">
@@ -30,7 +30,7 @@
                 </div>
                  <div class="form-group" v-bind:class="[errors_return.cargo,{ 'has-error': errors.has('cargo') }]">
                     <label for="cargo_usuario">Cargo</label>
-                    <input type="text" class="form-control" id="cargo_usuario" name="cargo" v-model="usuarios.cargo"  placeholder="Cargo" v-validate data-vv-rules="required|alpha_spaces|max:30">
+                    <input type="text" class="form-control" id="cargo_usuario" name="cargo" v-model="usuarios.cargo"  placeholder="Cargo" v-validate data-vv-rules="required|alpha_num_spaces|max:30">
                      <span  class="help-block error_absolute" v-show="errors.has('cargo')">{{ errors.first('cargo') }}</span>
                  </div>
                  <div class="form-group" v-bind:class="[errors_return.telefono,{ 'has-error': errors.has('telefono') }]">
@@ -73,25 +73,37 @@
 
            <button class="btn btn-primary" v-bind:class="{ 'hidden': valorboton }" @click="addUser">Guardar</button>
            <button class="btn btn-primary" v-bind:class="{ 'hidden': valorboton2 }" @click="updateaddUser">Actualizar</button>
-           <a href="/listar_areas/" v-bind:class="{ 'hidden': valorboton2 }"><button class="btn btn-default">Volver a listado áreas</button></a>
+           <a href="/equipo/directorio" v-bind:class="{ 'hidden': valorboton2 }"><button class="btn btn-default">Volver a listado áreas</button></a>
 
         </div>
     </div>
 </template>
 
 <script>
-    import VeeValidate, { Validator } from 'vee-validate';
+
 
     Vue.component('select_area',require('../herramientas/select_area.vue'));
     Vue.component('select_rol',require('../herramientas/select_rol.vue'));
+    import VeeValidate, { Validator } from 'vee-validate';
+    //Traducciones del validador
+    import messages from '../../es/es';
 
+    //Realizando los Use
+    // Merge the locales.
+    Validator.updateDictionary({es: { messages }});
+    // Install the plugin and set the locale.
+    Vue.use(VeeValidate, { locale: 'es' });
 
-    Vue.use(VeeValidate);
+    /*Validación Alfa Numerico con ñ*/
+    VeeValidate.Validator.extend('alpha_num_spaces', {
+    getMessage: field => 'El campo '+field+' solo debe contener letras y números.',
+    validate: value => /^[\u00F1Aa-\u00F1AZ-a-zA-Z0-9_ ]*$/.test(value)
+  });
 
 
     module.exports={
       components: {VeeValidate,Validator},
-      props: ['titulor','comando','edituserdata'],
+      props: ['titulor','comando','edituserdata','visualizar'],
       data(){
         return{
           usuarios:{},
@@ -175,6 +187,10 @@
                    this.usuarios={};
                     this.dato_refres=0;
                     this.dato_refres2=0;
+                    if($('#tabla_usuarios') ){
+                        $('#tabla_usuarios').DataTable().ajax.reload();
+                    }
+                    
                 }
                 },(response) => {
                    var that = this;
