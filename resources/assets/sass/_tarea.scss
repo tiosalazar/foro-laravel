@@ -75,7 +75,7 @@
 		}
 	}
 	.estados{
-		.multiselect__element{
+		/* .multiselect__element{
 			color:#fff;
 			&:nth-child(1){
 				background-color: $estado-ok;
@@ -98,7 +98,7 @@
 			&:nth-child(7){
 				background-color: $estado-pendiente;
 			}
-		}
+		} */
 	}
 }
 .label-estado{

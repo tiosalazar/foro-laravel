@@ -9,6 +9,7 @@ use App\Notifications\TareaCreada;
 use App\Notifications\TareaPendiente;
 use App\Notifications\TareaProgramada;
 use App\Notifications\TareaRealizada;
+use App\Notifications\TareaOK;
 use App\Notifications\TareaAtencionCuentas;
 use App\Notifications\TareaAtencionArea;
 use Illuminate\Http\Request;
@@ -276,14 +277,26 @@ class TareaController extends Controller
                             // Si el estado es Pendiente (7)
                             // Poner como encargado el coordinado del Área
                                $encargado_area = '';
-                            if ($request->estados_id == 7 || $request->estados_id == 5) {
+                            if ($tarea->estados_id == 7 || $tarea->estados_id == 5) {
 
                                 $encargado_area= User::where('roles_id',4)
                                                       ->where('areas_id', $tarea->areas_id)
                                                       ->first();
                                 $tarea->encargado_id = $encargado_area->id;
-                            }else if($request->estados_id == 4){
+                            }else if($tarea->estados_id == 4){
                                 $tarea->encargado_id = $tarea->usuarios_id;
+                            }else if($tarea->estados_id == 1){
+                                // Tarea OK, guardar horas en usuario->horas gastadas
+                                // y en Area->horas gastadas
+                                
+                                $colaborador = User::findOrFail($tarea->encargado_id);
+                                $colaborador->horas_gastadas = $tarea->tiempo_real;
+
+                                $area = Area::findOrFail($tarea->areas_id);
+                                $area->horas_consumidas +=$tarea->tiempo_real;
+
+                                $colaborador->update();
+                                $area->update();
                             }
 
 
@@ -296,6 +309,11 @@ class TareaController extends Controller
 
                                 if (!is_null($tarea->tiempo_real) && $tarea->tiempo_real !=0) {
                                     // $horas_area->increment('tiempo_real',$tarea->tiempo_real);
+
+                                    if ( $horas_area->tiempo_real + $tarea->tiempo_real > $horas_area->tiempo_estimado_ot) {
+                                        User::findOrFail($tarea->usuarios_id)
+                                        ->notify(new OtSinTiempo($makerBefore,$horas_area->ots));
+                                    }
                                     $horas_area->tiempo_real +=$tarea->tiempo_real;
                                     $horas_area->save();
                                 }else{
@@ -333,7 +351,12 @@ class TareaController extends Controller
                              * 6 - Espera
                              * 7 - Pendiente
                              */
-                            switch ($request->estados_id) {
+                            switch ($tarea->estados_id) {
+                                case '1':
+                                    // Enviar notificacion al nuevo encargado
+                                    User::findOrFail($tarea->usuarios_id)
+                                    ->notify(new TareaOK($makerBefore,$tarea));
+                                    break;
                                 case '2':
                                     $encargado_area= User::where('roles_id',4)
                                                       ->where('areas_id', $tarea->areas_id)
@@ -344,7 +367,7 @@ class TareaController extends Controller
                                     break;
                                 case '3':
                                     // Enviar notificacion al nuevo encargado
-                                    User::findOrFail($request->encargado_id)
+                                    User::findOrFail($tarea->encargado_id)
                                     ->notify(new TareaProgramada($makerBefore,$tarea));
                                     break;
                                 case '4':

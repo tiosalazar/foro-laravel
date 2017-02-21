@@ -167,9 +167,12 @@
 
           </div>
           <!-- /.box-body -->
-
-           <!-- <div v-if="rol_actual==='cuentas' || usuario_actual_comentar!=tarea_info.encargado_id  "> -->
-           <div v-if="id_usuario_actual!=tarea_info.encargado_id  ">
+           <div v-if=" (estado_solicitud.id==1 && rol_actual =='coordinador')" >
+                <div class="box-footer text-center">
+                  <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Actualizar</button>
+                </div>
+           </div>
+           <div v-else-if="id_usuario_actual!=tarea_info.encargado_id">
                  <div class="box-footer text-center">
                   <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Comentar</button>
                 </div>
@@ -359,6 +362,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
         var id_user_actual= this.id_usuario_actual;
         var tarea_id=this.tarea_info.id;
         var tiempo_real_usuario=this.tarea_info.tiempo_real;
+        let is_comment = (this.tarea_info.estados_id== 2)? 1: 0;
 
         //Datos a enviar
         let data = 
@@ -372,6 +376,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
               tareas_id:tarea_id,
               comentarios:descripcion_tarea,
               tiempo_real:tiempo_real_usuario,
+              is_comment:is_comment,
             };
         
         //Método que envia los datos al api rest
