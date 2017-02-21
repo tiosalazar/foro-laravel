@@ -9012,6 +9012,10 @@ body {
   width: 90px;
 }
 
+.navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a > p {
+  white-space: normal;
+}
+
 /*# sourceMappingURL=app.css.map */
 
 /*

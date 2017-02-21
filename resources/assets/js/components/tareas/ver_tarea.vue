@@ -362,6 +362,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
         var id_user_actual= this.id_usuario_actual;
         var tarea_id=this.tarea_info.id;
         var tiempo_real_usuario=this.tarea_info.tiempo_real;
+        let is_comment = (this.tarea_info.estados_id== 2)? 1: 0;
 
         //Datos a enviar
         let data = 
@@ -375,6 +376,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
               tareas_id:tarea_id,
               comentarios:descripcion_tarea,
               tiempo_real:tiempo_real_usuario,
+              is_comment:is_comment,
             };
         
         //Método que envia los datos al api rest

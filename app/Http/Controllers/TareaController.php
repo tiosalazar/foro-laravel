@@ -9,6 +9,7 @@ use App\Notifications\TareaCreada;
 use App\Notifications\TareaPendiente;
 use App\Notifications\TareaProgramada;
 use App\Notifications\TareaRealizada;
+use App\Notifications\TareaOK;
 use App\Notifications\TareaAtencionCuentas;
 use App\Notifications\TareaAtencionArea;
 use Illuminate\Http\Request;
@@ -296,6 +297,11 @@ class TareaController extends Controller
 
                                 if (!is_null($tarea->tiempo_real) && $tarea->tiempo_real !=0) {
                                     // $horas_area->increment('tiempo_real',$tarea->tiempo_real);
+
+                                    if ( $horas_area->tiempo_real + $tarea->tiempo_real > $horas_area->tiempo_estimado_ot) {
+                                        User::findOrFail($tarea->usuarios_id)
+                                        ->notify(new OtSinTiempo($makerBefore,$horas_area->ots));
+                                    }
                                     $horas_area->tiempo_real +=$tarea->tiempo_real;
                                     $horas_area->save();
                                 }else{
@@ -334,12 +340,9 @@ class TareaController extends Controller
                              */
                             switch ($tarea->estados_id) {
                                 case '1':
-                                    /*$encargado_area= User::where('roles_id',4)
-                                                      ->where('areas_id', $tarea->areas_id)
-                                                      ->first();
                                     // Enviar notificacion al nuevo encargado
-                                    User::findOrFail($encargado_area->id)
-                                    ->notify(new TareaRealizada($makerBefore,$tarea));*/
+                                    User::findOrFail($tarea->usuarios_id)
+                                    ->notify(new TareaOK($makerBefore,$tarea));
                                     break;
                                 case '2':
                                     $encargado_area= User::where('roles_id',4)
@@ -351,7 +354,7 @@ class TareaController extends Controller
                                     break;
                                 case '3':
                                     // Enviar notificacion al nuevo encargado
-                                    User::findOrFail($request->encargado_id)
+                                    User::findOrFail($tarea->encargado_id)
                                     ->notify(new TareaProgramada($makerBefore,$tarea));
                                     break;
                                 case '4':
