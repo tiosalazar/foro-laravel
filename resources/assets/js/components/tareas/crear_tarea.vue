@@ -180,7 +180,7 @@
 		        this.message='';
 		        var that = this;
 		        $.each(object, function(index, value) {
-		          that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+		          that.message += value+ '</br>';
 		          that.errors_return[index] = 'has-warning';
 		        });
 		    },

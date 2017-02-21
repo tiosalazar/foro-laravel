@@ -249,9 +249,13 @@ class TareaController extends Controller
             }
         // Es una actualziacion de la tarea
         }else{
-
-            $vl=$this->validatorAsignarTarea($request->all());
-            if ($vl->fails()) {
+            if (!($request->estados_id == 4 || $request->estados_id == 5|| $request->estados_id == 7)) {
+                $vl=$this->validatorAsignarTarea($request->all());
+            }else{
+                $vl=$this->validatorAtenciones($request->all());
+            }
+            
+            if ($vl->fails() ) {
                    $respuesta["error"]="Datos Incompletos";
                    $respuesta["codigo_error"]="Error con los datos";
                    $respuesta["mensaje"]="Error con los datos";
@@ -592,6 +596,7 @@ class TareaController extends Controller
             'ots_id' => 'required',
             'encargado_id' => 'required',
             'planeacion_fases_id' => 'required',
+            'prioridad_id' => 'required',
         ], $this->messages());
     }
 
@@ -606,6 +611,16 @@ class TareaController extends Controller
             'tiempo_estimado' => 'required',
             'fecha_entrega_area' => 'required',
             'fecha_entrega_cuentas' => 'required',
+        ],$this->messages());
+    }
+     /**
+    * Validar Asignar tarea
+    **/
+    protected function validatorAtenciones(array $data)
+    {
+        return Validator::make($data, [
+            'estados_id' => 'required',
+            'comentarios' => 'required',
         ],$this->messages());
     }
     /**
@@ -635,9 +650,9 @@ class TareaController extends Controller
             'planeacion_fases_id' => 'Fase de planeacion es requerido',
         ];*/
         return [
-            'required' => 'El campo :attribute es requerido.',
-            'min' => 'El campo :attribute debe tener minimo 3 caracteres.',
-            'numeric' => 'El campo :attribute debe ser numerico.',
+            'required' => 'El campo <b> :attribute </b> es requerido.',
+            'min' => 'El campo <b> :attribute </b> debe tener minimo 3 caracteres.',
+            'numeric' => 'El campo <b> :attribute </b> debe ser numerico.',
         ];
     }
 }

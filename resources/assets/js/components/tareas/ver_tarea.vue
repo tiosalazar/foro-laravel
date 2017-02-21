@@ -45,11 +45,11 @@
 
                 <div class="form-group">
                   <label ><strong>Persona Encargada</strong></label>
-                  <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas'">
+                  <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' ">
                     {{tarea_info.usuarioencargado.nombre}} - {{tarea_info.usuarioencargado.apellido}}
                   </div>
                   <div v-else>
-                    <select_usuarios area="coordinador"  :id_area_tarea='tarea_info.areas_id' :select="tarea_info.usuarioencargado"></select_usuarios>
+                    <select_usuarios area="coordinador"  :id_area_tarea='tarea_info.areas_id' ></select_usuarios>
                   </div>
                 </div>
 
@@ -58,7 +58,7 @@
                  <label for=""><strong>Fecha entrega Área</strong></label>
                 <div class="form group input-group date" v-bind:class="{ 'has-error': errors.has('fecha_entrega_area') }">
 
-                      <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' ">
+                      <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id == '4'|| estado_solicitud.id == '5'">
                            {{tarea_info.fecha_entrega_area}}
                         </div>
                        <div class="contenedor_fecha" v-else>
@@ -97,7 +97,7 @@
 
                 <label for=""><strong>Fecha entrega cuentas</strong></label>
                 <div class="form group input-group date" v-bind:class="{ 'has-error': errors.has('fecha_entrega_cuentas') }">
-                    <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas'">
+                    <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id == '4'|| estado_solicitud.id == '5'">
                            {{tarea_info.fecha_entrega_cuentas}}
                     </div>
                   <div class="contenedor_fecha" v-else>
@@ -132,7 +132,7 @@
               <div class="col-sm-4">
                 <div class="form-group" v-bind:class="{ 'has-error': errors.has('fecha_entrega_cuentas') }">
                   <label for=""><strong>Tiempo estimado Jefe</strong></label>
-                  <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas'">
+                  <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id == '4'|| estado_solicitud.id == '5'">
                       {{tarea_info.tiempo_estimado}}
                   </div>
                   <div v-else>
@@ -340,7 +340,9 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
   methods:{
      asignar_tarea:function(){
 
-      this.$validator.validateAll();
+      if (!(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5 || this.estado_solicitud.id == 7)) {
+        this.$validator.validateAll();
+      }
         if (this.errors.any()) {
           return false
         }
@@ -352,35 +354,26 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
         }
 
       //Datos a enviar al asignar la tarea y comentarios
-        var id_tarea= this.tarea_info.id;
-        var id_encargado=this.encargado.id;
-        var estado= this.estado_solicitud.id;
-        var horas_estimadas=this.tarea_info.tiempo_estimado;
-        var descripcion_tarea=this.descripcion;
-        var fecha_area=moment(this.tarea_info.fecha_entrega_area).format('YYYY-MM-DD');
-        var fecha_cuentas=moment(this.tarea_info.fecha_entrega_cuentas).format('YYYY-MM-DD');
-        var id_user_actual= this.id_usuario_actual;
-        var tarea_id=this.tarea_info.id;
-        var tiempo_real_usuario=this.tarea_info.tiempo_real;
-        let is_comment = (this.tarea_info.estados_id== 2)? 1: 0;
+        let fecha_area=(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5|| this.estado_solicitud.id == 7)?null:moment(this.tarea_info.fecha_entrega_area).format('YYYY-MM-DD');
+        let fecha_cuentas=(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5|| this.estado_solicitud.id == 7)?null:moment(this.tarea_info.fecha_entrega_cuentas).format('YYYY-MM-DD');
 
         //Datos a enviar
         let data = 
             {
-              encargado_id:id_encargado,
-              estados_id:estado,
-              tiempo_estimado:horas_estimadas,
+              encargado_id:this.encargado.id,
+              estados_id:this.estado_solicitud.id,
+              tiempo_estimado:this.tarea_info.tiempo_estimado,
               fecha_entrega_area:fecha_area,
               fecha_entrega_cuentas:fecha_cuentas,
-              usuarios_comentario_id:id_user_actual,
-              tareas_id:tarea_id,
-              comentarios:descripcion_tarea,
-              tiempo_real:tiempo_real_usuario,
-              is_comment:is_comment,
+              usuarios_comentario_id:this.id_usuario_actual,
+              tareas_id:this.tarea_info.id,
+              comentarios:this.descripcion,
+              tiempo_real:this.tarea_info.tiempo_real,
+              is_comment:(this.tarea_info.estados_id== 2 && this.rol_usuario_actual !='coordinador')? 1: 0,
             };
         
         //Método que envia los datos al api rest
-        this.$http.put(window._apiURL+'tareas/'+id_tarea, data)
+        this.$http.put(window._apiURL+'tareas/'+this.tarea_info.id, data)
         .then(function (respuesta) {
 
             var that = this;
