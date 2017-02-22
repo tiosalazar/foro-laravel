@@ -78,13 +78,13 @@ class FaseController extends Controller
                 'status' => Response::HTTP_OK,
                 'response_time' => microtime(true) - LARAVEL_START,
                 'obj' => $fase,
-                'msg' => 'Fase del Proyecto creada con exito',
+                'msg' => 'Fase del Proyecto creada con éxito',
                 ],Response::HTTP_OK);
            }catch(Exception $e){
             return response([
                 'status' => Response::HTTP_BAD_REQUEST,
                 'response_time' => microtime(true) - LARAVEL_START,
-                'error' => 'Fallo en la creacion de la Fase del proyecyo. Comunicate con soporte',
+                'error' => 'Fallo en la creacion de la Fase del proyecto. Comunicate con soporte',
                 'consola' =>$e->getMessage(),
                 'obj' => [],
                 'request' => $request->all()
@@ -146,13 +146,13 @@ class FaseController extends Controller
                 'status' => Response::HTTP_OK,
                 'response_time' => microtime(true) - LARAVEL_START,
                 'obj' => $fase,
-                'msg' => 'Fase del Proyecto creada con exito',
+                'msg' => 'Fase del Proyecto creada con éxito',
                 ],Response::HTTP_OK);
            }catch(Exception $e){
             return response([
                 'status' => Response::HTTP_BAD_REQUEST,
                 'response_time' => microtime(true) - LARAVEL_START,
-                'error' => 'Fallo en la creacion de la Fase del proyecyo. Comunicate con soporte',
+                'error' => 'Fallo en la creacion de la Fase del proyecto. Comunicate con soporte',
                 'consola' =>$e->getMessage(),
                 'obj' => [],
                 'request' => $request->all()

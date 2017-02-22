@@ -61,13 +61,13 @@ class TipoFaseController extends Controller
                 'status' => Response::HTTP_OK,
                 'response_time' => microtime(true) - LARAVEL_START,
                 'obj' => $fase,
-                'msg' => 'Tipo de Fase del Proyecto creada con exito',
+                'msg' => 'Tipo de Fase del Proyecto creada con éxito',
                 ],Response::HTTP_OK);
            }catch(Exception $e){
             return response([
                 'status' => Response::HTTP_BAD_REQUEST,
                 'response_time' => microtime(true) - LARAVEL_START,
-                'error' => 'Fallo en la creacion de la Tipo de Fase del proyecyo. Comunicate con soporte',
+                'error' => 'Fallo en la creacion de la Tipo de Fase del proyecto. Comunicate con soporte',
                 'consola' =>$e->getMessage(),
                 'obj' => [],
                 'request' => $request->all()
@@ -129,13 +129,13 @@ class TipoFaseController extends Controller
                 'status' => Response::HTTP_OK,
                 'response_time' => microtime(true) - LARAVEL_START,
                 'obj' => $fase,
-                'msg' => 'Tipo de Fase del Proyecto creada con exito',
+                'msg' => 'Tipo de Fase del Proyecto creada con éxito',
                 ],Response::HTTP_OK);
            }catch(Exception $e){
             return response([
                 'status' => Response::HTTP_BAD_REQUEST,
                 'response_time' => microtime(true) - LARAVEL_START,
-                'error' => 'Fallo en la creacion de la Tipo de Fase del proyecyo. Comunicate con soporte',
+                'error' => 'Fallo en la creacion de la Tipo de Fase del proyecto. Comunicate con soporte',
                 'consola' =>$e->getMessage(),
                 'obj' => [],
                 'request' => $request->all()
