@@ -169,7 +169,15 @@ class FaseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $fase= Planeacion_fase::findOrFail($id);
+        $fase->estado = 1;
+        $fase->save();
+        return response([
+                'status' => Response::HTTP_OK,
+                'response_time' => microtime(true) - LARAVEL_START,
+                'obj' => $fase,
+                'msg' => 'Fase del Proyecto borrada con éxito',
+                ],Response::HTTP_OK);
     }
 
     /**
@@ -181,10 +189,12 @@ class FaseController extends Controller
     {
 
         try {
-            $fases = Planeacion_tipo::all();
+            $fases = Planeacion_tipo::with(['fases_planeacion'=> function ($query) {
+                    $query->where('estado', '!=', '1');
+            }])->get();
             $output = array();
             foreach ($fases as $key => $value) {
-                $output[] = array('tipo'=> $value->nombre, 'fases' => $value->Fases_planeacion,'tipo_array' => $value);
+                $output[] = array('tipo'=> $value->nombre, 'fases' => $value->fases_planeacion,'tipo_array' => $value);
             }
             return response()->json($output);
         }catch(Exception $e){

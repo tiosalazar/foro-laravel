@@ -18,7 +18,7 @@ class TipoFaseController extends Controller
      */
     public function index()
     {
-        $tipo_fase=Planeacion_tipo::all();
+        $tipo_fase=Planeacion_tipo::where('estado','!=','1')->orWhereNull('estado')->get();
         return response()->json($tipo_fase);
     }
 
@@ -152,7 +152,26 @@ class TipoFaseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $fase= Planeacion_tipo::findOrFail($id);
+            $fase->estado = 1;
+            $fase->save();
+             return response([
+                    'status' => Response::HTTP_OK,
+                    'response_time' => microtime(true) - LARAVEL_START,
+                    'obj' => $fase,
+                    'msg' => 'Tipo de Fase del Proyecto borrada con éxito',
+                    ],Response::HTTP_OK);
+        } catch (Exception $e) {
+            return response([
+                'status' => Response::HTTP_BAD_REQUEST,
+                'response_time' => microtime(true) - LARAVEL_START,
+                'error' => 'Fallo en la creacion de la Tipo de Fase del proyecto. Comunicate con soporte',
+                'consola' =>$e->getMessage(),
+                'obj' => [],
+                'request' => $request->all()
+                ],Response::HTTP_BAD_REQUEST);
+        }
     }
 
     protected function validatorCrearTipoFase(array $data)
