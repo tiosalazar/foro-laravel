@@ -50,7 +50,7 @@
       },
       methods:{
           fetchTips: function(){
-               this.$http.get('/list_fases/')
+               this.$http.get(window._baseURL+'/list_fases')
              .then(function(respuesta){
                 this.estados=respuesta.body;
              }.bind(this));

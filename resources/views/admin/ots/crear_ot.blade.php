@@ -7,9 +7,10 @@
 
 @section('main-content')
 	<div class="container-fluid spark-screen">
-	<div class="col-md-8 col-md-offset-2">
-				<span  class="span_titulo1">Crear</span><span  class="span_titulo2" > OT</span>
-	</div>
+
+	<div class="titulos_foro">
+		<h3 class="box-title"><span class="span_descripcion1">Crear</span> <span class="span_descripcion2"> OT</span></h3>
+	 </div>
 
 		<div class="row Formulario_OT">
 			<div class="col-md-8 col-md-offset-2">

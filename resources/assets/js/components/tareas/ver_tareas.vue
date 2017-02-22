@@ -1,6 +1,6 @@
 <template>
-	<div class="tarea">
-        <table class="table table-striped table-hover datatable-foro table-bordered dataTable no-footer" id="tabla_tareas">
+	<div class="tarea  table-responsive">
+        <table class="table  table-striped table-hover table-responsive datatable-foro table-bordered dataTable no-footer" role="grid" id="tabla_tareas" cellspacing="0" width="100%">
 		  <thead>
 		        <tr>
 		          <th >OT</th>
@@ -110,7 +110,7 @@
 						   	}
 					}
 				],
-				autoWidth: true,
+				autoWidth: false,
 				responsive: true,
 				language: {
 			        "sProcessing":     "Procesando...",
