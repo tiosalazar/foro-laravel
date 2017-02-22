@@ -130,6 +130,12 @@
       @if( Auth::user()->can('ver_trafico') )
       <li class="treeview  {{ Request::is('trafico') ? 'active' : '' }}"><a href="{{ url('trafico') }}"><i class='fa fa-calendar'></i><span>{{  trans('texto_menu.trafico') }}</span></a></li>
       @endif
+      <!-- .Trafico -->
+      <!--Trafico -->
+      @if( Auth::user()->can('ver_trafico') )
+      <li class="treeview  {{ Request::is('fases') ? 'active' : '' }}"><a href="{{ url('fases') }}"><i class='fa fa-paper-plane'></i><span>{{  trans('texto_menu.fases_planeacion') }}</span></a></li>
+      @endif
+      <!-- .Trafico -->
 
 
     </ul><!-- /.sidebar-menu -->
