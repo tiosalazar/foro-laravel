@@ -56,14 +56,14 @@ class TipoFaseController extends Controller
             $fase->fill($request->all());
             try
             {
-               $fase->save();
-               return response([
+             $fase->save();
+             return response([
                 'status' => Response::HTTP_OK,
                 'response_time' => microtime(true) - LARAVEL_START,
                 'obj' => $fase,
                 'msg' => 'Tipo de Fase del Proyecto creada con éxito',
                 ],Response::HTTP_OK);
-           }catch(Exception $e){
+         }catch(Exception $e){
             return response([
                 'status' => Response::HTTP_BAD_REQUEST,
                 'response_time' => microtime(true) - LARAVEL_START,
@@ -124,14 +124,14 @@ class TipoFaseController extends Controller
             $fase->fill($request->all());
             try
             {
-               $fase->update();
-               return response([
+             $fase->update();
+             return response([
                 'status' => Response::HTTP_OK,
                 'response_time' => microtime(true) - LARAVEL_START,
                 'obj' => $fase,
                 'msg' => 'Tipo de Fase del Proyecto creada con éxito',
                 ],Response::HTTP_OK);
-           }catch(Exception $e){
+         }catch(Exception $e){
             return response([
                 'status' => Response::HTTP_BAD_REQUEST,
                 'response_time' => microtime(true) - LARAVEL_START,
@@ -156,12 +156,12 @@ class TipoFaseController extends Controller
             $fase= Planeacion_tipo::findOrFail($id);
             $fase->estado = 1;
             $fase->save();
-             return response([
-                    'status' => Response::HTTP_OK,
-                    'response_time' => microtime(true) - LARAVEL_START,
-                    'obj' => $fase,
-                    'msg' => 'Tipo de Fase del Proyecto borrada con éxito',
-                    ],Response::HTTP_OK);
+            return response([
+                'status' => Response::HTTP_OK,
+                'response_time' => microtime(true) - LARAVEL_START,
+                'obj' => $fase,
+                'msg' => 'Tipo de Fase del Proyecto borrada con éxito',
+                ],Response::HTTP_OK);
         } catch (Exception $e) {
             return response([
                 'status' => Response::HTTP_BAD_REQUEST,

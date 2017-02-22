@@ -59,7 +59,6 @@ class FaseController extends Controller
         $vl=$this->validatorCrearFase($request->all());
         if ($vl->fails())
         {
-               // return response()->json($request->all());
             return response([
                 'status' => Response::HTTP_BAD_REQUEST,
                 'response_time' => microtime(true) - LARAVEL_START,
@@ -73,14 +72,14 @@ class FaseController extends Controller
             $fase->fill($request->all());
             try
             {
-               $fase->save();
-               return response([
+             $fase->save();
+             return response([
                 'status' => Response::HTTP_OK,
                 'response_time' => microtime(true) - LARAVEL_START,
                 'obj' => $fase,
                 'msg' => 'Fase del Proyecto creada con éxito',
                 ],Response::HTTP_OK);
-           }catch(Exception $e){
+         }catch(Exception $e){
             return response([
                 'status' => Response::HTTP_BAD_REQUEST,
                 'response_time' => microtime(true) - LARAVEL_START,
@@ -141,14 +140,14 @@ class FaseController extends Controller
             $fase->fill($request->all());
             try
             {
-               $fase->update();
-               return response([
+             $fase->update();
+             return response([
                 'status' => Response::HTTP_OK,
                 'response_time' => microtime(true) - LARAVEL_START,
                 'obj' => $fase,
                 'msg' => 'Fase del Proyecto creada con éxito',
                 ],Response::HTTP_OK);
-           }catch(Exception $e){
+         }catch(Exception $e){
             return response([
                 'status' => Response::HTTP_BAD_REQUEST,
                 'response_time' => microtime(true) - LARAVEL_START,
@@ -173,11 +172,11 @@ class FaseController extends Controller
         $fase->estado = 1;
         $fase->save();
         return response([
-                'status' => Response::HTTP_OK,
-                'response_time' => microtime(true) - LARAVEL_START,
-                'obj' => $fase,
-                'msg' => 'Fase del Proyecto borrada con éxito',
-                ],Response::HTTP_OK);
+            'status' => Response::HTTP_OK,
+            'response_time' => microtime(true) - LARAVEL_START,
+            'obj' => $fase,
+            'msg' => 'Fase del Proyecto borrada con éxito',
+            ],Response::HTTP_OK);
     }
 
     /**
@@ -190,7 +189,7 @@ class FaseController extends Controller
 
         try {
             $fases = Planeacion_tipo::with(['fases_planeacion'=> function ($query) {
-                    $query->where('estado', '!=', '1');
+                $query->where('estado', '!=', '1');
             }])->get();
             $output = array();
             foreach ($fases as $key => $value) {
