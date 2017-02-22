@@ -106,7 +106,7 @@
 						"targets": [6],
 						"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
-						    	return '<a href="/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block"   aria-label="View">Ver tarea</a>';
+						    	return '<a href="'+window._baseURL+'/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block"   aria-label="View">Ver tarea</a>';
 						   	}
 					}
 				],
