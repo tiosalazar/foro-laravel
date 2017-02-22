@@ -17,6 +17,7 @@ class FasesPlaneacion extends Migration
             $table->increments('id');
             $table->string('nombre',85);
             $table->integer('planeacion_tipos_id')->unsigned();
+            $table->tinyInteger('estado')->default(0);
             $table->timestamps();
         });
     }

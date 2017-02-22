@@ -18,7 +18,7 @@ class TipoFaseController extends Controller
      */
     public function index()
     {
-        $tipo_fase=Planeacion_tipo::where('estado','!=','1')->orWhereNull('estado')->get();
+        $tipo_fase=Planeacion_tipo::where('estado','!=','1')->get();
         return response()->json($tipo_fase);
     }
 
