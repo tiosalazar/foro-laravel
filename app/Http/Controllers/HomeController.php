@@ -48,6 +48,7 @@ class HomeController extends Controller
         //Id del area del usuario conectado
         $userauth = Auth::user()->area->id;
 
+        //Consulto el coordinador del area
         $role=Role::where('name','coordinador')->get();
         $estado=Estado::where('nombre','Espera')->get();
 
@@ -55,7 +56,7 @@ class HomeController extends Controller
                     ->where('areas_id', $userauth)->get();
 
         if ( isset($userdata[0])) {
-             $user=$userdata[0]->nombre;
+             $user=$userdata[0]->nombre.' '.$userdata[0]->apellido;
         }else{
             $user='No asignado';
         }
