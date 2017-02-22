@@ -55,12 +55,12 @@
 								<div class="nav-tabs-custom">
 									<ul class="nav nav-tabs" >
 										@foreach ($ot['tiempos_x_area'] as $area)
-										<li class="{{{ $area['area']['nombre']=='Creatividad' ? 'active' : '' }}}" ><a  data-id="tab_{{$area['area']['id']}}" href="#tab_{{$area['area']['id']}}" data-toggle="tab">{{$area['area']['nombre']}}</a></li>
+										<li class="{{{ $area['area']['nombre']==$ot['tiempos_x_area'][0]['area']['nombre'] ? 'active' : '' }}}" ><a  data-id="tab_{{$area['area']['id']}}" href="#tab_{{$area['area']['id']}}" data-toggle="tab">{{$area['area']['nombre']}}</a></li>
 										@endforeach
 									</ul>
 									<div class="tab-content" >
 										@foreach ($ot['tiempos_x_area'] as $area)
-										<div class="tab-pane {{{ $area['area']['nombre']=='Creatividad' ? 'active' : '' }}}"  id="tab_{{$area['area']['id']}}">
+										<div class="{{{ $area['area']['nombre']==$ot['tiempos_x_area'][0]['area']['nombre'] ? 'active' : '' }}}"  id="tab_{{$area['area']['id']}}">
 											<div class="row"><div class="col-md-12">
 												<div class="row desc-ot with-border">
 													<div class="col-sm-6 ">

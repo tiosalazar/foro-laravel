@@ -24,8 +24,8 @@ class ClienteController extends Controller
       return Datatables::of($clientes)
       ->addColumn('action', function($cliente) {
             // return url('/editar_cliente/' . $cliente->id);
-
-            return (Auth::user()->hasRole('owner'))?'<a href="editar_cliente/'.$cliente->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Editar</a><button type="button" id="cli-'.$cliente->id.'" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente" data-toggle="modal" data-target="#myModal">Borrar</button>':'';
+            return (Auth::user()->hasRole('owner'))?'<a href="editar/'.$cliente->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Editar</a><button type="button" id="cli-'.$cliente->id.'" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente" data-toggle="modal" data-target="#myModal">Borrar</button>':'';
+             // return '<a href="/clientes/editar/'.$cliente->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Editar</a><button type="button" id="cli-'.$cliente->id.'" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente" data-toggle="modal" data-target="#myModal">Borrar</button>';
 
         })
 

@@ -1,12 +1,12 @@
 <template id="rol_list">
    <div>
-      <div class="box box-default collapsed-box" id="main-app">
+      <div class="box box-primary collapsed-box" id="main-app">
 
-        <div class="box-header with-border">
+        <div class="box-header box-primary with-border">
             <h3 class="box-title">Crear nuevo rol</h3>
 
             <div class="box-tools pull-right">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+              <button type="button" class="btn btn-box-tool btn-info" data-widget="collapse"><i class="fa fa-plus"></i></button>
            </div>
 
         </div>
@@ -20,7 +20,7 @@
                 </div>
                 <div class="form-group required" v-bind:class="[errors_return.Nombre,{ 'has-error': errors.has('Nombre') }]">
                     <label for="nombre_rol">Nombre a Mostrar   <sup>*</sup> </label>
-                    <input type="text" v-model="rolarray.display_name"  class="form-control" name="Nombre" id="Nombre_rol" data-vv-as="Nombre a mostrar" placeholder="Nombre del rol"  v-validate data-vv-rules="required|min:3" >
+                    <input type="text" v-model="rolarray.display_name"  class="form-control" name="Nombre" id="Nombre_rol" data-vv-as="Nombre a mostrar" placeholder="Nombre del rol"  v-validate data-vv-rules="required|alpha_num_spaces|min:3" >
                      <span  class="help-block" v-show="errors.has('Nombre')">{{ errors.first('Nombre') }}</span>
                 </div>
                 <div class="form-group required" v-bind:class="[errors_return.description,{ 'has-error': errors.has('description') }]">
@@ -57,9 +57,13 @@
 
 <script>
 
-import VeeValidate, { Validator } from 'vee-validate';
-
-  Vue.use(VeeValidate);
+  import VeeValidate, { Validator } from 'vee-validate';
+  import messages from '../../es/es';
+    //Realizando los Use
+    // Merge the locales.
+    Validator.updateDictionary({es: { messages }});
+    // Install the plugin and set the locale.
+    Vue.use(VeeValidate, { locale: 'es' });
 
       Vue.component(
         'listar-roles',
@@ -67,11 +71,16 @@ import VeeValidate, { Validator } from 'vee-validate';
       );
 
 
+
    module.exports= {
       components: {VeeValidate,Validator},
        data(){
         return{
-          rolarray: {},
+          rolarray: {
+            name:'',
+            display_name:'',
+            description:''
+          },
           id_rol_passing:{},
            message :'',
           errors_return:{

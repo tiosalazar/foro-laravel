@@ -2,7 +2,7 @@
 <template>
 
 <div>
-  		<div class="box">
+  		<div class="box box-primary">
 
             <div class="box-header">
               <h3 class="box-title">Listado de Roles</h3>
@@ -42,7 +42,7 @@
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">×</span></button>
-                        <h4 class="modal-title">Edición de Rol</h4>
+                        <h4 class="modal-title">Editar Rol {{nombre_rol_edit.display_name}}</h4>
                       </div>
                       <div class="modal-body">
                           <div class="form-group">
@@ -51,7 +51,7 @@
                           </div>
                         <div class="form-group required" v-bind:class="[errors_return.Nombre,{ 'has-error': errors.has('Nombre') }]">
                         <label for="nombre_rol_edit">Editar nombre del rol <sup>*</sup></label>
-                        <input type="text" class="form-control" id="nombre_rol_edit" name="Nombre" v-model="nombre_rol_edit.display_name" placeholder="Nuevo nombre" v-validate data-vv-rules="required|alpha_num|min:3">
+                        <input type="text" class="form-control" id="nombre_rol_edit" name="Nombre" v-model="nombre_rol_edit.display_name" placeholder="Nuevo nombre" v-validate data-vv-rules="required|alpha_num_spaces|min:3">
                           <span  class="help-block" v-show="errors.has('Nombre')">{{ errors.first('Nombre') }}</span>
                         </div>
 
@@ -96,7 +96,9 @@ import VeeValidate, { Validator } from 'vee-validate';
           return{
             listroles:[],
             id_rol_edit:[],
-            nombre_rol_edit:[],
+            nombre_rol_edit:{
+              display_name:'',
+            },
             option_toast:{
               timeOut: 5000,
               "positionClass": "toast-top-center",

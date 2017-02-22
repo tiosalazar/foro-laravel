@@ -108,10 +108,13 @@
               //  "visible": (tableClientes.data.action == '')?false:true,
   							"data": null,
   						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-                       if(data =='')
-                           var column =   tableClientes.column(5)
+                       if(data ==''){
+                           var column =   tableClientes.column(5);
                            column.visible(false);
   						       	     return '';
+                         }else{
+                          return data;
+                         }
   						       }
   						   }
               ],

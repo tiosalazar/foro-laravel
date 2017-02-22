@@ -3,13 +3,13 @@
             <div class="col-xs-6 col-md-12">
               <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]" >
                 <label>Nombre</label>
-                <input type="text" v-model="cliente.nombre" v-validate data-vv-rules="required|alpha_num|min:3" name="nombre" id="nombre" class="form-control" required="required">
+                <input type="text" v-model="cliente.nombre" v-validate data-vv-rules="required|alpha_num_spaces|min:3" name="nombre" id="nombre" class="form-control" required="required">
                 <span  class="help-block" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
               </div>
               <!-- /.form-group -->
               <div class="form-group" v-bind:class="[errors_return.nombre_contacto,{ 'has-error': errors.has('nombre_contacto') }]">
-                <label>Nombre de Contacto</label>
-                <input type="text" v-model="cliente.nombre_contacto" v-validate data-vv-rules="alpha|min:3"  name="nombre_contacto" id="nombre_contacto" class="form-control">
+                <label>Nombre de contacto</label>
+                <input type="text" v-model="cliente.nombre_contacto" data-vv-as="Nombre de contacto" v-validate data-vv-rules="required|alpha_num_spaces|min:3"  name="nombre_contacto" id="nombre_contacto" class="form-control">
                 <span  class="help-block" v-show="errors.has('nombre_contacto')">{{ errors.first('nombre_contacto') }}</span>
               </div>
               <!-- /.form-group -->
@@ -18,7 +18,7 @@
             <div class="col-xs-6 col-md-12">
               <div class="form-group" v-bind:class="[errors_return.nit,{ 'has-error': errors.has('nit') }]">
                 <label>NIT</label>
-                <input type="text" v-model="cliente.nit" v-validate data-vv-rules="required|alpha_num|min:3" name="nit" id="nit" class="form-control" required="required">
+                <input type="text" v-model="cliente.nit" data-vv-as="Nit" v-validate data-vv-rules="required|min:6" name="nit" id="nit" class="form-control" required="required">
                 <span  class="help-block" v-show="errors.has('nit')">{{ errors.first('nit') }}</span>
               </div>
               <!-- /.form-group -->
@@ -57,13 +57,28 @@
 		// Install the plugin and set the locale.
 		Vue.use(VeeValidate, { locale: 'es' });
 
+		   /*Validación Alfa Numerico con ñ*/
+		  /*  VeeValidate.Validator.extend('alpha_num_spaces', {
+		    getMessage: field => 'El campo '+field+' solo debe contener letras y números.',
+		    validate: value => /^[\u00F1Aa-\u00F1AZ-a-zA-Z0-9_ ]*$/.test(value)
+		  });*/
+
 	module.exports =  {
 		components: {VeeValidate,Validator},
 		props: ['cliente_url'],
 		data () {
 			return {
 				isActive:true,
-				cliente: {},
+				cliente: {
+					nombre:'',
+					nombre_contacto:'',
+					nit:'',
+					email:'',
+					telefono:''
+
+
+
+				},
 				message :'',
 				agregar:true,
 				option_toast:{

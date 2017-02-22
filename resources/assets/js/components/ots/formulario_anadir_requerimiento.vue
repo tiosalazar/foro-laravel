@@ -15,10 +15,11 @@
 					<!-- Custom Tabs -->
 					<div class="nav-tabs-custom">
 						<ul class="nav nav-tabs" >
-							<li v-for="area in listado_areas"  :class="{'active': area.nombre=='Creatividad' } " ><a @click="tabs_areas($event,area.id)" :data-id="'tab_'+area.id" :href="'#tab_'+area.id" data-toggle="tab">{{area.nombre}}</a></li>
+							<li v-for="area in listado_areas"  :class="{'active': area.nombre==listado_areas[0].nombre } " ><a @click="tabs_areas($event,area.id)" :data-id="'tab_'+area.id" :href="'#tab_'+area.id" data-toggle="tab">{{area.nombre}}</a></li>
+						
 						</ul>
 						<div class="tab-content" >
-							<div class="tab-pane"  v-for="area in listado_areas" :class="{ 'active': area.nombre=='Creatividad'  }"  :id="'tab_'+area.id">
+							<div class="tab-pane"  v-for="area in listado_areas" :class="{'active': area.nombre==listado_areas[0].nombre } "  :id="'tab_'+area.id">
 								<div class="row"> <anadir_requerimiento :area="area.nombre" :limpiar_datos="limpiarDatos" :id_area="area.id" :realizar_validado="validar_requerimientos" :horas_disponibles="h_Disponibles" ></anadir_requerimiento></div>
 								<div style="height:42px"></div>
 								<div id="secion_compras">

@@ -63,7 +63,7 @@ class OtCreada extends Notification
             'id_tarea' => $this->ot->id,
             'nombre' => $this->user->nombre,
             'cargo' => $this->user->cargo,
-            'descripcion' => $this->user->nombre. ' a creado una ot',
+            'descripcion' => $this->user->nombre. ' a creado una ot con referencia: '.$this->ot->referencia.', nombre : '.$this->ot->nombre.' y valor: '.$this->ot->valor.'',
             'created_at' => date('Y-m-d H:i:s'),
             'img_perfil' => $this->user->img_perfil,
             'link'          => '/ots/visualizar/'.$this->ot->id,
