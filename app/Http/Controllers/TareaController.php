@@ -108,7 +108,7 @@ class TareaController extends Controller
                 try {
                     // Obtengo las horas de la OT
                     // segun el area correspondiente a la Tarea
-                    $horas_area = Tiempos_x_Area::with('area','ots.area')
+                    $horas_area = Tiempos_x_Area::with('area','ots')
                     ->where('ots_id',$tarea->ots_id)
                     ->where('areas_id',$tarea->areas_id)
                     ->first();
@@ -116,7 +116,7 @@ class TareaController extends Controller
 
                     // Validar si tiene horas suficientes para hacer la Tarea
                     if (!is_null($horas_area->tiempo_estimado_ot) &&
-                        $horas_area->tiempo_estimado_ot >= $horas_area->tiempo_real) {
+                        $horas_area->tiempo_estimado_ot + $horas_area->tiempo_extra >= $horas_area->tiempo_real) {
 
                         $tarea->save();
                         $maker = User::findOrFail($request->usuarios_id);
@@ -136,7 +136,7 @@ class TareaController extends Controller
                         $admins = User::where('roles_id',1)->get();
                         $maker = User::findOrFail($tarea->usuarios_id);
                         foreach ($admins as $key => $admin) {
-                            $admin->notify(new OtSinTiempo($maker,$horas_area->ots));
+                            $admin->notify(new OtSinTiempo($maker,$horas_area));
                         }
                         return response([
                             'status' => Response::HTTP_BAD_REQUEST,
@@ -157,7 +157,6 @@ class TareaController extends Controller
                     'error' => 'ERR_04',
                     'msg' => 'excepcion, fallo la petición',
                     'consola' =>$e->getMessage(),
-                    'admins' =>$admins,
                     'obj' =>[]
                     ],Response::HTTP_BAD_REQUEST);
                }

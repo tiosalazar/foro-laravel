@@ -20,10 +20,10 @@ class OtSinTiempo extends Notification
      * @param App/Ot $ot
      * @return void
      */
-    public function __construct($user,$ot)
+    public function __construct($user,$tiempos_area)
     {
         $this->user = $user;
-        $this->ot = $ot;
+        $this->tiempos_area = $tiempos_area;
     }
 
     /**
@@ -60,13 +60,13 @@ class OtSinTiempo extends Notification
     public function toArray($notifiable)
     {
         return [
-            'id_tarea'      => $this->ot->id,
+            'id_tarea'      => $this->tiempos_area->ots->id,
             'nombre'        => $this->user->nombre,
             'cargo'         => $this->user->cargo,
-            'descripcion'   => $this->user->nombre. ' intento crear una tarea pero no posee más tiempo disponible.',
+            'descripcion'   => $this->user->nombre. ' intento crear una tarea en la OT '.$this->tiempos_area->ots->nombre.' pero no posee más tiempo disponible.',
             'created_at'    => date('Y-m-d H:i:s'),
             'img_perfil'    => $this->user->img_perfil,
-            'link'          => '/ots/visualizar/'.$this->ot->id
+            'link'          => '/ots/visualizar/'.$this->tiempos_area->ots->id
         ];
     }
 }

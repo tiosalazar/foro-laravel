@@ -12,7 +12,7 @@ class Planeacion_fase extends Model
   * @var array
   */
   protected $fillable = [
-    'nombre',
+    'nombre','planeacion_tipos_id',
   ];
 
   /**

@@ -183,6 +183,12 @@
     return view('admin.notificaciones.listar_notificaciones');
   });
 
+  // Fases del Proyecto
+  Route::get('/fases',function ($value=''){
+    return view('admin.fases_proyecto.crear_fase');
+  });
+  // Route::get('/fases','FasesController@index');
+
 
 
   });

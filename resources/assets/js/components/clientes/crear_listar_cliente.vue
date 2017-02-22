@@ -86,6 +86,7 @@
       var tableClientes = $('#tabla_clientes').DataTable({
               processing: true,
               serverSide: false,
+              deferRender: true,
               'ajax': {
                  'url': window._apiURL+"clientes",
                  'type': 'GET',
@@ -103,7 +104,7 @@
                   {data: 'action', name: 'action', orderable: false, searchable: false}
               ],
               columnDefs: [
-  						  {
+  					/*	  {
   							"targets": [5],
               //  "visible": (tableClientes.data.action == '')?false:true,
   							"data": null,
@@ -113,7 +114,7 @@
                            column.visible(false);
   						       	     return '';
   						       }
-  						   }
+  						   }*/
               ],
               autoWidth: true,
               responsive: true,

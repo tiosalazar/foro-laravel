@@ -36,6 +36,7 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
      Route::resource('usuarios_tarea', 'UserController@UsuariosArea');
      Route::resource('roles', 'RolController');
      Route::resource('fases', 'FaseController');
+     Route::resource('tipos_fase', 'TipoFaseController');
      Route::resource('tareas', 'TareaController');
      // OTs
      Route::resource('ots', 'OtController');

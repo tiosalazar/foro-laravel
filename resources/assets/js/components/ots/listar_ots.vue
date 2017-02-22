@@ -58,6 +58,7 @@
 					$('#tabla_usuarios').DataTable({
 						processing: true,
 						serverSide: false,
+						deferRender: true,
 						'ajax': {
 						    'url': window._apiURL+"ots",
 						    'type': 'GET',

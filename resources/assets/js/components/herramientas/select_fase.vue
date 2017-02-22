@@ -3,6 +3,7 @@
   <div >
       <multiselect
       :options="estados"
+      select-label=""
       selected-label=""
       deselect-label=""
       group-values="fases" 
@@ -12,6 +13,7 @@
       :allow-empty="false"
       @input="updateSelected"
       @close="onTouch"
+      @open="fetchTips"
       :value="value"
       :option-height="104">
       </multiselect>

@@ -76,7 +76,7 @@ import moment from 'moment'
 				Echo.private('App.User.'+this.id)
 				.notification( (notification) => {
 					console.log(notification);
-					this.notificaciones.push({data:notification,time_ago:moment().fromNow()});
+					this.notificaciones.unshift({data:notification,time_ago:moment().fromNow()});
 					toastr.success(notification.descripcion,'',this.option_toast);
 					Push.clear();
 					Push.create(notification.nombre, {

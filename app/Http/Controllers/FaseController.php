@@ -59,7 +59,42 @@ class FaseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Validaciòn de las entradas por el metodo POST
+        $vl=$this->validatorCrearFase($request->all());
+      if ($vl->fails())
+         {
+               // return response()->json($request->all());
+            return response([
+                'status' => Response::HTTP_BAD_REQUEST,
+                'response_time' => microtime(true) - LARAVEL_START,
+                'msg' => 'Error al crear la Fase del Proyecto',
+                'error' => 'ERR_01',
+                'obj' =>$vl->errors()
+                ],Response::HTTP_BAD_REQUEST);
+         }else
+             {
+                    $fase=new Planeacion_fase;
+                    $fase->fill($request->all());
+                try
+                {
+                     $fase->save();
+                      return response([
+                            'status' => Response::HTTP_OK,
+                            'response_time' => microtime(true) - LARAVEL_START,
+                            'obj' => $fase,
+                            'msg' => 'Fase del Proyecto creada con exito',
+                        ],Response::HTTP_OK);
+                }catch(Exception $e){
+                    return response([
+                        'status' => Response::HTTP_BAD_REQUEST,
+                        'response_time' => microtime(true) - LARAVEL_START,
+                        'error' => 'Fallo en la creacion de la Fase del proyecyo. Comunicate con soporte',
+                        'consola' =>$e->getMessage(),
+                        'obj' => [],
+                        'request' => $request->all()
+                    ],Response::HTTP_BAD_REQUEST);
+               }
+         }
     }
 
     /**
@@ -94,7 +129,42 @@ class FaseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+         //Validaciòn de las entradas por el metodo POST
+        $vl=$this->validatorCrearFase($request->all());
+      if ($vl->fails())
+         {
+               // return response()->json($request->all());
+            return response([
+                'status' => Response::HTTP_BAD_REQUEST,
+                'response_time' => microtime(true) - LARAVEL_START,
+                'msg' => 'Error al crear la Fase del Proyecto',
+                'error' => 'ERR_01',
+                'obj' =>$vl->errors()
+                ],Response::HTTP_BAD_REQUEST);
+         }else
+             {
+                    $fase= Planeacion_fase::findOrFail($id);
+                    $fase->fill($request->all());
+                try
+                {
+                     $fase->update();
+                      return response([
+                            'status' => Response::HTTP_OK,
+                            'response_time' => microtime(true) - LARAVEL_START,
+                            'obj' => $fase,
+                            'msg' => 'Fase del Proyecto creada con exito',
+                        ],Response::HTTP_OK);
+                }catch(Exception $e){
+                    return response([
+                        'status' => Response::HTTP_BAD_REQUEST,
+                        'response_time' => microtime(true) - LARAVEL_START,
+                        'error' => 'Fallo en la creacion de la Fase del proyecyo. Comunicate con soporte',
+                        'consola' =>$e->getMessage(),
+                        'obj' => [],
+                        'request' => $request->all()
+                    ],Response::HTTP_BAD_REQUEST);
+               }
+         }
     }
 
     /**
@@ -120,7 +190,7 @@ class FaseController extends Controller
             $fases = Planeacion_tipo::all();
             $output = array();
             foreach ($fases as $key => $value) {
-                $output[] = array('tipo'=> $value->nombre, 'fases' => $value->Fases_planeacion);
+                $output[] = array('tipo'=> $value->nombre, 'fases' => $value->Fases_planeacion,'tipo_array' => $value);
             }
             return response()->json($output);
         }catch(Exception $e){
@@ -131,5 +201,12 @@ class FaseController extends Controller
                 'consola' =>$e,
                 ],Response::HTTP_BAD_REQUEST);
         }
+    }
+    protected function validatorCrearFase(array $data)
+    {
+        return Validator::make($data, [
+            'nombre' => 'required|min:4',
+            'planeacion_tipos_id' => 'required|numeric',
+        ]);
     }
 }
