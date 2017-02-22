@@ -114,6 +114,7 @@ class HomeController extends Controller
       $ext=$archivo->guessClientExtension();
 
       if (($ext=='jpg') OR ($ext=='png') OR ($ext=='jpeg') OR( $ext=='gif') ) {
+        
         //Guardar imagen
        $ext='png';
 
