@@ -35,12 +35,12 @@
                  </div>
                  <div class="form-group" v-bind:class="[errors_return.telefono,{ 'has-error': errors.has('telefono') }]">
                     <label for="telefono_usuario">Teléfono</label>
-                    <input type="number" class="form-control" id="telefono_usuario" name="telefono"  v-model="usuarios.telefono" placeholder="Teléfono" v-validate data-vv-rules="required|numeric|max:30">
+                    <input type="text" class="form-control" id="telefono_usuario" name="telefono"  v-model="usuarios.telefono" placeholder="Teléfono" v-validate data-vv-rules="required|numeric|max:30">
                      <span  class="help-block error_absolute" v-show="errors.has('telefono')">{{ errors.first('telefono') }}</span>
                  </div>
                   <div class="form-group" v-bind:class="[errors_return.horas_disponible,{ 'has-error': errors.has('horas_disponible') }]">
                     <label for="horas_usuario">Horas Disponibles</label>
-                    <input type="number" class="form-control" id="horas_usuario" name="horas_disponible" v-model="usuarios.horas_disponible"  placeholder="Horas Disponibles" v-validate data-vv-rules="required|decimal|max:30">
+                    <input type="text" class="form-control" id="horas_usuario" name="horas_disponible" v-model="usuarios.horas_disponible"  placeholder="Horas Disponibles" v-validate data-vv-rules="required|decimal|max:30">
                      <span  class="help-block error_absolute" v-show="errors.has('horas_disponible')">{{ errors.first('horas_disponible') }}</span>
                  </div>
                   <div class="form-group" v-bind:class="[errors_return.fecha_nacimiento,{ 'has-error': errors.has('fecha_nacimiento') }]">

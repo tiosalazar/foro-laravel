@@ -99,6 +99,16 @@ a:hover, a:focus {
   text-decoration: none;
 }
 
+.titulos_foro h3 {
+  margin-left: 2%;
+  margin-bottom: 30px;
+}
+
+.titulos_foro h3 span {
+  font-weight: bold;
+  font-size: 27px;
+}
+
 /*!
   Ionicons, v3.0.0-alpha.3
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/
@@ -8326,7 +8336,7 @@ body {
 .skin-blue .main-sidebar .user-panel {
   margin-top: 15%;
   margin-bottom: 10%;
-  padding: 17px;
+  padding: 19px;
 }
 
 .skin-blue .main-sidebar .sidebar-menu li a {

@@ -8,7 +8,9 @@
 @section('main-content')
 
 	<section>
+	<div class="titulos_foro">
+	   <h3 class="box-title"><span class="span_descripcion1">Foro</span> <span class="span_descripcion2">Desarrollo</span></h3>
+    </div>
 	   <ver_tareas :area="3"></ver_tareas>
-			
 	</section>
 @endsection

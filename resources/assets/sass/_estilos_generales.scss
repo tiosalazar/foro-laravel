@@ -78,3 +78,14 @@
 a:hover, a:focus {
 text-decoration: none;
 }
+
+.titulos_foro{
+	h3{
+		margin-left: 2%;
+		margin-bottom: 30px;
+		span{
+			font-weight: bold;
+			font-size: 27px;
+		}
+	}
+}
