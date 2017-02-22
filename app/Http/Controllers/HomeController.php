@@ -55,6 +55,7 @@ class HomeController extends Controller
         $userdata= User::where('roles_id',$role[0]->id)
                     ->where('areas_id', $userauth)->get();
 
+        //Si encuentra al encargado de area lo muestro, si no; no asignado
         if ( isset($userdata[0])) {
              $user=$userdata[0]->nombre.' '.$userdata[0]->apellido;
         }else{
@@ -63,9 +64,11 @@ class HomeController extends Controller
 
         //Condicional si es el coordinador envio todas las tareas del area
         if (Auth::user()->rol->name=='coordinador') {
+
           //Si el estado es 7 pendiente muestro al coordinador las tareas de esa área con ese estado
           $tareas = Tarea::where('areas_id', $userauth)->where('estados_id', 5)->orwhere('estados_id', 7)->get();
-  
+          
+          //For each con las relaciones de las tareas con ot, id y cliente para mostrarlo en el listado del perfil
           foreach ($tareas as $key => $value) {
             $value->ot->cliente;
             $value['url']="/ver_tarea/".$value->id;
@@ -73,6 +76,7 @@ class HomeController extends Controller
           }
 
         }else{
+
           //Si No es un coordinador muestro las tareas del area si el id del encargado es igual al usuario logeado
            $tareas = Tarea::where('encargado_id', Auth::user()->id)->where('estados_id','!=', 2)->get();
            foreach ($tareas as $key => $value) {
@@ -92,8 +96,12 @@ class HomeController extends Controller
 
        $user_actual=Auth::user()->nombre;
        $user_id_actual=Auth::user()->id;
+
+       //Eliminar espacios del nombre
+       $user_sin_espacios=str_replace(' ', '', $user_actual);
+
       //NOmbre
-       $nombre= $user_actual.'_'.$user_id_actual;
+       $nombre= $user_sin_espacios.'_'.$user_id_actual;
       //Archivo
       $archivo= request()->file('image');
       //Creo la imagen y la redimensiono
