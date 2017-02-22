@@ -536,9 +536,9 @@ class OtController extends Controller
       // Si empieza con valor numerico buscar por referencia
       // de lo contrario por nombre
       if (is_numeric($query)) {
-         $ot = Ot::with(['cliente','usuario'])->where('referencia', 'like', '%'.$query.'%')->get();
+         $ot = Ot::with(['cliente','usuario'])->where('estados_id', 8)->where('referencia', 'like', '%'.$query.'%')->get();
       } else {
-         $ot = Ot::with(['cliente','usuario'])->where('nombre', 'like', '%'.$query.'%')->get();
+         $ot = Ot::with(['cliente','usuario'])->where('estados_id', 8)->where('nombre', 'like', '%'.$query.'%')->get();
       }
       return response()->json($ot);
    }
