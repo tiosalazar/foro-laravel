@@ -1,6 +1,6 @@
 <template>
   <form class="row" name="agregar_fase" id="agregar_cliente">
-  <div class="box-body">
+  <!-- <div class="box-body"> -->
     <div class="col-xs-12 col-sm-12">
       <select_tipo_fase :tipos="tipo_fase"></select_tipo_fase>
     </div>
@@ -12,14 +12,14 @@
               </div>
               <div class="form-group">
                   <label>Descripción</label>
-                  <textarea class="form-control" rows="3" placeholder="Descripcion del tipo de fase" name="descripcion" v-model="fase.descripcion"></textarea>
+                  <textarea class="form-control" rows="2" placeholder="Descripcion del tipo de fase" name="descripcion" v-model="fase.descripcion"></textarea>
                 </div>
               <!-- /.form-group -->
             </div>
             <div class="col-xs-6 col-md-12">
               <button type="button"v-on:click="editfase" class="btn btn-block btn-success">Editar</button>
             </div>
-            </div>
+            <!-- </div> -->
             </form>
           <!-- /.row -->
 </template>
