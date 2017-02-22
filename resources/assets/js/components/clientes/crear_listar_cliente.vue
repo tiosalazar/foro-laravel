@@ -1,10 +1,15 @@
 <template >
   <div>
-
-    <section class="col-md-12">
-    </section>
-    <section class="col-xs-12">
-         <table class="table table-bordered table-striped table-hover datatable-foro" id="tabla_clientes">
+  <section class="col-xs-12 ">
+<div class="row">
+        <div class="col-xs-12">
+          <div class="box box-primary" >
+            <!-- /.box-header -->
+            <div class="box-header with-border">
+              <h3 class="box-title">Listado de Clientes</h3>
+            </div>
+            <div class="box-body table-responsive ">
+                 <table class="table   datatable-foro table-bordered dataTable no-footer" role="grid" id="tabla_clientes" cellspacing="0" width="100%">
           <thead>
             <tr>
               <th>NIT</th>
@@ -17,6 +22,15 @@
             </tr>
         </thead>
         </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+ </section>
+    <section class="col-xs-12 ">
+      
    </section>
    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use App\Notifications\OtTiempoExtra;
 use App\Notifications\OtTiempoExtraAprobado;
 use App\Notifications\OtCreada;
+use App\Notifications\OtCambioEstado;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
 use Illuminate\Http\Response;
@@ -27,7 +28,7 @@ class OtController extends Controller
 {
 
 
-   
+
 
    /**
    * Display a listing of the resource.
@@ -42,17 +43,17 @@ class OtController extends Controller
 
       return Datatables::of( $ots)
       ->addColumn('fecha_inicio', function($ots) {
-             return  $ots->getFormatFecha($ots->fecha_inicio);
-        })
-        ->addColumn('fecha_final', function($ots) {
-              return $ots->getFormatFecha($ots->fecha_final); 
-         })
-       ->addColumn('acciones', function($ots) {
-              $ver_ot='<a href="visualizar/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver OT</a>';
-              $editar_ot=(Auth::user()->can('editar_ots') )?'<a href="editar/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit" aria-label="View">Editar OT</a>':'';
-              return $ver_ot.$editar_ot;
-         })
-        ->make(true);
+        return  $ots->getFormatFecha($ots->fecha_inicio);
+     })
+      ->addColumn('fecha_final', function($ots) {
+       return $ots->getFormatFecha($ots->fecha_final); 
+    })
+      ->addColumn('acciones', function($ots) {
+       $ver_ot='<a href="visualizar/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver OT</a>';
+       $editar_ot=(Auth::user()->can('editar_ots') )?'<a href="editar/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit" aria-label="View">Editar OT</a>':'';
+       return $ver_ot.$editar_ot;
+    })
+      ->make(true);
 
    }
 
@@ -88,11 +89,12 @@ class OtController extends Controller
             'msg' => 'Error al crear la OT',
             'error' => 'ERR_01',
             'obj' =>$vl->errors()
-         ],Response::HTTP_BAD_REQUEST);
+            ],Response::HTTP_BAD_REQUEST);
       }else
       {
          try
          {
+            //Inicio una transacción por si falla algún ingreso no quede registro en ninguna tabla
             DB::beginTransaction();
             $ot=new Ot;
             $ot->fill($data['datos_encabezado']);
@@ -139,9 +141,9 @@ class OtController extends Controller
             return response([
                'status' => Response::HTTP_OK,
                'response_time' => microtime(true) - LARAVEL_START,
-               'msg' => 'La OT ha sido creada con exito !! ',
+               'msg' => 'La OT ha sido creada con exito !! ',//Mensaje a mostrar
                'obj' => $ot
-            ],Response::HTTP_OK);
+               ],Response::HTTP_OK);
 
          }catch(Exception $e){
             DB::rollback();
@@ -151,7 +153,7 @@ class OtController extends Controller
                'error_creacion' => 'fallo_en_la_creacion',
                'consola' =>$e->getMessage(),
                'request' => $request->all()
-            ],Response::HTTP_BAD_REQUEST);
+               ],Response::HTTP_BAD_REQUEST);
          }
       }
 
@@ -187,7 +189,7 @@ class OtController extends Controller
          $compra->Tipo_Compra;
          $compra->Divisa;
          $array_temporal= array('areas_id'=>$value['areas_id'],'tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'descripcion' => $value['descripcion'],
-         'provedor'=> $value['provedor'] , 'valor'=>  $this->formatMoney($value['valor'],false), 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
+            'provedor'=> $value['provedor'] , 'valor'=>  $this->formatMoney($value['valor'],false), 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
          array_push($ingreso,$array_temporal);
       }
 
@@ -248,7 +250,7 @@ class OtController extends Controller
 
                // $array_temporal['area']=$value['areas_id'];
                $array_temporal= array('tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'model_desc' => $value['descripcion'],
-               'model_provedor'=> $value['provedor'] , 'model_valor'=>  $value['valor'], 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
+                  'model_provedor'=> $value['provedor'] , 'model_valor'=>  $value['valor'], 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
                array_push($ingreso,$array_temporal);
                $data['compras']['compras']=$ingreso;
                //array_push($data['compras'],  $array_temporal);
@@ -258,12 +260,6 @@ class OtController extends Controller
 
       }
       array_push($data['final_com'], $data['compras']);
-
-      //var_dump( $data['final_com']);
-      // return response()->json( $data['final_com']);
-
-
-      //var_dump($data);
       return view('admin.ots.editar_ot')->with('arregloOT', json_encode($data));
    }
 
@@ -290,7 +286,7 @@ class OtController extends Controller
             'msg' => 'Error al actualizar la OT',
             'error' => 'ERR_01',
             'obj' =>$vl->errors()
-         ],Response::HTTP_BAD_REQUEST);
+            ],Response::HTTP_BAD_REQUEST);
       }else
       {
 
@@ -357,9 +353,9 @@ class OtController extends Controller
             return response([
                'status' => Response::HTTP_OK,
                'response_time' => microtime(true) - LARAVEL_START,
-               'msg' => 'Se han Actualizado los datos de la OT ',
+               'msg' => 'Se han Actualizado los datos de la OT ', //Mensaje a mostrar en el Front
                'obj' => $ot
-            ],Response::HTTP_OK);
+               ],Response::HTTP_OK);
 
          }catch(Exception $e){
             // DB::rollback();
@@ -369,7 +365,7 @@ class OtController extends Controller
                'error' => 'fallo_al_actualizar',
                'consola' =>$e->getMessage(),
                'request' =>$request->all()
-            ],Response::HTTP_BAD_REQUEST);
+               ],Response::HTTP_BAD_REQUEST);
          }
 
       }
@@ -390,7 +386,9 @@ class OtController extends Controller
 
 
    /**
-   * Update the specified resource in storage.
+   * Función la cual se encarga de actualizar el estado de la OT, de la vista visualizar
+   * Guarda el cambio en el historial de modificaciones
+   * Notifica al usuario owner cuando se cambia el estado.
    *
    * @param  \Illuminate\Http\Request  $request
    * @param  int  $id
@@ -451,7 +449,7 @@ class OtController extends Controller
 
                   // $array_temporal['area']=$value['areas_id'];
                   $array_temporal= array('tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'model_desc' => $value['descripcion'],
-                  'model_provedor'=> $value['provedor'] , 'model_valor'=>  $value['valor'], 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
+                     'model_provedor'=> $value['provedor'] , 'model_valor'=>  $value['valor'], 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
                   array_push($ingreso,$array_temporal);
                   $data['compras']['compras']=$ingreso;
                   //array_push($data['compras'],  $array_temporal);
@@ -464,13 +462,19 @@ class OtController extends Controller
          $historico->compras_ot=json_encode($data['final_com']);
          $historico->save();
 
+         //Notificar al usuario owner cuando cambian el estado de una OT
+            $maker=Auth::user();
+            $Rol=Role::where('name','owner')->first();
+            $owner=User::where('roles_id',$Rol->id)->first();
+            $owner->notify(new OtCambioEstado($maker,$ot));
+
 
          return response([
             'status' => Response::HTTP_OK,
             'response_time' => microtime(true) - LARAVEL_START,
-            'msg' => 'Se ha Actualizado el estado de la ot con Exito',
+            'msg' => 'Se ha Actualizado el estado de la ot con Exito',//Mensaje a mostrar en el Front
             'obj' =>$ot
-         ],Response::HTTP_OK);
+            ],Response::HTTP_OK);
 
       }catch(Exception $e){
          return response([
@@ -479,7 +483,7 @@ class OtController extends Controller
             'error' => 'fallo_en_la_actualizacion',
             'consola' =>$e->getMessage(),
             'request' => $request->all()
-         ],Response::HTTP_BAD_REQUEST);
+            ],Response::HTTP_BAD_REQUEST);
       }
 
    }
@@ -504,18 +508,18 @@ class OtController extends Controller
       // y usuario que la creó
       try {
          $ot= OT::findOrFail($request->id);
+          //Notificar al usuario owner cuando solicitan horas extra para una OT
          $maker=Auth::user();
-
          $Rol=Role::where('name','owner')->first();
          $owner=User::where('roles_id',$Rol->id)->first();
-
          $owner->notify(new OtTiempoExtra($maker,$ot,$request->horas_adicionales,$request->area_nombre));
+
          return response([
             'status' => Response::HTTP_OK,
             'response_time' => microtime(true) - LARAVEL_START,
             'msg' => 'Se ha Notificado correctamente',
             'obj' =>$ot
-         ],Response::HTTP_OK);
+            ],Response::HTTP_OK);
       } catch (Exception $e) {
          return response([
             'status' => Response::HTTP_BAD_REQUEST,
@@ -523,7 +527,7 @@ class OtController extends Controller
             'error' => 'fallo_en_la_notificacion',
             'consola' =>$e->getMessage(),
             'request' => $request->all()
-         ],Response::HTTP_BAD_REQUEST);
+            ],Response::HTTP_BAD_REQUEST);
       }
 
    }
@@ -558,7 +562,7 @@ class OtController extends Controller
          'clientes_id' => 'required',
          'usuarios_id' => 'required',
          'estados_id' => 'required',
-      ]);
+         ]);
    }
    /*DSO 24-01-2016 Funcion para validar los campos al crear un usuario
    * entra el arreglo de datos
@@ -574,7 +578,7 @@ class OtController extends Controller
          'clientes_id' => 'required',
          'usuarios_id' => 'required',
          'estados_id' => 'required',
-      ]);
+         ]);
    }
 
    public function formatMoney($number, $fractional=false) {

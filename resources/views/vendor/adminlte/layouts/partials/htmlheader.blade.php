@@ -18,8 +18,7 @@
 
 
     <link href="{{url('/')}}/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-
-
+    <link href="{{url('/')}}/css/responsive.dataTables.css" rel="stylesheet" type="text/css" />
 
 
     <script>

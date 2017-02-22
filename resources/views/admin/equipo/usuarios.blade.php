@@ -34,7 +34,7 @@
 				<div class="box-header with-border">
 					<h3 class="box-title">Listado de Usuarios</h3>
 				</div>
-				<div class="box-body">
+				<div class="box-body table-responsive">
 					<list_usuarios></list_usuarios>
 				</div>
 			</div>

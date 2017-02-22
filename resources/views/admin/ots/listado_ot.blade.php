@@ -16,7 +16,7 @@
 				<div class="box-header with-border">
 					<h3 class="box-title">Listado de OTS</h3>
 				</div>
-				<div class="box-body">
+				<div class="box-body  table-responsive">
 					<listar_ots></listar_ots>
 				</div>
 			</div>
