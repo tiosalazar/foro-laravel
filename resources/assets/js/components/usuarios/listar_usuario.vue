@@ -4,16 +4,16 @@
 		<table class="table table-striped table-hover  table-bordered dataTable no-footer" id="tabla_usuarios">
 		  <thead>
 		        <tr>
-		          <th >Nombre</th>
+		          <th >Nombres</th>
 		          <th >Apellidos</th>
 		          <th >Email</th>
 		          <th >Cargo</th>
 		          <th >Teléfono</th>
-		          <th >Horas Disponibles</th>
+		          <th >Horas del mes</th>
 		          <th >Rol</th>
-		          <th >Area</th>
+		          <th >Área</th>
 		          <th >Estado</th>
-		          <th >Edicion</th>
+		          <th >Edición</th>
 		        </tr>
 		    </thead>
 
@@ -42,22 +42,9 @@
 
 			}
 		},
-		 created: function(){
-
-	      this.list_usuarios_api();
-
-	     },
 	     mounted () {
-
-
-    	},
-		methods:{
-
-			list_usuarios_api: function(){
-
-                 setTimeout(function(){
-
-                 	$('#tabla_usuarios').DataTable({
+	     	setTimeout(function(){
+             $('#tabla_usuarios').DataTable({
                  	   processing: true,
 				       serverSide: false,
 							 'ajax': {
@@ -67,17 +54,18 @@
 	 						        request.setRequestHeader("Authorization", 'Bearer '+Laravel.api_token);
 	 						    }
 	 						},
+	 					deferRender: true,	
 						   columns: [
 
 						       { data: 'nombre', name: 'nombre' },
 						       { data: 'apellido', name: 'apellido' },
 						       { data: 'email', name: 'email' },
 						       { data: 'cargo', name: 'cargo' },
-						       { data: 'telefono', name: 'telefono' },
-						       { data: 'horas_disponible', name: 'horas_disponible' },
+						       { data: 'telefono', name: 'telefono', orderable: false, searchable: false },
+						       { data: 'horas_disponible', name: 'horas_disponible', searchable: false },
 						       { data: 'roles_id', name: 'roles_id' },
 						       { data: 'areas_id', name: 'areas_id' },
-						       { data: 'estado', name: 'estado' },
+						       { data: 'estado', name: 'estado',  orderable: false, searchable: false },
 						       ],
 						  columnDefs: [
 						   {
@@ -101,12 +89,12 @@
 						   responsive: true,
 						   language: {
 						        "sProcessing":     "Procesando...",
-							    "sLengthMenu":     "Mostrar _MENU_ registros",
+							    "sLengthMenu":     "Mostrar _MENU_ usuarios",
 							    "sZeroRecords":    "No se encontraron resultados",
 							    "sEmptyTable":     "Ningún dato disponible en esta tabla",
-							    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-							    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-							    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+							    "sInfo":           "Mostrando usuarios del _START_ al _END_ de un total de _TOTAL_ usuarios",
+							    "sInfoEmpty":      "Mostrando usuarios del 0 al 0 de un total de 0 usuarios",
+							    "sInfoFiltered":   "(filtrado de un total de _MAX_ usuarios)",
 							    "sInfoPostFix":    "",
 							    "sSearch":         "Buscar:",
 							    "sUrl":            "",
@@ -125,13 +113,10 @@
 						    },
 
 			             	});
-			             }, 0);
+             }, 1);
 
+    	},
 
-          }
-
-
-		}
 	}
 
 

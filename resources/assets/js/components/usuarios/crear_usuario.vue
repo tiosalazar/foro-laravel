@@ -39,12 +39,12 @@
                      <span  class="help-block error_absolute" v-show="errors.has('telefono')">{{ errors.first('telefono') }}</span>
                  </div>
                   <div class="form-group" v-bind:class="[errors_return.horas_disponible,{ 'has-error': errors.has('horas_disponible') }]">
-                    <label for="horas_usuario">Horas Disponibles</label>
+                    <label for="horas_usuario">Horas al mes</label>
                     <input type="text" class="form-control" id="horas_usuario" name="horas_disponible" v-model="usuarios.horas_disponible"  placeholder="Horas Disponibles" v-validate data-vv-rules="required|decimal|max:30">
                      <span  class="help-block error_absolute" v-show="errors.has('horas_disponible')">{{ errors.first('horas_disponible') }}</span>
                  </div>
                   <div class="form-group" v-bind:class="[errors_return.fecha_nacimiento,{ 'has-error': errors.has('fecha_nacimiento') }]">
-                    <label for="fecha_nacimiento">Fecha Nacimiento</label>
+                    <label for="fecha_nacimiento">Fecha de nacimiento</label>
                     <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" v-model="usuarios.fecha_nacimiento"  placeholder="Fecha nacimiento" v-validate data-vv-rules="required">
                      <span  class="help-block error_absolute" v-show="errors.has('fecha_nacimiento')">{{ errors.first('fecha_nacimiento') }}</span>
                  </div>
@@ -60,7 +60,7 @@
                  <!-- Campo estado que solo se muestra cuando vamos a actualizar el usuario -->
                   <div class="form-group" v-bind:class="{ 'hidden': valorboton2 }">
                     <label for="horas_usuario">Estado</label>
-                    <select name="estado" id="" class="form-control" v-model="usuarios.estado">
+                    <select name="estado" id="" class="form-control select_custom" v-model="usuarios.estado">
                       <option value="0">Inactivo</option>
                       <option value="1">Activo</option>
                     </select>
@@ -97,7 +97,20 @@
     /*Validación Alfa Numerico con ñ*/
     VeeValidate.Validator.extend('alpha_num_spaces', {
     getMessage: field => 'El campo '+field+' solo debe contener letras y números.',
-    validate: value => /^[\u00F1Aa-\u00F1AZ-a-zA-Z0-9_ ]*$/.test(value)
+    validate: value => /^[\u00F1Aa-\u00F1AZ-a-zA-Z0-9_  \u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da]*$/.test(value)
+        /*
+        \u00e1 = á
+        \u00e9 = é
+        \u00ed = í
+        \u00f3 = ó
+        \u00fa = ú
+        \u00c1 = Á
+        \u00c9 = É
+        \u00cd = Í
+        \u00d3 = Ó
+        \u00da = Ú
+        \u00f1 = ñ
+        \u00d1 = Ñ*/
   });
 
 
@@ -106,7 +119,16 @@
       props: ['titulor','comando','edituserdata','visualizar'],
       data(){
         return{
-          usuarios:{},
+           usuarios:{
+              nombre:'',
+              apellido:'',
+              email:'',
+              password:'',
+              cargo:'',
+              telefono:'',
+              horas_disponible:'',
+              fecha_nacimiento:''
+           },
            message :'',
            titulo:'',
            validacioncontrasena:'required',

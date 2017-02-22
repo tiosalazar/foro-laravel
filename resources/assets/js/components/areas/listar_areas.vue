@@ -1,7 +1,7 @@
 <template>
   <div>
 
-      <div class="box">
+      <div class="box box-primary">
             <div class="box-header">
               <h3 class="box-title">Listado de áreas</h3>
             </div>

@@ -99,6 +99,7 @@ a:hover, a:focus {
   text-decoration: none;
 }
 
+<<<<<<< HEAD
 .titulos_foro h3 {
   margin-left: 2%;
   margin-bottom: 30px;
@@ -107,6 +108,10 @@ a:hover, a:focus {
 .titulos_foro h3 span {
   font-weight: bold;
   font-size: 27px;
+=======
+.select_custom {
+  height: 33px !important;
+>>>>>>> origin/dsalazar
 }
 
 /*!
@@ -8336,7 +8341,11 @@ body {
 .skin-blue .main-sidebar .user-panel {
   margin-top: 15%;
   margin-bottom: 10%;
+<<<<<<< HEAD
   padding: 19px;
+=======
+  padding: 20px 10px;
+>>>>>>> origin/dsalazar
 }
 
 .skin-blue .main-sidebar .sidebar-menu li a {

@@ -5,7 +5,7 @@
       <tr>
         <th>Nombre</th>
         <th>Cargo</th>
-        <th>Descripcion</th>
+        <th>Descripción</th>
         <th>Fecha</th>
         <th>Acciones</th>
       </tr>
@@ -52,7 +52,7 @@
             "targets": [4],
             "data": null,
                "render": function(data, type, full) { // Devuelve el contenido personalizado
-                  return '<a href="'+data.data.link+'" class="btn btn-primary btn-xs btn-flat btn-block"   aria-label="View">Ver item</a>';
+                  return '<a href="'+_baseURL+data.data.link+'" class="btn btn-primary btn-xs btn-flat btn-block"   aria-label="View">Ver item</a>';
                 }
           }
                    ],

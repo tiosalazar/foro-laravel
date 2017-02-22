@@ -61,7 +61,7 @@
       },
       methods:{
           fetchTips: function(){
-               this.$http.get(window._apiURL+'areas/')
+               this.$http.get(window._apiURL+'areas')
              .then(function(respuesta){
                      this.areas=respuesta.body;
              }.bind(this));

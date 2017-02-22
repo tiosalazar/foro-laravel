@@ -14,10 +14,14 @@
 			<!-- box -->
 			<div class="box box-primary">
 				<div class="box-header with-border">
+				  @if( Request::is('clientes/editar/*') != 1)
 					<h3 class="box-title">Crear Cliente</h3>
+					@else
+					<h3 class="box-title">Editar Cliente</h3>
+					@endif
 				</div>
 				<div class="box-body">
-					<crear_cliente_form :cliente_url="{{ $cliente }}"></crear_cliente_form>
+					<crear_cliente_form :cliente_url="{{ $cliente }}" editar="1"></crear_cliente_form>
 				</div>
 			</div>
 			<!-- ./ box -->

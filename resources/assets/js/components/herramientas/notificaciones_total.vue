@@ -26,7 +26,7 @@
 	    	readNotifications:function() {
 	    		// console.log('fucker')
 	    		// this.$parent.$emit('asd','asd');
-	    		this.$http.get(window._baseURL+'/leer_notificaciones/').then(response => {
+	    		this.$http.get(window._baseURL+'/leer_notificaciones').then(response => {
 					console.log(response.body)
 		            this.no_leidas=0;
 		        })

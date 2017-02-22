@@ -32,7 +32,7 @@
                         <!-- inner menu: contains the actual data -->
                             <notificacion :id="{{Auth::user()->id }}" ></notificacion>
                       </li>
-                      <li class="footer"><a href="/listar_notificaciones">Ver todas las notificaciones</a></li>
+                      <li class="footer"><a href="{{ url('/listar_notificaciones') }}">Ver todas las notificaciones</a></li>
                     </ul>
                 </li><!-- /.messages-menu -->
 

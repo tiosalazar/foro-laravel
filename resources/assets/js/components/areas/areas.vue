@@ -1,12 +1,12 @@
 <template >
    <div>
-      <div class="box box-default collapsed-box" id="main-app">
+      <div class="box box-primary collapsed-box" id="main-app">
 
         <div class="box-header with-border">
             <h3 class="box-title">Crear nueva área</h3>
 
             <div class="box-tools pull-right">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+              <button type="button" class="btn btn-box-tool btn-info" data-widget="collapse"><i class="fa fa-plus"></i></button>
            </div>
 
         </div>
@@ -15,7 +15,7 @@
           <div   role="form" class="form-area"  >
                 <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]">
                     <label for="nombre_area">Nombre</label>
-                    <input type="text" v-model="areaarray.nombre" class="form-control" id="nombre_area" name="nombre" placeholder="Nombre area" v-validate data-vv-rules="required|alpha_num|min:3">
+                    <input type="text" v-model="areaarray.nombre" class="form-control" id="nombre_area" name="nombre" placeholder="Nombre area" v-validate data-vv-rules="required|alpha_num_spaces|min:3">
                     <span  class="help-block error_absolute" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
                 </div>
 
@@ -57,7 +57,11 @@
        data(){
         return{
 
-          areaarray:{},
+          areaarray:{
+            nombre:'',
+            extencion_tel:'',
+
+          },
           id_area_passing:{},
           message :'',
           errors_return:{

@@ -64,7 +64,7 @@
       },
       methods:{
           fetchTips: function(){
-               this.$http.get(window._apiURL+'roles/')
+               this.$http.get(window._apiURL+'roles')
              .then(function(respuesta){
                  this.roles=respuesta.body;
              }.bind(this));
