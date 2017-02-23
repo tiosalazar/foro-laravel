@@ -8732,6 +8732,22 @@ body {
   font-weight: bold;
 }
 
+@media (max-width: 1250px) {
+  .box_perfil_foto {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    -webkit-box-align: center;
+    align-items: center;
+    text-align: center;
+  }
+  .box_perfil_foto .box_perfil_foto_img {
+    width: 50%;
+  }
+}
+
 .boton_hidden {
   display: none;
 }

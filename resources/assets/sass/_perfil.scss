@@ -72,3 +72,17 @@
 	}
 }
 
+@media (max-width: 1250px) {
+  .box_perfil_foto{
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    .box_perfil_foto_img{
+    	width: 50%;
+    }
+  }
+}
+
+    
+
