@@ -334,6 +334,8 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
       if (this.arraytarea!=undefined) {
           var obj = JSON.parse(this.arraytarea);
 
+          console.log(obj);
+
           //ASigno la informacion de la ot
           this.ot=obj.ot;
 
@@ -350,8 +352,8 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
           //Asignos los comentarios para el v-for
     
           this.comentarios_array=this.tarea_info.comentario;
-          
-         // console.log(this.comentarios_array);
+
+         this.comentarios_array.reverse();
 
 
   
@@ -430,7 +432,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
                       this.descripcion="";
                       // console.log(respuesta.body.user_coment);
 
-                    this.comentarios_array.push(respuesta.body.user_coment);
+                    this.comentarios_array.unshift(respuesta.body.user_coment);
 
                     }else{
                         $.each(respuesta.body.obj, function(index, value) {
@@ -469,7 +471,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
           // toastr.error(respuesta.body.msg,'',this.option_toast);
            this.descripcion="";
            this.descripcion_requerida=true;
-           this.comentarios_array.push(respuesta.body.user_coment);
+           this.comentarios_array.unshift(respuesta.body.user_coment);
            toastr.success(respuesta.body.msg,'',this.option_toast);
            // console.log(respuesta);
            // console.log(this.comentarios_array);
