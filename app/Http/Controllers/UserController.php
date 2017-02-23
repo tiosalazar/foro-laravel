@@ -118,9 +118,22 @@ class UserController extends Controller
      */
     public function UsuariosArea($id)
     {
-        $ejecutivos= Role::where('name','colaborador')->first();
-        $users= User::where('roles_id', $ejecutivos->id)->where('areas_id',$id)->get();
-        return response()->json($users);
+        $output=array();
+        $users= User::with(['roles'=> function ($query)
+        {
+            $query->where('name','colaborador')->orWhere('name','coordinador');
+        },'area'=>function ($query) use($id)
+        {
+            $query->where('id',$id);
+        }])
+        ->get();
+        // Validar sólo los que tengan area y rol
+        foreach ($users as $key => $user) {
+            if (!is_null($user->area)&& !is_null($user->roles)) {
+                array_push($output, $user);
+            }
+        }
+        return response()->json($output);
     }
 
     /**

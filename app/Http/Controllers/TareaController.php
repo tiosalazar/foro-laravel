@@ -13,6 +13,7 @@ use App\Notifications\TareaRealizada;
 use App\Notifications\TareaOK;
 use App\Notifications\TareaAtencionCuentas;
 use App\Notifications\TareaAtencionArea;
+use App\Notifications\ComentarioNuevoTarea;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -225,40 +226,68 @@ class TareaController extends Controller
         // Valida si es un comentario
         if($request->is_comment==1){
 
-           $tarea=Tarea::findOrFail($id);
+            $tarea=Tarea::findOrFail($id);
 
-           $comentario = new Comentario;
-           $comentario->fill($request->all());
-           $comentario->save();
-
-            //Guardar en el historial
-           $tarea_historico = new Historico_Tarea;
-           $data['tiempo_estimado']=$tarea->tiempo_estimado;
-           $data['tiempo_real']=$tarea->tiempo_real;
-           $data['comentarios_id']=$comentario->id; 
-           $data['encargado_id']=$tarea->encargado_id; 
-           $data['estados_id']=$tarea->estados_id; 
-           $data['usuarios_id']=$tarea->usuarios_id;                           
-           $data['tareas_id']=$tarea->id;
-           $data['editor_id']=Auth::user()->id;
-           $tarea_historico->fill($data);
-           $tarea_historico->save();
-
-            //Respuesta
-           $respuesta['dato']=$tarea;
-           $respuesta['user_coment']='';
-           $respuesta["error"]=0;
-           $respuesta["mensaje"]="OK";
-           $respuesta["msg"]="Comentario agregado con exito";
-           foreach ($tarea->comentario as $key => $value) {
-            if ($value->user->id==$request->usuarios_comentario_id) {
-                $respuesta['user_coment']=$value;
-                $value->estados;
+            $comentario = new Comentario;
+            $comentario->fill($request->all());
+            try {
+                $comentario->save();
+                $maker = User::findOrFail($comentario->usuarios_comentario_id);
+                User::findOrFail($tarea->encargado_id)
+                        ->notify(new ComentarioNuevoTarea($maker,$tarea,$comentario));
+            } catch (Exception $e) {
+                return response([
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'response_time' => microtime(true) - LARAVEL_START,
+                    'msg' => 'No se pudo guardar el comentario, comunicate con Soporte',
+                    'error' => 'ERR_06',
+                    'obj' =>[],
+                    'consola' =>$e->getMessage(),
+                    'comentario' =>$comentario,
+                    'tarea' =>$tarea,
+                    'request' =>$request,
+                    ],Response::HTTP_BAD_REQUEST);
             }
 
+            //Guardar en el historial
+            $tarea_historico = new Historico_Tarea;
+            $data['tiempo_estimado']=$tarea->tiempo_estimado;
+            $data['tiempo_real']=$tarea->tiempo_real;
+            $data['comentarios_id']=$comentario->id; 
+            $data['encargado_id']=$tarea->encargado_id; 
+            $data['estados_id']=$tarea->estados_id; 
+            $data['usuarios_id']=$tarea->usuarios_id;                           
+            $data['tareas_id']=$tarea->id;
+            $data['editor_id']=Auth::user()->id;
+            $tarea_historico->fill($data);
+            try {
+                $tarea_historico->save();
+            } catch (Exception $e) {
+                return response([
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'response_time' => microtime(true) - LARAVEL_START,
+                    'msg' => 'Ocurrio un problema guardando el Historico, comunicate con Soporte',
+                    'error' => 'ERR_06',
+                    'obj' =>[],
+                    'tarea_historico' =>$tarea_historico,
+                ],Response::HTTP_BAD_REQUEST);
+            }
 
-        }
-        // Es una actualziacion de la tarea
+            //Respuesta
+            $respuesta['dato']=$tarea;
+            $respuesta['user_coment']='';
+            $respuesta["error"]=0;
+            $respuesta["mensaje"]="OK";
+            $respuesta["msg"]="Comentario agregado con exito";
+            foreach ($tarea->comentario as $key => $value) {
+                if ($value->user->id==$request->usuarios_comentario_id) {
+                    $respuesta['user_coment']=$value;
+                    $value->estados;
+                }
+
+
+            }
+            // Es una actualziacion de la tarea
     }else{
         if (!($request->estados_id == 4 || $request->estados_id == 5|| $request->estados_id == 7)) {
             $vl=$this->validatorAsignarTarea($request->all());
@@ -298,9 +327,13 @@ class TareaController extends Controller
                 ->where('areas_id', $tarea->areas_id)
                 ->first();
                 $tarea->encargado_id = $encargado_area->id;
-            }else if($tarea->estados_id == 4){
+            }else 
+            // Atención Cuentas (4)
+            if($tarea->estados_id == 4){
                 $tarea->encargado_id = $tarea->usuarios_id;
-            }else if($tarea->estados_id == 1){
+            }else 
+            // Tarea OK
+            if($tarea->estados_id == 1){
                 // Tarea OK, guardar horas en usuario->horas gastadas
                 // y en Area->horas gastadas
 
@@ -534,18 +567,10 @@ return response()->json($respuesta);
 
     public function showOneTarea($id)
     {
-        $tarea = Tarea::findOrFail($id);
-        $tarea->ot->cliente;
-        $tarea->estado;
-        $tarea->estado_prioridad;
-        $tarea->planeacion_fase;
-        $tarea->area;
-        $tarea->usuario;
-        $tarea->usuarioencargado;
-        foreach ($tarea->comentario as $key => $value) {
-            $value->user;
-            $value->estados;
-        }
+        $tarea = Tarea::with(['ot.cliente','ot.usuario', 'estado', 'estado_prioridad','planeacion_fase','area','usuario','usuarioencargado','comentario.user'=>function ($query)
+        {
+            $query->orderBy('created_at', 'desc');
+        }])->where('id',$id)->first();
         return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea);
     }
 

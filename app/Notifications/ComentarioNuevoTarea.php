@@ -7,12 +7,9 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class TareaAtencionArea extends Notification
+class ComentarioNuevoTarea extends Notification
 {
     use Queueable;
-
-    public $user;
-    public $tarea;
 
     /**
      * Create a new notification instance.
@@ -20,10 +17,11 @@ class TareaAtencionArea extends Notification
      * @param App/Tarea $tarea
      * @return void
      */
-    public function __construct($user,$tarea)
+    public function __construct($user,$tarea,$comentario)
     {
         $this->user = $user;
         $this->tarea = $tarea;
+        $this->comentario = $comentario;
     }
 
     /**
@@ -63,7 +61,7 @@ class TareaAtencionArea extends Notification
             'id_tarea'      => $this->tarea->id,
             'nombre'        => $this->user->nombre,
             'cargo'         => $this->user->cargo,
-            'descripcion'   => $this->user->nombre. ' ha devuelto la Tarea: "'.$this->tarea->nombre_tarea.'" a Atención Área',
+            'descripcion'   => $this->user->nombre. ' ha comentado en la Tarea: '.$this->tarea->nombre_tarea.' "'.substr($this->comentario->comentarios, 0, 15).'..."',
             'created_at'    => date('Y-m-d H:i:s'),
             'img_perfil'    => $this->user->img_perfil,
             'link'          => '/ver_tarea/'.$this->tarea->id,

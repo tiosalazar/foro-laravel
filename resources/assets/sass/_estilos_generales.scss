@@ -45,13 +45,16 @@
 .estado-2-9{
 	background-color: $estado-en-espera;
 }
-.estado-3-10{
-	background-color: $estado-alta;
+.estado-2-10{
+	background-color: $estado-terminado;
 }
 .estado-3-11{
-	background-color: $estado-media;
+	background-color: $estado-alta;
 }
 .estado-3-12{
+	background-color: $estado-media;
+}
+.estado-3-13{
 	background-color: $estado-baja;
 }
 

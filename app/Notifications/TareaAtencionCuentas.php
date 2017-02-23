@@ -63,7 +63,7 @@ class TareaAtencionCuentas extends Notification
             'id_tarea'      => $this->tarea->id,
             'nombre'        => $this->user->nombre,
             'cargo'         => $this->user->cargo,
-            'descripcion'   => $this->user->nombre. ' ha devuelto la Tarea: '.$this->tarea->nombre_tarea.'a Atención Cuentas',
+            'descripcion'   => $this->user->nombre. ' ha devuelto la Tarea: "'.$this->tarea->nombre_tarea.'" a Atención Cuentas',
             'created_at'    => date('Y-m-d H:i:s'),
             'img_perfil'    => $this->user->img_perfil,
             'link'          => '/ver_tarea/'.$this->tarea->id,

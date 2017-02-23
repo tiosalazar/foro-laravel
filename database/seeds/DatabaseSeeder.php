@@ -245,6 +245,7 @@ class EstadosTableSeeder extends Seeder {
 
           App\Estado::create(array('nombre' => 'On Going','tipos_estados_id'=> 2) );
           App\Estado::create(array('nombre' => 'En espera','tipos_estados_id'=> 2) );
+          App\Estado::create(array('nombre' => 'Terminado','tipos_estados_id'=> 2) );
 
           App\Estado::create(array('nombre' => 'Alta','tipos_estados_id'=> 3) );
           App\Estado::create(array('nombre' => 'Media','tipos_estados_id'=> 3) );
