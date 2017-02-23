@@ -12,9 +12,9 @@
                     <input type="text" class="form-control" id="nombre_usuario" name="nombre" v-model="usuarios.nombre" placeholder="Nombre" v-validate data-vv-rules="required|alpha_num_spaces|max:50">
                     <span  class="help-block error_absolute" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
                 </div>
-                <div class="form-group" v-bind:class="[errors_return.appelido,{ 'has-error': errors.has('appelido') }]">
+                <div class="form-group" v-bind:class="[errors_return.apellido,{ 'has-error': errors.has('apellido') }]">
                     <label for="apellidos_usuario">Apellidos</label>
-                    <input type="text" class="form-control" id="apellidos_usuario" name="apellido"  v-model="usuarios.apellido" placeholder="Apellidos" v-validate data-vv-rules="required|alpha_spaces|max:50">
+                    <input type="text" class="form-control" id="apellidos_usuario" name="apellido"  v-model="usuarios.apellido" placeholder="Apellidos" v-validate data-vv-rules="required|alpha_num_spaces|max:50">
                     <span  class="help-block error_absolute" v-show="errors.has('apellido')">{{ errors.first('apellido') }}</span>
                 </div>
                 <div class="form-group" v-bind:class="[errors_return.email,{ 'has-error': errors.has('email') }]">

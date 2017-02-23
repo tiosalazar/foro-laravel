@@ -18,7 +18,7 @@
 						<div class="row desc-ot with-border">
 							<div class="col-sm-6 ">
 								<ul>
-									<li><strong>Numero de OT:</strong><span> #{{$ot['referencia'] }}</span></li>
+									<li><strong>Número de OT:</strong><span> #{{$ot['referencia'] }}</span></li>
 									<li><strong>Cliente:</strong><span> {{$ot['cliente']['nombre']}}</span></li>
 									<li><strong>Proyecto:</strong><span> {{$ot['nombre']}}</span></li>
 									<li><strong>Ejecutiva:</strong><span> {{$ot['usuario']['nombre']}} {{$ot['usuario']['apellido']}}</span></li>

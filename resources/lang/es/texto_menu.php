@@ -20,7 +20,7 @@ return [
     'listar_usuarios' => 'Usuarios',
     'crear_usuarios' => 'Crear Usuarios',
     'crear_roles' => 'Crear Roles',
-    'crear_areas' => 'Areas',
+    'crear_areas' => 'Áreas',
     'listar_areas' => 'Directorio',
     'organizacion' => 'Roles',
     'foro' => 'Foro',

@@ -191,6 +191,8 @@ return [
         Yajra\Datatables\DatatablesServiceProvider::class,
         //Traducción de Fechas
         Jenssegers\Date\DateServiceProvider::class,
+        //Excel Laravel
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -251,6 +253,8 @@ return [
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
         //tradución de fechas
         'Date' => Jenssegers\Date\Date::class,
+        //Foro Laravel
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 
