@@ -94,3 +94,8 @@ text-decoration: none;
 .select_custom{
 	height: 33px !important;
 }
+/* Datapicker */
+.datepicker{
+	position: relative;
+	z-index: 100;
+}

@@ -117,6 +117,12 @@ a:hover, a:focus {
   height: 33px !important;
 }
 
+/* Datapicker */
+.datepicker {
+  position: relative;
+  z-index: 100;
+}
+
 /*!
   Ionicons, v3.0.0-alpha.3
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/

@@ -114,7 +114,7 @@
 						<div class="input-group-addon" >
 							<i class="fa fa-calendar"></i>
 						</div>
-						<datepicker language="es"  id="fecha_fin" required="required"  @input="guardarDatos"  v-validate data-vv-rules="required" data-vv-as="Fecha de finalización" placeholder="Fecha fin"  :disabled="state.disabled" v-model="datos_encabezado.fecha_fin" class="form-control"  name="fecha_fin" format="dd-MM-yyyy"></datepicker>
+						<datepicker language="es"  id="fecha_fin" required="required"  @input="guardarDatos"  v-validate data-vv-rules="required" data-vv-as="Fecha de finalización" placeholder="Fecha fin"  :disabled="state.disabled_fin" v-model="datos_encabezado.fecha_fin" class="form-control"  name="fecha_fin" format="dd-MM-yyyy"></datepicker>
 					</div>
 					<span  class="help-block" v-show="errors.has('fecha_fin')">{{ errors.first('fecha_fin') }}</span>
 				</div>
@@ -180,7 +180,7 @@ module.exports= {
 	data () {
 		return {
 			datos_encabezado:{
-				fecha_inicio: new Date(),
+				fecha_inicio: moment().toDate(),
 				cliente:'',
 				ejecutivo:'',
 				fee:1,
@@ -200,9 +200,13 @@ module.exports= {
 			},
 			state: {
 				disabled: {
-					to: new Date(), // Disable all dates up to specific date
+					to: moment().toDate(), // Disable all dates up to specific date
 					//  from: new Date(2017,5,2), // Disable all dates after specific date
 					days: [0] // Disable Saturday's and Sunday's
+				},
+				disabled_fin:{
+					to:moment().toDate(),
+					days:[0]
 				}
 			}
 		}
@@ -335,6 +339,7 @@ module.exports= {
      Le envia constantemente los datos al padre, por si la persona no le da en guardar Avance
      */
      guardarDatos: function () {
+     	this.state.disabled_fin.to = moment(this.datos_encabezado.fecha_inicio).toDate();
 			//Wed Feb 15 2017 00:00:00 GMT-0500 (Hora est. Pacífico, Sudamérica)
 			var datos_encabezado={
 				num_ot:this.datos_encabezado.num_ot,
