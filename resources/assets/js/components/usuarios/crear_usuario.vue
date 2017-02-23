@@ -212,6 +212,8 @@
                     if($('#tabla_usuarios') ){
                         $('#tabla_usuarios').DataTable().ajax.reload();
                     }
+
+
                     
                 }
                 },(response) => {

@@ -89,6 +89,7 @@
         */
         onTouch () {
           this.isTouched =(this.value=="" )?true:false ; //Compruebo de que haya selecionado algo
+          this.isLoading = false
         },
         limitText (count) {
           return `y ${count} otras OTs`
