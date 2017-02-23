@@ -8106,6 +8106,11 @@ a:hover, a:focus {
   height: 141%;
   margin-top: -4%;
   border: 0;
+  /* AB - 23-02-2017 */
+  width: 100%;
+  margin-left: 0;
+  margin-top: 0;
+  height: 100%;
 }
 
 #formulario_ot_actualizacion .titulo_interna_ot {
@@ -8170,8 +8175,28 @@ textarea.form-control {
   color: white;
 }
 
+#encabezado_ot {
+  /*AB - 23-02-2017 */
+}
+
 #encabezado_ot .form-group {
   padding: 12px 0px 46px 0px;
+}
+
+#encabezado_ot .has-error {
+  position: absolute;
+}
+
+#encabezado_ot .same-height {
+  min-height: 80px;
+}
+
+#encabezado_ot .form-control {
+  padding: 2px 12px;
+}
+
+#encabezado_ot .form-group {
+  padding: 0;
 }
 
 .required sup {

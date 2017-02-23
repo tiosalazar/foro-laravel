@@ -9,130 +9,155 @@
 		<div class="box-body">
 			<div style="height:22px"></div>
 			<div class="row">
-				<div class="col-md-6">
-					<div class="form-group required ">
+				<div class="col-md-6 col-sm-6 col-xs-12 same-height">
+					<div class="form-group required row ">
 						<label for="num_ot" class="col-sm-12 control-label "><sup>*</sup> Número de OT  </label>
 						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('num_ot') }">
 							<input type="text"  name="num_ot" v-validate data-vv-rules="required|numeric|min:3" data-vv-as="# OT" @input="guardarDatos" v-model="datos_encabezado.num_ot" class="form-control" id="num_ot" placeholder="Número de OT">
 							<span  class="help-block" v-show="errors.has('num_ot')">{{ errors.first('num_ot') }}</span>
 						</div>
 					</div>
-					<div class="form-group required">
-						<label for="cliente" class="col-sm-4 "><sup>*</sup>  Cliente  </label>
-						<div class="col-sm-12" >
-							<select_clientes :select="datos_encabezado.cliente" ></select_clientes>
-						</div>
-					</div>
-					<div class="form-group required">
-						<label for="name_proyecto" class="col-sm-4 "><sup>*</sup> Proyecto   </label>
-						<div class="col-sm-12"  v-bind:class="{ 'has-error': errors.has('name_proyect') }">
-							<input type="text" name="name_proyect" class="form-control" v-validate data-vv-rules="required|min:5"  @input="guardarDatos" data-vv-as="Proyecto" required="required"  v-model="datos_encabezado.name_proyect" id="name_proyecto" placeholder="Nombre del proyecto">
-							<span  class="help-block" v-show="errors.has('name_proyect')">{{ errors.first('name_proyect') }}</span>
-						</div>
-					</div>
-					<div class="form-group required">
-						<label for="ejecutivo" class="col-sm-4 "><sup>*</sup> Ejecutivo  </label>
-						<div class="col-sm-12">
-							<select_usuarios  area="cuentas" :select="datos_encabezado.ejecutivo" ></select_usuarios>
-						</div>
-					</div>
-
-				<div class="form-group required">
-			 <label   class="col-sm-12 "><sup>*</sup> Fecha OT  </label>
-					<div class="form-group col-md-6  required">
-						<label for="fecha_inicio" class="col-sm-3  ">Inicio </label>
-						<div class="col-sm-9" v-bind:class="{ 'has-error': errors.has('fecha_inicio') }">
-							<div class="input-group date">
-								<div class="input-group-addon">
-									<i class="fa fa-calendar"></i>
-								</div>
-								<datepicker language="es" id="fecha_inicio" required="required" v-validate data-vv-rules="required"  @input="guardarDatos" data-vv-as="Fecha de Inicio" placeholder="Fecha inicio"  :disabled="state.disabled" v-model="datos_encabezado.fecha_inicio" name="fecha_inicio" class="form-control"  format="dd-MM-yyyy"></datepicker>
-							</div>
-							<span  class="help-block" v-show="errors.has('fecha_inicio')">{{ errors.first('fecha_inicio') }}</span>
-						</div>
-					</div>
-					<div class="form-group col-md-6  required">
-						<label for="fecha_fin" class="col-sm-3   "> Fín </label>
-						<div class="col-sm-9" v-bind:class="{ 'has-error': errors.has('fecha_fin') }">
-							<div class="input-group date"  >
-								<div class="input-group-addon" >
-									<i class="fa fa-calendar"></i>
-								</div>
-								<datepicker language="es"  id="fecha_fin" required="required"  @input="guardarDatos"  v-validate data-vv-rules="required" data-vv-as="Fecha de finalización" placeholder="Fecha fin"  :disabled="state.disabled" v-model="datos_encabezado.fecha_fin" class="form-control"  name="fecha_fin" format="dd-MM-yyyy"></datepicker>
-							</div>
-							<span  class="help-block" v-show="errors.has('fecha_fin')">{{ errors.first('fecha_fin') }}</span>
-						</div>
-					</div>
-			 </div>
-
 				</div>
-				<div class="col-md-6">
-					<div class="form-group required">
-						<label for="estado" class="col-sm-4 "><sup>*</sup> Estado de OT </label>
+
+				<div class="col-md-6 col-sm-6 col-xs-12 same-height">
+					<div class="form-group required row ">
+						<label for="estado" class="col-sm-12 "><sup>*</sup> Estado de OT </label>
 						<div class="col-sm-12">
 							<select_estados tipo_estado="2"  :select="datos_encabezado.estado" ></select_estados>
 							<span  class="help-block" v-show="errors.has('estado')">{{ errors.first('estado') }}</span>
 						</div>
 					</div>
+				</div>
 
-					<div class="form-group required radio">
-						<label for="valor_total" class="col-sm-4 "><sup>*</sup> Fee </label>
+				<div class="col-md-6 col-sm-6 col-xs-12 same-height">
+					<div class="form-group required row">
+						<label for="cliente" class="col-sm-12 "><sup>*</sup>  Cliente  </label>
+						<div class="col-sm-12" >
+							<select_clientes :select="datos_encabezado.cliente" ></select_clientes>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-6 col-sm-6 col-xs-12 same-height">
+					<div class="form-group required row  radio">
+						<label for="valor_total" class="col-sm-12 "><sup>*</sup> Fee </label>
 						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('fee') }">
-						<div class="col-sm-4 formulario">
-						<input type="radio" name="fee" value="1" id="male" v-model="datos_encabezado.fee"  required="required"  @input="guardarDatos" ><label for="male"> Si</label>
-						</div>
-						<div class="col-sm-4 formulario" >
-						<input type="radio" name="fee" value="0" id="female" v-model="datos_encabezado.fee"   required="required"   @input="guardarDatos" > <label for="female"> No</label>
-						</div>
+							<div class="col-sm-4 col-xs-6 formulario">
+								<input type="radio" name="fee" value="1" id="male" v-model="datos_encabezado.fee"  required="required"  @input="guardarDatos" ><label for="male"> Si</label>
+							</div>
+							<div class="col-sm-4 col-xs-6 formulario" >
+								<input type="radio" name="fee" value="0" id="female" v-model="datos_encabezado.fee"   required="required"   @input="guardarDatos" > <label for="female"> No</label>
+							</div>
 							<span  class="help-block" v-show="errors.has('fee')">{{ errors.first('fee') }}</span>
 						</div>
 					</div>
-					<div class="form-group required">
-						<label for="valor_total" class="col-sm-4 "><sup>*</sup> Valor total </label>
+				</div>
+
+				<div class="col-md-6 col-sm-6 col-xs-12 same-height">
+					<div class="form-group required row">
+						<label for="name_proyecto" class="col-sm-12 "><sup>*</sup> Proyecto   </label>
+						<div class="col-sm-12"  v-bind:class="{ 'has-error': errors.has('name_proyect') }">
+							<input type="text" name="name_proyect" class="form-control" v-validate data-vv-rules="required|min:5"  @input="guardarDatos" data-vv-as="Proyecto" required="required"  v-model="datos_encabezado.name_proyect" id="name_proyecto" placeholder="Nombre del proyecto">
+							<span  class="help-block" v-show="errors.has('name_proyect')">{{ errors.first('name_proyect') }}</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-6 col-sm-6 col-xs-12 same-height">
+					<div class="form-group required row ">
+						<label for="valor_total" class="col-sm-12 "><sup>*</sup> Valor total </label>
 						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('valor_total') }">
 							<input type="text" name="valor_total" v-validate data-vv-rules="required|numeric|min:4"  @input="guardarDatos" data-vv-as="Valor Total" class="form-control" required="required"  v-model="datos_encabezado.valor_total" id="valor_total" placeholder="$">
 							<span  class="help-block" v-show="errors.has('valor_total')">{{ errors.first('valor_total') }}</span>
 						</div>
 					</div>
-					<div class="form-group required">
-						<label for="horas_totales" class="col-sm-4 "><sup>*</sup> Horas totales  </label>
+				</div>
+
+				<div class="col-md-6 col-sm-6 col-xs-12 same-height">
+					<div class="form-group required row">
+						<label for="ejecutivo" class="col-sm-12 "><sup>*</sup> Ejecutivo  </label>
+						<div class="col-sm-12">
+							<select_usuarios  area="cuentas" :select="datos_encabezado.ejecutivo" ></select_usuarios>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-6 col-sm-6 col-xs-12 same-height">
+					<div class="form-group required row ">
+						<label for="horas_totales" class="col-sm-12 "><sup>*</sup> Horas totales  </label>
 						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('horas_totales') }">
 							<input type="text" class="form-control" @input="llenar_horas_totales(),guardarDatos()" required="required" name="horas_totales"  v-validate data-vv-rules="required|decimal:2|max:10|min:1" data-vv-as="Horas Totales" v-model="datos_encabezado.horas_totales"  id="horas_totales" placeholder="Numero de horas totales">
 							<span  class="help-block" v-show="errors.has('horas_totales')">{{ errors.first('horas_totales') }}</span>
 						</div>
 					</div>
-					<div class="row">
-				<div :class="{'col-md-6': $parent.visualizacion =='true','col-md-12': $parent.visualizacion !='true'}" >
-					<div class="form-group required" v-bind:class="{ 'has-error': datos_encabezado.h_pasadas }">
-						<label for="horas_disponibles" class="col-sm-12 " ><sup>*</sup> Horas disponibles </label>
-						<div class="col-sm-12">
-						   <div class="campo_azul " :class="{'col-sm-12': $parent.visualizacion =='true','col-sm-4': $parent.visualizacion !='true'}">
-						   	{{ horas_disponibles }}
-						   </div>
-							<!--<input type="text" class="form-control" required="required"  id="horas_disponibles" v-model=" horas_disponibles" disabled placeholder="Numero de Horas Disponibles">
-							  -->
-							 <span  class="help-block" v-show="datos_encabezado.h_pasadas">Se ha pasado del numero de horas permitidas para el Area</span>
-						</div>
-					</div>
-					</div>
-					<div class="col-md-6" v-show="$parent.visualizacion == 'true'">
-					<div class="form-group required" >
-						<label  class="col-sm-12 " > Total Horas Adicionales  </label>
-						<div class="col-sm-12">
-						   <div class="campo_azul col-sm-12">
-						   	{{ $parent.h_extra_total }}
-						   </div>
-						</div>
-					</div>
 				</div>
+
+				<div class="col-md-6 col-sm-6 col-xs-12 same-height">
+					<div class="form-group required row dates">
+						<label   class="col-sm-12 "><sup>*</sup> Fecha OT  </label>
+						<div class="form-group col-md-12  required">
+							<label for="fecha_inicio" class="col-sm-12  ">Inicio </label>
+							<div class="col-sm-9" v-bind:class="{ 'has-error': errors.has('fecha_inicio') }">
+								<div class="input-group date">
+									<div class="input-group-addon">
+										<i class="fa fa-calendar"></i>
+									</div>
+									<datepicker language="es" id="fecha_inicio" required="required" v-validate data-vv-rules="required"  @input="guardarDatos" data-vv-as="Fecha de Inicio" placeholder="Fecha inicio"  :disabled="state.disabled" v-model="datos_encabezado.fecha_inicio" name="fecha_inicio" class="form-control"  format="dd-MM-yyyy"></datepicker>
+								</div>
+								<span  class="help-block" v-show="errors.has('fecha_inicio')">{{ errors.first('fecha_inicio') }}</span>
+							</div>
+						</div>
+						<div class="form-group col-md-12  required">
+				<label for="fecha_fin" class="col-sm-12   "> Fín </label>
+				<div class="col-sm-9" v-bind:class="{ 'has-error': errors.has('fecha_fin') }">
+					<div class="input-group date"  >
+						<div class="input-group-addon" >
+							<i class="fa fa-calendar"></i>
+						</div>
+						<datepicker language="es"  id="fecha_fin" required="required"  @input="guardarDatos"  v-validate data-vv-rules="required" data-vv-as="Fecha de finalización" placeholder="Fecha fin"  :disabled="state.disabled" v-model="datos_encabezado.fecha_fin" class="form-control"  name="fecha_fin" format="dd-MM-yyyy"></datepicker>
 					</div>
-				</div>
-				<div class="col-md-4 col-md-offset-4" >
-					<div style="height:15px"></div>
-			<button type="submit" @click="validateBeforeSubmit" class="btn btn-block btn-success boton_foro succes text-center">Guardar Información</button>
-			<div style="height:15px"></div>
+					<span  class="help-block" v-show="errors.has('fecha_fin')">{{ errors.first('fecha_fin') }}</span>
 				</div>
 			</div>
+		</div>
+
+	</div>
+
+	<div class="col-md-6 col-sm-6 col-xs-12 same-height">
+		
+		
+		<div class="row">
+			<div :class="{'col-md-6': $parent.visualizacion =='true','col-md-12': $parent.visualizacion !='true'}" >
+				<div class="form-group required row" v-bind:class="{ 'has-error': datos_encabezado.h_pasadas }">
+					<label for="horas_disponibles" class="col-sm-12 col-xs-4 col-sm-offset-0 col-xs-offset-4" ><sup>*</sup> Horas disponibles </label>
+					<div class="col-sm-12 col-xs-4 col-sm-offset-0 col-xs-offset-4">
+						<div class="campo_azul col-xs-12" :class="{'col-sm-12': $parent.visualizacion =='true','col-sm-4': $parent.visualizacion !='true'}">
+							{{ horas_disponibles }}
+						</div>
+							<!--<input type="text" class="form-control" required="required"  id="horas_disponibles" v-model=" horas_disponibles" disabled placeholder="Numero de Horas Disponibles">
+						-->
+						<span  class="help-block" v-show="datos_encabezado.h_pasadas">Se ha pasado del numero de horas permitidas para el Area</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6" v-show="$parent.visualizacion == 'true'">
+				<div class="form-group required" >
+					<label  class="col-sm-12 " > Total Horas Adicionales  </label>
+					<div class="col-sm-12">
+						<div class="campo_azul col-sm-12">
+							{{ $parent.h_extra_total }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6 col-md-offset-3 col-xs-12" >
+		<div style="height:15px"></div>
+		<button type="submit" @click="validateBeforeSubmit" class="btn btn-block btn-success boton_foro succes text-center">Guardar Información</button>
+		<div style="height:15px"></div>
+	</div>
+</div>
 		</div>
 	</div>
 </template>

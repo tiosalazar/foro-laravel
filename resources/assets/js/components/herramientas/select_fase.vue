@@ -19,7 +19,7 @@
       </multiselect>
       <input type="hidden"  :value="id_fase" name="id_fase">
     </div>
-      <div style="height:12px"></div>
+      <!-- <div style="height:12px"></div> -->
   </div>
 </template>
 
