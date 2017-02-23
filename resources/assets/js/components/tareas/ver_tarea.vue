@@ -154,13 +154,18 @@
               </div>
             </div>
 
+            <div class="form-group">
+              <label><strong>Descripción de la trea</strong></label>
+              <p>{{tarea_info.descripcion}}</p>
+            </div>
+
             <div class="form-group required" >
 
             <div v-bind:class="{ 'hidden': descripcion_requerida }">
             <div class="alert alert-danger alert_ups"> Ups, ¿Que sucedio? </div>
             <p class="text_alert">*Escribre que sucedió en el campo de observaciones, recuerda que es obligatorio</p>
             </div>
-              <label for="descripcion">Descripción</label>
+              <label for="descripcion">Comentario</label>
               <textarea class="form-control" rows="3"  name="descripcion"  id="descripcion" v-model="descripcion" placeholder="Descripción" required="required"></textarea>
             </div>
 
@@ -185,29 +190,51 @@
 
           <!-- Comentarios -->
          <div class="box box-widget comentario_box">
-           <div v-for="comentario in comentarios_array" style="margin-bottom:20px;margin-top:35px;">
+         <paginate
+          name="comentarios_array"
+          :list="comentarios_array"
+          :per="5"
+          class="paginate-comentarios_array"
+          >
+             <div v-for="comentario in paginated('comentarios_array')" style="margin-bottom:20px;margin-top:35px;">
 
-            <div  class="comentario_box_container">
-              <div class="img_comentario">
-                <div v-if="comentario.user.img_perfil==null"><img   :src="_baseURL+'/images/perfil.jpg'" class="img_comentario_src"></div>
-                <div v-else><img   v-bind:src="_baseURL+comentario.user.img_perfil" class="img_comentario_src"></div>
-              </div>
+                <div  class="comentario_box_container">
+                  <div class="img_comentario">
+                    <div v-if="comentario.user.img_perfil==null"><img   :src="_baseURL+'/images/perfil.jpg'" class="img_comentario_src"></div>
+                    <div v-else><img   v-bind:src="_baseURL+comentario.user.img_perfil" class="img_comentario_src"></div>
+                  </div>
 
-              <div class="info_comentarios">
-                <label><strong>{{comentario.user.nombre}} &nbsp {{comentario.user.apellido}}</strong></label>
-                <span >({{comentario.user.email}})</span>
-                <p class="comentario_created" >{{comentario.created_at}}</p>
-                <div v-if="comentario.estados!=null" class="estado_comentario">
-                  <p >{{comentario.estados.nombre}}<span :class="'estado_comentario_circle estado-'+comentario.estados.tipos_estados_id+'-'+comentario.estados.id"></span></p>
-                </div>
-              </div>
+                  <div class="info_comentarios">
+                    <label><strong>{{comentario.user.nombre}} &nbsp {{comentario.user.apellido}}</strong></label>
+                    <span >({{comentario.user.email}})</span>
+                    <p class="comentario_created" >{{comentario.created_at}}</p>
+                    <div v-if="comentario.estados!=null" class="estado_comentario">
+                      <p >{{comentario.estados.nombre}}<span :class="'estado_comentario_circle estado-'+comentario.estados.tipos_estados_id+'-'+comentario.estados.id"></span></p>
+                    </div>
+                  </div>
 
-             </div>
-              <div class="caja_comentarios">
-                <p>{{comentario.comentarios}}</p>
-              </div>
+                 </div>
+                  <div class="caja_comentarios">
+                    <p>{{comentario.comentarios}}</p>
+                  </div>
 
 
+               </div>
+           </paginate>
+           <!-- Paginacion, paginate link tiene sus propiedades del componente instalado de vue js -->
+           <div class="link_paginador">
+             <paginate-links for="comentarios_array" 
+             :show-step-links="true"
+             :step-links="{
+                next: 'Siguiente',
+                prev: 'Atrás'
+              }" 
+            :classes="{
+              'ul': 'pagination',
+              '.next > a': 'next-link',
+              '.prev > a': ['prev-link'] 
+            }" :hide-single-page="true" >
+             </paginate-links>
            </div>
          </div>
 
@@ -218,6 +245,7 @@
 </template>
 <script>
 import Datepicker from 'vuejs-datepicker';
+import VuePaginate from 'vue-paginate'
 import VeeValidate, { Validator } from 'vee-validate';
 import moment from 'moment';
 
@@ -236,7 +264,8 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
           enlaces_externos:this.arraytarea.enlaces_externos,
         },
         descripcion_requerida:true,
-        comentarios_array:{},
+        comentarios_array:[],
+        paginate: ['comentarios_array'],
         descripcion:'',
         fecha_entrega_area:'',
         select_ot:this.arraytarea.ot,
@@ -300,6 +329,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
       });
 
 
+
       //Recibe la propiedad arraytarea desde la vista y verifico si es indefinida o no
       if (this.arraytarea!=undefined) {
           var obj = JSON.parse(this.arraytarea);
@@ -315,11 +345,16 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
 
           //Asigno toda la informacion traida del api a la variable tarea_info
           this.tarea_info=obj;
-          console.log(this.tarea_info);
+          // console.log(this.tarea_info);
 
           //Asignos los comentarios para el v-for
+    
           this.comentarios_array=this.tarea_info.comentario;
-         console.log(this.comentarios_array);
+          
+         // console.log(this.comentarios_array);
+
+
+  
 
     }
 
@@ -327,8 +362,8 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
      //Asigno el rol actual
         this.usuario_actual_comentar= this.id_usuario_actual;
         this.rol_actual=this.rol_usuario_actual;
-        console.log("Rol actual: "+this.rol_actual);
-        console.log(this.tarea_info.usuarioencargado);
+        // console.log("Rol actual: "+this.rol_actual);
+        // console.log(this.tarea_info.usuarioencargado);
         this.encargado = {id:this.tarea_info.usuarioencargado.id}
 
         if (this.rol_actual=="colaborador") {
@@ -393,7 +428,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
                   if (respuesta.body.error == 0) {
                       toastr.success(respuesta.body.msg,'',this.option_toast);
                       this.descripcion="";
-                      console.log(respuesta.body.user_coment);
+                      // console.log(respuesta.body.user_coment);
 
                     this.comentarios_array.push(respuesta.body.user_coment);
 
@@ -415,7 +450,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
 
                     }
             }
-          console.log(respuesta);
+          // console.log(respuesta);
         });
      },
      enviarcomentarios:function(){
@@ -436,12 +471,15 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
            this.descripcion_requerida=true;
            this.comentarios_array.push(respuesta.body.user_coment);
            toastr.success(respuesta.body.msg,'',this.option_toast);
-           console.log(respuesta);
-           console.log(this.comentarios_array);
+           // console.log(respuesta);
+           // console.log(this.comentarios_array);
 
 
         });
-     }
+     },
+    updateResource(data){
+      this.comentarios_array = data
+    }
   }
 
 }

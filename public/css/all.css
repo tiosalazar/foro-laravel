@@ -8762,6 +8762,10 @@ body {
   font-size: 27px;
 }
 
+.link_paginador {
+  text-align: center;
+}
+
 .tarea {
   padding: 15px;
   box-shadow: none;
