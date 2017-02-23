@@ -63,7 +63,7 @@ class TareaRealizada extends Notification
             'id_tarea'      => $this->tarea->id,
             'nombre'        => $this->user->nombre,
             'cargo'         => $this->user->cargo,
-            'descripcion'   => $this->user->nombre. ' a realizado una Tarea',
+            'descripcion'   => $this->user->nombre. ' ha realizado la Tarea: '$this->tarea->nombre_tarea. 'en '.$this->tarea->tiempo_real.' Hrs',
             'created_at'    => date('Y-m-d H:i:s'),
             'img_perfil'    => $this->user->img_perfil,
             'link'          => '/ver_tarea/'.$this->tarea->id,

@@ -7,6 +7,8 @@
 
 @section('main-content')
 
-	<h2>Roles</h2>
+	<div class="titulos_foro">
+		<h3 class="box-title"><span class="span_descripcion1">Rol</span><span class="span_descripcion2">es</span></h3>
+	 </div>
 	<roles></roles>
 @endsection

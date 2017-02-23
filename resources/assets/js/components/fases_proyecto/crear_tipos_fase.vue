@@ -9,12 +9,12 @@
               </div>
               <div class="form-group">
                   <label>Descripción</label>
-                  <textarea class="form-control" rows="3" placeholder="Descripcion del tipo de fase" name="descripcion" v-model="fase.descripcion"></textarea>
+                  <textarea class="form-control" rows="2" placeholder="Descripcion del tipo de fase" name="descripcion" v-model="fase.descripcion"></textarea>
                 </div>
               <!-- /.form-group -->
             </div>
             <div class="col-xs-6 col-md-12">
-              <button type="button" v-on:click="addfase" class="btn btn-block btn-primary">Agregar</button>
+              <button type="button" v-on:click="addfase" class="btn btn-flat btn-primary">Agregar</button>
             </div>
             <!-- </div> -->
             </form>

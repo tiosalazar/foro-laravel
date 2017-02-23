@@ -38,5 +38,6 @@ return [
     'ver_foro' => 'Ver Foro',
     'trafico' => 'Tráfico',
     'soporte' => 'Soporte',
+    'fases_planeacion' => 'Fases de Planeación',
 
 ];

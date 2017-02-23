@@ -63,7 +63,7 @@
 
       methods:{
           fetchTips: function(){
-               this.$http.get('/show_ots_tareas')
+               this.$http.get(window._baseURL+'/show_ots_tareas')
              .then(function(respuesta){
                 // this.ots=respuesta.body;
              }.bind(this));
@@ -95,7 +95,7 @@
         },
         asyncFind (query) {
           this.isLoading = true
-          this.$http.get('/show_ots_tareas/'+query).then(response => {
+          this.$http.get(window._baseURL+'/show_ots_tareas/'+query).then(response => {
             this.ots = response.body;
             this.isLoading = false
           })

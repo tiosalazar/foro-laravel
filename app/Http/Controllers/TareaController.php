@@ -30,6 +30,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
 use Exception;
 use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
 
 class TareaController extends Controller
 {
@@ -79,7 +80,7 @@ class TareaController extends Controller
 
         //Coordinador con con el area enviada en el request
         $userdata= User::where('roles_id',$role[0]->id)
-                    ->where('areas_id', $request->areas_id)->get();
+        ->where('areas_id', $request->areas_id)->get();
 
         if ($userdata!=null and isset($userdata[0])) {
 
@@ -113,6 +114,16 @@ class TareaController extends Controller
                     ->where('areas_id',$tarea->areas_id)
                     ->first();
                     $admins='';
+
+                    if (is_null($horas_area)) {
+                        return response([
+                            'status' => Response::HTTP_BAD_REQUEST,
+                            'response_time' => microtime(true) - LARAVEL_START,
+                            'error' => 'ERR_04',
+                            'msg' => 'Ot no posee tiempo en esta area',
+                            'obj' =>[]
+                            ],Response::HTTP_BAD_REQUEST);
+                    }
 
                     // Validar si tiene horas suficientes para hacer la Tarea
                     if (!is_null($horas_area->tiempo_estimado_ot) &&
@@ -150,31 +161,31 @@ class TareaController extends Controller
 
 
 
-                } catch (Exception $e) {
-                   return response([
-                    'status' => Response::HTTP_BAD_REQUEST,
-                    'response_time' => microtime(true) - LARAVEL_START,
-                    'error' => 'ERR_04',
-                    'msg' => 'excepcion, fallo la petición',
-                    'consola' =>$e->getMessage(),
-                    'obj' =>[]
-                    ],Response::HTTP_BAD_REQUEST);
-               }
+            } catch (Exception $e) {
+               return response([
+                'status' => Response::HTTP_BAD_REQUEST,
+                'response_time' => microtime(true) - LARAVEL_START,
+                'error' => 'ERR_04',
+                'msg' => 'excepcion, fallo la petición',
+                'consola' =>$e->getMessage(),
+                'obj' =>[]
+                ],Response::HTTP_BAD_REQUEST);
            }
-
-       }else{
-
-             return response([
-                    'status' => Response::HTTP_BAD_REQUEST,
-                    'response_time' => microtime(true) - LARAVEL_START,
-                    'error' => 'ERR_04',
-                    'msg' => 'Coordinador no asignado',
-                    // 'consola' =>$e->getMessage(),
-                    'obj' =>[]
-                    ],Response::HTTP_BAD_REQUEST);
-
        }
-    }
+
+   }else{
+
+     return response([
+        'status' => Response::HTTP_BAD_REQUEST,
+        'response_time' => microtime(true) - LARAVEL_START,
+        'error' => 'ERR_04',
+        'msg' => 'Coordinador no asignado',
+        // 'consola' =>$e->getMessage(),
+        'obj' =>[]
+        ],Response::HTTP_BAD_REQUEST);
+
+ }
+}
 
     /**
      * Display the specified resource.
@@ -221,6 +232,190 @@ class TareaController extends Controller
            $comentario->save();
 
             //Guardar en el historial
+           $tarea_historico = new Historico_Tarea;
+           $data['tiempo_estimado']=$tarea->tiempo_estimado;
+           $data['tiempo_real']=$tarea->tiempo_real;
+           $data['comentarios_id']=$comentario->id; 
+           $data['encargado_id']=$tarea->encargado_id; 
+           $data['estados_id']=$tarea->estados_id; 
+           $data['usuarios_id']=$tarea->usuarios_id;                           
+           $data['tareas_id']=$tarea->id;
+           $data['editor_id']=Auth::user()->id;
+           $tarea_historico->fill($data);
+           $tarea_historico->save();
+
+            //Respuesta
+           $respuesta['dato']=$tarea;
+           $respuesta['user_coment']='';
+           $respuesta["error"]=0;
+           $respuesta["mensaje"]="OK";
+           $respuesta["msg"]="Comentario agregado con exito";
+           foreach ($tarea->comentario as $key => $value) {
+            if ($value->user->id==$request->usuarios_comentario_id) {
+                $respuesta['user_coment']=$value;
+                $value->estados;
+            }
+
+
+        }
+        // Es una actualziacion de la tarea
+    }else{
+        if (!($request->estados_id == 4 || $request->estados_id == 5|| $request->estados_id == 7)) {
+            $vl=$this->validatorAsignarTarea($request->all());
+        }else{
+            $vl=$this->validatorAtenciones($request->all());
+        }
+
+        if ($vl->fails() ) {
+           $respuesta["error"]="Datos Incompletos";
+           $respuesta["codigo_error"]="Error con los datos";
+           $respuesta["mensaje"]="Error con los datos";
+           $respuesta["status"]= Response::HTTP_BAD_REQUEST;
+           $respuesta["msg"]="Datos Incompletos";
+           $respuesta["obj"]=$vl->errors();
+           $respuesta["request"]=$request;
+       }else{
+
+        try
+        {
+            //Busca la Tarea en la BD
+            $tarea=Tarea::findOrFail($id);
+
+            // Encargado antes de actualizar la tarea
+            $makerBefore = User::findOrFail($tarea->encargado_id);
+
+            //Asigna los nuevo datos
+            $tarea->fill($request->all());
+
+
+
+            // Si el estado es Pendiente (7)
+            // Poner como encargado el coordinado del Área
+            $encargado_area = '';
+            if ($tarea->estados_id == 7 || $tarea->estados_id == 5) {
+
+                $encargado_area= User::where('roles_id',4)
+                ->where('areas_id', $tarea->areas_id)
+                ->first();
+                $tarea->encargado_id = $encargado_area->id;
+            }else if($tarea->estados_id == 4){
+                $tarea->encargado_id = $tarea->usuarios_id;
+            }else if($tarea->estados_id == 1){
+                // Tarea OK, guardar horas en usuario->horas gastadas
+                // y en Area->horas gastadas
+
+                $colaborador = User::findOrFail($tarea->encargado_id);
+                $colaborador->horas_gastadas = $tarea->tiempo_real;
+
+                $area = Area::findOrFail($tarea->areas_id);
+                $area->horas_consumidas +=$tarea->tiempo_real;
+
+                $colaborador->update();
+                $area->update();
+            }
+
+
+            // Si la tarea se Realizo (2)
+            // sume Horas Reales en Tiempos_x_area
+            if ($tarea->estados_id == 2) {
+                $horas_area = Tiempos_x_Area::where('ots_id',$tarea->ots_id)
+                ->where('areas_id',$tarea->areas_id)
+                ->first();
+
+                if (!is_null($tarea->tiempo_real) && $tarea->tiempo_real !=0) {
+
+                    if ( $horas_area->tiempo_real + $tarea->tiempo_real > $horas_area->tiempo_estimado_ot) {
+                        User::findOrFail($tarea->usuarios_id)
+                        ->notify(new OtExcedeTiempo($makerBefore,$horas_area->ots));
+                    }
+                    $horas_area->tiempo_real +=$tarea->tiempo_real;
+                    $horas_area->save();
+                }else{
+                    return response([
+                        'status' => Response::HTTP_BAD_REQUEST,
+                        'response_time' => microtime(true) - LARAVEL_START,
+                        'msg' => 'Tiempo real vacio o nulo',
+                        'error' => 'ERR_06',
+                        'obj' =>$vl->errors(),
+                        'tarea' =>$tarea,
+                        ],Response::HTTP_BAD_REQUEST);
+                }
+            }
+
+            //Guardamos la tarea
+            $tarea->update();
+
+            //Guardamos el comentario
+            $comentario = new Comentario;
+            $comentario->fill($request->all());
+            $comentario->save();
+
+
+
+            /**
+             *
+             * Recibe el estado de la tarea y envia la notificacion
+             * al usuario correspondiente
+             *
+             * 1 - OK
+             * 2 - Realizada
+             * 3 - Programada
+             * 4 - Atencion Cuentas
+             * 5 - Atencion Area
+             * 6 - Espera
+             * 7 - Pendiente
+             */
+            switch ($tarea->estados_id) {
+                case '1':
+                // Enviar notificacion al nuevo encargado
+                User::findOrFail($tarea->usuarios_id)
+                ->notify(new TareaOK($makerBefore,$tarea));
+                break;
+                case '2':
+                $encargado_area= User::where('roles_id',4)
+                ->where('areas_id', $tarea->areas_id)
+                ->first();
+                // Enviar notificacion al nuevo encargado
+                User::findOrFail($encargado_area->id)
+                ->notify(new TareaRealizada($makerBefore,$tarea));
+                break;
+                case '3':
+                // Enviar notificacion al nuevo encargado
+                User::findOrFail($tarea->encargado_id)
+                ->notify(new TareaProgramada($makerBefore,$tarea));
+                break;
+                case '4':
+                // Enviar notificacion al nuevo encargado
+                User::findOrFail($tarea->usuarios_id)
+                ->notify(new TareaAtencionCuentas($makerBefore,$tarea));
+                break;
+                case '5':
+                // Enviar notificacion al nuevo encargado
+                User::findOrFail($tarea->encargado_id)
+                ->notify(new TareaAtencionArea($makerBefore,$tarea));
+                break;
+                case '7':
+                // Creador de la solicitud - Ejecutiva
+                $maker = User::findOrFail($tarea->usuarios_id);
+
+                // Enviar notificacion al nuevo encargado
+                User::findOrFail($tarea->encargado_id)->notify(new TareaPendiente($maker,$tarea));
+                break;
+
+                default:
+                return response([
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'response_time' => microtime(true) - LARAVEL_START,
+                    'msg' => 'Error al actualizar la tarea. No se envio la notificacion',
+                    'error' => 'ERR_05',
+                    'obj' =>$vl->errors(),
+                    'tarea' =>$tarea,
+                    'request' =>$request,
+                    ],Response::HTTP_BAD_REQUEST);
+                break;
+            }
+
+            //Guardar en el historial
             $tarea_historico = new Historico_Tarea;
             $data['tiempo_estimado']=$tarea->tiempo_estimado;
             $data['tiempo_real']=$tarea->tiempo_real;
@@ -233,235 +428,41 @@ class TareaController extends Controller
             $tarea_historico->fill($data);
             $tarea_historico->save();
 
+
             //Respuesta
-           $respuesta['dato']=$tarea;
-           $respuesta['user_coment']='';
-           $respuesta["error"]=0;
-           $respuesta["mensaje"]="OK";
-           $respuesta["msg"]="Comentario agregado con exito";
-           foreach ($tarea->comentario as $key => $value) {
+            $respuesta['dato']=$tarea;
+            $respuesta['user_coment']='';
+            $respuesta['historico']=$comentario->id;
+            $respuesta["error"]=0;
+            $respuesta["mensaje"]="OK";
+            $respuesta["msg"]="Asignado con exito";
+            $respuesta["usuario"]=$encargado_area;
+            // $respuesta["horas"]=$horas_area;
+            foreach ($tarea->comentario as $key => $value) {
                 if ($value->user->id==$request->usuarios_comentario_id) {
                     $respuesta['user_coment']=$value;
                     $value->estados;
                 }
-
-
             }
-        // Es una actualziacion de la tarea
-        }else{
-            if (!($request->estados_id == 4 || $request->estados_id == 5|| $request->estados_id == 7)) {
-                $vl=$this->validatorAsignarTarea($request->all());
-            }else{
-                $vl=$this->validatorAtenciones($request->all());
-            }
-            
-            if ($vl->fails() ) {
-                   $respuesta["error"]="Datos Incompletos";
-                   $respuesta["codigo_error"]="Error con los datos";
-                   $respuesta["mensaje"]="Error con los datos";
-                   $respuesta["status"]= Response::HTTP_BAD_REQUEST;
-                   $respuesta["msg"]="Datos Incompletos";
-                   $respuesta["obj"]=$vl->errors();
-                   $respuesta["request"]=$request;
-            }else{
+        }
 
-                    try
-                        {
-                            //Busca la Tarea en la BD
-                            $tarea=Tarea::findOrFail($id);
+        catch(Exception $e)
+        {
+            $respuesta["error"]="Error datos incorrectos";
+            $respuesta["codigo_error"]="Error con la tarea";
+            $respuesta["mensaje"]="Error con la tarea";
+            // $respuesta["tarea_historico"]=$tarea_historico;
+            $respuesta["consola"]=$e->getMessage();
+            $respuesta["msg"]="Error  datos incorrectos";
+            $respuesta["request"]=$request->all();
+            $respuesta["obj"]=$vl->errors();
 
-                            // Encargado antes de actualizar la tarea
-                            $makerBefore = User::findOrFail($tarea->encargado_id);
+       }
 
-                            //Asigna los nuevo datos
-                            $tarea->fill($request->all());
-
-
-
-                            // Si el estado es Pendiente (7)
-                            // Poner como encargado el coordinado del Área
-                               $encargado_area = '';
-                            if ($tarea->estados_id == 7 || $tarea->estados_id == 5) {
-
-                                $encargado_area= User::where('roles_id',4)
-                                                      ->where('areas_id', $tarea->areas_id)
-                                                      ->first();
-                                $tarea->encargado_id = $encargado_area->id;
-                            }else if($tarea->estados_id == 4){
-                                $tarea->encargado_id = $tarea->usuarios_id;
-                            }else if($tarea->estados_id == 1){
-                                // Tarea OK, guardar horas en usuario->horas gastadas
-                                // y en Area->horas gastadas
-                                
-                                $colaborador = User::findOrFail($tarea->encargado_id);
-                                $colaborador->horas_gastadas = $tarea->tiempo_real;
-
-                                $area = Area::findOrFail($tarea->areas_id);
-                                $area->horas_consumidas +=$tarea->tiempo_real;
-
-                                $colaborador->update();
-                                $area->update();
-                            }
-
-
-                            // Si la tarea se Realizo (2)
-                            // sume Horas Reales en Tiempos_x_area
-                            if ($tarea->estados_id == 2) {
-                                $horas_area = Tiempos_x_Area::where('ots_id',$tarea->ots_id)
-                                ->where('areas_id',$tarea->areas_id)
-                                ->first();
-
-                                if (!is_null($tarea->tiempo_real) && $tarea->tiempo_real !=0) {
-                                    // $horas_area->increment('tiempo_real',$tarea->tiempo_real);
-
-                                    if ( $horas_area->tiempo_real + $tarea->tiempo_real > $horas_area->tiempo_estimado_ot) {
-                                        User::findOrFail($tarea->usuarios_id)
-                                        ->notify(new OtExcedeTiempo($makerBefore,$horas_area->ots));
-                                    }
-                                    $horas_area->tiempo_real +=$tarea->tiempo_real;
-                                    $horas_area->save();
-                                }else{
-                                    return response([
-                                        'status' => Response::HTTP_BAD_REQUEST,
-                                        'response_time' => microtime(true) - LARAVEL_START,
-                                        'msg' => 'Tiempo real vacio o nulo',
-                                        'error' => 'ERR_06',
-                                        'obj' =>$vl->errors(),
-                                        'tarea' =>$tarea,
-                                    ],Response::HTTP_BAD_REQUEST);
-                                }
-                            }
-
-                            //Guardamos la tarea
-                            $tarea->update();
-
-                            //Guardamos el comentario
-                            $comentario = new Comentario;
-                            $comentario->fill($request->all());
-                            $comentario->save();
-
-
-
-                            /**
-                             *
-                             * Recibe el estado de la tarea y envia la notificacion
-                             * al usuario correspondiente
-                             *
-                             * 1 - OK
-                             * 2 - Realizada
-                             * 3 - Programada
-                             * 4 - Atencion Cuentas
-                             * 5 - Atencion Area
-                             * 6 - Espera
-                             * 7 - Pendiente
-                             */
-                            switch ($tarea->estados_id) {
-                                case '1':
-                                    // Enviar notificacion al nuevo encargado
-                                    User::findOrFail($tarea->usuarios_id)
-                                    ->notify(new TareaOK($makerBefore,$tarea));
-                                    break;
-                                case '2':
-                                    $encargado_area= User::where('roles_id',4)
-                                                      ->where('areas_id', $tarea->areas_id)
-                                                      ->first();
-                                    // Enviar notificacion al nuevo encargado
-                                    User::findOrFail($encargado_area->id)
-                                    ->notify(new TareaRealizada($makerBefore,$tarea));
-                                    break;
-                                case '3':
-                                    // Enviar notificacion al nuevo encargado
-                                    User::findOrFail($tarea->encargado_id)
-                                    ->notify(new TareaProgramada($makerBefore,$tarea));
-                                    break;
-                                case '4':
-                                    // Enviar notificacion al nuevo encargado
-                                    User::findOrFail($tarea->usuarios_id)
-                                    ->notify(new TareaAtencionCuentas($makerBefore,$tarea));
-                                    break;
-                                case '5':
-                                    // Enviar notificacion al nuevo encargado
-                                    User::findOrFail($tarea->encargado_id)
-                                    ->notify(new TareaAtencionArea($makerBefore,$tarea));
-                                    break;
-                                case '7':
-                                    // Creador de la solicitud - Ejecutiva
-                                    $maker = User::findOrFail($tarea->usuarios_id);
-
-                                    // Enviar notificacion al nuevo encargado
-                                    User::findOrFail($tarea->encargado_id)->notify(new TareaPendiente($maker,$tarea));
-                                    break;
-
-                                default:
-                                    return response([
-                                        'status' => Response::HTTP_BAD_REQUEST,
-                                        'response_time' => microtime(true) - LARAVEL_START,
-                                        'msg' => 'Error al actualizar la tarea. No se envio la notificacion',
-                                        'error' => 'ERR_05',
-                                        'obj' =>$vl->errors(),
-                                        'tarea' =>$tarea,
-                                        // 'tarea_historico' =>$tarea_historico,
-                                        'request' =>$request,
-                                        ],Response::HTTP_BAD_REQUEST);
-                                    break;
-                            }
-
-                            //Guardar en el historial
-                            $tarea_historico = new Historico_Tarea;
-                            $data['tiempo_estimado']=$tarea->tiempo_estimado;
-                            $data['tiempo_real']=$tarea->tiempo_real;
-                            $data['comentarios_id']=$comentario->id; 
-                            $data['encargado_id']=$tarea->encargado_id; 
-                            $data['estados_id']=$tarea->estados_id; 
-                            $data['usuarios_id']=$tarea->usuarios_id;                           
-                            $data['tareas_id']=$tarea->id;
-                            $data['editor_id']=Auth::user()->id;
-                            $tarea_historico->fill($data);
-                            $tarea_historico->save();
-
-
-                          //Respuesta
-                           $respuesta['dato']=$tarea;
-                           $respuesta['user_coment']='';
-                           $respuesta['historico']=$comentario->id;
-                           $respuesta["error"]=0;
-                           $respuesta["mensaje"]="OK";
-                           $respuesta["msg"]="Asignado con exito";
-                           $respuesta["usuario"]=$encargado_area;
-                           // $respuesta["horas"]=$horas_area;
-                           foreach ($tarea->comentario as $key => $value) {
-                                if ($value->user->id==$request->usuarios_comentario_id) {
-                                    $respuesta['user_coment']=$value;
-
-                                    $value->estados;
-                                }
-
-
-
-                            }
-
-
-
-                        }
-
-                    catch(Exception $e)
-                    {
-                       $respuesta["error"]="Error datos incorrectos";
-                       $respuesta["codigo_error"]="Error con la tarea";
-                       $respuesta["mensaje"]="Error con la tarea";
-                       // $respuesta["tarea_historico"]=$tarea_historico;
-                       $respuesta["consola"]=$e->getMessage();
-                       $respuesta["msg"]="Error  datos incorrectos";
-                       $respuesta["request"]=$request->all();
-                       $respuesta["obj"]=$vl->errors();
-
-                    }
-
-                }
-            }
-
-         return response()->json($respuesta);
-    }
+   }
+}
+return response()->json($respuesta);
+}
 
     /**
      * Remove the specified resource from storage.
@@ -487,29 +488,30 @@ class TareaController extends Controller
         // tomar el mes y el año actual
         $year = '';
         $month = '';
+        $now = Carbon::now();
         if ($request->has('year')) {
             $year = $request->get('year');
         }else{
-            $year = date('Y');
+            $year = $now->year;
         }
         if ($request->has('month')) {
             $month = $request->get('month');
         }else{
-            $month = date('m');
+            $month = $now->month;
         }
         $tarea = Tarea::with(['ot.cliente','usuarioencargado','estado' => function ($query) use ($request,$id) {
             if ($request->has('estados')) {
                 $query->where('id', '=', $request->get('estados'));
             }
-             if($id == -1){
-                 $estado_programado= Estado::where('nombre','Programado')->first();
-                $query->where('id', '=', $estado_programado->id);
-             }
-        },'area' => function ($query) use ($id) {
-             if($id != -1){
+            if($id == -1){
+             $estado_programado= Estado::where('nombre','Programado')->first();
+             $query->where('id', '=', $estado_programado->id);
+         }
+     },'area' => function ($query) use ($id) {
+        if($id != -1){
             $query->where('id', '=', $id);
-           }
-       }])
+        }
+    }])
         ->whereYear('created_at', $year)
         ->whereMonth('created_at', $month)
         ->get();
@@ -524,8 +526,8 @@ class TareaController extends Controller
         $output = collect($output);
         return Datatables::of($output)
         ->editColumn('created_at', function ($tarea) {
-                return $tarea->created_at->format('d-M-Y');
-            })
+            return $tarea->created_at->format('d-M-Y');
+        })
         ->make(true);
 
     }
@@ -544,9 +546,6 @@ class TareaController extends Controller
             $value->user;
             $value->estados;
         }
-
-
-        // return respo nse()->json($tarea);
         return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea);
     }
 
@@ -568,14 +567,14 @@ class TareaController extends Controller
         $firstTarea = $this->getFirstTarea();
         $tarea = Tarea::orderBy('created_at', 'desc')->first();
         if($tarea != null ){
-        $lastYear = date('Y',strtotime($tarea->created_at));
-        $firstYear = date('Y',strtotime($firstTarea->created_at));
-        for ($i=$firstYear; $i <=  $lastYear; $i++) {
-            array_push($years, (string)$i);
+            $lastYear = Carbon::instance($tarea->created_at)->year;
+            $firstYear = Carbon::instance($firstTarea->created_at)->year;
+            for ($i=$firstYear; $i <=  $lastYear; $i++) {
+                array_push($years, (string)$i);
+            }
+            return $years;
         }
-        return $years;
-      }
-      return [];
+        return [];
     }
 
     /**
@@ -597,31 +596,31 @@ class TareaController extends Controller
             'encargado_id' => 'required',
             'planeacion_fases_id' => 'required',
             'prioridad_id' => 'required',
-        ], $this->messages());
+            ], $this->messages());
     }
 
      /**
     * Validar Asignar tarea
     **/
-    protected function validatorAsignarTarea(array $data)
-    {
+     protected function validatorAsignarTarea(array $data)
+     {
         return Validator::make($data, [
             'encargado_id' => 'required',
             'estados_id' => 'required',
             'tiempo_estimado' => 'required',
             'fecha_entrega_area' => 'required',
             'fecha_entrega_cuentas' => 'required',
-        ],$this->messages());
+            ],$this->messages());
     }
      /**
     * Validar Asignar tarea
     **/
-    protected function validatorAtenciones(array $data)
-    {
+     protected function validatorAtenciones(array $data)
+     {
         return Validator::make($data, [
             'estados_id' => 'required',
             'comentarios' => 'required',
-        ],$this->messages());
+            ],$this->messages());
     }
     /**
      * Mensajes validacion Crear Tarea.
@@ -630,29 +629,10 @@ class TareaController extends Controller
      */
     public function messages()
     {
-        /*return [
-            'nombre_tarea.required' => 'El nombre es requerido',
-            'nombre_tarea.min' => 'El nombre debe tener minimo 4 caracteres.',
-            'descripcion.required' => 'La descripcion es requerida',
-            'descripcion.min' => 'La descripcion debe tener minimo 4 caracteres.',
-            'enlaces_externos.min' => 'Enlaces externos debe tener al menos 4 caracteres',
-            'tiempo_estimado.min' => 'Tiempo estimado debe tener al menos 4 caracteres',
-            'tiempo_estimado.numeric' => 'Tiempo estimado debe ser numerico',
-            'tiempo_real.min' => 'Tiempo real debe tener al menos 4 caracteres',
-            'tiempo_real.numeric' => 'Tiempo real debe ser numerico',
-            'tiempo_mapa_cliente.min' => 'Tiempo mapa cliente debe tener minimo un caracter',
-            'tiempo_mapa_cliente.numeric' => 'Tiempo mapa de cliente debe ser numerico',
-            'estados_id' => 'Estado es requerido',
-            'areas_id' => 'Area es requerido',
-            'usuarios_id' => 'Usuario es requerido',
-            'ots_id' => 'OT es requerido',
-            'encargado_id' => 'Encargado es requerido',
-            'planeacion_fases_id' => 'Fase de planeacion es requerido',
-        ];*/
         return [
-            'required' => 'El campo <b> :attribute </b> es requerido.',
-            'min' => 'El campo <b> :attribute </b> debe tener minimo 3 caracteres.',
-            'numeric' => 'El campo <b> :attribute </b> debe ser numerico.',
+        'required' => 'El campo <b> :attribute </b> es requerido.',
+        'min' => 'El campo <b> :attribute </b> debe tener minimo 3 caracteres.',
+        'numeric' => 'El campo <b> :attribute </b> debe ser numerico.',
         ];
     }
 }

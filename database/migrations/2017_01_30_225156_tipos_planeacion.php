@@ -17,6 +17,7 @@ class TiposPlaneacion extends Migration
             $table->increments('id');
             $table->string('nombre',85);
             $table->string('descripcion',255)->nullable();
+            $table->tinyInteger('estado')->default(0);
             $table->timestamps();
         });
     }

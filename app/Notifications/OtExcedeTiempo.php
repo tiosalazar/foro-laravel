@@ -63,7 +63,7 @@ class OtExcedeTiempo extends Notification
             'id_tarea'      => $this->ot->id,
             'nombre'        => $this->user->nombre,
             'cargo'         => $this->user->cargo,
-            'descripcion'   => $this->ot->nombre. ' a excedido el tiempo asignado para el Área',
+            'descripcion'   => $this->ot->nombre. ' ha excedido el tiempo asignado para el Área',
             'created_at'    => date('Y-m-d H:i:s'),
             'img_perfil'    => $this->user->img_perfil,
             'link'          => '/ots/visualizar/'.$this->ot->id
