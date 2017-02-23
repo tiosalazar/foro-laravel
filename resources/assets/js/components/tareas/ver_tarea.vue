@@ -45,7 +45,7 @@
 
                 <div class="form-group">
                   <label ><strong>Persona Encargada</strong></label>
-                  <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' ">
+                  <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id != '3' ">
                     {{tarea_info.usuarioencargado.nombre}} - {{tarea_info.usuarioencargado.apellido}}
                   </div>
                   <div v-else>
@@ -144,10 +144,17 @@
               </div>
 
               <div class="col-sm-4">
-               <div v-if="rol_actual==='colaborador'">
+               <div v-if="(rol_actual==='colaborador' && tarea_info.estados_id == '3') || (rol_actual==='coordinador'  && estado_solicitud.id == '2' )">
                   <div class="form-group" v-bind:class="{ 'has-error': errors.has('timepo_real') }">
                       <label for=""><strong>Tiempo Real</strong></label>
                       <input type="number" placeholder="Tiempo Real" name="timepo_real" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_real" required="required" v-validate data-vv-rules="required">
+                  </div>
+              </div>
+              <div v-else>
+                  <div class="form-group" >
+                      <label for=""><strong>Tiempo Real</strong></label>
+                      <!-- <br> -->
+                      <div>{{tarea_info.tiempo_real}}</div>
                   </div>
               </div>
                 <span  class="help-block" v-show="errors.has('timepo_real')">{{ errors.first('timepo_real') }}</span>
@@ -173,18 +180,20 @@
           </div>
           <!-- /.box-body -->
            <div v-if=" (estado_solicitud.id==1 && rol_actual =='coordinador')" >
+            1
                 <div class="box-footer text-center">
                   <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Actualizar</button>
                 </div>
            </div>
-           <div v-else-if="id_usuario_actual!=tarea_info.encargado_id">
+           <div v-else-if="id_usuario_actual==tarea_info.encargado_id && tarea_info.estados_id!='1'">
+           2
                  <div class="box-footer text-center">
-                  <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Comentar</button>
+                  <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Actualizar</button>
                 </div>
            </div>
            <div v-else>
                <div class="box-footer text-center">
-                <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Actualizar</button>
+                  <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Comentar</button>
               </div>
            </div>
 
@@ -333,6 +342,7 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
       //Recibe la propiedad arraytarea desde la vista y verifico si es indefinida o no
       if (this.arraytarea!=undefined) {
           var obj = JSON.parse(this.arraytarea);
+          console.log(obj)
 
           console.log(obj);
 
@@ -340,23 +350,19 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
           this.ot=obj.ot;
 
           //ASigno la informacion del usuario
-          this.ot.usuario=obj.usuario;
+          // this.ot.usuario=obj.usuario;
 
           //ASigno la informacion del cliente
-          this.ot.cliente=obj.ot.cliente;
+          // this.ot.cliente=obj.ot.cliente;
 
           //Asigno toda la informacion traida del api a la variable tarea_info
           this.tarea_info=obj;
           // console.log(this.tarea_info);
 
-          //Asignos los comentarios para el v-for
-    
-          this.comentarios_array=this.tarea_info.comentario;
+          //Asignos los comentarios para el v-for   
 
-         this.comentarios_array.reverse();
-
-
-  
+          this.comentarios_array=obj.comentario;
+          this.comentarios_array.reverse();
 
     }
 
