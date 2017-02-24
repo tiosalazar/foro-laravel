@@ -128,6 +128,8 @@
 	             		toastr.warning(that.message,respuesta.body.msg,this.option_toast);
 	             	} else {
 	             		toastr.success(respuesta.body.msg,'',this.option_toast);
+	             		this.cliente={};
+
 	             	}
 	             }, (response) => {
 	             	var that = this;
@@ -136,7 +138,10 @@
 	             		this.setErrors(response.body.obj);
 	             	}
 				    toastr.error(that.message,response.body.msg,this.option_toast);
-				  });
+				  }).then(() => {  
+		               this.errors.clear();
+		               console.log(this.errors);
+		             });
 			},
 			editCliente: function(client) {
 		        this.$http.put(window._apiURL+'clientes/'+client.id, client)

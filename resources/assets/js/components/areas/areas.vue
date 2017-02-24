@@ -107,7 +107,8 @@
                 }else{
                   toastr.success(respuesta.body.msg,'',this.option_toast);
                   this.id_area_passing={'id':respuesta.body.area.id,'nombre':respuesta.body.area.nombre,'extencion_tel':respuesta.body.area.extencion_tel,'estado':respuesta.body.area.estado}
-                  this.areaarray={}
+                  this.areaarray={};                  
+                  
                 }
 
 
@@ -125,7 +126,10 @@
                   }
 
                 toastr.error(that.message,response.body.error,this.option_toast);
-              });
+              }).then(() => {  
+               this.errors.clear();
+               console.log(this.errors);
+             });
           }
         }
 

@@ -58,8 +58,7 @@
 			}
 		},
 		created: function(){
-			this.list_tareas_api();
-			this.getTareass();
+			
 			if ( (typeof(this.area) == 'undefined') || this.area=="" ) {
 				this.area = -1;
 			}
@@ -85,6 +84,7 @@
 		                d.year = $('select[name=year]').val();
 		                d.month = $('select[name=month]').val();
 		            },
+
 				},
 				columns: [
 					{ data: 'ot.referencia', name: 'ot.referencia' },
@@ -188,8 +188,7 @@
 
 		},
 		methods:{
-			getTareass:function() {},
-			list_tareas_api: function(){}
+			
 		},
 
 	}
