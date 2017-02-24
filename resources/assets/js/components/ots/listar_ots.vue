@@ -5,16 +5,16 @@
 			<thead>
 				<tr>
 					<th >Num. OT </th>
-					<th >Nombre</th>
-					<th >Valor</th>
-					<th >Fee</th>
-					<th >Horas Totales</th>
-					<th >Observaciones</th>
-					<th >Fecha Inicio</th>
-					<th >Fecha Final</th>
+					<th >Ejecutivo</th>
 					<th >Cliente</th>
-					<th >Usuario</th>
+					<th >Nombre</th>
+					<th >FEE</th>
+					<th >Fecha Inicio</th>
 					<th >Estado</th>
+					<th >Horas Totales</th>
+					<th >Valor</th>
+					<th >Observaciones</th>
+					<th >Fecha Final</th>
 					<th >Acciones</th>
 				</tr>
 			</thead>
@@ -68,21 +68,29 @@
 						},
 						columns: [
 						{ data: 'referencia', name: 'referencia' },
-						{ data: 'nombre', name: 'nombre' },
-						{ data: 'valor', name: 'valor' },
-						{ data: 'fee', name: 'fee' },
-						{ data: 'horas_totales', name: 'horas_totales' },
-						{ data: 'observaciones', name: 'observaciones' },
-						{ data: 'fecha_inicio', name: 'fecha_inicio' },
-						{ data: 'fecha_final', name: 'fecha_final' },
-						{ data: 'cliente.nombre', name: 'cliente' },
 						{ data: 'usuario.nombre', name: 'usuario' },
+						{ data: 'cliente.nombre', name: 'cliente' },
+						{ data: 'nombre', name: 'nombre' },
+						{ data: 'fee', name: 'fee' },
+						{ data: 'fecha_inicio', name: 'fecha_inicio' },
 						{ data: 'estado.id', name: 'estado.id' },
+						{ data: 'horas_totales', name: 'horas_totales' },
+						{ data: 'valor', name: 'valor' },
+						{ data: 'observaciones', name: 'observaciones' },
+						{ data: 'fecha_final', name: 'fecha_final' },
 						{ data: 'acciones', name: 'acciones', orderable: false, searchable: false }
 						],
 						columnDefs: [
 						   {
-							"targets": [3],
+							"targets": [8],
+							"data": null,
+						       "render": function(data, type, full) { // Devuelve el contenido personalizado
+						       	return  numeral(data).format('0,0');
+
+						       }
+						   },
+						   {
+							"targets": [4],
 							"data": null,
 						       "render": function(data, type, full) { // Devuelve el contenido personalizado
                                  var checked=(data==1)?'checked':'';
@@ -91,7 +99,7 @@
 						       }
 						   },
 						   {
-						   	"targets": [10],
+						   	"targets": [6],
 						   	"data": null,
 							      "render": function(data, type, full) { // Devuelve el contenido personalizado
 							      	return '<span class="label label-estado estado-'+full.estado.tipos_estados_id+'-'+full.estado.id+' ">'+full.estado.nombre+'</span>';

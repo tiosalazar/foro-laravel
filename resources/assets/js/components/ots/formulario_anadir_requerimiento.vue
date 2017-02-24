@@ -31,7 +31,7 @@
 									<div style="height:22px"></div>
 									<div class="row"  v-show="visualizacion != 'true'">
 										<div class="col-md-12">
-											<div class="col-md-12 mensaje_info" role="alert">
+											<div class="row mensaje_info" role="alert">
 												<div class="col-md-2 text-center ">
 													<i class="fa fa-exclamation-triangle fa-3x text-center" aria-hidden="true"></i>
 												</div>
@@ -101,8 +101,8 @@
 									Se perderán los cambios que no haya guardado
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Espera!! voy a guardar</button>
-									<button type="button" class="btn btn-primary" @click="seguir">Ok, quiero continuar</button>
+									<button type="button" class="btn btn-flat btn-default pull-left" data-dismiss="modal">Espera!! voy a guardar</button>
+									<button type="button" class="btn btn-flat btn-primary" @click="seguir">Ok, quiero continuar</button>
 								</div>
 							</div>
 						</div>

@@ -13,7 +13,7 @@
 	 </div>
 
 		<div class="row Formulario_OT">
-			<div class="col-md-8 col-md-offset-2">
+			<div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 ">
 				<div class="panel panel-default">
 				<div class="padding_ots">
 					<div class="panel-body"  >
