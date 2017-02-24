@@ -2,11 +2,11 @@
 
 
 	<div>
-	<audio id="chatAudio"><source :src="_baseURL+'/media/alert.mp3'" type="audio/mp3"></audio>
+		<audio id="chatAudio"><source :src="_baseURL+'/media/alert.mp3'" type="audio/mp3"></audio>
 		<ul class="menu" id="menur">
 			<li v-for="notificacion in notificaciones" >
 				<a  v-on:click="goTarea(notificacion.data)">
-				<!-- <a  v-on:click="sumNotify(notificacion.data)"> -->
+					<!-- <a  v-on:click="sumNotify(notificacion.data)"> -->
 					<div class="pull-left" v-if="notificacion.data.img_perfil == null">
 						<img :src="_baseURL+'/images/perfil.jpg'" class="img-circle" alt="User Image" >
 					</div>
@@ -21,14 +21,21 @@
 					<p>{{notificacion.data.descripcion}}</p>
 				</a>
 			</li>
+			<infinite-loading :on-infinite="onInfinite" ref="infiniteLoading">
+				<span slot="no-more">
+					There is no more Hacker News :(
+				</span>
+			</infinite-loading>
 		</ul>
 	</div>
 </template>
 <script>
 import Push from 'push.js'
 import moment from 'moment'
+import InfiniteLoading from 'vue-infinite-loading';
 // import notificaciones_total from './notificaciones_total.vue'
 	module.exports= {
+		components: {InfiniteLoading, }, 
 		props:['id'],
 	    data () {
 		      return {
