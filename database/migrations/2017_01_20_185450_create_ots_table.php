@@ -15,7 +15,7 @@ class CreateOtsTable extends Migration
     {
         Schema::create('ots', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre',45);
+            $table->string('nombre',115);
             $table->string('referencia',255);
             $table->string('valor',55);
             $table->tinyInteger('fee');

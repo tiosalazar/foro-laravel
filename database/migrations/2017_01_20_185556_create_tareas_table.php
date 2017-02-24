@@ -15,13 +15,13 @@ class CreateTareasTable extends Migration
     {
         Schema::create('tareas', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre_tarea',45);
+            $table->string('nombre_tarea',85);
             $table->dateTime('fecha_entrega_area')->nullable();
             $table->dateTime('fecha_entrega_cuentas')->nullable();
             $table->string('descripcion',255);
             $table->string('enlaces_externos',150)->nullable();
-            $table->decimal('tiempo_estimado',5,3)->nullable();
-            $table->decimal('tiempo_real',5,3)->nullable();
+            $table->decimal('tiempo_estimado',15,3)->nullable();
+            $table->decimal('tiempo_real',15,3)->nullable();
             $table->decimal('tiempo_mapa_cliente',15,3)->nullable();
             $table->dateTime('fecha_entrega_cliente')->nullable();
             $table->integer('estados_id')->unsigned();

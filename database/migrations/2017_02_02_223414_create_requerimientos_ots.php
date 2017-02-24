@@ -15,8 +15,8 @@ class CreateRequerimientosOts extends Migration
     {
         Schema::create('requerimientos_ots', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre',45);
-            $table->decimal('horas',5,2);
+            $table->string('nombre',55);
+            $table->decimal('horas',15,2);
             $table->integer('areas_id')->unsigned();
             $table->integer('ots_id')->unsigned();
             $table->timestamps();

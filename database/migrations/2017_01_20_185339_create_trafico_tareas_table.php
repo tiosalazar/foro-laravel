@@ -15,12 +15,12 @@ class CreateTraficoTareasTable extends Migration
     {
         Schema::create('trafico_tareas', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre_tarea',45);
+            $table->string('nombre_tarea',115);
             $table->dateTime('fecha_entrega_estimada')->nullable();
             $table->string('descripcion',255);
             $table->string('enlaces_externos',150)->nullable();
-            $table->decimal('tiempo_estimado',5,3)->nullable();
-            $table->decimal('tiempo_real',5,3)->nullable();
+            $table->decimal('tiempo_estimado',15,3)->nullable();
+            $table->decimal('tiempo_real',15,3)->nullable();
             $table->dateTime('fecha_entrega_cliente');
             $table->integer('estados_id')->nullable();
             $table->integer('areas_id')->nullable();

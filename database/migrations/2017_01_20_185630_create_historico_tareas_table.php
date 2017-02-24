@@ -15,8 +15,8 @@ class CreateHistoricoTareasTable extends Migration
     {
         Schema::create('historico_tareas', function (Blueprint $table) {
             $table->increments('id');
-            $table->decimal('tiempo_estimado',5,3)->nullable();
-            $table->decimal('tiempo_real',5,3)->nullable();
+            $table->decimal('tiempo_estimado',15,3)->nullable();
+            $table->decimal('tiempo_real',15,3)->nullable();
             $table->integer('comentarios_id');
             $table->integer('encargado_id')->nullable();
             $table->integer('estados_id')->nullable();

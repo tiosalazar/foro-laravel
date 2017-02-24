@@ -15,7 +15,7 @@ class CreateClientesTable extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre',45);
+            $table->string('nombre',115);
             $table->string('nit',45);
             $table->string('email',115)->nullable();
             $table->string('telefono',45)->nullable();
