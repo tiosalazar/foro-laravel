@@ -198,6 +198,7 @@
 				this.fetchTips();
 				this.llenarDatosSiesVisualizacion();
 
+
 				/*
 				Escucha las horas totales emitidas por el encabezado y realiza el calculo
 				*/
@@ -353,6 +354,7 @@
 									}
 									toastr.warning(this.message,respuesta.body.msg,this.option_toast);
 								}else{
+									
 									toastr.success(respuesta.body.msg,'',this.option_toast);
 									this.h_Disponibles=0;
 									this.horas_totales=0;
@@ -370,6 +372,10 @@
 									this.limpiarComprasRequerimientos();
 									this.datos_requerimiento=[];
 									this.datos_compras=[];
+									
+									  setTimeout(function () { 
+							            location.reload(true);
+							        }, 2000);
 								}
 							},(response) => {
 								console.log(response);

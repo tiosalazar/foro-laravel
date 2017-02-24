@@ -373,7 +373,7 @@ module.exports= {
 				ejecutivo:this.datos_encabezado.ejecutivo,
 				h_pasadas:this.datos_encabezado.h_pasadas
 			};
-			console.log(datos_encabezado)
+			// console.log(datos_encabezado)
 			  this.$parent.$emit('datos_encabezado',datos_encabezado);//Emite los datos al padre
 
 			},
