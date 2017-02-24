@@ -7,7 +7,6 @@ use App\User;
 use App\Area;
 use App\Historico_equipo;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
 class StartMount extends Command
 {
     /**
