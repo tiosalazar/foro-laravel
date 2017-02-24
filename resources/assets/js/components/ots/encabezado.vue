@@ -13,7 +13,7 @@
 					<div class="form-group required row ">
 						<label for="num_ot" class="col-sm-12 control-label "><sup>*</sup> Número de OT  </label>
 						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('num_ot') }">
-							<input type="text"  name="num_ot" v-validate data-vv-rules="required|numeric|min:3" data-vv-as="# OT" @input="guardarDatos" v-model="datos_encabezado.num_ot" class="form-control" id="num_ot" placeholder="Número de OT">
+							<input type="text"  name="num_ot" v-validate data-vv-rules="required|min:3" data-vv-as="# OT" @input="guardarDatos" v-model="datos_encabezado.num_ot" class="form-control" id="num_ot" placeholder="Número de OT">
 							<span  class="help-block" v-show="errors.has('num_ot')">{{ errors.first('num_ot') }}</span>
 						</div>
 					</div>

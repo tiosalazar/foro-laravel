@@ -11,7 +11,7 @@
 						<img :src="_baseURL+'/images/perfil.jpg'" class="img-circle" alt="User Image" >
 					</div>
 					<div class="pull-left" v-else>
-						<img v-bind:src="notificacion.data.img_perfil" class="img-circle" alt="User Image" >
+						<img v-bind:src="_baseURL+notificacion.data.img_perfil" class="img-circle" alt="User Image" >
 					</div>
 
 					<h4>

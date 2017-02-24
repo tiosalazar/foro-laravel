@@ -18,7 +18,7 @@
 						<div class="row desc-ot with-border">
 							<div class="col-sm-6 ">
 								<ul>
-									<li><strong>Numero de OT:</strong><span> #{{$ot['referencia'] }}</span></li>
+									<li><strong>Número de OT:</strong><span> #{{$ot['referencia'] }}</span></li>
 									<li><strong>Cliente:</strong><span> {{$ot['cliente']['nombre']}}</span></li>
 									<li><strong>Proyecto:</strong><span> {{$ot['nombre']}}</span></li>
 									<li><strong>Ejecutiva:</strong><span> {{$ot['usuario']['nombre']}} {{$ot['usuario']['apellido']}}</span></li>
@@ -79,10 +79,9 @@
 														<ul>
 															<div class="row">
 																<div class="form-group col-md-4 col-sm-6" ><li><strong>Horas Gastadas: </strong></li></div>
-																<div class="form-group col-md-6 detalle_horas col-sm-6"><li> <div class="
-																	{{{ ($area['tiempo_real']+$area['tiempo_extra']>$area['tiempo_estimado_ot'] )?'campo rojo':'campo verde'}}}
-																	{{{ ($area['tiempo_real']+$area['tiempo_extra'] >=$area['tiempo_estimado_ot']*0.8)?'campo amarillo':''}}}
-																	  ">
+																<div class="form-group col-md-6 detalle_horas col-sm-6"><li> <div class="@if($area['tiempo_real']+$area['tiempo_extra']>$area['tiempo_estimado_ot']) campo rojo
+																@elseif($area['tiempo_real']+$area['tiempo_extra'] >=$area['tiempo_estimado_ot']*0.8)campo amarillo
+																@else campo verde @endif">
 																	<span>{{ $area['tiempo_real']+$area['tiempo_extra']  }}   Horas</span>
 																</div></li></div>
 															</div>

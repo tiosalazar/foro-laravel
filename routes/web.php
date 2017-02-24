@@ -17,6 +17,7 @@
 
 
   Route::get('/console','UserController@AgregarRoll');
+  Route::get('/prueba/{id}','OtController@exportarTodoslosDatos');
 
     Auth::routes();
 

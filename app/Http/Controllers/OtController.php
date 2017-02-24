@@ -11,6 +11,7 @@ use App\Requerimientos_Ot;
 use App\Compras_Ot;
 use App\Area;
 use App\Role;
+use App\Tarea;
 use Illuminate\Support\Facades\Auth;
 use App\Historico_Ot;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,7 @@ use Validator;
 use Illuminate\Http\Response;
 use Exception;
 use Yajra\Datatables\Datatables;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OtController extends Controller
 {
@@ -531,6 +533,50 @@ class OtController extends Controller
       }
 
    }
+
+     /**
+   * Función la cual se encarga de actualizar el estado de la OT, de la vista visualizar
+   * Guarda el cambio en el historial de modificaciones
+   * Notifica al usuario owner cuando se cambia el estado.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+     public function exportarTodoslosDatos(Request $request, $id){
+
+          $ot = OT::findOrFail($id);
+          $ot->tiempos_x_area;
+          $ot->Cliente;
+          $ot->Usuario;
+          $ot->tareas=Tarea::with('area','usuario','estado')->where('estados_id', 1)->get();
+        // return response()->json($ot);
+          $data = array(
+                array('OT', $ot->referencia),
+                array('CLIENTE', $ot->Cliente->nombre),
+                array('ÁREA', 'data2'),
+                array('HORAS ÁREA', 'data2'),
+                array('ENCARGADO', 'data2'),
+                array('REQUERIMIENTOS', 'data2'),
+                array('FECHA DE ENTREGA EJECUTIVA', 'data2'),
+                array('TIEMPO REAL', 'data2'),
+                array('TIEMPO ESTIMADO JEFE', 'data2'),
+                array('TIEMPO ESTIMADO MAPA DE CLIENTE', 'data2'),
+                array('data1', 'data2'),
+            );
+         Excel::create('Resumen OT', function($excel) use($data)  {
+    
+               $excel->sheet('Productos', function($sheet) use($data)  {
+    
+   
+                   $sheet->fromArray($data);
+    
+               });
+           })->export('xls');
+
+
+
+     }
 
    /**
    *
