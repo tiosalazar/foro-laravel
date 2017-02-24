@@ -67,7 +67,7 @@
 					<div class="form-group required row ">
 						<label for="valor_total" class="col-sm-12 "><sup>*</sup> Valor total </label>
 						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('valor_total') }">
-							<input type="text" name="valor_total" v-validate data-vv-rules="required|numeric|min:4"  @input="guardarDatos" data-vv-as="Valor Total" class="form-control" required="required"  v-model="datos_encabezado.valor_total" id="valor_total" placeholder="$">
+							<input type="text" name="valor_total" v-validate data-vv-rules="required|min:4"  @input="guardarDatos(),processValue()" data-vv-as="Valor Total" class="form-control" required="required"  v-model="datos_encabezado.valor_total" id="valor_total" placeholder="$">
 							<span  class="help-block" v-show="errors.has('valor_total')">{{ errors.first('valor_total') }}</span>
 						</div>
 					</div>
@@ -86,7 +86,7 @@
 					<div class="form-group required row ">
 						<label for="horas_totales" class="col-sm-12 "><sup>*</sup> Horas totales  </label>
 						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('horas_totales') }">
-							<input type="text" class="form-control" @input="llenar_horas_totales(),guardarDatos()" required="required" name="horas_totales"  v-validate data-vv-rules="required|decimal:2|max:10|min:1" data-vv-as="Horas Totales" v-model="datos_encabezado.horas_totales"  id="horas_totales" placeholder="Numero de horas totales">
+							<input type="text" class="form-control" @input="llenar_horas_totales(),guardarDatos()" required="required" name="horas_totales"  v-validate data-vv-rules="required|decimal:2|max:10|min:1" data-vv-as="Horas Totales" v-model="datos_encabezado.horas_totales"  id="horas_totales" placeholder="Número de horas totales">
 							<span  class="help-block" v-show="errors.has('horas_totales')">{{ errors.first('horas_totales') }}</span>
 						</div>
 					</div>
@@ -193,6 +193,7 @@ module.exports= {
 				fecha_fin:'',
 				h_pasadas:false,
 			},
+			valor_formated:'',
 			option_toast:{
 				timeOut: 5000,
 				"positionClass": "toast-top-center",
@@ -232,7 +233,12 @@ module.exports= {
 					h_pasadas:false,
 				};
 			}
-		}
+		},
+		/*valor_formated: function (val) {
+	        let thing = numeral(val).format('0,0');
+	        console.log(thing)
+	        return thing;
+	      },*/
 	},
 	created: function(){
 		this.fetchTips();
@@ -255,9 +261,20 @@ module.exports= {
 		this.$on('select_estado', function(v) {
 			this.datos_encabezado.estado=v;
 		});
-
 	},
+	computed:{
+      /*valor_formated: function (val) {
+        let thing = numeral(val).format('0,0');
+        console.log(thing)
+        return thing;
+      },*/
+    },
 	methods:{
+		processValue:function() {
+			console.log('thing')
+			// this.$emit('input', numeral(val).format('0,0'))
+			this.datos_encabezado.valor_total =  numeral(this.datos_encabezado.valor_total).format('0,0')
+		},
 		/*
      Si encuentra el arreglo de Datos Guardados proceda a llenar el formulario
      */
@@ -315,7 +332,7 @@ module.exports= {
 					horas_totales:arreglo_visualizar.datos_encabezado.horas_totales,
 					horas_disponibles:arreglo_visualizar.datos_encabezado.horas_disponibles,
 					name_proyect:arreglo_visualizar.datos_encabezado.nombre,
-					valor_total:arreglo_visualizar.datos_encabezado.valor,
+					valor_total:numeral(arreglo_visualizar.datos_encabezado.valor).format('0,0'),
 					fecha_fin:arreglo_visualizar.datos_encabezado.fecha_final
 				};
 				this.llenar_horas_totales();
@@ -332,6 +349,7 @@ module.exports= {
       Esta función se esta ejecutando constantemente, se encarga de emitir las horas totales al padre
       */
       llenar_horas_totales:function () {
+
       	//console.log("Horas Totales Encabezado : "+ this.datos_encabezado.horas_totales);
       	this.$parent.$emit('horas_totales',this.datos_encabezado.horas_totales);
       },
@@ -344,7 +362,7 @@ module.exports= {
 			var datos_encabezado={
 				num_ot:this.datos_encabezado.num_ot,
 				name_proyect:this.datos_encabezado.name_proyect,
-				valor_total:this.datos_encabezado.valor_total,
+				valor_total:numeral(this.datos_encabezado.valor_total).value(),
 				fee:this.datos_encabezado.fee,
 				horas_totales:this.datos_encabezado.horas_totales,
 				horas_disponibles:this.horas_disponibles,
@@ -355,6 +373,7 @@ module.exports= {
 				ejecutivo:this.datos_encabezado.ejecutivo,
 				h_pasadas:this.datos_encabezado.h_pasadas
 			};
+			console.log(datos_encabezado)
 			  this.$parent.$emit('datos_encabezado',datos_encabezado);//Emite los datos al padre
 
 			},
@@ -369,7 +388,7 @@ module.exports= {
     			var datos_encabezado={
     				num_ot:this.datos_encabezado.num_ot,
     				name_proyect:this.datos_encabezado.name_proyect,
-    				valor_total:this.datos_encabezado.valor_total,
+    				valor_total:numeral(this.datos_encabezado.valor_total).value(),
     				horas_totales:this.datos_encabezado.horas_totales,
     				horas_disponibles:this.horas_disponibles,
     				fee:this.datos_encabezado.fee,

@@ -7936,6 +7936,8 @@ a:hover, a:focus {
 
 .Formulario_OT .boton_foro.add_req {
   background: #00ca78;
+  width: 146px;
+  font-size: 12px;
 }
 
 .Formulario_OT ::-webkit-input-placeholder {
@@ -8170,7 +8172,7 @@ textarea.form-control {
 
 .boton_foro {
   border-radius: 0px;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .boton_foro.succes {

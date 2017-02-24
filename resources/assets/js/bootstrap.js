@@ -33,6 +33,7 @@ require('jquery-slimscroll');
 require('admin-lte');
 window.toastr = require('toastr');
 require('icheck');
+window.numeral = require('numeral');
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces

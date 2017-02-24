@@ -82,6 +82,14 @@
 						],
 						columnDefs: [
 						   {
+							"targets": [2],
+							"data": null,
+						       "render": function(data, type, full) { // Devuelve el contenido personalizado
+						       	return  numeral(data).format('0,0');
+
+						       }
+						   },
+						   {
 							"targets": [3],
 							"data": null,
 						       "render": function(data, type, full) { // Devuelve el contenido personalizado
