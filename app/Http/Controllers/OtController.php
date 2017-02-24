@@ -24,7 +24,7 @@ use Validator;
 use Illuminate\Http\Response;
 use Exception;
 use Yajra\Datatables\Datatables;
-use Maatwebsite\Excel\Facades\Excel;
+use Excel;
 
 class OtController extends Controller
 {
@@ -551,25 +551,36 @@ class OtController extends Controller
           $ot->Usuario;
           $ot->tareas=Tarea::with('area','usuario','estado')->where('estados_id', 1)->get();
         // return response()->json($ot);
-          $data = array(
-                array('OT', $ot->referencia),
-                array('CLIENTE', $ot->Cliente->nombre),
-                array('ÁREA', 'data2'),
-                array('HORAS ÁREA', 'data2'),
-                array('ENCARGADO', 'data2'),
-                array('REQUERIMIENTOS', 'data2'),
-                array('FECHA DE ENTREGA EJECUTIVA', 'data2'),
-                array('TIEMPO REAL', 'data2'),
-                array('TIEMPO ESTIMADO JEFE', 'data2'),
-                array('TIEMPO ESTIMADO MAPA DE CLIENTE', 'data2'),
-                array('data1', 'data2'),
-            );
-         Excel::create('Resumen OT', function($excel) use($data)  {
+
+       // Initialize the array which will be passed into the Excel
+       // generator.
+       $otsArray = []; 
+
+       // Define the Excel spreadsheet headers
+       $otsArray[] = ['OT', 'CLIENTE','ÁREA','HORAS ÁREA','ENCARGADO','REQUERIMIENTOS','FECHA DE ENTREGA EJECUTIVA','TIEMPO REAL','TIEMPO ESTIMADO JEFE','TIEMPO ESTIMADO MAPA DE CLIENTE'];
+
+       //var_dump($ot->toArray());
+
+       // $otsArray['OT']='hola';
+       // var_dump( $otsArray);
+
+     //  OT / CLIENTE / ÁREA / HORAS ÁREA / ENCARGADO / REQUERIMIENTOS / FECHA DE ENTREGA EJECUTIVA / TIEMPO REAL /  TIEMPO ESTIMADO JEFE / TIEMPO ESTIMADO MAPA DE CLIENTE / 
     
-               $excel->sheet('Productos', function($sheet) use($data)  {
+
+ 
+     $otsArray = User::select('id', 'nombre', 'email', 'created_at')->get();
+         Excel::create('Resumen_OT', function($excel) use($otsArray)  {
+            // Set the spreadsheet title, creator, and description
+              $excel->setTitle('Resumen de la OT ');
+              $excel->setCreator('Gestor de proccesos')->setCompany('Himalaya');
+              $excel->setDescription('Resumen de la OT');
     
-   
-                   $sheet->fromArray($data);
+               $excel->sheet('resumen', function($sheet) use($otsArray)  {
+    
+                 $headings = array('date start', 'date end', 'status condition', 'security', 'company');
+                 $sheet->prependRow(1, $headings);
+                 //  $sheet->fromArray($ot);
+                   $sheet->fromArray('jode', null, 'A1', false, false);
     
                });
            })->export('xls');

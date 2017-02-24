@@ -16,7 +16,8 @@
         "yajra/laravel-datatables-oracle": "^6.0",
         "nesbot/carbon": "^1.22",
         "pusher/pusher-php-server": "^2.6",
-        "maatwebsite/excel": "~2.1.0"
+        "maatwebsite/excel": "^2.1",
+        "laravelcollective/bus": "^5.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
