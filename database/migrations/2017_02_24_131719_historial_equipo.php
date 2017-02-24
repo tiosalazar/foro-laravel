@@ -13,11 +13,12 @@ class HistorialEquipo extends Migration
      */
     public function up()
     {
-        Schema::create('historial_equipo', function (Blueprint $table) {
+        Schema::create('historico_equipos', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('entidad_id')->unsigned();
             $table->decimal('horas_disponibles',15,3)->nullable();
             $table->decimal('horas_gastadas',15,3)->nullable();
+            $table->integer('tipo_de_entidad')->unsigned();
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class HistorialEquipo extends Migration
      */
     public function down()
     {
-        Schema::drop('historial_equipo');
+        Schema::drop('historico_equipos');
     }
 }

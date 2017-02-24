@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\StartMount::class,
+        Commands\pasarEstadoTerminadoOT::class,
     ];
 
     /**
@@ -27,6 +28,7 @@ class Kernel extends ConsoleKernel
     {
 
          $schedule->command('users:refrescarHoras')->timezone('America/Bogota')->monthlyOn(1, '01:00');
+         $schedule->command('ots:pasarTerminado')->timezone('America/Bogota')->dailyAt('01:00');
         //          ->hourly();
         // $schedule->command('inspire')
         //          ->hourly();

@@ -43,4 +43,11 @@ class Area extends Model
   {
     return $this->hasMany('App\Tiempos_x_Area','areas_id','id');
   }
+  /**
+  * Obtiene los Historicos de Equipo que posee el Area
+  */
+  public function Historico_Equipo()
+  {
+    return $this->hasMany('App\Historico_equipo','entidad_id','id');
+  }
 }

@@ -89,5 +89,12 @@ class User extends Authenticatable
   {
     return $this->hasMany('App\Historico_Ot');
   }
+  /**
+  * Obtiene los Historicos de Equipo que posee el usuario
+  */
+  public function Historico_Equipo()
+  {
+    return $this->hasMany('App\Historico_equipo','entidad_id','id');
+  }
 
 }
