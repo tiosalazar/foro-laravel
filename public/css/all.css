@@ -8758,6 +8758,55 @@ body {
   margin-left: 2%;
 }
 
+#image_upload .grupo_img_perfil {
+  margin-bottom: 20px;
+}
+
+#image_upload .grupo_img_perfil .input_buscar {
+  background-color: #15BAEE;
+  border: none;
+  height: 28px;
+}
+
+#image_upload .boton_accion {
+  text-align: right;
+}
+
+#image_upload .input_img {
+  margin-bottom: 20px;
+}
+
+#image_upload .img_cerrar {
+  background-color: #FF1A1A;
+  border: none;
+}
+
+#image_upload .img_cambiar {
+  background-color: #15BAEE;
+  border: none;
+}
+
+#image_upload .btn-file {
+  position: relative;
+  overflow: hidden;
+}
+
+#image_upload .btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
+}
+
 .ver_mas {
   text-align: center;
 }

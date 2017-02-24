@@ -16,10 +16,20 @@
 			     </div>
 			     <div class="modal-body">
 				     {!! Form::open(['url' => 'usuariosuploadimagen', 'method' => 'POST' ,'files' => true]) !!}
-					    {{ Form::file('image', ['class' => 'form-control','accept'=>'image/*']) }}
-					    <div class="modal-footer">
-					    {{ Form::button('Cerrar', ['class' => 'btn btn-danger','data-dismiss'=>'modal']) }}
-					    {{ Form::submit('Cambiar Imagen', ['class' => 'btn btn-primary']) }}
+
+					 <div class="input-group grupo_img_perfil">
+		                <label class="input-group-btn">
+		                    <span class="btn btn-primary input_buscar">
+		                        Buscar&hellip;{{ Form::file('image', ['class' => 'input_img','style' => 'display:none','accept'=>'image/*']) }}
+		                    </span>
+		                </label>
+		                <input type="text" class="form-control" readonly>
+       				 </div>
+
+	
+					    <div class="boton_accion">
+					    {{ Form::button('Cerrar', ['class' => 'btn btn-danger btn-flat img_cerrar','data-dismiss'=>'modal']) }}
+					    {{ Form::submit('Cambiar Imagen', ['class' => 'btn btn-primary btn-flat img_cambiar']) }}
 					    </div>
 					 {!! Form::close() !!} 
 				 </div>
