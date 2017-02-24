@@ -7,8 +7,9 @@
 
 @section('main-content')
 
-<div class="container">
+<div class="">
 	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
 		<div class="box box-primary">
 			<div class="box-header with-border">
 				<h2>Crear</h2>
@@ -31,8 +32,10 @@
 				</div>
 			</div>
 		</div>
+		</div>
 	</div>
 	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
 		<div class="box box-success">
 			<div class="box-header with-border">
 				<h2>Editar</h2>
@@ -55,6 +58,7 @@
 					<editar_tipo_fase></editar_tipo_fase>
 				</div>
 			</div>
+		</div>
 		</div>
 	</div>
 	@endsection

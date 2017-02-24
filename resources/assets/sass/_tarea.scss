@@ -144,8 +144,11 @@
 		}
 	}
 	.filtros{
-		div:not(:last-child){
-			border-right: 1px solid $borde-gris;
+		div{
+			margin-bottom: 5px;
+			&:not(:last-child){
+				border-right: 1px solid $borde-gris;
+			}
 		}
 		.drop{
 			display: inline-block;
@@ -162,6 +165,9 @@
 				right: 5px;
 				content: " ";
 				z-index: 98;
+			}
+			@media screen and (max-width: 768px) {
+				display: block;
 			}
 		}
 		select{
@@ -201,8 +207,8 @@
 .user_created_and_area{
 	position:relative; 
 	float:right;
-	 margin-right:18px;
-	 margin-bottom: 20px;
+	margin-right:18px;
+	margin-bottom: 20px;
 	a{
 		text-decoration: none;
 		font-size: 18px;
@@ -215,6 +221,12 @@
 				color: $azul-claro;
 			}
 		}
+	}
+	@media screen and (max-width: 992px) {
+		display: block;
+		float: none;
+		margin: 15px auto;
+		max-width: 220px;
 	}
 
 }

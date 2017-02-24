@@ -1,7 +1,7 @@
 <template>
   <form class="row" name="agregar_fase" id="agregar_cliente">
   <!-- <div class="box-body"> -->
-            <div class="col-xs-6 col-md-12">
+            <div class="col-xs-12 col-md-12">
               <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]" >
                 <label>Nombre</label>
                 <input type="text" v-model="fase.nombre" v-validate data-vv-rules="required|alpha_num|min:3" name="nombre" id="nombre" class="form-control" required="required">
@@ -14,7 +14,7 @@
               </div>
               <!-- /.form-group -->
             </div>
-            <div class="col-xs-6 col-md-12">
+            <div class="col-xs-12 col-md-12">
               <button type="button" v-on:click="addfase" class="btn btn-flat btn-primary">Agregar</button>
             </div>
             <!-- </div> -->

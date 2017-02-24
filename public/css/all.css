@@ -8489,6 +8489,12 @@ body {
   /* mixin centrado, fuente y alto titulo de las columnas */
 }
 
+@media screen and (max-width: 1300px) {
+  .listar_areas_modulo {
+    width: auto;
+  }
+}
+
 .listar_areas_modulo .columnas_listar_areas {
   padding-right: 0;
   padding-left: 0;
@@ -8617,6 +8623,12 @@ body {
 
 .listar_areas_modulo .columnas_listar_areas .info_content .eliminar_usuario_area:hover {
   background-color: #8c0000;
+}
+
+@media screen and (max-width: 992px) {
+  .listar_areas_modulo .columnas_listar_areas .info_content {
+    text-align: center;
+  }
 }
 
 .listar_areas_modulo .titulo_listar_area {
@@ -8947,6 +8959,10 @@ body {
   max-width: 290px;
 }
 
+#tabla_tareas_wrapper .filtros div {
+  margin-bottom: 5px;
+}
+
 #tabla_tareas_wrapper .filtros div:not(:last-child) {
   border-right: 1px solid #d8d8d8;
 }
@@ -8968,6 +8984,12 @@ body {
   right: 5px;
   content: " ";
   z-index: 98;
+}
+
+@media screen and (max-width: 768px) {
+  #tabla_tareas_wrapper .filtros .drop {
+    display: block;
+  }
 }
 
 #tabla_tareas_wrapper .filtros select {
@@ -9027,6 +9049,15 @@ body {
 
 .user_created_and_area a span:hover {
   color: #15baee;
+}
+
+@media screen and (max-width: 992px) {
+  .user_created_and_area {
+    display: block;
+    float: none;
+    margin: 15px auto;
+    max-width: 220px;
+  }
 }
 
 .ver_tarea {

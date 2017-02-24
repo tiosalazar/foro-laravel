@@ -2,6 +2,10 @@
 
 .listar_areas_modulo{
 	width: 90%;
+
+	@media screen and (max-width: 1300px) {
+		width: auto;
+	}
 	
 	/* mixin centrado, fuente y alto titulo de las columnas */
 	@mixin center_text() {
@@ -135,6 +139,9 @@
 				&:hover{
 					background-color: #8c0000;
 				}
+			}
+			@media screen and (max-width: 992px) {
+				text-align: center;
 			}
 		}
 		

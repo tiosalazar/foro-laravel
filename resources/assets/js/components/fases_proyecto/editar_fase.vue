@@ -5,7 +5,7 @@
     <div class="col-xs-12 col-sm-12">
       <select_fase ></select_fase>
     </div>
-            <div class="col-xs-6 col-md-12">
+            <div class="col-xs-12 col-md-12">
               <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]" >
                 <label>Nombre</label>
                 <input type="text" v-model="fase.nombre" v-validate data-vv-rules="required|min:3" name="nombre" id="nombre" class="form-control" required="required">
@@ -18,7 +18,7 @@
               </div>
               <!-- /.form-group -->
             </div>
-            <div class="col-xs-6 col-md-12">
+            <div class="col-xs-12 col-md-12">
               <button type="button" v-on:click="editfase" class="btn btn-flat btn-success">Editar</button>
               <button type="button" v-on:click="showModal(fase)" class="btn btn-flat btn-danger pull-right">Borrar</button>
             </div>

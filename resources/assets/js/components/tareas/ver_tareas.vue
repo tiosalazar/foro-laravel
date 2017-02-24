@@ -70,7 +70,7 @@
 		mounted(){
 			let that = this;
 			var oTable = $('#tabla_tareas').DataTable({
-				 dom: "<'row'<'col-xs-12'<'row filtros'<'col-xs-4 selects'><'col-xs-6'f><'col-xs-2'l>>>r>"+
+				 dom: "<'row'<'col-xs-12'<'row filtros'<'col-xs-6 col-sm-6 col-lg-4 selects'><'col-xs-6 col-sm-6 col-lg-5'f><'col-xs-4 col-sm-4 col-lg-3'l>>>r>"+
 			            "<'row'<'col-xs-12't>>"+
 			            "<'row'<'col-xs-12'<'row'<'col-xs-6'i><'col-xs-6'p>>>>",
 				processing: true,
