@@ -132,7 +132,10 @@
                 this.setErrors(err.body.obj);
               }
               toastr.error(this.message,err.body.msg,this.option_toast);
-            })
+            }).then(() => {  
+               this.errors.clear();
+               console.log(this.errors);
+             });
           },
           showModal:function(input) {
             $('#modal-fase').modal('show');

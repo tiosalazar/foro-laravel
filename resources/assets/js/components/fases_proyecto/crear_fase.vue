@@ -102,7 +102,10 @@
                   that.message = response.body.error;
                 }
             toastr.error(that.message,response.body.msg,this.option_toast);
-          });
+          }).then(() => {  
+             this.errors.clear();
+             console.log(this.errors);
+           });
       },
       editfase: function(client) {
             this.$http.put(window._apiURL+'fases/'+client.id, client)

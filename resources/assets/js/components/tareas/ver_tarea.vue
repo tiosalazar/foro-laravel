@@ -459,7 +459,10 @@ Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
                     }
             }
           // console.log(respuesta);
-        });
+        }).then(() => {  
+             this.errors.clear();
+             console.log(this.errors);
+           });
      },
      enviarcomentarios:function(){
 

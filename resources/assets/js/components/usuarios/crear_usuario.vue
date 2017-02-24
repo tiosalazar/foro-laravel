@@ -230,7 +230,10 @@
                       }
 
                     toastr.error(that.message,response.body.msg,this.option_toast);
-                  });
+                  }).then(() => {  
+                     this.errors.clear();
+                     console.log(this.errors);
+                   });
         },
         updateaddUser:function(){
           console.log('Actualizar');
