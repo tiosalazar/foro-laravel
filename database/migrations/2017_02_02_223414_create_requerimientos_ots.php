@@ -20,6 +20,12 @@ class CreateRequerimientosOts extends Migration
             $table->integer('areas_id')->unsigned();
             $table->integer('ots_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('areas_id')->references('id')->on('areas')
+                                       ->onUpdate('cascade')->onDelete('cascade');
+
+            $table->foreign('ots_id')->references('id')->on('ots')
+                                     ->onUpdate('cascade')->onDelete('cascade');                                
         });
     }
 

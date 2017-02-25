@@ -20,6 +20,16 @@ class CreateComentariosTable extends Migration
             $table->integer('tareas_id')->unsigned();
             $table->integer('estados_id')->unsigned()->nullable();
             $table->timestamps();
+
+            $table->foreign('estados_id')->references('id')->on('estados')
+                 ->onUpdate('cascade')->onDelete('cascade');
+
+                 $table->foreign('usuarios_comentario_id')->references('id')->on('users')
+                 ->onUpdate('cascade')->onDelete('cascade');
+
+                 $table->foreign('tareas_id')->references('id')->on('tareas')
+                 ->onUpdate('cascade')->onDelete('cascade');
+
         });
     }
 

@@ -17,6 +17,16 @@ class EstadosXRolesTable extends Migration
             $table->increments('id');
             $table->integer('estados_id')->unsigned();
             $table->integer('roles_id')->unsigned();
+
+            $table->foreign('estados_id')->references('id')->on('estados')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            $table->foreign('roles_id')->references('id')->on('roles')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            
+
+
         });
     }
 

@@ -31,10 +31,10 @@ class DatabaseSeeder extends Seeder
      $this->command->info('Tipos_Compra table seeded!');
    //  $this->call('OTs');
      //$this->command->info('OTs table seeded!');
-     $this->call('Planeacion_fases');
-     $this->command->info('Planeacion_fases table seeded!');
      $this->call('Planeacion_tipos');
      $this->command->info('Planeacion_tipos table seeded!');
+     $this->call('Planeacion_fases');
+     $this->command->info('Planeacion_fases table seeded!');
       $this->call('Permission_Role');
      $this->command->info('Permisos Generados seeded!');
      $this->call('Estados_Roles');
@@ -276,19 +276,6 @@ class OTs extends Seeder {
     }
 
 }
-
-class Planeacion_fases extends Seeder {
-
-    public function run()
-    {
-        DB::table('planeacion_fases')->delete();
-        App\Planeacion_fase::create(array('nombre' => 'Levantamiento Requerimientos','planeacion_tipos_id' => '1'));
-        App\Planeacion_fase::create(array('nombre' => 'Desarrollo/Maquetado','planeacion_tipos_id' => '2'));
-        App\Planeacion_fase::create(array('nombre' => 'Calidad y pruebas Desarrollo','planeacion_tipos_id' => '3'));
-        App\Planeacion_fase::create(array('nombre' => 'Publicacion','planeacion_tipos_id' => '4'));
-    }
-
-}
 class Planeacion_tipos extends Seeder {
 
     public function run()
@@ -301,6 +288,20 @@ class Planeacion_tipos extends Seeder {
     }
 
 }
+
+class Planeacion_fases extends Seeder {
+
+    public function run()
+    {
+        DB::table('planeacion_fases')->delete();
+        App\Planeacion_fase::create(array('nombre' => 'Levantamiento Requerimientos','planeacion_tipos_id' => 1));
+        App\Planeacion_fase::create(array('nombre' => 'Desarrollo/Maquetado','planeacion_tipos_id' =>2));
+        App\Planeacion_fase::create(array('nombre' => 'Calidad y pruebas Desarrollo','planeacion_tipos_id' => 3));
+        App\Planeacion_fase::create(array('nombre' => 'Publicacion','planeacion_tipos_id' => 4));
+    }
+
+}
+
 
 class Permission_Role extends Seeder {
 

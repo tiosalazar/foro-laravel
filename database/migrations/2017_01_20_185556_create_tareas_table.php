@@ -32,6 +32,21 @@ class CreateTareasTable extends Migration
             $table->integer('encargado_id')->nullable();
             $table->integer('prioridad_id')->nullable();
             $table->timestamps();
+
+               $table->foreign('estados_id')->references('id')->on('estados')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+                $table->foreign('usuarios_id')->references('id')->on('users')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+                $table->foreign('areas_id')->references('id')->on('areas')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+                $table->foreign('planeacion_fases_id')->references('id')->on('planeacion_fases')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+                $table->foreign('ots_id')->references('id')->on('ots')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

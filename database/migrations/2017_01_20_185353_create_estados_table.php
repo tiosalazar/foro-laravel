@@ -18,6 +18,9 @@ class CreateEstadosTable extends Migration
             $table->string('nombre',45);
             $table->integer('tipos_estados_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('tipos_estados_id')->references('id')->on('tipos_estados')
+            ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
