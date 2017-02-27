@@ -109,6 +109,7 @@
 					</div>
 				</div>
 			</div>
+		 </div>
 		</template>
 		<script>
 		import VueLocalStorage from 'vue-localstorage'
