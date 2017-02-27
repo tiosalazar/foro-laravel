@@ -163,7 +163,7 @@
 
   //Historico Equipo
 Route::get('/years_historico_equipo', 'AreaController@getYearHistorico');
-Route::get('/hitorico_equipo/{id}','AreaController@historico_equipos');
+
 
  Route::get('/historico_areas', function () {
     return view('admin.equipo.historico_equipo_area');
@@ -173,7 +173,7 @@ Route::get('/hitorico_equipo/{id}','AreaController@historico_equipos');
     return view('admin.equipo.historico_equipo_usuario');
  });
 
- 
+ Route::get('/hitorico_equipo/{id}','AreaController@historico_equipos');
 
 
   

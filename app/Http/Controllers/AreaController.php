@@ -13,9 +13,14 @@ use Illuminate\Http\Response;
 use Exception;
 use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\Auth;
 
 class AreaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -171,7 +176,7 @@ class AreaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function historico_equipos($id, Request $request)
+    public function historico_equipos(Request $request,$id)
     {
        
 
