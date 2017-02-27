@@ -21,7 +21,24 @@
 
 		</table>
 
-
+	  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Borrar OT</h4>
+	      </div>
+	      <div class="modal-body">
+	        ¿ Estas seguro que deseas borrar esta Orden de trabajo ?
+	        <input type="hidden" name="id" id="id_cliente">
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	        <button type="button" v-on:click="borrarCliente(0)" class="btn btn-danger">Borrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
 	</div>
 </template>
@@ -37,24 +54,17 @@
 			return{
 				list_usuarios:[],
 				boton_hidden:false,
-
+				option_toast:{
+		          timeOut: 5000,
+		          "positionClass": "toast-top-center",
+		          "closeButton": true,
+		        },
 			}
 		},
 		created: function(){
 
-			this.list_usuarios_api();
-
 		},
 		mounted () {
-
-
-		},
-		methods:{
-
-			list_usuarios_api: function(){
-
-				setTimeout(function(){
-
 					$('#tabla_usuarios').DataTable({
 						processing: true,
 						serverSide: false,
@@ -138,10 +148,39 @@
 
 				});
 
-				}, 0);
+            $(document).ready(function(e) {
+             $('#tabla_usuarios tbody').on('click', 'td .delete_cliente', function (e) {
+              var id = $(this).attr('id');
+              id = id.split('-');
+              console.log(id[1]);
+                $('#id_cliente').val(id[1]);
+           })
+        });
 
+		},
+		methods:{
 
-			}
+		borrarCliente: function() {
+        // this.$http.delete('api/v1/clientes/'+client.id)
+        let index = $('#id_cliente').val()
+        console.log(index);
+        this.$http.delete(window._apiURL+'ots/'+index)
+        .then(function(response) {
+          if (response.status != '200') {
+            $('#myModal').modal('hide')
+            toastr.error(this.message,response.body.msg,this.option_toast);
+          } else {
+            $('#myModal').modal('hide')
+            toastr.success(response.body.msg,'',this.option_toast);
+            $('#tabla_usuarios').DataTable().ajax.reload();
+            // this.clientes.splice(index,1);
+          }
+        },function(err) {
+          $('#myModal').modal('hide')
+          toastr.error(this.message,err.body.msg,this.option_toast);
+        })
+
+      }	
 
 
 		}

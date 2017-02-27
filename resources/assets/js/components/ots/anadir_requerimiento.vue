@@ -15,7 +15,7 @@
             <div class="row">
                <label for="horas_area" class="col-sm-6 "><h5>Horas de {{ area }}</h5> </label>
                 <div class="col-sm-6">
-                  <input type="text" @input="emitirData(),guardarDatos()"  style="margin-top: 12px;" :name="'horas_area'+id_area"  v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control text-center" :id="'horas_area'+id_area" v-model="nhoras" :placeholder="'Numero de Horas '+area">
+                  <input type="text" @input="emitirData(),guardarDatos()"  style="margin-top: 12px;" :name="'horas_area'+id_area"  v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control text-center" :id="'horas_area'+id_area" v-model="nhoras" placeholder="No. Horas">
                   <span  class="help-block" v-show="errors.has('horas_area'+id_area)">{{ errors.first('horas_area'+id_area) }}</span>
                 </div>
             </div>

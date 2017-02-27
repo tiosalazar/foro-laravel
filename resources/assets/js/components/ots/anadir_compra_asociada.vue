@@ -30,7 +30,7 @@
         </div>
         <div class="form-group  col-md-4 col-xs-12"  v-bind:class="{ 'has-error': errors.has('valor_compra'+index) }">
           <label class="sr-only" for="no_horas_req">Valor</label>
-          <input type="text" :name="'valor_compra'+index"  @input="guardarDatos" v-validate data-vv-rules="required|numeric" data-vv-as="Valor" v-model="ed.model_valor" class="form-control" :id="'valor_compra'+index"  placeholder="Valor">
+          <input type="text" :name="'valor_compra'+index"  @input="guardarDatos(),processValue(index)" v-validate data-vv-rules="required" data-vv-as="Valor" v-model="ed.model_valor" class="form-control" :id="'valor_compra'+index"  placeholder="Valor">
           <span  class="help-block" v-show="errors.has('valor_compra'+index)">{{ errors.first('valor_compra'+index) }}</span>
         </div>
         <div class="form-group col-md-4  col-xs-12"><select_divisa :index="index" :select="ed.divisa"></select_divisa> </div>
@@ -46,10 +46,10 @@
 
 <div class="row"  v-show="$parent.visualizacion != 'true'">
   <div class="col-md-12 text-center">
-    <div class="col-md-4 col-md-offset-2">
+    <div class="col-md-5 col-md-offset-1">
       <button type="button" @click="addRequerimiento" :class="{'disabled' : disabled }" class="btn btn-block boton_foro btn-success succes col-sm-3" :disabled="disabled">Añadir Compra</button>
     </div>
-    <div class="form-group  col-md-4 col-xs-12" v-show="$parent.visualizacion != 'true'">
+    <div class="form-group  col-md-5 col-xs-12" v-show="$parent.visualizacion != 'true'">
       <button type="button" style="width:100%" @click="deleteRequerimiento" :class="{'disabled' : disabled }" class="btn btn-danger boton_foro error " :disabled="disabled">Eliminar</button>
     </div>
   </div>
@@ -118,6 +118,10 @@
     Al darle click en añadir Requerimiento la función valida la información y añade una nueva posición al
     arreglo de requerimientos
     */
+    processValue:function(index) {
+      // this.$emit('input', numeral(val).format('0,0'))
+      this.compra_asociada[index].model_valor =  numeral(this.compra_asociada[index].model_valor).format('0,0')
+    },
     addRequerimiento: function(e) {
       e.preventDefault();
       this.$validator.validateAll();

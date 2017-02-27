@@ -25,6 +25,7 @@ class CreateOtsTable extends Migration
             $table->string('observaciones',255)->nullable();
             $table->dateTime('fecha_inicio');
             $table->dateTime('fecha_final');
+            $table->tinyInteger('estado')->default(1);
             $table->integer('clientes_id')->unsigned();
             $table->integer('usuarios_id')->unsigned();
             $table->integer('estados_id')->unsigned();

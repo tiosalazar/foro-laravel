@@ -16,7 +16,7 @@ class Ot extends Model
   * @var array
   */
   protected $fillable = [
-    'nombre','referencia','fee','horas_totales','horas_disponibles','total_horas_extra','valor', 'observaciones', 'fecha_inicio', 'fecha_final', 'clientes_id', 'usuarios_id','estados_id',
+    'nombre','referencia','fee','horas_totales','horas_disponibles','total_horas_extra','valor', 'observaciones', 'fecha_inicio', 'fecha_final','estado','clientes_id', 'usuarios_id','estados_id',
   ];
    
    public function getFormatFecha($fecha_ingreso)

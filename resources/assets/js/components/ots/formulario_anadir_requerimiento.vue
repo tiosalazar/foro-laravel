@@ -49,7 +49,7 @@
 								</div>
 								<div style="height:30px"></div>
 								<div class="row">
-									<div class="col-md-4 col-md-offset-4">
+									<div class="col-md-6 col-md-offset-3">
 										<button type="button" @click="guardarDatos(area.id)" class="btn btn-block btn-success  boton_foro succes col-sm-3">Guardar Requerimiento</button>
 									</div>
 								</div>
@@ -568,7 +568,7 @@
 										divisas_id: divisa.id,
 										descripcion:hora_a[i].model_desc,
 										provedor:hora_a[i].model_provedor,
-										valor:hora_a[i].model_valor,
+										valor:numeral(hora_a[i].model_valor).value(),
 									};
 									arreglo_temporal.push(data);
 								}

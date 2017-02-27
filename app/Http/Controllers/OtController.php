@@ -41,7 +41,7 @@ class OtController extends Controller
    {
       $ots= Ot::orderBy('created_at', 'ASC')->get();
 
-      $ots = Ot::with('cliente','usuario','estado')->get();
+      $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->get();
 
       return Datatables::of( $ots)
       ->addColumn('fecha_inicio', function($ots) {
@@ -53,7 +53,8 @@ class OtController extends Controller
       ->addColumn('acciones', function($ots) {
        $ver_ot='<a href="visualizar/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver OT</a>';
        $editar_ot=(Auth::user()->can('editar_ots') )?'<a href="editar/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit" aria-label="View">Editar OT</a>':'';
-       return $ver_ot.$editar_ot;
+       $eliminar_ot=(Auth::user()->can('editar_ots') )?'<button type="button" id="cli-'.$ots->id.'" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente"  data-toggle="modal" data-target="#myModal">Eliminar OT</button>':'';
+       return $ver_ot.$editar_ot.$eliminar_ot;
     })
       ->make(true);
 
@@ -383,7 +384,28 @@ class OtController extends Controller
    */
    public function destroy($id)
    {
-      //
+     $ot=  Ot::findOrFail($id);
+     $ot->Tarea;
+     if ( !isset($ot->Tarea) || empty($ot->Tarea) || $ot->Tarea == [] || count($ot->Tarea) <=0 ) {
+      $ot->estado=0;
+      $ot->save();
+       return response([
+               'status' => Response::HTTP_OK,
+               'response_time' => microtime(true) - LARAVEL_START,
+               'msg' => 'Se ha eliminado la OT correctamente', //Mensaje a mostrar en el Front
+               'obj' => $ot
+               ],Response::HTTP_OK);
+     }else{
+       return response([
+               'status' => Response::HTTP_BAD_REQUEST,
+               'response_time' => microtime(true) - LARAVEL_START,
+               'error' => 'fallo_al_eliminar',
+               'consola' => $ot->Tarea, 
+               'msg' => 'Esta OT ya tiene tareas Asignadas, por lo tanto no se puede eliminar', //Mensaje a mostrar en el Front
+               ],Response::HTTP_BAD_REQUEST);
+
+     }
+
    }
 
 
