@@ -20,6 +20,7 @@
 	 </div>
         <div class="clearfix"></div>
 	   <ver_tareas :area="2"></ver_tareas>
+	   
 			
 	</section>
 @endsection

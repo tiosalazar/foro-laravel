@@ -7,13 +7,13 @@ use App\Area;
 use App\User;
 use App\Historico_equipo;
 use App\Role;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
 use Illuminate\Http\Response;
 use Exception;
-use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
-use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class AreaController extends Controller
 {

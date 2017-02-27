@@ -18,7 +18,7 @@
 
   Route::get('/console','UserController@AgregarRoll');
 
-    Auth::routes();
+  Auth::routes();
 
   Route::group(['middleware' => 'auth'], function () {
     
@@ -37,6 +37,17 @@
     Route::get('/roles', function () {
       return view('admin.roles.crear_roles');
     });
+
+   //Historico Equipo
+   Route::get('historico_areas', function () {
+      return view('admin.equipo.historico_equipo_area');
+   });
+   Route::get('historico_usuarios', function () {
+      return view('admin.equipo.historico_equipo_usuario');
+   });
+   Route::get('/years_historico_equipo', 'HistoricoequipoController@getYearHistorico');
+   Route::get('/historico_equipos/{id}','HistoricoequipoController@historico_de_equipos');
+
 
     /**
     * Foro por Área
@@ -215,3 +226,4 @@ Route::get('/years_historico_equipo', 'AreaController@getYearHistorico');
     //  return bcrypt('H1m4l4ya!');
   });
 
+   
