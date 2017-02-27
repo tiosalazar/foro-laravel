@@ -161,6 +161,21 @@
 
   Route::get('equipo/usuarios/editar/{id}','UserController@editar_usuario');
 
+  //Historico Equipo
+Route::get('/years_historico_equipo', 'AreaController@getYearHistorico');
+Route::get('/hitorico_equipo/{id}','AreaController@historico_equipos');
+
+ Route::get('/historico_areas', function () {
+    return view('admin.equipo.historico_equipo_area');
+ });
+
+  Route::get('/historico_usuarios', function () {
+    return view('admin.equipo.historico_equipo_usuario');
+ });
+
+ 
+
+
   
 /*
   Vista trafico
