@@ -22,6 +22,7 @@ use App\Ot;
 use App\Tiempos_x_Area;
 use App\Area;
 use App\User;
+use App\Historico_equipo;
 use App\Role;
 use App\Estado;
 use App\Comentario;
@@ -564,6 +565,7 @@ return response()->json($respuesta);
         ->make(true);
 
     }
+
 
     public function showOneTarea($id)
     {

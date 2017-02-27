@@ -7,12 +7,15 @@ use App\Area;
 use App\User;
 use App\Historico_equipo;
 use App\Role;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
 use Illuminate\Http\Response;
 use Exception;
-use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
+
+
 
 class AreaController extends Controller
 {
@@ -165,76 +168,7 @@ class AreaController extends Controller
         return response()->json($respuesta);
     }
 
-    /**
-     * Método historico de equipo de trabajo
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function historico_equipos($id, Request $request)
-    {
-       
-
-     
-        // Si no trae el mes y año en el $request
-        // tomar el mes y el año actual
-        $year = '';
-        $month = '';
-        $now = Carbon::now();
-        if ($request->has('year')) {
-            $year = $request->get('year');
-        }else{
-            $year = $now->year;
-        }
-        if ($request->has('month')) {
-            $month = $request->get('month');
-        }else{
-            $month = $now->month;
-        }
-
-        if ($id=='1') {
-            $historico_equipo = Historico_equipo::select('users.nombre','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad')->join('users','users.id','=','historico_equipos.entidad_id')->where('tipo_de_entidad',$id)
-            ->whereYear('historico_equipos.created_at', $year)
-            ->whereMonth('historico_equipos.created_at', $month)
-            ->get();
-        }else{
-          $historico_equipo = Historico_equipo::select('areas.nombre','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad')->join('areas','areas.id','=','historico_equipos.entidad_id')->where('tipo_de_entidad',$id)
-            ->whereYear('historico_equipos.created_at', $year)
-            ->whereMonth('historico_equipos.created_at', $month)
-            ->get();  
-        }
-
-      
-        return Datatables::of($historico_equipo)->make(true);
-    }
-
-    /**
-     * Traer el primer historico
-     **/
-    public function getFirstHistorico()
-    {
-        $historico_equipo = Historico_equipo::orderBy('created_at')->first();
-        return $historico_equipo;
-    }
-
-     /**
-     * Traer años del historico de equipos
-     **/
-    public function getYearHistorico()
-    {
-        $years = array();
-        $firstHistorico = $this->getFirstHistorico();
-        $historico_equipo = Historico_equipo::orderBy('created_at', 'desc')->first();
-        if($historico_equipo != null ){
-            $lastYear = Carbon::instance($historico_equipo->created_at)->year;
-            $firstYear = Carbon::instance($firstHistorico->created_at)->year;
-            for ($i=$firstYear; $i <=  $lastYear; $i++) {
-                array_push($years, (string)$i);
-            }
-            return $years;
-        }
-        return [];
-    }
+    
 
     /**
      * Remove the specified resource from storage.
