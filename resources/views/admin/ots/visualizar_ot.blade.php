@@ -43,6 +43,14 @@
 									<li><strong>Horas totales:</strong><span> {{$ot['horas_totales']}} Horas</span></li>
 									<li><strong>Horas disponibles:</strong><span> {{$ot['horas_disponibles']}} Horas</span></li>
 									<li><strong>Horas adicionales:</strong><span> {{$ot['total_horas_extra']}} Horas</span></li>
+									@if(Auth::user()->can('editar_ots') )
+									<div style="height:22px"></div>
+                                       <li>
+                                       <div class="col-md-12">
+													<a type="button" href="{{ url('ots/exportar/') }}/{{$ot->id}}" target="_blank"  class="btn btn-block text-center btn-danger boton_foro error  col-sm-3" >Descargar Reporte </a>
+											</div>
+									  </li>
+									@endif
 								</ul>
 							</div>
 							<!-- /.col -->

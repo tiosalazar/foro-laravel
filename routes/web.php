@@ -17,7 +17,6 @@
 
 
   Route::get('/console','UserController@AgregarRoll');
-  Route::get('/prueba/{id}','OtController@exportarTodoslosDatos');
 
     Auth::routes();
 
@@ -91,6 +90,7 @@
         }
         return view('admin.ots.crear_ot');
       });
+    Route::get('ots/exportar/{id}',['middleware' => ['permission:editar_ots'], 'uses' =>'OtController@exportarTodoslosDatos']);
 
 
   Route::get('/show_ots_tareas','OtController@showOtEnTareas');

@@ -101,7 +101,7 @@
 									Se perderán los cambios que no haya guardado
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-flat btn-default pull-left" data-dismiss="modal">Espera!! voy a guardar</button>
+									<button type="button" class="btn btn-flat btn-default pull-left" data-dismiss="modal">Espera, voy a guardar</button>
 									<button type="button" class="btn btn-flat btn-primary" @click="seguir">Ok, quiero continuar</button>
 								</div>
 							</div>
@@ -501,9 +501,17 @@
 			Al dar click en las tabs llama a un Modal el cual pregunta si quiere salir sin guardar.
 			*/
 			tabs_areas:function(e,id){
+				if( this.area_temporal == '')
+				     this.area_temporal=id;
+
+				if(!this.$localStorage.get('datos_requerimiento_'+this.area_temporal) ){
+					console.log("entre");
 				e.stopPropagation()
 				this.id_tab=id;
 				$('.editarModal').modal('show');
+			   }else{
+			   	 this.area_temporal='';
+			   }
 			},
 			seguir:function(e){
 				$('[data-id~="tab_'+this.id_tab+'"]').trigger('click')
