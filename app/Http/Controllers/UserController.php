@@ -331,25 +331,39 @@ class UserController extends Controller
         var_dump($user->can('crear_usuarios') );
         //return view('adminlte::home',array('usuario' =>$user));
     }
-
-    public function getNotifications($all = null)
+    /**
+     * Devuelve las notificaciones para llenar un Datatable
+     * @return Datatable
+     */
+    public function getNotifications()
     {
         $user = User::findOrFail(Auth::id());
 
         $notifications = $user->notifications;
 
-        if (is_null($all)) {
-            $notifications=$notifications->slice(0,4);
-            $notifications->all();
-            $today = Carbon::now();
-            foreach ($notifications as $key => $notify) {
-                $notify->time_ago = $today->diffForHumans($notify->created_at);    
-            }
-            return response()->json($notifications);
-        }else{
-            return Datatables::of($notifications)->make(true);
-        }
+        return Datatables::of($notifications)->make(true);
+
     }
+    /**
+     * Paginar las notificaciones en el Header
+     * @return JSON Array
+     */
+    public function notificationsPaged()
+    {
+        $user = User::findOrFail(Auth::id());
+
+        $notifications = $user->notifications()->paginate(2);
+
+        $today = Carbon::now();
+        foreach ($notifications as $key => $notify) {
+            $notify->time_ago = $today->diffForHumans($notify->created_at);    
+        }
+        return response()->json($notifications);
+    }
+    /**
+     * Obtiene el total de las notificaciones no leidas
+     * @return JSON Array
+     */
     public function getUnReadNotifications()
     {
         $user = User::findOrFail(Auth::id());
@@ -359,7 +373,11 @@ class UserController extends Controller
         $total =$notifications->count();
         return response()->json($total);
     }
-
+    /**
+     * Agregar un read_at a las notificaciones no leidas
+     * y las pone como 'vistas'
+     * @return void
+     */
     public function readNotifications()
     {
         $user = User::findOrFail(Auth::id());

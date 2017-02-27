@@ -177,7 +177,8 @@
   
 
   // Notificaciones
-  Route::get('/notificaciones/{all?}','UserController@getNotifications');
+  Route::get('/notificaciones/','UserController@getNotifications');
+  Route::get('/pageNotifications/','UserController@notificationsPaged');
   Route::get('/notificaciones_no_leidas/','UserController@getUnReadNotifications');
   Route::get('/leer_notificaciones/','UserController@readNotifications');
   Route::get('/listar_notificaciones/',function ($value=''){

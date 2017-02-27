@@ -15,7 +15,6 @@
 	        this.getUnReadNotifications();
 	        this.$on('total_notificaciones', function(obj) {
 				this.no_leidas= obj;
-				console.log('total',obj)
 			});
 			let that = this;
 			this.$parent.$on('new_notify', function(obj) {
@@ -24,8 +23,6 @@
 	    },
 	    methods:{
 	    	readNotifications:function() {
-	    		// console.log('fucker')
-	    		// this.$parent.$emit('asd','asd');
 	    		this.$http.get(window._baseURL+'/leer_notificaciones').then(response => {
 					console.log(response.body)
 		            this.no_leidas=0;
@@ -35,12 +32,8 @@
 				this.$http.get(window._baseURL+'/notificaciones_no_leidas').then(response => {
 					console.log(response.body)
 		            this.no_leidas = response.body;
-		            // this.$parent.$emit('total_notificaciones',this.no_leidas);
 		          })
 			},
-			asd:function() {
-				this.$parent.$emit('asd','asd');
-			}
 	    }
 	}
 </script>
