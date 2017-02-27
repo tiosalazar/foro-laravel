@@ -1,12 +1,9 @@
 <template>
-
-
 	<div>
-	<audio id="chatAudio"><source :src="_baseURL+'/media/alert.mp3'" type="audio/mp3"></audio>
-		<ul class="menu" id="menur">
+		<audio id="chatAudio"><source :src="_baseURL+'/media/alert.mp3'" type="audio/mp3"></audio>
+		<ul class="menu" id="menur" ref="menur">
 			<li v-for="notificacion in notificaciones" >
 				<a  v-on:click="goTarea(notificacion.data)">
-				<!-- <a  v-on:click="sumNotify(notificacion.data)"> -->
 					<div class="pull-left" v-if="notificacion.data.img_perfil == null">
 						<img :src="_baseURL+'/images/perfil.jpg'" class="img-circle" alt="User Image" >
 					</div>
@@ -21,19 +18,26 @@
 					<p>{{notificacion.data.descripcion}}</p>
 				</a>
 			</li>
+			<mugen-scroll :handler="onInfinite" :should-handle="!loading" scroll-container="menur" v-show="!hidden">
+		    <center><i class="fa fa-circle-o-notch fa-spin  fa-fw"></i>
+			<span class="sr-only">Loading...</span></center>
+    </mugen-scroll>
 		</ul>
 	</div>
 </template>
 <script>
 import Push from 'push.js'
 import moment from 'moment'
-// import notificaciones_total from './notificaciones_total.vue'
+import MugenScroll from 'vue-mugen-scroll'
 	module.exports= {
+		components: {MugenScroll, }, 
 		props:['id'],
 	    data () {
 		      return {
 		      	notificaciones:[],
 		      	no_leidas:0,
+		      	loading: false,
+		      	hidden:false,
 		      	option_toast:{
 		          timeOut: 5000,
 		          "positionClass": "toast-bottom-right",
@@ -42,11 +46,6 @@ import moment from 'moment'
 		      }
 		},
 		created: function(){
-	        this.getNotifications();
-	        // this.getUnReadNotifications();
-	        this.$parent.$on('asd', function(obj) {
-				console.log('-----------------------',obj)
-			});
 	    },
 	    mounted(){
 	    	if (!('Notification' in window)) {
@@ -56,16 +55,6 @@ import moment from 'moment'
 			}
 			Push.Permission.request();
 			Push.Permission.get();
-				/*Push.create("Notifiación Prueba", {
-			    body: "Hola, ya has activado las notifiaciones",
-			    icon: 'icon.png',
-			    timeout: 4000,
-			    link: 'home',
-			    onClick: function () {
-			        window.focus();
-			        this.close();
-			    }
-			});*/
 			this.listen();
 			$('.menu').slimScroll({});
 			
@@ -76,7 +65,7 @@ import moment from 'moment'
 				Echo.private('App.User.'+this.id)
 				.notification( (notification) => {
 					console.log(notification);
-					this.notificaciones.unshift({data:notification,time_ago:moment().fromNow()});
+					this.notificaciones.unshift({data:notification,registered:moment().fromNow()});
 					toastr.success(notification.descripcion,'',this.option_toast);
 					Push.clear();
 					Push.create(notification.nombre, {
@@ -94,25 +83,37 @@ import moment from 'moment'
 					console.log(error);
 				});
 			},
-			getNotifications:function() {
-				this.$http.get(window._baseURL+'/notificaciones').then(response => {
-		            this.notificaciones = response.body;
-		          })
-			},
-			/*getUnReadNotifications:function() {
-				this.$http.get('/notificaciones_no_leidas/').then(response => {
-					console.log(response.body)
-		            this.no_leidas = response.body;
-		            this.$parent.$emit('total_notificaciones',this.no_leidas);
-		          })
-			},*/
 			goTarea:function(data) {
 				window.location.href = window._baseURL+data.link;
 			},
 			sumNotify:function() {
 				this.$parent.$emit('new_notify',1);
 			},
+			onInfinite() {
+				this.loading = true
+				this.$http.get(window._baseURL+'/pageNotifications'
+					, {
+						params: {
+							page: this.notificaciones.length /2 +1,
+			      },
+			  }).then((res) => {
+			  	console.log(res)
+			  	if (res.body.data.length >=1) {
+			  		console.log('entro')
+			  		this.notificaciones = this.notificaciones.concat(res.body.data);
+			  		if (!res.body.to) {
+			  			this.loading = false
+			  			this.hidden = true
+			  			console.log('entro full')
+			  		}
+			  		this.loading = false
+			  	} else {
+			  		console.log('vacio')
+			  		this.loading = false
+			  		this.hidden = true
+			  	}
+			  });
+			},
 		}
 	}
-	// Vue.component('notificaciones_total', notificaciones_total);
 </script>

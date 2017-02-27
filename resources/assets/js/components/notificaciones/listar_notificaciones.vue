@@ -34,7 +34,7 @@
           processing: true,
           serverSide: true,
           'ajax': {
-           'url': window._baseURL+"/notificaciones/usuario",
+           'url': window._baseURL+"/notificaciones",
            'type': 'GET',
            'beforeSend': function (request) {
              request.setRequestHeader("Authorization", 'Bearer '+Laravel.api_token);
