@@ -46,6 +46,7 @@ Vue.component('list_usuarios', require('./components/usuarios/listar_usuario.vue
 Vue.component('roles', require('./components/roles/roles.vue'));
 Vue.component('areas', require('./components/areas/areas.vue'));
 Vue.component('listado_areas', require('./components/areas/listado_areas.vue'));
+Vue.component('historico_equipos', require('./components/areas/historico_equipos.vue'));
 //Fin Componentes Bcaldas
 
 

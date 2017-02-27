@@ -131,6 +131,19 @@
       <li class="treeview  {{ Request::is('trafico') ? 'active' : '' }}"><a href="{{ url('trafico') }}"><i class='fa fa-calendar'></i><span>{{  trans('texto_menu.trafico') }}</span></a></li>
       @endif
       <!-- .Trafico -->
+
+      <!--Historico Áreas -->
+      @if( Auth::user()->can('ver_trafico') )
+      <li class="treeview  {{ Request::is('trafico') ? 'active' : '' }}"><a href="{{ url('historico_areas') }}"><i class='fa fa-calendar'></i><span>Historico Áreas</span></a></li>
+      @endif
+      <!-- .Historico Áreas -->
+
+        <!--Historico Usuarios -->
+      @if( Auth::user()->can('ver_trafico') )
+      <li class="treeview  {{ Request::is('trafico') ? 'active' : '' }}"><a href="{{ url('historico_usuarios') }}"><i class='fa fa-calendar'></i><span>Historico Usuarios</span></a></li>
+      @endif
+      <!-- .HistoricoUsuarios -->
+
       <!--Trafico -->
       @if( Auth::user()->can('ver_trafico') )
       <li class="treeview  {{ Request::is('fases') ? 'active' : '' }}"><a href="{{ url('fases') }}"><i class='fa fa-paper-plane'></i><span>{{  trans('texto_menu.fases_planeacion') }}</span></a></li>
