@@ -91,9 +91,9 @@
               }
             this.areaarray.estado=1;
             var input = this.areaarray;
+            var that = this;
             this.$http.post(window._apiURL+'areas',input)
             .then(function(respuesta){
-                var that = this;
                 that.message ='';
                 if (respuesta.status != '200') {
                    if (Object.keys(respuesta.body.request).length>0) {
@@ -107,13 +107,13 @@
                 }else{
                   toastr.success(respuesta.body.msg,'',this.option_toast);
                   this.id_area_passing={'id':respuesta.body.area.id,'nombre':respuesta.body.area.nombre,'extencion_tel':respuesta.body.area.extencion_tel,'estado':respuesta.body.area.estado}
-                  this.areaarray={};                  
+                  this.areaarray={};       
+                  setTimeout(function(){ that.errors.clear(); }, 50);           
                   
                 }
 
 
             },(response) => {
-               var that = this;
                 that.message ='';
 
                 console.log(response);
@@ -126,10 +126,7 @@
                   }
 
                 toastr.error(that.message,response.body.error,this.option_toast);
-              }).then(() => {  
-               this.errors.clear();
-               console.log(this.errors);
-             });
+              });
           }
         }
 

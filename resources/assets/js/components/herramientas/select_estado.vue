@@ -56,6 +56,13 @@
           return this.select;
         },
     },
+    watch: {
+        select:function(val) {
+          console.log('reset');
+          this.isInvalid = false;
+          this.isTouched=false;
+        },
+      },
     created: function(){
 
       this.fetchTips();

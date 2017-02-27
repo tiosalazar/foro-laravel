@@ -41,6 +41,7 @@
             <div class="col-xs-6 col-md-12">
               <button type="button" v-show="agregar" v-on:click="addCliente" class="btn btn-block btn-success aa">Agregar</button>
               <button type="button" v-show="!agregar" v-on:click="editCliente(cliente)" class="btn btn-block btn-success aa">Actualizar</button>
+              <button type="button"  v-on:click="errors.clear()" class="btn btn-block btn-success aa">clear</button>
             </div>
             </form>
           <!-- /.row -->
@@ -116,10 +117,9 @@
 			    if (this.errors.any()) {
 			        return false
 			    }
-				console.log(this.cliente);
+	            let that = this;
 				this.$http.post(window._apiURL+'clientes', this.cliente)
 	             .then(function(respuesta){
-	             	var that = this;
 	             	that.message ='';
 	             	if (respuesta.status != '200') {
 	             		if (Object.keys(respuesta.body.obj).length>0) {
@@ -129,21 +129,18 @@
 	             	} else {
 	             		toastr.success(respuesta.body.msg,'',this.option_toast);
 	             		this.cliente={};
-
+	             		setTimeout(function(){ that.errors.clear(); }, 50);
 	             	}
 	             }, (response) => {
-	             	var that = this;
 	             	that.message = '';
 	             	if (Object.keys(response.body.obj).length>0) {
 	             		this.setErrors(response.body.obj);
 	             	}
 				    toastr.error(that.message,response.body.msg,this.option_toast);
-				  }).then(() => {  
-		               this.errors.clear();
-		               console.log(this.errors);
-		             });
+				  });
 			},
 			editCliente: function(client) {
+				let that = this;
 		        this.$http.put(window._apiURL+'clientes/'+client.id, client)
 		        .then(function(response) {
 		          if (response.status != '200') {
@@ -154,6 +151,7 @@
 		          } else {
 		            toastr.success(response.body.msg,'',this.option_toast);
 		            this.cliente={};
+		            setTimeout(function(){ that.errors.clear(); }, 50);
 		          }
 		        }, function(err) {
 		          if (Object.keys(err.body.obj).length>0) {

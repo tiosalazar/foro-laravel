@@ -233,8 +233,8 @@
 				this.tarea.usuarios_id = this.user;
 				this.tarea.prioridad_id=this.prioridad.id;
 				// console.log(this.prioridad);
-
-				console.log(this.tarea);
+				
+				let that = this;
 				this.$http.post(window._apiURL+'tareas',this.tarea)
 		         .then(function(respuesta){
 		           if (respuesta.status != '200') {
@@ -251,18 +251,15 @@
 			            this.estado="";
 			            this.refresh=0;
 			            this.fecha_entrega_cliente = '';
+			            setTimeout(function(){ that.errors.clear(); }, 50); 
 			          }
 		           console.log(respuesta);
 		         }, (response) => {
 		          if (Object.keys(response.body.obj).length>0) {
 		            this.setErrors(response.body.obj);
-		            console.log(response);
 		          }
 		          toastr.error(this.message,response.body.msg,this.option_toast);
-		        }).then(() => {  
-	               this.errors.clear();
-	               console.log(this.errors);
-	             });
+		        });
 			},
 		},
 		mounted() {}

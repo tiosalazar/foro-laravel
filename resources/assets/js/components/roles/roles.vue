@@ -108,18 +108,14 @@
             if (this.errors.any()) {
               return false
             }
-          var input = this.rolarray;
-            this.$http.post(window._apiURL+'roles',input)
+                let that = this;
+            this.$http.post(window._apiURL+'roles',this.rolarray)
             .then(function(respuesta){
-                var that = this;
                 that.message ='';
                 if (respuesta.status != '200') {
                    if (Object.keys(respuesta.body.request).length>0) {
 
-                    $.each(respuesta.body.request, function(index, value) {
-                      that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-                      that.errors_return[index] = 'has-warning';
-                    });
+                    this.setErrors(respuesta.body.request);
                   }
                   toastr.warning(that.message,respuesta.body.msg,this.option_toast);
                 }else{
@@ -127,23 +123,17 @@
                   toastr.success(respuesta.body.msg,'',this.option_toast);
                   this.id_rol_passing={'id':respuesta.body.obj.id,'name':respuesta.body.obj.name,'display_name':respuesta.body.obj.display_name,'description':respuesta.body.obj.description};
                   this.rolarray={};
+                  setTimeout(function(){ that.errors.clear(); }, 50); 
                 }
             },(response) => {
                 console.log(response);
                 console.log('error');
-                var that = this;
                 that.message = '';
                 if (Object.keys(response.body.request).length>0) {
-                  $.each(response.body.request, function(index, value) {
-                    that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-                    that.errors_return[index] = 'has-error';
-                    });
+                  this.setErrors(respuesta.body.request);
                 }
                 toastr.error(that.message,response.body.msg,this.option_toast);
-              }).then(() => {  
-                 this.errors.clear();
-                 console.log(this.errors);
-               });
+              });
           }
 
         }

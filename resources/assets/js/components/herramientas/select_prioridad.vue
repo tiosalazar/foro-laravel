@@ -48,6 +48,13 @@
       created: function(){
           this.fetchTips();
       },
+      watch: {
+        select:function(val) {
+          console.log('reset');
+          this.isInvalid = false;
+          this.isTouched=false;
+        },
+      },
       methods:{
           fetchTips: function(){
                this.$http.get(window._apiURL+'estados/3')
