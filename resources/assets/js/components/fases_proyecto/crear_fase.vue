@@ -78,11 +78,10 @@
           if (this.errors.any()) {
               return false
           }
-        console.log(this.fase);
+                var that = this;
         this.$http.post(window._apiURL+'fases', this.fase)
                .then(function(respuesta){
                 console.log(respuesta)
-                var that = this;
                 that.message ='';
                 if (respuesta.status != '200') {
                   if (Object.keys(respuesta.body.obj).length>0) {
@@ -91,10 +90,10 @@
                   toastr.warning(that.message,respuesta.body.msg,this.option_toast);
                 } else {
                   toastr.success(respuesta.body.msg,'',this.option_toast);
+                  that.fase = {};
+                  setTimeout(function(){ that.errors.clear(); }, 50); 
                 }
                }, (response) => {
-                console.log(response)
-                var that = this;
                 that.message = '';
                 if (Object.keys(response.body.obj).length>0) {
                   this.setErrors(response.body.obj);
@@ -102,10 +101,7 @@
                   that.message = response.body.error;
                 }
             toastr.error(that.message,response.body.msg,this.option_toast);
-          }).then(() => {  
-             this.errors.clear();
-             console.log(this.errors);
-           });
+          });
       },
       editfase: function(client) {
             this.$http.put(window._apiURL+'fases/'+client.id, client)

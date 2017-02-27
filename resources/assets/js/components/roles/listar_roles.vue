@@ -75,6 +75,7 @@
                 </div>
                 <!-- /.modal -->
              </div>
+             </div>
 </template>
 
 <script>
@@ -117,6 +118,14 @@ import VeeValidate, { Validator } from 'vee-validate';
             }
           },
         methods:{
+          setErrors:function(object) {
+          this.message='';
+          var that = this;
+          $.each(object, function(index, value) {
+            that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+            that.errors_return[index] = 'has-warning';
+          });
+        },
           consumerApi_listRol: function(){
             this.$http.get(window._apiURL+'roles')
               .then(function(respuesta){
@@ -152,10 +161,7 @@ import VeeValidate, { Validator } from 'vee-validate';
                if (respuesta.status != '200') {
                   if (Object.keys(respuesta.body.request).length>0) {
 
-                    $.each(respuesta.body.request, function(index, value) {
-                      that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-                      that.errors_return[index] = 'has-warning';
-                    });
+                    this.setErrors(respuesta.body.request);
                   }
 
                   toastr.warning(that.message,respuesta.body.msg,this.option_toast);
@@ -186,10 +192,7 @@ import VeeValidate, { Validator } from 'vee-validate';
                 var that = this;
                 that.message = '';
                 if (Object.keys(response.body.request).length>0) {
-                  $.each(response.body.request, function(index, value) {
-                    that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-                    that.errors_return[index] = 'has-error';
-                    });
+                  this.setErrors(respuesta.body.request);
                 }
               toastr.error(that.message,response.body.msg,this.option_toast);
             });
