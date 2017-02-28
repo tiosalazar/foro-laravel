@@ -66,7 +66,7 @@ class Ot extends Model
  */
 public function Compras_Ot()
   {
-      return $this->hasMany('App\Compras_ot','ots_id','id');
+      return $this->hasMany('App\Compras_Ot','ots_id','id');
   }
   /**
   * Obtiene los Tiempos_x_Area que posee la OT

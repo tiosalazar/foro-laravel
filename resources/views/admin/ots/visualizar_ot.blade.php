@@ -34,11 +34,11 @@
 										<div class="col-sm-6">
 											<strong>Estado de OT:</strong>
 											<div style="height:12px"></div>
-											<select_estados tipo_estado="2" cambiar_estado="{{$ot['id']}}" :select="{{$ot['estado']}}" ></select_estados>
+											<select_estados tipo_estado="2" cambiar_estado="{{$ot['id']}}" :select="{{$ot['Estado']}}" ></select_estados>
 										</div>
 									</div>
 									@else
-									<li><strong>Estado de OT:</strong><span> {{$ot['estado']['nombre']}}</span></li>
+									<li><strong>Estado de OT:</strong><span> {{$ot['Estado']['nombre']}}</span></li>
 									@endif
 									<li><strong>Horas totales:</strong><span> {{$ot['horas_totales']}} Horas</span></li>
 									<li><strong>Horas disponibles:</strong><span> {{$ot['horas_disponibles']}} Horas</span></li>
@@ -68,7 +68,7 @@
 									</ul>
 									<div class="tab-content" >
 										@foreach ($ot['tiempos_x_area'] as $area)
-										<div class="{{{ $area['area']['nombre']==$ot['tiempos_x_area'][0]['area']['nombre'] ? 'active' : '' }}}"  id="tab_{{$area['area']['id']}}">
+										<div class="tab-pane {{{ $area['area']['nombre']==$ot['tiempos_x_area'][0]['area']['nombre'] ? 'active' : '' }}}"  id="tab_{{$area['area']['id']}}">
 											<div class="row"><div class="col-md-12">
 												<div class="row desc-ot with-border">
 													<div class="col-sm-6 ">
@@ -105,7 +105,7 @@
 													@endif
 												</div>
 
-												<div class="row desc-ot {{{ $ot['compras_ot'] !='[]' ? 'with-border' : '' }}}">
+												<div class="row desc-ot {{{ $ot['Compras_Ot'] !='[]' ? 'with-border' : '' }}}">
 													<div class="col-md-12 nopadding">
 														<div class="row">
 															<div class="col-md-4">
@@ -132,7 +132,7 @@
 												</div>
 											</div>
 										</div>
-										@if( $ot['compras_ot'] != '[]' )
+										@if( $ot['Compras_Ot'] != '[]' )
 										<div class="row desc-ot">
 											<div class="col-md-12 nopadding">
 												<div class="row">

@@ -318,6 +318,13 @@ sub, sup {
 }
 
 }
+@media screen and (max-width: 1360px) {
+  .padding_ots{
+        padding: 2%;
+  }
+
+}
+
 @media screen and (max-width: 768px) {
   .nopadding {
    padding: auto !important;

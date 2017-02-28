@@ -151,14 +151,12 @@ module.exports={
       var data_req= JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.id_area));//busca dependiendo del Área
       if (data_req != null) {
         var arreglo_requerimientos = data_req[0].requerimientos;
-      //  console.log(arreglo_requerimientos);
         this.requerimiento= arreglo_requerimientos;
         this.nhoras	= data_req[0].horas;
         this.nhextra	= data_req[0].tiempo_extra;
         this.h_pasadas	= data_req[0].h_pasadas;
         this.emitirData();
         this.realizarCalculo();
-
 
         var datos=[{
           requerimientos:this.requerimiento,
@@ -172,7 +170,6 @@ module.exports={
     llenarDatosSiesVisualizacion: function(){
       if (this.$parent.visualizacion=="true") {
         var arreglo_visualizar =JSON.parse(this.$parent.arreglo_visualizar);
-        // console.log(arreglo_visualizar);
         var arreglo_requerimientos=arreglo_visualizar.final_req;
         var arreglo_temporal=[];
         for (let f in arreglo_requerimientos) {
@@ -181,8 +178,7 @@ module.exports={
           this.horas=parseInt(arreglo_requerimientos[idx].horas);
           this.h_pasadas=this.h_pasadas;
           this.nhextra= arreglo_requerimientos[idx].textra;
-          //console.log(arreglo_requerimientos[idx]);
-        //  arreglo_temporal.push([JSON.parse(arreglo_requerimientos[idx].requerimientos)]);
+
           var datos=[{
             requerimientos:arreglo_requerimientos[idx].requerimientos,
             horas: parseInt(arreglo_requerimientos[idx].horas),
@@ -192,16 +188,7 @@ module.exports={
           this.$localStorage.set('datos_requerimiento_'+arreglo_requerimientos[idx].area,JSON.stringify(datos));//busca dependiendo del Área
            }
         }
-        /*
-        var arreglo_requerimientos=arreglo_visualizar.final_req.requerimientos;
-        var datos=[{
-        requerimientos:arreglo_requerimientos,
-        horas: parseInt(arreglo_visualizar.requerimientos.horas),
-        h_pasadas: this.h_pasadas
-      }];
-      this.$localStorage.set('datos_requerimiento_'+arreglo_visualizar.final_req.area,JSON.stringify(datos));//busca dependiendo del Área
-      */
-    }
+     }
   },
   /*
   Guarda los datos con cada entrada del Tecla en el input

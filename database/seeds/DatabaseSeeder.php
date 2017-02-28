@@ -92,18 +92,13 @@ class PermisosTableSeeder extends Seeder {
         App\Permission::create(array('name' => 'ver_roles','display_name'=>'Ver y editar Roles','description'=>'Puede crear y editar los Roles de la Aplicación' ));
         //Permisos sobre Trafico
         App\Permission::create(array('name' => 'ver_trafico','display_name'=>'Tráfico','description'=>'Puede ver la vista de trafico' ));
+        //Permisos sobre Historico Areas
+        App\Permission::create(array('name' => 'ver_historico_areas','display_name'=>'Historico Áreas','description'=>'Puede ver el Historico de áreas' ));
+        //Permisos sobre Historico Usuarios
+        App\Permission::create(array('name' => 'ver_historico_usuarios','display_name'=>'Historico Usuarios','description'=>'Puede ver el Historico de usuarios' ));
+        //Permisos sobre Fases Planeación
+        App\Permission::create(array('name' => 'ver_fases_planeacion','display_name'=>'Fases Planeación','description'=>'Puede ver las fases de planeación' ));
 
-      /*
-        App\Permission::create(array('name' => 'todos','display_name'=>'Permisos Totales','description'=>'Tiene Acceso a todas las vistas de la aplicación' ));
-        App\Permission::create(array('name' => 'desarrollo','display_name'=>'Permisos de Desarrollo','description'=>'Tiene Acceso a la mayoria de las funcionalidades' ));
-        App\Permission::create(array('name' => 'cuentas','display_name'=>'Cuentas','description'=>'Permisos restringidos, en la edición de OTS ' ));
-        App\Permission::create(array('name' => 'coordinador','display_name'=>'Coordinador','description'=>'Permisos para asignar Tareas' ));
-        App\Permission::create(array('name' => 'colaborador','display_name'=>'Colaborador','description'=>'Usuario con restricciones' ));
-        App\Permission::create(array('name' => 'todos','display_name'=>'Permisos Totales','description'=>'Tiene Acceso a todas las vistas de la aplicación' ));
-        App\Permission::create(array('name' => 'desarrollo','display_name'=>'Permisos de Desarrollo','description'=>'Tiene Acceso a la mayoria de las funcionalidades' ));
-        App\Permission::create(array('name' => 'cuentas','display_name'=>'Cuentas','description'=>'Permisos restringidos, en la edición de OTS ' ));
-        App\Permission::create(array('name' => 'coordinador','display_name'=>'Coordinador','description'=>'Permisos para asignar Tareas' ));
-        App\Permission::create(array('name' => 'colaborador','display_name'=>'Colaborador','description'=>'Usuario con restricciones' ));*/
     }
 
 }

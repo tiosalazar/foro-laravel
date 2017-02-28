@@ -133,19 +133,19 @@
       <!-- .Trafico -->
 
       <!--Historico Áreas -->
-      @if( Auth::user()->can('ver_trafico') )
+      @if( Auth::user()->can('ver_historico_areas') )
       <li class="treeview " ><a href="{{ url('historico_areas') }}"><i class='fa fa-line-chart'></i><span>Historico Áreas</span></a></li>
       @endif
       <!-- .Historico Áreas -->
 
         <!--Historico Usuarios -->
-      @if( Auth::user()->can('ver_trafico') )
+      @if( Auth::user()->can('ver_historico_usuarios') )
       <li class="treeview " ><a href="{{ url('historico_usuarios') }}"><i class='fa fa-history'></i><span>Historico Usuarios</span></a></li>
       @endif
       <!-- .HistoricoUsuarios -->
 
       <!--Trafico -->
-      @if( Auth::user()->can('ver_trafico') )
+      @if( Auth::user()->can('ver_fases_planeacion') )
       <li class="treeview  {{ Request::is('fases') ? 'active' : '' }}"><a href="{{ url('fases') }}"><i class='fa fa-paper-plane'></i><span>{{  trans('texto_menu.fases_planeacion') }}</span></a></li>
       @endif
       <!-- .Trafico -->

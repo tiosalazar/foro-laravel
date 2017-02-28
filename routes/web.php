@@ -1,34 +1,27 @@
-  <?php
+<?php
 
-  /*
-  |--------------------------------------------------------------------------
-  | Web Routes
-  |--------------------------------------------------------------------------
-  |
-  | Here is where you can register web routes for your application. These
-  | routes are loaded by the RouteServiceProvider within a group which
-  | contains the "web" middleware group. Now create something great!
-  |
-  */
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
-  /*Route::get('/', function () {
-    return view('vendor.adminlte.auth.login');
-  });*/
-
-
-  Route::get('/console','UserController@AgregarRoll');
 
   Auth::routes();
+  Route::get('/console','UserController@AgregarRoll');
 
-  Route::group(['middleware' => 'auth'], function () {
+ Route::group(['middleware' => 'auth'], function () {
     
     Route::get('/home', 'HomeController@index');
     Route::get('/','HomeController@index');
 
-    //Ruta para cargar imagen de perfil
+   //Ruta para cargar imagen de perfil
     Route::post('/usuariosuploadimagen','HomeController@SubirImagen');
-
-
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
@@ -38,20 +31,10 @@
       return view('admin.roles.crear_roles');
     });
 
-   //Historico Equipo
-   Route::get('historico_areas', function () {
-      return view('admin.equipo.historico_equipo_area');
-   });
-   Route::get('historico_usuarios', function () {
-      return view('admin.equipo.historico_equipo_usuario');
-   });
-   Route::get('/years_historico_equipo', 'HistoricoequipoController@getYearHistorico');
-   Route::get('/historico_equipos/{id}','HistoricoequipoController@historico_de_equipos');
 
-
-    /**
-    * Foro por Área
-    */
+    /*
+     * Foro por Área
+     */
     // Lista todas las áreas
     Route::get('/foro', function () {
       return view('admin.foro.general');
@@ -84,9 +67,7 @@
     Route::get('/foro/soporte', function () {
       return view('admin.foro.soporte');
     })->name('soporte');
-
-
-    //OTS
+  //OTS
     Route::get('ots/editar/{id}', ['middleware' => ['permission:editar_ots'], 'uses' => 'OtController@edit']);
     Route::get('ots/visualizar/{id}', ['middleware' => ['permission:ver_ots'], 'uses' => 'OtController@show']);
     Route::get('ots/listado', function()
@@ -101,8 +82,8 @@
         }
         return view('admin.ots.crear_ot');
       });
-    Route::get('ots/exportar/{id}',['middleware' => ['permission:editar_ots'], 'uses' =>'OtController@exportarTodoslosDatos']);
 
+  Route::get('ots/exportar/{id}',['middleware' => ['permission:editar_ots'], 'uses' =>'OtController@exportarTodoslosDatos']);
 
   Route::get('/show_ots_tareas','OtController@showOtEnTareas');
   Route::get('/show_ots_tareas/{query}','OtController@showOtEnTareasByQuery');
@@ -145,62 +126,67 @@
   Route::get('/all_tareas/{id}','TareaController@showAllTareas');
   Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
 
-  //
-
-  Route::get('/list_fases','FaseController@listFases');
+ // Fasses Planeación
+     Route::get('/list_fases',['middleware' => ['permission:ver_fases_planeacion'], 'uses' =>  'FaseController@listFases']);
 
   // Equipo
- Route::get('equipo/areas', function () {
-   if (!Auth::user()->can('crear_areas')) {
+    Route::get('equipo/areas', function () {
+     if (!Auth::user()->can('crear_areas')) {
       return Redirect::to('home');
     }
     return view('admin.areas.crear_areas');
   });
-  Route::get('equipo/usuarios', function () {
-    if (!Auth::user()->can('crear_usuarios')) {
-      return Redirect::to('home');
-    }
-    return view('admin.equipo.usuarios');
-  });
-  Route::get('/crear_usuario', function () {
 
-    return view('admin.equipo.crear_usuario');
-  });
-  Route::get('equipo/directorio', function () {
-    return view('admin.areas.listar_areas');
-  });
+    Route::get('equipo/usuarios', function () {
+      if (!Auth::user()->can('crear_usuarios')) {
+        return Redirect::to('home');
+      }
+      return view('admin.equipo.usuarios');
+    });
 
-  Route::get('equipo/usuarios/editar/{id}','UserController@editar_usuario');
+    Route::get('/crear_usuario', function () {
+      if (!Auth::user()->can('crear_usuarios')) {
+        return Redirect::to('home');
+      }
+      return view('admin.equipo.crear_usuario');
+    });
 
-  //Historico Equipo
-Route::get('/years_historico_equipo', 'AreaController@getYearHistorico');
+    Route::get('equipo/directorio', function () {
+      return view('admin.areas.listar_areas');
+    });
 
-
- Route::get('/historico_areas', function () {
-    return view('admin.equipo.historico_equipo_area');
- });
-
-  Route::get('/historico_usuarios', function () {
-    return view('admin.equipo.historico_equipo_usuario');
- });
-
- Route::get('/hitorico_equipo/{id}','AreaController@historico_equipos');
+    Route::get('equipo/usuarios/editar/{id}',['middleware' => ['permission:editar_usuarios'], 'uses' =>  'UserController@editar_usuario']);
 
 
-  
-/*
-  Vista trafico
+ /*
+ * Vista trafico
  */
- Route::get('/trafico', function () {
-   // check the current user
+  Route::get('/trafico', function () {
    if (!Auth::user()->can('ver_trafico')) {
      return Redirect::to('home');
    }
    return view('admin.trafico.trafico');
  })->name('trafico');
 
+    //Historico Equipo
+    Route::get('/years_historico_equipo', 'AreaController@getYearHistorico');
 
-  
+    Route::get('/historico_areas', function () {
+       if (!Auth::user()->can('ver_historico_areas')) {
+        return Redirect::to('home');
+      }
+      return view('admin.equipo.historico_equipo_area');
+    });
+
+    Route::get('/historico_usuarios', function () {
+       if (!Auth::user()->can('ver_historico_usuarios')) {
+        return Redirect::to('home');
+      }
+      return view('admin.equipo.historico_equipo_usuario');
+    });
+
+    Route::get('/historico_equipos/{id}','AreaController@historico_equipos');
+
 
   // Notificaciones
   Route::get('/notificaciones/','UserController@getNotifications');
@@ -211,19 +197,14 @@ Route::get('/years_historico_equipo', 'AreaController@getYearHistorico');
     return view('admin.notificaciones.listar_notificaciones');
   });
 
+
   // Fases del Proyecto
   Route::get('/fases',function ($value=''){
+     if (!Auth::user()->can('ver_fases_planeacion')) {
+        return Redirect::to('home');
+      }
     return view('admin.fases_proyecto.crear_fase');
   });
-  // Route::get('/fases','FasesController@index');
 
 
-
-  });
-
-  Route::get('/p', function () {
-    return str_random(60);
-    //  return bcrypt('H1m4l4ya!');
-  });
-
-   
+});

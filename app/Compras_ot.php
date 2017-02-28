@@ -4,8 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Compras_ot extends Model
+class Compras_Ot extends Model
 {
+
+  public $table = "compras_ots";
   /**
   * The attributes that are mass assignable.
   *
