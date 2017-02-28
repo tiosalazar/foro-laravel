@@ -78,7 +78,7 @@ class HomeController extends Controller
         }else{
 
           //Si No es un coordinador muestro las tareas del area si el id del encargado es igual al usuario logeado
-           $tareas = Tarea::where('encargado_id', Auth::user()->id)->where('estados_id','!=', 2)->get();
+           $tareas = Tarea::where('encargado_id', Auth::user()->id)->where('estados_id','!=', 2)->where('estados_id','!=', 1)->get();
            foreach ($tareas as $key => $value) {
             $value->ot->cliente;
             $value['url']="/ver_tarea/".$value->id;
