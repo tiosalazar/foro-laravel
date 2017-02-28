@@ -126,7 +126,7 @@
   Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
 
  // Fasses Planeación
-     Route::get('/list_fases','FaseController@listFases']);
+     Route::get('/list_fases','FaseController@listFases');
 
   // Equipo
     Route::get('equipo/areas', function () {
