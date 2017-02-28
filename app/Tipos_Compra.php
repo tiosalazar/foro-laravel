@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tipos_compra extends Model
 {
+   public $table = "tipos_compras";
   /**
    * The attributes that are mass assignable.
    *
@@ -19,6 +20,6 @@ class Tipos_compra extends Model
  */
 public function Compras_Ot()
   {
-      return $this->hasMany('App\Compras_ot','tipos_compras_id','id');
+      return $this->hasMany('App\Compras_Ot','tipos_compras_id','id');
   }
 }

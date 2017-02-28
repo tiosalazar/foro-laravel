@@ -16,7 +16,7 @@
 					<div class="nav-tabs-custom">
 						<ul class="nav nav-tabs" >
 							<li v-for="area in listado_areas"  :class="{'active': area.nombre==listado_areas[0].nombre } " ><a @click="tabs_areas($event,area.id)" :data-id="'tab_'+area.id" :href="'#tab_'+area.id" data-toggle="tab">{{area.nombre}}</a></li>
-						
+							
 						</ul>
 						<div class="tab-content" >
 							<div class="tab-pane"  v-for="area in listado_areas" :class="{'active': area.nombre==listado_areas[0].nombre } "  :id="'tab_'+area.id">
@@ -109,10 +109,10 @@
 					</div>
 				</div>
 			</div>
-		 </div>
+		</div>
 
-		</template>
-		<script>
+	</template>
+	<script>
 		import VueLocalStorage from 'vue-localstorage'
 		Vue.use(VueLocalStorage);
 		import VeeValidate, { Validator } from 'vee-validate';
@@ -124,7 +124,6 @@
 		Validator.updateDictionary({es: { messages }});
 		// Install the plugin and set the locale.
 		Vue.use(VeeValidate, { locale: 'es' });
-
 		module.exports= {
 			localStorage: {
 				listado_areas: {
@@ -199,17 +198,13 @@
 			created: function(){
 				this.fetchTips();
 				this.llenarDatosSiesVisualizacion();
-
-
 				/*
 				Escucha las horas totales emitidas por el encabezado y realiza el calculo
 				*/
 				this.$on('horas_totales', function(v) {
 					this.horas_totales=parseInt(v);
-					//console.log("Horas totales : "+this.horas_totales);
 					var resta_anterior=0;
 					resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(this.area_temporal);
-					//console.log("Horas totales Resta : "+resta_anterior);
 					this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
 					//this.h_Disponibles += this.h_extra_total;
 				});
@@ -238,7 +233,6 @@
 				this.$on('datos_requerimiento', function(v,save) {
 					this.datos_requerimiento=v;
 					this.can_save=save;
-					console.log(save);
 				});
 				/*
 				Escucha las horas extra del Area a Editar
@@ -277,12 +271,10 @@
 			methods:{
 				fetchTips: function(){
 					if (this.visualizacion !='true') {
-						//if(this.$localStorage.get('listado_areas') ==null){
 						this.$http.get( window._apiURL+'areas')
 						.then(function(respuesta){
 							this.listado_areas=respuesta.body;
 							this.$localStorage.set('listado_areas',respuesta.body);
-							//console.log(respuesta.body);
 						}.bind(this));
 
 					}else{
@@ -290,169 +282,136 @@
 						this.listado_areas=arreglo_visualizar.listado_areas;
 						this.$localStorage.set('listado_areas',arreglo_visualizar.listado_areas);
 					}
-					/*}else{
-					this.listado_areas=this.$localStorage.get('listado_areas');
-				}*/
-
-				this.datos_encabezado=this.$localStorage.get('datos_encabezado');
-			},
-			llenarDatosSiesVisualizacion: function(){
-				if (this.visualizacion=='true') {
-					var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
-					var datos_encabezado= arreglo_visualizar.datos_encabezado;
-					this.descripcion_ot=datos_encabezado.observaciones;
-					/*this.datos_encabezado=arreglo_visualizar.datos_encabezado;
-					this.datos_requerimiento=arreglo_visualizar.requerimientos;
-					this.datos_compras=arreglo_visualizar.compras;*/
-				}
-
-			},
-			setErrors:function(object) {
-				this.message='';
-				var that = this;
-				$.each(object, function(index, value) {
-					that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-					that.errors_return[index] = 'has-warning';
-				});
-			},
-			GuardarOt: function (){
-				if ( !this.validarDatos(this.datos_encabezado) ) {
-					toastr.error('Error en el Detalle de la OT',"Error al guardar los datos",this.option_toast);
-					return false;
-				}else if(this.datos_encabezado.h_pasadas ==true){		/*Compruebo que no se haya pasado de las horas*/
-					toastr.error('El Resúmen de horas no puede dar negativo',"Error al guardar los datos",this.option_toast);
-					return false;
-				}else if(this.comprobarDatosTodosRequerimientos()==true) {
-					try {
-
-						var datos_procesados={
-							datos_encabezado:{
-								nombre :this.datos_encabezado.name_proyect,
-								referencia:this.datos_encabezado.num_ot,
-								valor :this.datos_encabezado.valor_total,
-								fee: this.datos_encabezado.fee,
-								horas_totales:this.datos_encabezado.horas_totales,
-								horas_disponibles:this.h_Disponibles,
-								total_horas_extra:this.h_extra_total,
-								observaciones:this.descripcion_ot,
-								fecha_inicio: this.datos_encabezado.fecha_inicio,
-								fecha_final: this.datos_encabezado.fecha_fin,
-								clientes_id: this.datos_encabezado.cliente.id,
-								usuarios_id:this.datos_encabezado.ejecutivo.id,
-								estados_id: this.datos_encabezado.estado.id,
-							},
-							requerimientos: this.procesarTodosRequerimientos(),
-							compras: this.procesarTodosCompras()
-						};
-						console.log(datos_procesados);
-
-						if(this.visualizacion != 'true'){
-							this.$http.post(window._apiURL+'ots', datos_procesados)
-							.then(function(respuesta){
-								console.log(respuesta);
-								if (respuesta.status != '200') {
-									if (Object.keys(respuesta.body.obj).length>0) {
-										this.setErrors(respuesta.body.obj);
-									}
-									toastr.warning(this.message,respuesta.body.msg,this.option_toast);
-								}else{
-									
-									toastr.success(respuesta.body.msg,'',this.option_toast);
-									this.h_Disponibles=0;
-									this.horas_totales=0;
-									this.h_extra_total=0;
-									this.descripcion_ot='';
-									this.message='';
-									this.h_area=0;
-									this.id_tab='';
-									this.form_requerimiento_validado=false;
-									this.validar_requerimientos=false;
-									this.form_compras_validado= false;
-									this.validar_compras=false;
-									this.limpiarDatos=true;
-									this.$localStorage.remove('datos_encabezado');
-									this.limpiarComprasRequerimientos();
-									this.datos_requerimiento=[];
-									this.datos_compras=[];
-									
-									  setTimeout(function () { 
-							            location.reload(true);
-							        }, 2000);
-								}
-							},(response) => {
-								console.log(response);
-								if (response.body.error_creacion) {
-									toastr.error("Ocurrio un error del sistema por favor contacte con Soporte",response.body.error,this.option_toast);
-									return false;
-								}
-								if (Object.keys(response.body.obj).length>0) {
-									this.setErrors(response.body.obj);
-									console.log(response);
-									toastr.error(this.message,response.body.msg,this.option_toast);
-									return false;
-								}
-							});
-						}else{
-							var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
-							datos_procesados.datos_encabezado.editor_id=arreglo_visualizar.editor_id;
-							console.log(datos_procesados);
-							this.$http.put(window._apiURL+'ots/'+arreglo_visualizar.datos_encabezado.id, datos_procesados)
-							.then(function(respuesta){
-								console.log(respuesta);
-								if (respuesta.status != '200') {
-									if (Object.keys(respuesta.body.obj).length>0) {
-										this.setErrors(respuesta.body.obj);
-									}
-									toastr.warning(this.message,respuesta.body.msg,this.option_toast);
-								}else{
-									toastr.success(respuesta.body.msg,'',this.option_toast);
-								}
-							},(response) => {
-								console.log(response);
-								if (response.body.error) {
-									toastr.error("Ocurrio un error del sistema por favor contacte con Soporte",response.body.error,this.option_toast);
-									return false;
-								}
-								if (Object.keys(response.body.obj).length>0) {
-									this.setErrors(response.body.obj);
-								}
-								toastr.error(this.message,response.body.msg,this.option_toast);
-							});
-						}
-						
-
-
-					} catch (e) {
-						console.log(e);
-						toastr.error("Revise que todos los datos esten bien, y vuelva a intentar","Error al Guardar",this.option_toast);
-
-
+					this.datos_encabezado=this.$localStorage.get('datos_encabezado');
+				},
+				llenarDatosSiesVisualizacion: function(){
+					if (this.visualizacion=='true') {
+						var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
+						var datos_encabezado= arreglo_visualizar.datos_encabezado;
+						this.descripcion_ot=datos_encabezado.observaciones;
 					}
 
-				}
+				},
+				setErrors:function(object) {
+					this.message='';
+					var that = this;
+					$.each(object, function(index, value) {
+						that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+						that.errors_return[index] = 'has-warning';
+					});
+				},
+				GuardarOt: function (){
+					if ( !this.validarDatos(this.datos_encabezado) ) {
+						toastr.error('Error en el Detalle de la OT',"Error al guardar los datos",this.option_toast);
+						return false;
+					}else if(this.datos_encabezado.h_pasadas ==true){		/*Compruebo que no se haya pasado de las horas*/
+						toastr.error('El Resúmen de horas no puede dar negativo',"Error al guardar los datos",this.option_toast);
+						return false;
+					}else if(this.comprobarDatosTodosRequerimientos()==true) {
+						try {
+							var datos_procesados={
+								datos_encabezado:{
+									nombre :this.datos_encabezado.name_proyect,
+									referencia:this.datos_encabezado.num_ot,
+									valor :this.datos_encabezado.valor_total,
+									fee: this.datos_encabezado.fee,
+									horas_totales:this.datos_encabezado.horas_totales,
+									horas_disponibles:this.h_Disponibles,
+									total_horas_extra:this.h_extra_total,
+									observaciones:this.descripcion_ot,
+									fecha_inicio: this.datos_encabezado.fecha_inicio,
+									fecha_final: this.datos_encabezado.fecha_fin,
+									clientes_id: this.datos_encabezado.cliente.id,
+									usuarios_id:this.datos_encabezado.ejecutivo.id,
+									estados_id: this.datos_encabezado.estado.id,
+								},
+								requerimientos: this.procesarTodosRequerimientos(),
+								compras: this.procesarTodosCompras()
+							};
+							if(this.visualizacion != 'true'){
+								this.$http.post(window._apiURL+'ots', datos_procesados)
+								.then(function(respuesta){
+									console.log(respuesta);
+									if (respuesta.status == '500') {
+										toastr.error("Ocurrio un error  500 del sistema por favor contacte con Soporte",response.statusText,this.option_toast);
+										return false;
+									}else if (respuesta.status != '200') {
+										if (Object.keys(respuesta.body.obj).length>0) {
+											this.setErrors(respuesta.body.obj);
+										}
+										toastr.warning(this.message,respuesta.body.msg,this.option_toast);
+									}else{
+										toastr.success(respuesta.body.msg,'',this.option_toast);
+										this.h_Disponibles=0;
+										this.horas_totales=0;
+										this.h_extra_total=0;
+										this.descripcion_ot='';
+										this.message='';
+										this.h_area=0;
+										this.id_tab='';
+										this.form_requerimiento_validado=false;
+										this.validar_requerimientos=false;
+										this.form_compras_validado= false;
+										this.validar_compras=false;
+										this.limpiarDatos=true;
+										this.$localStorage.remove('datos_encabezado');
+										this.limpiarComprasRequerimientos();
+										this.datos_requerimiento=[];
+										this.datos_compras=[];
+										setTimeout(function () { 
+											location.reload(true);
+										}, 500);
+									}
+								},(response) => {
+									console.log(response);
+									if (response.body.error_creacion) {
+										toastr.error("Ocurrio un error del sistema por favor contacte con Soporte",response.body.error,this.option_toast);
+										return false;
+									}
+									if (Object.keys(response.body.obj).length>0) {
+										this.setErrors(response.body.obj);
+										toastr.error(this.message,response.body.msg,this.option_toast);
+										return false;
+									}
+								});
+							}else{
+								var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
+								datos_procesados.datos_encabezado.editor_id=arreglo_visualizar.editor_id;
+								this.$http.put(window._apiURL+'ots/'+arreglo_visualizar.datos_encabezado.id, datos_procesados)
+								.then(function(respuesta){
+									console.log(respuesta);
+									if (respuesta.status == '500') {
+										toastr.error("Ocurrio un error  500 del sistema por favor contacte con Soporte",response.statusText,this.option_toast);
+										return false;
+									}else if  (respuesta.status != '200') {
+										if (Object.keys(respuesta.body.obj).length>0) {
+											this.setErrors(respuesta.body.obj);
+										}
+										toastr.warning(this.message,respuesta.body.msg,this.option_toast);
+									}else{
+										toastr.success(respuesta.body.msg,'',this.option_toast);
+									}
+								},(response) => {
+									console.log(response);
+									if (response.body.error) {
+										toastr.error("Ocurrio un error del sistema por favor contacte con Soporte",response.body.error,this.option_toast);
+										return false;
+									}
+									if (Object.keys(response.body.obj).length>0) {
+										this.setErrors(response.body.obj);
+									}
+									toastr.error(this.message,response.body.msg,this.option_toast);
+								});
+							}
+							
 
-			},
-			limpiarFechas:function(fecha){
-				if (fecha != null && fecha != undefined && fecha != '' && this.validarFormatoFecha(fecha) ==false ) {
+						} catch (e) {
+							console.log(e);
+							toastr.error("Revise que todos los datos esten bien, y vuelva a intentar","Error al Guardar",this.option_toast);
 
-					var fecha1=String(fecha);
-					//console.log(fecha1);
-					//fecha1=fecha1.toISOString();
-					var arreglo_nuevo=fecha1.split("T");
-					return arreglo_nuevo[0];
-				}else{
-					return fecha;
-				}
-			},
-			validarFormatoFecha:function(campo) {
-				var campo2 = campo;
-				var RegExPattern = /^\d{1,2}\-\d{1,2}\-\d{2,4}$/;
-				if ((String(campo2).match(RegExPattern)) && ( String(campo2) !='')) {
-					return true;
-				} else {
-					return false;
-				}
-			},
+						}
+					}
+				},
 			/*
 			realiza el calculo de lashoras por área
 			*/
@@ -504,175 +463,180 @@
 			*/
 			tabs_areas:function(e,id){
 				if( this.area_temporal == '')
-				     this.area_temporal=id;
+					this.area_temporal=id;
 
 				if(!this.$localStorage.get('datos_requerimiento_'+this.area_temporal) ){
 					console.log("entre");
-				e.stopPropagation()
-				this.id_tab=id;
-				$('.editarModal').modal('show');
-			   }else{
-			   	 this.area_temporal='';
-			   }
+					e.stopPropagation()
+					this.id_tab=id;
+					$('.editarModal').modal('show');
+				}else{
+					this.area_temporal='';
+				}
 			},
 			seguir:function(e){
 				$('[data-id~="tab_'+this.id_tab+'"]').trigger('click')
 				$('.editarModal').modal('toggle');
 			},
-			procesarTodosRequerimientos(){
-				var total_areas  =this.$localStorage.get('listado_areas');
-				var arreglo_temporal=[];
-				if (total_areas != null || total_areas != undefined ) {
-					var size = Object.keys(total_areas).length;
-					var hora_a=0;
-					var total_a_restar=0;
-					for (let f in total_areas) {
-						let idx = Number(f)
-						let p = total_areas[idx]
-						hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
-						if (hora_a !=null && hora_a[0].horas !="") {
-							//total_a_restar +=parseInt(hora_a[0].horas);
-							var data={
-								area:p.id,
-								horas:hora_a[0].horas,
-								tiempo_extra:hora_a[0].tiempo_extra,
-								requerimientos:hora_a[0].requerimientos
-							};
+			/*
+              procesa los requerimientos de todas las areas y las organiza para meter en BD
+              */
+              procesarTodosRequerimientos(){
+              	var total_areas  =this.$localStorage.get('listado_areas');
+              	var arreglo_temporal=[];
+              	if (total_areas != null || total_areas != undefined ) {
+              		var size = Object.keys(total_areas).length;
+              		var hora_a=0;
+              		var total_a_restar=0;
+              		for (let f in total_areas) {
+              			let idx = Number(f)
+              			let p = total_areas[idx]
+              			hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
+              			if (hora_a !=null && hora_a[0].horas !="") {
+              				var data={
+              					area:p.id,
+              					horas:hora_a[0].horas,
+              					tiempo_extra:hora_a[0].tiempo_extra,
+              					requerimientos:hora_a[0].requerimientos
+              				};
 
-							arreglo_temporal.push(data);
-						}
-					}
-					return arreglo_temporal;
+              				arreglo_temporal.push(data);
+              			}
+              		}
+              		return arreglo_temporal;
 
-				}
-			},
-			procesarTodosCompras(){
-				var total_areas  =this.$localStorage.get('listado_areas');
-				var arreglo_temporal=[];
-				if (total_areas != null || total_areas != undefined ) {
-					var size = Object.keys(total_areas).length;
-					var i=0;
-					for (let f in total_areas) {
-						let idx = Number(f)
-						let p = total_areas[idx];
-						var hora_a;
-						hora_a=JSON.parse(this.$localStorage.get('datos_compra_'+p.id));
-						if (hora_a !=null   ) {
-							hora_a=hora_a[0].compras;
-							for(let f in hora_a ){
-								if (hora_a[i].model_desc !="" && hora_a[i].model_provedor !=""  && hora_a[i].model_valor !="") {
-									var tipo_compra = hora_a[i].tipo_compra;
-									var divisa = hora_a[i].divisa;
-									var data={
-										areas_id:p.id,
-										tipos_compras_id: tipo_compra.id,
-										divisas_id: divisa.id,
-										descripcion:hora_a[i].model_desc,
-										provedor:hora_a[i].model_provedor,
-										valor:numeral(hora_a[i].model_valor).value(),
-									};
-									arreglo_temporal.push(data);
-								}
-								i++;
-							}
-							i=0;
-						}
-					}
-					return arreglo_temporal;
+              	}
+              },
+			/*
+              procesa las compras de todas las areas y las organiza para meter en BD
+              */
+              procesarTodosCompras(){
+              	var total_areas  =this.$localStorage.get('listado_areas');
+              	var arreglo_temporal=[];
+              	if (total_areas != null || total_areas != undefined ) {
+              		var size = Object.keys(total_areas).length;
+              		var i=0;
+              		for (let f in total_areas) {
+              			let idx = Number(f)
+              			let p = total_areas[idx];
+              			var hora_a;
+              			hora_a=JSON.parse(this.$localStorage.get('datos_compra_'+p.id));
+              			if (hora_a !=null   ) {
+              				hora_a=hora_a[0].compras;
+              				for(let f in hora_a ){
+              					if (hora_a[i].model_desc !="" && hora_a[i].model_provedor !=""  && hora_a[i].model_valor !="") {
+              						var tipo_compra = hora_a[i].tipo_compra;
+              						var divisa = hora_a[i].divisa;
+              						var data={
+              							areas_id:p.id,
+              							tipos_compras_id: tipo_compra.id,
+              							divisas_id: divisa.id,
+              							descripcion:hora_a[i].model_desc,
+              							provedor:hora_a[i].model_provedor,
+              							valor:numeral(hora_a[i].model_valor).value(),
+              						};
+              						arreglo_temporal.push(data);
+              					}
+              					i++;
+              				}
+              				i=0;
+              			}
+              		}
+              		return arreglo_temporal;
 
-				}
-			},
-			limpiarComprasRequerimientos(){
-				var total_areas  =this.$localStorage.get('listado_areas');
-				var arreglo_temporal=[];
-				if (total_areas != null || total_areas != undefined ) {
-					var size = Object.keys(total_areas).length;
-					var hora_a=0;
-					var total_a_restar=0;
-					for (let f in total_areas) {
-						let idx = Number(f)
-						let p = total_areas[idx]
-						this.$localStorage.remove('datos_requerimiento_'+p.id);
-						this.$localStorage.remove('datos_compra_'+p.id);
-					}
-				}
-			},
-			guardarDatos: function(id){
-				var index = Object.keys(this.datos_requerimiento).length;
-				var requerimientos =this.datos_requerimiento;
-				if(this.comprobarDatosRequerimientos()==true) {
-					this.area_temporal=id;
-					if(this.comprobarSiGuardoCompras() == true){
-						//this.validar_compras=true;
-						//this.validar_requerimientos=true;
-						if ( this.comprobarCompras(this.datos_compras) == true ) {
-							// if(this.form_requerimiento_validado ==true ){
-							toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
-							this.$localStorage.set('datos_requerimiento_'+id,JSON.stringify(requerimientos) );
-							//this.validar_requerimientos=false;
-							//}
-					        this.can_save=true;
-							this.$localStorage.set('datos_compra_'+id,JSON.stringify(this.datos_compras) );
-						}
+              	}
+              },
+			/*
+              función la cual despues de guardar limpia todos los requerimientos y compras del local.
+              */
+              limpiarComprasRequerimientos(){
+              	var total_areas  =this.$localStorage.get('listado_areas');
+              	var arreglo_temporal=[];
+              	if (total_areas != null || total_areas != undefined ) {
+              		var size = Object.keys(total_areas).length;
+              		var hora_a=0;
+              		var total_a_restar=0;
+              		for (let f in total_areas) {
+              			let idx = Number(f)
+              			let p = total_areas[idx]
+              			this.$localStorage.remove('datos_requerimiento_'+p.id);
+              			this.$localStorage.remove('datos_compra_'+p.id);
+              		}
+              	}
+              },
+			/*
+              función la cual guarda los datos del Area actual.
+              */
+              guardarDatos: function(id){
+              	var index = Object.keys(this.datos_requerimiento).length;
+              	var requerimientos =this.datos_requerimiento;
+              	if(this.comprobarDatosRequerimientos()==true) {
+              		this.area_temporal=id;
+              		if(this.comprobarSiGuardoCompras() == true){
+              			if ( this.comprobarCompras(this.datos_compras) == true ) {
+              				toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
+              				this.$localStorage.set('datos_requerimiento_'+id,JSON.stringify(requerimientos) );
+              				this.can_save=true;
+              				this.$localStorage.set('datos_compra_'+id,JSON.stringify(this.datos_compras) );
+              			}
+              		}else{
+              			toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
+              			this.$localStorage.set('datos_requerimiento_'+id,JSON.stringify(requerimientos) );
+              			this.can_save=true;
+              		}
+              	}
+              },
+			/*
+             función la cual me valida el requerimiento actual, antes de guardar.
+             */
+             comprobarDatosRequerimientos: function(arreglo){
+             	if( arreglo != null && arreglo != undefined ){
+             		var index = Object.keys(arreglo).length;
+             		var requerimientos =arreglo;
+             	}else{
+             		var index = Object.keys(this.datos_requerimiento).length;
+             		var requerimientos =this.datos_requerimiento;
+             	}
+             	if ( index == 0) {
+             		toastr.error("Todos los campos son obligatorios","Error al Guardar Requerimientos",this.option_toast);
+             		return false;
+             	}else if( requerimientos[0].horas ==""){
+             		toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Horas Area",this.option_toast);
+             		return false;
+             	}else if( !this.comprobarRequerimientos(requerimientos[0].requerimientos) ){
+             		toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Requerimientos",this.option_toast);
+             		return false;
+             	}else if(this.datos_encabezado.h_pasadas ==true){		/*Compruebo que no se haya pasado de las horas*/
+             		toastr.error('Las horas disponibles no puden ser negativas',"Error al guardar los datos",this.option_toast);
+             		return false;
+             	}else if(requerimientos[0].h_pasadas){
+             		toastr.error("El Resúmen de horas no puede dar negativo","Error en Requerimientos",this.option_toast);
+             		return false;
+             	}else{
+             		return true;
+             	}
 
-					}else{
-						//	this.validar_requerimientos=true;
-						toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
-						this.$localStorage.set('datos_requerimiento_'+id,JSON.stringify(requerimientos) );
-						this.can_save=true;
-						//	this.validar_requerimientos=false;
-					}
-
-				}
-
-			},
-			comprobarDatosRequerimientos: function(arreglo){
-				console.log(arreglo);
-				if( arreglo != null && arreglo != undefined ){
-					var index = Object.keys(arreglo).length;
-					var requerimientos =arreglo;
-				}else{
-					var index = Object.keys(this.datos_requerimiento).length;
-					var requerimientos =this.datos_requerimiento;
-				}
-				if ( index == 0) {
-					toastr.error("Todos los campos son obligatorios","Error al Guardar Requerimientos",this.option_toast);
-					return false;
-				}else if( requerimientos[0].horas ==""){
-					toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Horas Area",this.option_toast);
-					return false;
-				}else if( !this.comprobarRequerimientos(requerimientos[0].requerimientos) ){
-					toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Requerimientos",this.option_toast);
-					return false;
-				}else if(this.datos_encabezado.h_pasadas ==true){		/*Compruebo que no se haya pasado de las horas*/
-					toastr.error('Las horas disponibles no puden ser negativas',"Error al guardar los datos",this.option_toast);
-					return false;
-				}else if(requerimientos[0].h_pasadas){
-					toastr.error("El Resúmen de horas no puede dar negativo","Error en Requerimientos",this.option_toast);
-					return false;
-				}else{
-					return true;
-				}
-
-			},
-			comprobarDatosTodosRequerimientos: function(){
-
-				var total_areas  =this.$localStorage.get('listado_areas');
-				var retorno=false;
-				if (total_areas != null || total_areas != undefined ) {
-					var size = Object.keys(total_areas).length;
-					var hora_a=0;
-					for (let f in total_areas) {
-						let idx = Number(f)
-						let p = total_areas[idx]
-						hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
-						retorno=this.comprobarDatosRequerimientos(hora_a);
-					}
-					return retorno;
-				}else{
-					return retorno;
-				}
-			},
+             },
+			/*
+             función la cual me valida los datos de todas las areas antes de guardar 
+             */
+             comprobarDatosTodosRequerimientos: function(){
+             	var total_areas  =this.$localStorage.get('listado_areas');
+             	var retorno=false;
+             	if (total_areas != null || total_areas != undefined ) {
+             		var size = Object.keys(total_areas).length;
+             		var hora_a=0;
+             		for (let f in total_areas) {
+             			let idx = Number(f)
+             			let p = total_areas[idx]
+             			hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
+             			retorno=this.comprobarDatosRequerimientos(hora_a);
+             		}
+             		return retorno;
+             	}else{
+             		return retorno;
+             	}
+             },
 			/*
 			Función la cual comprueba dentro del arreglo de requerimientos que no haya ningún campo en blanco
 			*/
@@ -687,69 +651,75 @@
 				}
 				return true;
 			},
-			comprobarSiGuardoCompras: function () {
-				if (this.datos_compras ==[] || this.datos_compras[0] == null || this.datos_compras[0] == undefined ) {
-					return false;
-				}
-				if(this.datos_compras[0].id_area != this.area_temporal){
-					return false;
-				}
-				var compras =this.datos_compras[0].compras;
-				var index = Object.keys(compras).length;
-				if (index == 0) {
-					return false;
-				}
-				for (let f in compras) {
-					let idx = Number(f)
-					let p = compras[idx]
-					if ( (p.model_desc !="" || p.model_desc.length  >= 4 ) || (p.model_provedor != "" || p.model_desc.model_provedor  >= 4 ) || (p.model_valor != ""  || p.model_desc.model_valor  >= 4 )  ) {
-						return true;
-						break;
-					}
-				}
-				return false;
-			},
-			comprobarCompras: function (arreglo) {
-				var compras =arreglo[0].compras;
-				for (let f in compras) {
-					let idx = Number(f)
-					let p = compras[idx]
-					if (p.divisa.nombre == "" ) {
-						toastr.error("Por favor, seleccione una Divisa","Error al Guardar Compras Asociadas",this.option_toast);
-						return false;
-					}else if(p.tipo_compra.nombre == ""){
-						toastr.error("Por favor, seleccione un tipo de compra ","Error al Guardar Compras Asociadas",this.option_toast);
-						return false;
-					}else if ( (p.model_desc =="" || p.model_desc.length  <= 4 ) && (p.model_provedor == "" || p.model_desc.model_provedor  <= 4 ) && (p.model_valor == "" || p.model_desc.model_valor  <= 4 )  ) {
-						toastr.error("Todos los campos son obligatorios, recuerde que no pueden haber campos en blanco, y deben de tener más de 4 caracteres","Error al Guardar Compras Asociadas",this.option_toast);
-						return false;
-						break;
-					}
+			/*
+              Funcion la cual comprueba al guardar el requerimiento si debe realizar las validaciones de compras asociadas
+              */
+              comprobarSiGuardoCompras: function () {
+              	if (this.datos_compras ==[] || this.datos_compras[0] == null || this.datos_compras[0] == undefined ) {
+              		return false;
+              	}
+              	if(this.datos_compras[0].id_area != this.area_temporal){
+              		return false;
+              	}
+              	var compras =this.datos_compras[0].compras;
+              	var index = Object.keys(compras).length;
+              	if (index == 0) {
+              		return false;
+              	}
+              	for (let f in compras) {
+              		let idx = Number(f)
+              		let p = compras[idx]
+              		if ( (p.model_desc !="" || p.model_desc.length  >= 4 ) || (p.model_provedor != "" || p.model_desc.model_provedor  >= 4 ) || (p.model_valor != ""  || p.model_desc.model_valor  >= 4 )  ) {
+              			return true;
+              			break;
+              		}
+              	}
+              	return false;
+              },
+			/*
+              función la cual valida los selects de las compras asociadas.
+              */
+              comprobarCompras: function (arreglo) {
+              	var compras =arreglo[0].compras;
+              	for (let f in compras) {
+              		let idx = Number(f)
+              		let p = compras[idx]
+              		if (p.divisa.nombre == "" ) {
+              			toastr.error("Por favor, seleccione una Divisa","Error al Guardar Compras Asociadas",this.option_toast);
+              			return false;
+              		}else if(p.tipo_compra.nombre == ""){
+              			toastr.error("Por favor, seleccione un tipo de compra ","Error al Guardar Compras Asociadas",this.option_toast);
+              			return false;
+              		}else if ( (p.model_desc =="" || p.model_desc.length  <= 4 ) && (p.model_provedor == "" || p.model_desc.model_provedor  <= 4 ) && (p.model_valor == "" || p.model_desc.model_valor  <= 4 )  ) {
+              			toastr.error("Todos los campos son obligatorios, recuerde que no pueden haber campos en blanco, y deben de tener más de 4 caracteres","Error al Guardar Compras Asociadas",this.option_toast);
+              			return false;
+              			break;
+              		}
 
-				}
-				return true;
-			},
-			/*Función la cual valida los datos del arreglo de datos, comprueba que ningun campo este vacio*/
-			validarDatos: function(arreglo){
-				if(arreglo == null){
-					return false;
-				}
-				for (var k in arreglo){
-					if (typeof arreglo[k] == '') {
-						return false;
-						break;
-					}
-				}
-				return true;
-			}
+              	}
+              	return true;
+              },
+              /*Función la cual valida los datos del arreglo de datos, comprueba que ningun campo este vacio*/
+              validarDatos: function(arreglo){
+              	if(arreglo == null){
+              		return false;
+              	}
+              	for (var k in arreglo){
+              		if (typeof arreglo[k] == '') {
+              			return false;
+              			break;
+              		}
+              	}
+              	return true;
+              }
 
-		}
-	}
+          }
+      }
 
-	Vue.component('encabezado',require('./encabezado.vue'));
-	Vue.component('anadir_requerimiento',require('./anadir_requerimiento.vue'));
-	Vue.component('anadir_compra',require('./anadir_compra_asociada.vue'));
-	Vue.component('select_clientes', require('../herramientas/select_clientes.vue'));
-	Vue.component('select_usuarios', require('../herramientas/select_usuarios.vue'));
-	Vue.component('select_estados', require('../herramientas/select_estado.vue'));
-	</script>
+      Vue.component('encabezado',require('./encabezado.vue'));
+      Vue.component('anadir_requerimiento',require('./anadir_requerimiento.vue'));
+      Vue.component('anadir_compra',require('./anadir_compra_asociada.vue'));
+      Vue.component('select_clientes', require('../herramientas/select_clientes.vue'));
+      Vue.component('select_usuarios', require('../herramientas/select_usuarios.vue'));
+      Vue.component('select_estados', require('../herramientas/select_estado.vue'));
+  </script>

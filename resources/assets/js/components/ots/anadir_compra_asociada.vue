@@ -119,9 +119,11 @@
     arreglo de requerimientos
     */
     processValue:function(index) {
-      // this.$emit('input', numeral(val).format('0,0'))
       this.compra_asociada[index].model_valor =  numeral(this.compra_asociada[index].model_valor).format('0,0')
     },
+    /*
+     arregla al arreglo de requerimientos una nueva posición con los datos en blanco
+    */
     addRequerimiento: function(e) {
       e.preventDefault();
       this.$validator.validateAll();
@@ -129,6 +131,9 @@
         this.compra_asociada.push(Vue.util.extend({}, this.compra_asociada));
       }
     },
+    /*
+      Función la cual se llama si esta en la vista de editar, esta función organiza los datos de la BD a la vista.
+    */
     llenarDatosSiesVisualizacion: function(){
       if (this.$parent.visualizacion=="true") {
        var arreglo_visualizar =JSON.parse(this.$parent.arreglo_visualizar);
@@ -145,9 +150,7 @@
 
                  }
                }
-              //  var datos=[{compras:arreglo_visualizar.compras}];
-          //  this.$localStorage.set('datos_compra_'+arreglo_visualizar.requerimientos.area,JSON.stringify(datos));//busca dependiendo del Área
-        }
+          }
       },
     /*
      Si encuentra el arreglo guardado en el localStorage llena nos datos con lo que se ha escrito.
