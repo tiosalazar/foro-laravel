@@ -47,15 +47,16 @@ class TareaController extends Controller
      */
     public function index()
     {
-        // $tareas= Tarea::all();
-        $tareas = Tarea::with('ot.cliente','estado')->get();
-        /*foreach ($tareas as $key => $value) {
-            $value->Ot->Cliente;
-            $value->Estado;
-        }*/
-        // return response()->json($tareas);
-        // return array('recordsTotal'=>count($tareas),'recordsFiltered'=>count($tareas),'data'=>$tareas);
-        return Datatables::of($tareas)->make(true);
+        $output = collect();
+        $tareas = Tarea::with(['ot'=> function ($query) {
+                $query->where('estado', 1);
+            },'ot.cliente' ,'estado'])->get();
+        foreach ($tareas as $key => $value) {
+            if (!is_null($value->ot)) {
+                array_push($output, $value);
+            }
+        }
+        return Datatables::of($output)->make(true);
     }
 
     /**
@@ -533,26 +534,29 @@ return response()->json($respuesta);
         }else{
             $month = $now->month;
         }
-        $tarea = Tarea::with(['ot.cliente','usuarioencargado','estado' => function ($query) use ($request,$id) {
+        $tarea = Tarea::with(['ot' => function ($query) {
+            // Tareas activas
+            $query->where('estado', 1);
+        },'ot.cliente','usuarioencargado','estado' => function ($query) use ($request,$id) {
             if ($request->has('estados')) {
                 $query->where('id', '=', $request->get('estados'));
             }
             if($id == -1){
-             $estado_programado= Estado::where('nombre','Programado')->first();
-             $query->where('id', '=', $estado_programado->id);
-         }
-     },'area' => function ($query) use ($id) {
-        if($id != -1){
-            $query->where('id', '=', $id);
-        }
-    }])
+               $estado_programado= Estado::where('nombre','Programado')->first();
+               $query->where('id', '=', $estado_programado->id);
+           }
+        },'area' => function ($query) use ($id) {
+            if($id != -1){
+                $query->where('id', '=', $id);
+            }
+        }])
         ->whereYear('created_at', $year)
         ->whereMonth('created_at', $month)
         ->get();
 
         // selecciona solos los que tiene el area especifico
         foreach ($tarea as $key => $value) {
-            if ($value->area && $value->ot->cliente && $value->estado ) {
+            if ($value->area && $value->ot && $value->ot->cliente && $value->estado ) {
                 array_push($output, $value);
             }
         }

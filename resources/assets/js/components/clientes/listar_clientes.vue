@@ -25,7 +25,6 @@
 <script>
 
     module.exports =  {
-      // props: ['cliente'],
       data () {
           return {
             clientes:[]
@@ -33,11 +32,6 @@
       },created:function () {
         this.listarClientes();
       },
-      /*,created: function(){
-            this.$nextTick(function() {
-              $('#app-datatable').DataTable();
-            })
-          },*/
       methods:{
           listarClientes: function(){
              this.$http.get(window._apiURL+'clientes')
@@ -50,10 +44,9 @@
             $('.editarModal').modal('show');
 
           },
-          setCliente: function(client) {
+          /*setCliente: function(client) {
             console.log(this.clientes);
-            // this.clientes.push(client);
-          }
+          }*/
     }
   }
 </script>

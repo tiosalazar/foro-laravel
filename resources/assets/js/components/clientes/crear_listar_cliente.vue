@@ -87,13 +87,11 @@
       });
     },
     mounted() {
-      console.log('ready')
       $(document).ready(function(e) {
         $('#tabla_clientes tbody').on('click', 'td .delete_cliente', function (e) {
               var id = $(this).attr('id');
               id = id.split('-');
-              console.log(id[1]);
-                $('#id_cliente').val(id[1]);
+              $('#id_cliente').val(id[1]);
 
         })
       })
@@ -118,20 +116,6 @@
                   {data: 'action', name: 'action', orderable: false, searchable: false}
               ],
               columnDefs: [
-  					/*	  {
-  							"targets": [5],
-              //  "visible": (tableClientes.data.action == '')?false:true,
-  							"data": null,
-  						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-                       if(data ==''){
-                           var column =   tableClientes.column(5);
-                           column.visible(false);
-  						       	     return '';
-                         }else{
-                          return data;
-                         }
-  						       }
-  						   }*/
               ],
               autoWidth: true,
               responsive: true,
@@ -210,7 +194,6 @@
       borrarCliente: function() {
         // this.$http.delete('api/v1/clientes/'+client.id)
         let index = $('#id_cliente').val()
-        console.log(index);
         this.$http.delete(window._apiURL+'clientes/'+index)
         .then(function(response) {
           if (response.status != '200') {
@@ -223,7 +206,6 @@
             $('#myModal').modal('hide')
             toastr.success(response.body.msg,'',this.option_toast);
             this.table.ajax.reload();
-            // this.clientes.splice(index,1);
           }
         },function(err) {
           if (Object.keys(err.body.obj).length>0) {

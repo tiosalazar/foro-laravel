@@ -19,38 +19,38 @@
 				</a>
 			</li>
 			<mugen-scroll :handler="onInfinite" :should-handle="!loading" scroll-container="menur" v-show="!hidden">
-		    <center><i class="fa fa-circle-o-notch fa-spin  fa-fw"></i>
-			<span class="sr-only">Loading...</span></center>
-    </mugen-scroll>
+			    <center><i class="fa fa-circle-o-notch fa-spin  fa-fw"></i>
+				<span class="sr-only">Loading...</span></center>
+    		</mugen-scroll>
 		</ul>
 	</div>
 </template>
 <script>
-import Push from 'push.js'
-import moment from 'moment'
-import MugenScroll from 'vue-mugen-scroll'
+	import Push from 'push.js'
+	import moment from 'moment'
+	import MugenScroll from 'vue-mugen-scroll'
 	module.exports= {
 		components: {MugenScroll, }, 
 		props:['id'],
-	    data () {
-		      return {
-		      	notificaciones:[],
-		      	no_leidas:0,
-		      	loading: false,
-		      	hidden:false,
-		      	option_toast:{
-		          timeOut: 5000,
-		          "positionClass": "toast-bottom-right",
-		          "closeButton": true,
-		        },
-		      }
+		data () {
+			return {
+				notificaciones:[],
+				no_leidas:0,
+				loading: false,
+				hidden:false,
+				option_toast:{
+					timeOut: 5000,
+					"positionClass": "toast-bottom-right",
+					"closeButton": true,
+				},
+			}
 		},
 		created: function(){
-	    },
-	    mounted(){
-	    	if (!('Notification' in window)) {
+		},
+		mounted(){
+			if (!('Notification' in window)) {
 				// el navegador no soporta la API de notificaciones
-				alert('Su navegador no soporta la API de Notificaciones :(');
+				toastr.error('Su navegador no soporta la API de Notificaciones :(','',this.option_toast);
 				return;
 			}
 			Push.Permission.request();
@@ -69,18 +69,19 @@ import MugenScroll from 'vue-mugen-scroll'
 					toastr.success(notification.descripcion,'',this.option_toast);
 					Push.clear();
 					Push.create(notification.nombre, {
-					    body: notification.descripcion,
-					    icon: window._baseURL+notification.img_perfil,
-					    timeout: 10000,
-					    onClick: function () {
-					        window.focus();
-					        this.close();
-					    }
+						body: notification.descripcion,
+						icon: window._baseURL+notification.img_perfil,
+						timeout: 10000,
+						onClick: function () {
+							window.focus();
+							this.close();
+						}
 					});
 					this.$parent.$emit('new_notify',1);
 					$('#chatAudio')[0].play();
 				}, (error)=>{
 					console.log(error);
+					toastr.error('Comunicate con soporte por favor','Hubo un error en la notificación',this.option_toast);
 				});
 			},
 			goTarea:function(data) {
@@ -95,25 +96,22 @@ import MugenScroll from 'vue-mugen-scroll'
 					, {
 						params: {
 							page: this.notificaciones.length /2 +1,
-			      },
-			  }).then((res) => {
-			  	console.log(res)
-			  	if (res.body.data.length >=1) {
-			  		console.log('entro')
-			  		this.notificaciones = this.notificaciones.concat(res.body.data);
-			  		if (!res.body.to) {
-			  			this.loading = false
-			  			this.hidden = true
-			  			console.log('entro full')
-			  		}
-			  		this.loading = false
-			  	} else {
-			  		console.log('vacio')
-			  		this.loading = false
-			  		this.hidden = true
-			  	}
-			  });
-			},
+						},
+					}).then((res) => {
+						console.log(res)
+						if (res.body.data.length >=1) {
+							this.notificaciones = this.notificaciones.concat(res.body.data);
+							if (!res.body.to) {
+								this.loading = false
+								this.hidden = true
+							}
+							this.loading = false
+						} else {
+							this.loading = false
+							this.hidden = true
+						}
+					});
+				},
+			}
 		}
-	}
 </script>

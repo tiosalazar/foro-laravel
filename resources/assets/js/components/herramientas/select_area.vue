@@ -41,10 +41,6 @@
           }
       },
       computed:{
-        /*value: function (val) {
-
-          return this.area;
-        },*/
         isInvalid () {
           return (this.isTouched &&  this.value=="" )?true:false //Compruebo de que haya selecionado algo
         }

@@ -65,9 +65,7 @@
 
 			<div class="form-group" v-bind:class="[errors_return.enlaces_externos,{ 'has-error': errors.has('enlaces_externos') }]">
 				<label for="enlaces_externos">Ruta del server</label>
-				<!-- <textarea class="form-control" rows="3" name="enlaces_externos"  id="enlaces_externos" v-model="tarea.enlaces_externos" placeholder="Ruta del server" v-validate data-vv-rules="required|min:4"></textarea> -->
 				<textarea class="form-control" rows="3" name="enlaces_externos"  id="enlaces_externos" v-model="tarea.enlaces_externos" placeholder="Ruta del server"></textarea>
-				<!-- <span  class="help-block" v-show="errors.has('enlaces_externos')">{{ errors.first('enlaces_externos') }}</span> -->
 			</div>
 
 
@@ -103,6 +101,7 @@
 <script>
 	import Datepicker from 'vuejs-datepicker';
 	import VeeValidate, { Validator } from 'vee-validate';
+	import moment from 'moment';
 
   	Vue.use(VeeValidate);
 	module.exports = {
@@ -154,7 +153,6 @@
 			this.$on('send-ot', function(obj) {
 				this.ot= obj;
 				// console.log('cliente',obj.cliente.nombre)
-				console.log('ot',obj.usuario)
 				this.select_ot= obj;
 			});
 			this.$on('area_option', function(obj) {
@@ -178,50 +176,21 @@
 		methods:{
 			setErrors:function(object) {
 		        this.message='';
-		        var that = this;
+		        let that = this;
 		        $.each(object, function(index, value) {
 		          that.message += value+ '</br>';
 		          that.errors_return[index] = 'has-warning';
 		        });
 		    },
 			getCurrentDate:function(data='') {
-				var today;
-				if (!data) {
-					today = new Date();
-					var dd = today.getDate();
-					var mm = today.getMonth()+1; //January is 0!
-					var yyyy = today.getFullYear();
-					var HH = today.getHours();
-					var MM = today.getMinutes();
-					var ss = today.getSeconds();
-					if(dd<10) {
-						dd='0'+dd
-					}
-					if(mm<10) {
-						mm='0'+mm
-					}
-					if(HH<10) {
-						HH='0'+HH
-					}
-					if(MM<10) {
-						MM='0'+MM
-					}
-					if(ss<10) {
-						ss='0'+ss
-					}
-					today = yyyy +'-' + dd+'-'+ mm +' '+ HH + ':' + MM + ':' + ss;
-				} else {
-					today = new Date(data)
-					let fecha1=today.toISOString();
-					var arreglo_nuevo=fecha1.split("T");
-					console.log(arreglo_nuevo[0]);
-					today = arreglo_nuevo[0];
-				}
-
+				let today = moment().format('YYYY-MM-DD : HH-mm-ss');
 				return today;
 			},
 			agregarTarea:function(e) {
-				this.tarea.fecha_entrega_cliente = (this.fecha_entrega_cliente)?this.getCurrentDate(this.fecha_entrega_cliente):null;
+				// Serializo la fecha del datepicker
+				// y la asigno a la tarea
+				this.tarea.fecha_entrega_cliente = 
+					(this.fecha_entrega_cliente)?moment(this.fecha_entrega_cliente).format('YYYY-MM-DD : HH-mm-ss'):null;
 				this.$validator.validateAll();
 		        if (this.errors.any()) {
 		          return false
@@ -232,7 +201,6 @@
 				this.tarea.areas_id = this.area.id;
 				this.tarea.usuarios_id = this.user;
 				this.tarea.prioridad_id=this.prioridad.id;
-				// console.log(this.prioridad);
 				
 				let that = this;
 				this.$http.post(window._apiURL+'tareas',this.tarea)

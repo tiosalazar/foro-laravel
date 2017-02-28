@@ -123,6 +123,10 @@ a:hover, a:focus {
   z-index: 100;
 }
 
+.same-height {
+  min-height: 80px;
+}
+
 /*!
   Ionicons, v3.0.0-alpha.3
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/
