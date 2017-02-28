@@ -37,7 +37,8 @@
 				notificaciones:[],
 				no_leidas:0,
 				loading: false,
-				hidden:false,
+				hidden:true,
+				last:false,
 				option_toast:{
 					timeOut: 5000,
 					"positionClass": "toast-bottom-right",
@@ -91,24 +92,31 @@
 				this.$parent.$emit('new_notify',1);
 			},
 			onInfinite() {
+				console.log('infinite',this.last)
+				if (this.last) {
+					return false;
+				}
 				this.loading = true
+				this.hidden = false
 				this.$http.get(window._baseURL+'/pageNotifications'
 					, {
 						params: {
-							page: this.notificaciones.length /2 +1,
+							page: this.notificaciones.length /4 +1,
 						},
 					}).then((res) => {
 						console.log(res)
 						if (res.body.data.length >=1) {
 							this.notificaciones = this.notificaciones.concat(res.body.data);
-							if (!res.body.to) {
+							if (res.body.to == null) {
 								this.loading = false
 								this.hidden = true
+								this.last=true;
 							}
 							this.loading = false
 						} else {
-							this.loading = false
-							this.hidden = true
+							this.loading = false;
+							this.hidden = true;
+							this.last=true;
 						}
 					});
 				},
