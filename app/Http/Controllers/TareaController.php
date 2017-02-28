@@ -572,7 +572,8 @@ return response()->json($respuesta);
         $tarea = Tarea::with(['ot.cliente','ot.usuario', 'estado', 'estado_prioridad','planeacion_fase','area','usuario','usuarioencargado','comentario.user'=>function ($query)
         {
             $query->orderBy('created_at', 'desc');
-        }])->where('id',$id)->first();
+        },'comentario.estados'])->where('id',$id)->first();
+
         return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea);
     }
 
