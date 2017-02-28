@@ -180,13 +180,11 @@
           </div>
           <!-- /.box-body -->
            <div v-if=" (estado_solicitud.id==1 && rol_actual =='coordinador')" >
-            1
                 <div class="box-footer text-center">
                   <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Actualizar</button>
                 </div>
            </div>
            <div v-else-if="id_usuario_actual==tarea_info.encargado_id && tarea_info.estados_id!='1'">
-           2
                  <div class="box-footer text-center">
                   <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Actualizar</button>
                 </div>
@@ -196,7 +194,7 @@
                   <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Comentar</button>
               </div>
            </div>
-
+       </form>
           <!-- Comentarios -->
          <div class="box box-widget comentario_box">
          <paginate
