@@ -21,7 +21,7 @@
     <div style="padding:2px 0px;"  :class="{ 'has-error': isInvalid }" v-show="isInvalid">
       <span  class="help-block">El campo Tipo de Fase es obligatorio</span>
     </div>
-      <div style="height:12px"></div>
+      <!-- <div style="height:12px"></div> -->
   </div>
 </template>
 

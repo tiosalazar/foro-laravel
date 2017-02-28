@@ -6,74 +6,101 @@
         </div>
 
         <div class="box-body">
-            <form  role="form">
-                <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]">
+            <form  role="form" class="row">
+                <div class="col-md-6 same-height">
+                  <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]">
                     <label for="nombre_usuario">Nombre</label>
                     <input type="text" class="form-control" id="nombre_usuario" name="nombre" v-model="usuarios.nombre" placeholder="Nombre" v-validate data-vv-rules="required|alpha_num_spaces|max:50">
                     <span  class="help-block error_absolute" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
                 </div>
-                <div class="form-group" v-bind:class="[errors_return.apellido,{ 'has-error': errors.has('apellido') }]">
+                </div>
+                <div class="col-md-6 same-height">
+                  <div class="form-group" v-bind:class="[errors_return.apellido,{ 'has-error': errors.has('apellido') }]">
                     <label for="apellidos_usuario">Apellidos</label>
                     <input type="text" class="form-control" id="apellidos_usuario" name="apellido"  v-model="usuarios.apellido" placeholder="Apellidos" v-validate data-vv-rules="required|alpha_num_spaces|max:50">
                     <span  class="help-block error_absolute" v-show="errors.has('apellido')">{{ errors.first('apellido') }}</span>
                 </div>
-                <div class="form-group" v-bind:class="[errors_return.email,{ 'has-error': errors.has('email') }]">
+                </div>
+                <div class="col-md-6 same-height">
+                  <div class="form-group" v-bind:class="[errors_return.email,{ 'has-error': errors.has('email') }]">
                     <label for="email_usuario">Email</label>
                     <input type="email" class="form-control" id="email_usuario"  name="email" v-model="usuarios.email" placeholder="Email" v-validate data-vv-rules="required|email">
                      <span  class="help-block error_absolute" v-show="errors.has('email')">{{ errors.first('email') }}</span>
                 </div>
-                 <div class="form-group" v-bind:class="[errors_return.password,{ 'has-error': errors.has('password') }]">
+                </div>
+                 <div class="col-md-6 same-height">
+                   <div class="form-group" v-bind:class="[errors_return.password,{ 'has-error': errors.has('password') }]">
                     <label for="contrasena_usuario">Contraseña</label>
                     <input type="text" class="form-control" id="contrasena_usuario" name="password" v-model="usuarios.password"  placeholder="Contraseña" v-validate :data-vv-rules="validacioncontrasena">
 
                      <span  class="help-block error_absolute" v-show="errors.has('password')">{{ errors.first('password') }}</span>
                 </div>
-                 <div class="form-group" v-bind:class="[errors_return.cargo,{ 'has-error': errors.has('cargo') }]">
+                 </div>
+                 <div class="col-md-6 same-height">
+                   <div class="form-group" v-bind:class="[errors_return.cargo,{ 'has-error': errors.has('cargo') }]">
                     <label for="cargo_usuario">Cargo</label>
                     <input type="text" class="form-control" id="cargo_usuario" name="cargo" v-model="usuarios.cargo"  placeholder="Cargo" v-validate data-vv-rules="required|alpha_num_spaces|max:30">
                      <span  class="help-block error_absolute" v-show="errors.has('cargo')">{{ errors.first('cargo') }}</span>
                  </div>
-                 <div class="form-group" v-bind:class="[errors_return.telefono,{ 'has-error': errors.has('telefono') }]">
+                 </div>
+                 <div class="col-md-6 same-height">
+                   <div class="form-group" v-bind:class="[errors_return.telefono,{ 'has-error': errors.has('telefono') }]">
                     <label for="telefono_usuario">Teléfono</label>
                     <input type="text" class="form-control" id="telefono_usuario" name="telefono"  v-model="usuarios.telefono" placeholder="Teléfono" v-validate data-vv-rules="required|numeric|max:30">
                      <span  class="help-block error_absolute" v-show="errors.has('telefono')">{{ errors.first('telefono') }}</span>
                  </div>
-                  <div class="form-group" v-bind:class="[errors_return.horas_disponible,{ 'has-error': errors.has('horas_disponible') }]">
+                 </div>
+                  <div class="col-md-6 same-height">
+                    <div class="form-group" v-bind:class="[errors_return.horas_disponible,{ 'has-error': errors.has('horas_disponible') }]">
                     <label for="horas_usuario">Horas al mes</label>
                     <input type="text" class="form-control" id="horas_usuario" name="horas_disponible" v-model="usuarios.horas_disponible"  placeholder="Horas Disponibles" v-validate data-vv-rules="required|decimal|max:30">
                      <span  class="help-block error_absolute" v-show="errors.has('horas_disponible')">{{ errors.first('horas_disponible') }}</span>
                  </div>
-                  <div class="form-group" v-bind:class="[errors_return.fecha_nacimiento,{ 'has-error': errors.has('fecha_nacimiento') }]">
+                  </div>
+                  <div class="col-md-6 same-height">
+                  <div class="" v-bind:class="[errors_return.fecha_nacimiento,{ 'has-error': errors.has('fecha_nacimiento') }]">
                     <label for="fecha_nacimiento">Fecha de nacimiento</label>
-                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" v-model="usuarios.fecha_nacimiento"  placeholder="Fecha nacimiento" v-validate data-vv-rules="required">
+
+                    <div class="input-group date">
+                      <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                      <datepicker language="es" id="fecha_inicio" required="required" v-validate data-vv-rules="required" data-vv-as="Fecha de Inicio" placeholder="Fecha nacimiento"  v-model="usuarios.fecha_nacimiento" name="fecha_inicio" class="form-control"  format="dd-MM-yyyy"></datepicker>
+                    </div>
+
+                    <!-- <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" v-model="usuarios.fecha_nacimiento"  placeholder="Fecha nacimiento" v-validate data-vv-rules="required"> -->
                      <span  class="help-block error_absolute" v-show="errors.has('fecha_nacimiento')">{{ errors.first('fecha_nacimiento') }}</span>
-                 </div>
-                  <div class="form-group" >
+                 </div></div>
+                  <div class="col-md-6 same-height">
+                    <div class="form-group" >
                     <label for="rol_usuario">Rol</label>
-                    <select_rol :refresh="dato_refres"></select_rol>
+                    <select_rol :refresh="rol"></select_rol>
                     <!-- <input type="text" class="form-control" id="rol_usuario" placeholder="Rol del usuario"> -->
                  </div>
-                  <div class="form-group">
+                  </div>
+                  <div class="col-md-6 same-height">
+                    <div class="form-group">
                     <label for="area_usuario">Área</label>
-                    <select_area  :refresha="dato_refres2"></select_area>
+                    <select_area  :refresha="area"></select_area>
                  </div>
+                  </div>
                  <!-- Campo estado que solo se muestra cuando vamos a actualizar el usuario -->
-                  <div class="form-group" v-bind:class="{ 'hidden': valorboton2 }">
+                  <div class="col-md-6 same-height" v-bind:class="{ 'hidden': botonEditar }">
+                    <div class="form-group" >
                     <label for="horas_usuario">Estado</label>
                     <select name="estado" id="" class="form-control select_custom" v-model="usuarios.estado">
                       <option value="0">Inactivo</option>
                       <option value="1">Activo</option>
                     </select>
                  </div>
+                  </div>
 
             </form>
         </div>
 
         <div class="box-footer">
 
-           <button class="btn btn-primary" v-bind:class="{ 'hidden': valorboton }" @click="addUser">Guardar</button>
-           <button class="btn btn-primary" v-bind:class="{ 'hidden': valorboton2 }" @click="updateaddUser">Actualizar</button>
-           <a href="/equipo/directorio" v-bind:class="{ 'hidden': valorboton2 }"><button class="btn btn-default">Volver a listado áreas</button></a>
+           <button class="btn btn-primary" v-bind:class="{ 'hidden': botonGuardar }" @click="addUser">Guardar</button>
+           <button class="btn btn-primary" v-bind:class="{ 'hidden': botonEditar }" @click="updateaddUser">Actualizar</button>
+           <a href="/equipo/directorio" v-bind:class="{ 'hidden': botonEditar }"><button class="btn btn-default">Volver a listado áreas</button></a>
 
         </div>
     </div>
@@ -85,6 +112,7 @@
     Vue.component('select_area',require('../herramientas/select_area.vue'));
     Vue.component('select_rol',require('../herramientas/select_rol.vue'));
     import VeeValidate, { Validator } from 'vee-validate';
+    import Datepicker from 'vuejs-datepicker';
     //Traducciones del validador
     import messages from '../../es/es';
 
@@ -98,24 +126,11 @@
     VeeValidate.Validator.extend('alpha_num_spaces', {
     getMessage: field => 'El campo '+field+' solo debe contener letras y números.',
     validate: value => /^[\u00F1Aa-\u00F1AZ-a-zA-Z0-9_  \u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da]*$/.test(value)
-        /*
-        \u00e1 = á
-        \u00e9 = é
-        \u00ed = í
-        \u00f3 = ó
-        \u00fa = ú
-        \u00c1 = Á
-        \u00c9 = É
-        \u00cd = Í
-        \u00d3 = Ó
-        \u00da = Ú
-        \u00f1 = ñ
-        \u00d1 = Ñ*/
   });
 
 
     module.exports={
-      components: {VeeValidate,Validator},
+      components: {VeeValidate,Validator,Datepicker},
       props: ['titulor','comando','edituserdata','visualizar'],
       data(){
         return{
@@ -132,10 +147,10 @@
            message :'',
            titulo:'',
            validacioncontrasena:'required',
-           valorboton:'',
-           valorboton2:'',
-           dato_refres:'',
-           dato_refres2:'',
+           botonGuardar:'',
+           botonEditar:'',
+           rol:'',
+           area:'',
            option_toast:{
             timeOut: 5000,
             "positionClass": "toast-top-center",
@@ -163,12 +178,12 @@
             this.usuarios.areas_id=b.id;
           });
 
-          //Valido la opcion de editar o guardar para mostrar el boto correspondiente con su función
+          //Valido la opcion de editar o guardar para mostrar el boton correspondiente con su función
           if (this.comando==1) {
-            this.valorboton2=true;
+            this.botonEditar=true;
           }else if(this.comando==2){
 
-             this.valorboton=true;
+             this.botonGuardar=true;
           }
           //Valido que recibo los datos para editar, si es el caso lleno el componente del formulario
 
@@ -178,8 +193,8 @@
             var obj = JSON.parse(this.edituserdata);
             console.log(obj);
              this.usuarios=obj;
-             this.dato_refres=obj;
-              this.dato_refres2=obj;
+             this.rol=obj;
+              this.area=obj;
             }
 
 
@@ -207,8 +222,8 @@
                     console.log(response);
                     toastr.success(response.body.msg,'',this.option_toast);
                    this.usuarios={};
-                    this.dato_refres=0;
-                    this.dato_refres2=0;
+                    this.rol=0;
+                    this.area=0;
                     if($('#tabla_usuarios') ){
                         $('#tabla_usuarios').DataTable().ajax.reload();
                     }

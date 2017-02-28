@@ -41,7 +41,6 @@
             <div class="col-xs-6 col-md-12">
               <button type="button" v-show="agregar" v-on:click="addCliente" class="btn btn-block btn-success aa">Agregar</button>
               <button type="button" v-show="!agregar" v-on:click="editCliente(cliente)" class="btn btn-block btn-success aa">Actualizar</button>
-              <button type="button"  v-on:click="errors.clear()" class="btn btn-block btn-success aa">clear</button>
             </div>
             </form>
           <!-- /.row -->

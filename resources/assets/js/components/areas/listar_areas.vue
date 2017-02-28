@@ -31,7 +31,6 @@
                   <td class="col-md-9"><button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal_area" @click="pasardatosmodalarea(list_area.id,list_area.nombre,list_area.extencion_tel,list_area.estado)">Editar</button></td>
 
                 </tr>
-                <tr>
 
               </tbody>
               </table>
@@ -84,7 +83,7 @@
                 </div>
                 <!-- /.modal -->
              </div>
-
+</div>
 </template>
 
 
