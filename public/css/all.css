@@ -9,6 +9,10 @@
   /* Legacy iOS */
 }
 
+body {
+  background-color: red;
+}
+
 .btn {
   padding: 4px 12px;
 }
