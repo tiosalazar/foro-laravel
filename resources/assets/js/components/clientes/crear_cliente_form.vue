@@ -57,12 +57,6 @@
 		// Install the plugin and set the locale.
 		Vue.use(VeeValidate, { locale: 'es' });
 
-		   /*Validación Alfa Numerico con ñ*/
-		  /*  VeeValidate.Validator.extend('alpha_num_spaces', {
-		    getMessage: field => 'El campo '+field+' solo debe contener letras y números.',
-		    validate: value => /^[\u00F1Aa-\u00F1AZ-a-zA-Z0-9_ ]*$/.test(value)
-		  });*/
-
 	module.exports =  {
 		components: {VeeValidate,Validator},
 		props: ['cliente_url'],

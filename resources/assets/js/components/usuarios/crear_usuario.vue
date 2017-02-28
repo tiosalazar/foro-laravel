@@ -107,12 +107,11 @@
 </template>
 
 <script>
-
-
-    Vue.component('select_area',require('../herramientas/select_area.vue'));
-    Vue.component('select_rol',require('../herramientas/select_rol.vue'));
-    import VeeValidate, { Validator } from 'vee-validate';
-    import Datepicker from 'vuejs-datepicker';
+  Vue.component('select_area',require('../herramientas/select_area.vue'));
+  Vue.component('select_rol',require('../herramientas/select_rol.vue'));
+  import VeeValidate, { Validator } from 'vee-validate';
+  import Datepicker from 'vuejs-datepicker';
+  import moment from 'moment';
     //Traducciones del validador
     import messages from '../../es/es';
 
@@ -124,9 +123,9 @@
 
     /*Validación Alfa Numerico con ñ*/
     VeeValidate.Validator.extend('alpha_num_spaces', {
-    getMessage: field => 'El campo '+field+' solo debe contener letras y números.',
-    validate: value => /^[\u00F1Aa-\u00F1AZ-a-zA-Z0-9_  \u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da]*$/.test(value)
-  });
+      getMessage: field => 'El campo '+field+' solo debe contener letras y números.',
+      validate: value => /^[\u00F1Aa-\u00F1AZ-a-zA-Z0-9_  \u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da]*$/.test(value)
+    });
 
 
     module.exports={
@@ -134,172 +133,157 @@
       props: ['titulor','comando','edituserdata','visualizar'],
       data(){
         return{
-           usuarios:{
-              nombre:'',
-              apellido:'',
-              email:'',
-              password:'',
-              cargo:'',
-              telefono:'',
-              horas_disponible:'',
-              fecha_nacimiento:''
-           },
-           message :'',
-           titulo:'',
-           validacioncontrasena:'required',
-           botonGuardar:'',
-           botonEditar:'',
-           rol:'',
-           area:'',
-           option_toast:{
-            timeOut: 5000,
-            "positionClass": "toast-top-center",
-            "closeButton": true
-           },
-           errors_return:{
-            'nombre':'',
-            'apellido':'',
-            'email':'',
-            'password':'',
-            'cargo':'',
-            'telefono':'',
-            'horas_disponible':'',
-            'fecha_nacimiento':''
+         usuarios:{
+          nombre:'',
+          apellido:'',
+          email:'',
+          password:'',
+          cargo:'',
+          telefono:'',
+          horas_disponible:'',
+          fecha_nacimiento:''
+        },
+        message :'',
+        titulo:'',
+        validacioncontrasena:'required',
+        botonGuardar:'',
+        botonEditar:'',
+        rol:'',
+        area:'',
+        option_toast:{
+          timeOut: 5000,
+          "positionClass": "toast-top-center",
+          "closeButton": true
+        },
+        errors_return:{
+          'nombre':'',
+          'apellido':'',
+          'email':'',
+          'password':'',
+          'cargo':'',
+          'telefono':'',
+          'horas_disponible':'',
+          'fecha_nacimiento':''
 
-          },
-        }
-       },
-       created: function(){
-          this.$on('rol_option', function(v) {
-            this.usuarios.roles_id=v.id;
-
-          });
-          this.$on('area_option', function(b) {
-            this.usuarios.areas_id=b.id;
-          });
-
+        },
+      }
+    },
+    created: function(){
+      this.$on('rol_option', function(v) {
+        this.usuarios.roles_id=v.id;
+      });
+      this.$on('area_option', function(b) {
+        this.usuarios.areas_id=b.id;
+      });
           //Valido la opcion de editar o guardar para mostrar el boton correspondiente con su función
           if (this.comando==1) {
             this.botonEditar=true;
           }else if(this.comando==2){
-
-             this.botonGuardar=true;
-          }
+           this.botonGuardar=true;
+         }
           //Valido que recibo los datos para editar, si es el caso lleno el componente del formulario
 
           if (this.edituserdata!=undefined) {
             this.validacioncontrasena='';
-            console.log(this.edituserdata);
             var obj = JSON.parse(this.edituserdata);
-            console.log(obj);
-             this.usuarios=obj;
-             this.rol=obj;
-              this.area=obj;
-            }
+            this.usuarios=obj;
+            this.rol=obj;
+            this.area=obj;
+          }
 
 
           this.titulo=this.titulor;
-      },
-       methods:{
-        addUser:function(user) {
-          this.$validator.validateAll();
-            if (this.errors.any()) {
-              return false
-            }
-          this.$http.post(window._apiURL+'usuarios',this.usuarios)
-          .then(function (response) {
-
-                if (response.status != '200') {
-                   if (Object.keys(response.obj).length>0) {
-
-                    $.each(respuesta.body.obj, function(index, value) {
-                      that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-                      that.errors_return[index] = 'has-warning';
-                    });
-                  }
-                  toastr.warning(that.message,respuesta.body.msg,this.option_toast);
-                }else{
-                    console.log(response);
-                    toastr.success(response.body.msg,'',this.option_toast);
-                   this.usuarios={};
-                    this.rol=0;
-                    this.area=0;
-                    if($('#tabla_usuarios') ){
-                        $('#tabla_usuarios').DataTable().ajax.reload();
-                    }
-
-
-                    
-                }
-                },(response) => {
-                   var that = this;
-                    that.message ='';
-
-                    console.log(response);
-                      if (Object.keys(response.body.obj).length>0) {
-
-                        $.each(response.body.obj, function(index, value) {
-                          that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-                          that.errors_return[index] = 'has-warning';
-                        });
-                      }
-
-                    toastr.error(that.message,response.body.msg,this.option_toast);
-                  }).then(() => {  
-                     this.errors.clear();
-                     console.log(this.errors);
-                   });
         },
-        updateaddUser:function(){
-          console.log('Actualizar');
-          //Valido los campos
-           this.$validator.validateAll();
+        methods:{
+          addUser:function(user) {
+            this.$validator.validateAll();
             if (this.errors.any()) {
               return false
             }
+            this.usuarios.fecha_nacimiento = moment(this.usuarios.fecha_nacimiento).format('YYYY-MM-DD');
+            this.$http.post(window._apiURL+'usuarios',this.usuarios)
+            .then(function (response) {
+
+              if (response.status != '200') {
+               if (Object.keys(response.obj).length>0) {
+
+                $.each(respuesta.body.obj, function(index, value) {
+                  that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+                  that.errors_return[index] = 'has-warning';
+                });
+              }
+              toastr.warning(that.message,respuesta.body.msg,this.option_toast);
+            }else{
+              console.log(response);
+              toastr.success(response.body.msg,'',this.option_toast);
+              this.usuarios={};
+              this.rol=0;
+              this.area=0;
+              if($('#tabla_usuarios') ){
+                $('#tabla_usuarios').DataTable().ajax.reload();
+              }
 
 
-            var estado = parseInt(this.usuarios.estado);
-            this.usuarios.estado= estado;
-            var iduser=this.usuarios.id;
 
-            //Peticion enviando los datos actualizados
-            this.$http.put(window._apiURL+'usuarios/'+iduser+'', this.usuarios).then(function(response){
-                if (response.status != '200') {
-                   if (Object.keys(response.obj).length>0) {
+            }
+          },(response) => {
+           let that = this;
+           that.message ='';
 
-                    $.each(respuesta.body.obj, function(index, value) {
-                      that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-                      that.errors_return[index] = 'has-warning';
-                    });
-                  }
-                  toastr.warning(that.message,respuesta.body.msg,this.option_toast);
-                }else{
+           console.log(response);
+           if (Object.keys(response.body.obj).length>0) {
 
-                    toastr.success(response.body.msg,'',this.option_toast);
-                    console.log(response);
+            $.each(response.body.obj, function(index, value) {
+              that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+              that.errors_return[index] = 'has-warning';
+            });
+          }
 
-                }
-            },(response) => {
-                   var that = this;
-                    that.message ='';
+          toastr.error(that.message,response.body.msg,this.option_toast);
+        }).then(() => {  
+         this.errors.clear();
+         console.log(this.errors);
+       });
+      },
+      updateaddUser:function(){
+        console.log('Actualizar');
+          //Valido los campos
+          this.$validator.validateAll();
+          if (this.errors.any()) {
+            return false
+          }
+          let estado = parseInt(this.usuarios.estado);
+          this.usuarios.estado= estado;
+          let that = this;
+          //Peticion enviando los datos actualizados
+          this.$http.put(window._apiURL+'usuarios/'+this.usuarios.id+'', this.usuarios).then(function(response){
+            if (response.status != '200') {
+             if (Object.keys(response.obj).length>0) {
 
-                    console.log(response);
-                      if (Object.keys(response.body.obj).length>0) {
+              $.each(respuesta.body.obj, function(index, value) {
+                that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+                that.errors_return[index] = 'has-warning';
+              });
+            }
+            toastr.warning(that.message,respuesta.body.msg,this.option_toast);
+          }else{
+            toastr.success(response.body.msg,'',this.option_toast);
+            console.log(response);
+          }
+        },(response) => {
+          that.message ='';
+          console.log(response);
+          if (Object.keys(response.body.obj).length>0) {
 
-                        $.each(response.body.obj, function(index, value) {
-                          that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-                          that.errors_return[index] = 'has-warning';
-                        });
-                      }
-
-                    toastr.error(that.message,response.body.msg,this.option_toast);
-                  });
+            $.each(response.body.obj, function(index, value) {
+              that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+              that.errors_return[index] = 'has-warning';
+            });
+          }
+          toastr.error(that.message,response.body.msg,this.option_toast);
+        });
 
         }
-       }
-
-
+      }
     }
-
 </script>

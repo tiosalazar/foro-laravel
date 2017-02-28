@@ -35,22 +35,22 @@
 <script>
 
   import Multiselect from 'vue-multiselect'
-    module.exports= {
-       components: { Multiselect},
-       props: ['select'],
-      data () {
-          return {
-            ots:[],
-            id_ot: 0,
-            isTouched: false,
-            value:'',
-            selectedCountries: [],
-            countries: [],
-            isLoading: false,
-          }
-      },
-      computed:{
-        isInvalid () {
+  module.exports= {
+   components: { Multiselect},
+   props: ['select'],
+   data () {
+    return {
+      ots:[],
+      id_ot: 0,
+      isTouched: false,
+      value:'',
+      selectedCountries: [],
+      countries: [],
+      isLoading: false,
+    }
+  },
+  computed:{
+    isInvalid () {
           return (this.isTouched &&  this.value=="" )?true:false //Compruebo de que haya selecionado algo
         },
         value_select: function () {
@@ -58,16 +58,15 @@
         },
       },
       created: function(){
-          this.fetchTips();
+        this.fetchTips();
       },
 
       methods:{
-          fetchTips: function(){
-               this.$http.get(window._baseURL+'/show_ots_tareas')
-             .then(function(respuesta){
-                // this.ots=respuesta.body;
-             }.bind(this));
-          },
+        fetchTips: function(){
+         this.$http.get(window._baseURL+'/show_ots_tareas')
+         .then(function(respuesta){
+         }.bind(this));
+       },
           /*
           * Funcion para organizar la visualización del select
           */
@@ -79,11 +78,11 @@
              this.id_ot = newSelected.id;
              this.value = newSelected;
              // Creo un evento para enviar el item seleccionado al padre.
-              this.$parent.$emit('send-ot', newSelected)
+             this.$parent.$emit('send-ot', newSelected)
            }else {
              this.id_ot = 0;
            }
-        },
+         },
         /*
         * esta función se ejecuta cuando se da click fuera del cuadro de Dialogo
         */
@@ -101,6 +100,6 @@
             this.isLoading = false
           })
         },
+      }
     }
-  }
 </script>

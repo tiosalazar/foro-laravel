@@ -70,9 +70,9 @@
 		mounted(){
 			let that = this;
 			var oTable = $('#tabla_tareas').DataTable({
-				 dom: "<'row'<'col-xs-12'<'row filtros'<'col-xs-6 col-sm-6 col-lg-4 selects'><'col-xs-6 col-sm-6 col-lg-5'f><'col-xs-4 col-sm-4 col-lg-3'l>>>r>"+
-			            "<'row'<'col-xs-12't>>"+
-			            "<'row'<'col-xs-12'<'row'<'col-xs-6'i><'col-xs-6'p>>>>",
+				dom: "<'row'<'col-xs-12'<'row filtros'<'col-xs-6 col-sm-6 col-lg-4 selects'><'col-xs-6 col-sm-6 col-lg-5'f><'col-xs-4 col-sm-4 col-lg-3'l>>>r>"+
+				"<'row'<'col-xs-12't>>"+
+				"<'row'<'col-xs-12'<'row'<'col-xs-6'i><'col-xs-6'p>>>>",
 				processing: true,
 				serverSide: true,
 				deferRender: true,
@@ -80,106 +80,106 @@
 				ajax: {
 					url: window._baseURL+"/all_tareas/"+that.area,
 					data: function (d) {
-		                d.estados = $('select[name=estados]').val();
-		                d.year = $('select[name=year]').val();
-		                d.month = $('select[name=month]').val();
-		            },
+						d.estados = $('select[name=estados]').val();
+						d.year = $('select[name=year]').val();
+						d.month = $('select[name=month]').val();
+					},
 
 				},
 				columns: [
-					{ data: 'ot.referencia', name: 'ot.referencia' },
-					{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre' },
-					{ data: 'nombre_tarea', name: 'nombre_tarea' },
-					{ data: 'created_at', name: 'created_at' },
-					{ data: 'usuarioencargado.nombre', name: 'usuarioencargado.nombre' },
+				{ data: 'ot.referencia', name: 'ot.referencia' },
+				{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre' },
+				{ data: 'nombre_tarea', name: 'nombre_tarea' },
+				{ data: 'created_at', name: 'created_at' },
+				{ data: 'usuarioencargado.nombre', name: 'usuarioencargado.nombre' },
 				],
 				columnDefs: [
-					{
-						"targets": [5],
-						"data": null,
+				{
+					"targets": [5],
+					"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
-						  	return '<span class="label label-estado estado-'+data.estado.tipos_estados_id+'-'+data.estado.id+' ">'+data.estado.nombre+'</span>';
+						   	return '<span class="label label-estado estado-'+data.estado.tipos_estados_id+'-'+data.estado.id+' ">'+data.estado.nombre+'</span>';
 
-						     }
-					},
-					{
-						"targets": [6],
-						"data": null,
+						   }
+						},
+						{
+							"targets": [6],
+							"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
-						    	return '<a href="'+window._baseURL+'/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block"   aria-label="View">Ver tarea</a>';
-						   	}
-					}
-				],
-				autoWidth: false,
-				responsive: true,
-				language: {
-			        "sProcessing":     "Procesando...",
-				    "sLengthMenu":     "Mostrar _MENU_ registros",
-				    "sZeroRecords":    "No se encontraron resultados",
-				    "sEmptyTable":     "Ningún dato disponible en esta tabla",
-				    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-				    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-				    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-				    "sInfoPostFix":    "",
-				    "sSearch":         "Buscar:",
-				    "sUrl":            "",
-				    "sInfoThousands":  ",",
-				    "sLoadingRecords": "Cargando...",
-				    "oPaginate": {
-				        "sFirst":    "Primero",
-				        "sLast":     "Último",
-				        "sNext":     "Siguiente",
-				        "sPrevious": "Anterior"
-				    },
-				    "oAria": {
-				        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-				        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-				    }
-			    },
+						   	return '<a href="'+window._baseURL+'/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block"   aria-label="View">Ver tarea</a>';
+						   }
+						}
+						],
+						autoWidth: false,
+						responsive: true,
+						language: {
+							"sProcessing":     "Procesando...",
+							"sLengthMenu":     "Mostrar _MENU_ registros",
+							"sZeroRecords":    "No se encontraron resultados",
+							"sEmptyTable":     "Ningún dato disponible en esta tabla",
+							"sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+							"sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+							"sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+							"sInfoPostFix":    "",
+							"sSearch":         "Buscar:",
+							"sUrl":            "",
+							"sInfoThousands":  ",",
+							"sLoadingRecords": "Cargando...",
+							"oPaginate": {
+								"sFirst":    "Primero",
+								"sLast":     "Último",
+								"sNext":     "Siguiente",
+								"sPrevious": "Anterior"
+							},
+							"oAria": {
+								"sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+								"sSortDescending": ": Activar para ordenar la columna de manera descendente"
+							}
+						},
 
-			});
+					});
 			// Enviar los datos del filtro personalizado
 			$('#search-form').on('submit', function(e) {
-		        oTable.draw();
-		        e.preventDefault();
-		    });
+				oTable.draw();
+				e.preventDefault();
+			});
 		    // Agregar Selects al dibujar la tabla
 		    $('#tabla_tareas').on( 'draw.dt', function () {
-		    	// Llamar estados de las taras
+		    // Llamar estados de las taras
 
-		    	$.ajax({ url:window._apiURL+"estados/1",headers: {
-        'Authorization':'Bearer '+Laravel.api_token}})
-		    	.done(function(response) {
+		    $.ajax({ url:window._apiURL+"estados/1",headers: {
+		    	'Authorization':'Bearer '+Laravel.api_token}})
+		    .done(function(response) {
 		    	 	// limpiar el select
 		    	 	var option;
 		    	 	$('#estados')
-				    .find('option')
-				    .remove()
-				    .end()
-				    .append('<option value="">Estados</option>')
+		    	 	.find('option')
+		    	 	.remove()
+		    	 	.end()
+		    	 	.append('<option value="">Estados</option>')
 				    // llenar select dinamicamente
-		    	 	response.forEach(function(item,index) {
-		    	 		option = $('<option>');
-		    	 		option.attr('value', item.id).text(item.nombre);
-		    	 		$('#estados').append(option);
-		    	 	})
+				    response.forEach(function(item,index) {
+				    	option = $('<option>');
+				    	option.attr('value', item.id).text(item.nombre);
+				    	$('#estados').append(option);
+				    })
 				})
 
-				$.ajax( window._baseURL+"/years_tarea" )
-		    	.done(function(response) {
+		    $.ajax( window._baseURL+"/years_tarea" )
+		    .done(function(response) {
 		    	 	// limpiar el select
 		    	 	var option;
 		    	 	$('#year')
-				    .find('option')
-				    .remove()
-				    .end()
-				    .append('<option value="">Año</option>')
+		    	 	.find('option')
+		    	 	.remove()
+		    	 	.end()
+		    	 	.append('<option value="">Año</option>')
 				    // llenar select dinamicamente
-		    	 	response.forEach(function(item,index) {
-		    	 		option = $('<option>');
-		    	 		option.attr('value', item).text(item);
-		    	 		$('#year').append(option);
-		    	 	})
+				    response.forEach(function(item,index) {
+				    	option = $('<option>');
+				    	option.attr('value', item).text(item);
+				    	$('#year').append(option);
+				    })
 				})
 				// Agregar las formulario a datatable
 				$('#search-form').appendTo('.selects');
