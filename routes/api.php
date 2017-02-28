@@ -35,7 +35,7 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
      Route::post('solicitarHoras', 'OtController@solicitarHoras');
 
      Route::get('tipos_compra', function (Request $request) {
-                 $tipo_compra= App\Tipos_Compra::all();
+                 $tipo_compra= App\Tipos_compra::all();
               return response()->json($tipo_compra);
     });
     Route::get('select_clientes', 'ClienteController@select_clientes');
