@@ -352,7 +352,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail(Auth::id());
 
-        $notifications = $user->notifications()->paginate(2);
+        $notifications = $user->notifications()->paginate(4);
 
         $today = Carbon::now();
         foreach ($notifications as $key => $notify) {
