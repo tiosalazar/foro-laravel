@@ -48,6 +48,7 @@
     created: function() {
       datos= JSON.parse(this.lista_tareas);
       this.listado_tareas=datos;
+      console.log('Listado tareas');
       console.log(this.listado_tareas);
 
       //Si el listado de tareas es mayor que 4 muestro el ver mas
