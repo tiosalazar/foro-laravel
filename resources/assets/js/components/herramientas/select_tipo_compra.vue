@@ -63,10 +63,9 @@ module.exports= {
     updateSelected (newSelected) {
       if (newSelected != null && newSelected != undefined) {
         this.id_tipo_compra = newSelected.id;
-        console.log("selecciono");
         this.value=newSelected;
         this.seleccionado=newSelected;
-        var respuesta = {index: this.index, tipo_compra: newSelected } //Devuelvo el Index en el que se encuentra junto con el arreglo de datos, para saber en que posición
+        let respuesta = {index: this.index, tipo_compra: newSelected } //Devuelvo el Index en el que se encuentra junto con el arreglo de datos, para saber en que posición
         this.$parent.$emit('tipo_compra',respuesta);                   //debe de ir.
       }else {
         this.id_tipo_compra = 0;

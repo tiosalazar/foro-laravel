@@ -21,7 +21,7 @@
     <div style="padding:2px 0px;"  :class="{ 'has-error': isInvalid }" v-show="isInvalid">
       <span  class="help-block">El campo Tipo de Fase es obligatorio</span>
     </div>
-      <div style="height:12px"></div>
+      <!-- <div style="height:12px"></div> -->
   </div>
 </template>
 
@@ -42,18 +42,12 @@
           }
       },
       computed:{
-        /*value: function (val) {
-
-          return this.area;
-        },*/
         isInvalid () {
           return (this.isTouched &&  this.value=="" )?true:false //Compruebo de que haya selecionado algo
         }
       },
       created: function(){
         this.fetchTips();
-        // this.value2={id: this.tipos.id, nombre: this.tipos.id_area};
-        // this.id_rol=this.tipos.id;
       },
       watch : {
         tipos : function (value) {

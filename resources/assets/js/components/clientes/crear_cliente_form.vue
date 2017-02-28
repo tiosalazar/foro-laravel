@@ -41,7 +41,6 @@
             <div class="col-xs-6 col-md-12">
               <button type="button" v-show="agregar" v-on:click="addCliente" class="btn btn-block btn-success aa">Agregar</button>
               <button type="button" v-show="!agregar" v-on:click="editCliente(cliente)" class="btn btn-block btn-success aa">Actualizar</button>
-              <button type="button"  v-on:click="errors.clear()" class="btn btn-block btn-success aa">clear</button>
             </div>
             </form>
           <!-- /.row -->
@@ -57,12 +56,6 @@
 		Validator.updateDictionary({es: { messages }});
 		// Install the plugin and set the locale.
 		Vue.use(VeeValidate, { locale: 'es' });
-
-		   /*Validación Alfa Numerico con ñ*/
-		  /*  VeeValidate.Validator.extend('alpha_num_spaces', {
-		    getMessage: field => 'El campo '+field+' solo debe contener letras y números.',
-		    validate: value => /^[\u00F1Aa-\u00F1AZ-a-zA-Z0-9_ ]*$/.test(value)
-		  });*/
 
 	module.exports =  {
 		components: {VeeValidate,Validator},

@@ -29,11 +29,11 @@
   </template>
 
   <script>
-  /*Se Realiza el import de multiselect*/
-  import Multiselect from 'vue-multiselect'
+    /*Se Realiza el import de multiselect*/
+    import Multiselect from 'vue-multiselect'
 
-  module.exports= {
-    components: {Multiselect},
+    module.exports= {
+      components: {Multiselect},
     props: ['tipo_estado','select','cambiar_estado'], //en la propiedad select se va a meter la opción por defecto
     data () {
       return {
@@ -41,9 +41,9 @@
         id_estado:0,
         isTouched: false,
         option_toast:{
-        timeOut: 5000,
-        "positionClass": "toast-top-center",
-        "closeButton": true,
+          timeOut: 5000,
+          "positionClass": "toast-top-center",
+          "closeButton": true,
         }
       }
 
@@ -53,36 +53,34 @@
         return (this.isTouched &&  this.value=="" )?true:false//Compruebo de que haya selecionado algo
       },
       value: function () {
-          return this.select;
-        },
+        return this.select;
+      },
     },
     watch: {
-        select:function(val) {
-          console.log('reset');
-          this.isInvalid = false;
-          this.isTouched=false;
-        },
+      select:function(val) {
+        this.isInvalid = false;
+        this.isTouched=false;
       },
+    },
     created: function(){
 
       this.fetchTips();
       //Valido que la propiedad encargado que traigo de la tarea tenga datos
-        if (typeof this.select != 'undefined' || this.select != null) {
-          // this.value=this.select;
-            if (this.cambiar_estado == '' && this.cambiar_estado == null ) {
-               this.updateSelected(this.select);
-             }
-          this.id_estado=this.select.id;
-        }
+      if (typeof this.select != 'undefined' || this.select != null) {
+        if (this.cambiar_estado == '' && this.cambiar_estado == null ) {
+         this.updateSelected(this.select);
+       }
+       this.id_estado=this.select.id;
+     }
 
+   },
+   methods:{
+    fetchTips: function(){
+      this.$http.get(window._apiURL+'estados/'+this.tipo_estado)
+      .then(function(respuesta){
+        this.estados=respuesta.body;
+      }.bind(this));
     },
-    methods:{
-      fetchTips: function(){
-        this.$http.get(window._apiURL+'estados/'+this.tipo_estado)
-        .then(function(respuesta){
-          this.estados=respuesta.body;
-        }.bind(this));
-      },
       /*
       Cuando se selecione algo se realiza la siguiente función
       */
@@ -95,14 +93,14 @@
             this.$http.put(window._apiURL+'actualizar_estado_ot/'+this.cambiar_estado, newSelected.id)
             .then(function(respuesta){
               if (respuesta.status != '200') {
-                  if (Object.keys(respuesta.obj).length>0) {
-                    toastr.error("Ocurrio un error al cambiar el estado, consulte con soporte",respuesta.body.msg,this.option_toast);
-                    return false;
-                  }
-                }else{
-                  toastr.success(respuesta.body.msg,'',this.option_toast);
+                if (Object.keys(respuesta.obj).length>0) {
+                  toastr.error("Ocurrio un error al cambiar el estado, consulte con soporte",respuesta.body.msg,this.option_toast);
+                  return false;
                 }
-               console.log(respuesta);
+              }else{
+                toastr.success(respuesta.body.msg,'',this.option_toast);
+              }
+              console.log(respuesta);
             }.bind(this));
 
           }
@@ -113,17 +111,17 @@
       },
       /*
         esta función se ejecuta cuando se remueve un tag
-      */
-      removeSelected () {
-        this.id_estado = 0;
+        */
+        removeSelected () {
+          this.id_estado = 0;
         this.$parent.$emit('select_estado','');//emito la variable vasia para comprobar en el padre
       },
       /*
         esta función se ejecuta cuando se da click fuera del cuadro de Dialogo
-      */
-      onTouch () {
-        this.isTouched =(this.value=="" )?true:false ;
+        */
+        onTouch () {
+          this.isTouched =(this.value=="" )?true:false ;
+        }
       }
     }
-  }
   </script>

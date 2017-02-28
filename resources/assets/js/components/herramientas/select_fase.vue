@@ -26,18 +26,18 @@
 <script>
 
   import Multiselect from 'vue-multiselect'
-    module.exports= {
-       components: { Multiselect},
-       props: ['select'],
-      data () {
-          return {
-            estados:[],
-            id_fase: '',
-            isTouched: false,
-          }
-      },
-      computed:{
-        isInvalid () {
+  module.exports= {
+   components: { Multiselect},
+   props: ['select'],
+   data () {
+    return {
+      estados:[],
+      id_fase: '',
+      isTouched: false,
+    }
+  },
+  computed:{
+    isInvalid () {
           return (this.isTouched &&  this.value=="" )?true:false //Compruebo de que haya selecionado algo
         },
         value: function () {
@@ -45,33 +45,31 @@
         },
       },
       created: function(){
-          this.fetchTips();
-          // console.log(this.options);
+        this.fetchTips();
       },
       methods:{
-          fetchTips: function(){
-               this.$http.get(window._baseURL+'/list_fases')
-             .then(function(respuesta){
-                this.estados=respuesta.body;
-             }.bind(this));
-          },
-         updateSelected (newSelected) {
-            if (newSelected != null && newSelected != undefined) {
-             this.value = newSelected;
-             this.id_fase = newSelected.id;
-             this.$parent.$emit('fase_option',newSelected);
+        fetchTips: function(){
+         this.$http.get(window._baseURL+'/list_fases')
+         .then(function(respuesta){
+          this.estados=respuesta.body;
+        }.bind(this));
+       },
+       updateSelected (newSelected) {
+        if (newSelected != null && newSelected != undefined) {
+         this.value = newSelected;
+         this.id_fase = newSelected.id;
              // Creo un evento para enviar el item seleccionado al padre.
-              // this.$parent.$emit('send-prioridad', newSelected)
+             this.$parent.$emit('fase_option',newSelected);
            }else {
              this.id_fase = 0;
            }
-        },
+         },
         /*
         * esta función se ejecuta cuando se da click fuera del cuadro de Dialogo
         */
         onTouch () {
           this.isTouched =(this.value=="" )?true:false ; //Compruebo de que haya selecionado algo
         },
+      }
     }
-  }
 </script>

@@ -53,16 +53,13 @@ Vue.component('listar_clientes', require('./listar_clientes.vue'));
 			return {
 				clientes:[]
 			}
-		},created: function(){
-        	// this.fetchTips();
-      	},
-      	methods:{
-	          editCliente: function(id) {
-	            console.log(id)
-	            $('.editarModal').modal('show');
-
-	          },
-	    }
+		},
+    created: function(){},
+    methods:{
+      editCliente: function(id) {
+        $('.editarModal').modal('show');
+      },
+    }
 	}
 
 </script>

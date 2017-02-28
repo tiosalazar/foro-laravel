@@ -30,63 +30,58 @@
 
 
 
-    module.exports= {
-       components: { Multiselect},
-       props: ['refresh'],
-      data () {
-          return {
-            roles:[],
-            id_rol: 0,
-            isTouched: false,
-            value_touch:'',
-            value:{}
-          }
-      },
-      computed: {
-        isInvalid () {
-          console.log(this.isTouched, this.value_touch);
+  module.exports= {
+   components: { Multiselect},
+   props: ['refresh'],
+   data () {
+    return {
+      roles:[],
+      id_rol: 0,
+      isTouched: false,
+      value_touch:'',
+      value:{}
+    }
+  },
+  computed: {
+    isInvalid () {
           return (this.isTouched &&  this.value_touch=="" )?true:false //Compruebo de que haya selecionado algo
-
         }
       },
       created: function(){
-          this.fetchTips();
-        // console.log(this.refresh);
+        this.fetchTips();
         this.value={id: this.refresh.id, display_name: this.refresh.id_rol};
         this.id_rol=this.refresh.id;
-        // console.log(this.refresh);
 
       },
       watch : {
         refresh : function (value) {
-           this.value=0;
-        }
-      },
-      methods:{
-          fetchTips: function(){
-               this.$http.get(window._apiURL+'roles')
-             .then(function(respuesta){
-                 this.roles=respuesta.body;
-             }.bind(this));
-          },
+         this.value=0;
+       }
+     },
+     methods:{
+      fetchTips: function(){
+       this.$http.get(window._apiURL+'roles')
+       .then(function(respuesta){
+         this.roles=respuesta.body;
+       }.bind(this));
+     },
 
-         updateSelected (newSelected) {
-            if (newSelected != null && newSelected != undefined) {
-             this.id_rol = newSelected.id;
-             this.value_touch=newSelected;
-             this.$parent.$emit('rol_option',newSelected);
-             console.log(newSelected);
+     updateSelected (newSelected) {
+      if (newSelected != null && newSelected != undefined) {
+       this.id_rol = newSelected.id;
+       this.value_touch=newSelected;
+       this.$parent.$emit('rol_option',newSelected);
 
-           }else {
-             this.id_rol = 0;
-           }
-        },
-        /*
-        * esta función se ejecuta cuando se da click fuera del cuadro de Dialogo
-        */
-        onTouch () {
-          this.isTouched =(this.value_touch=="" )?true:false ; //Compruebo de que haya selecionado algo
-        }
+     }else {
+       this.id_rol = 0;
+     }
+   },
+   /*
+   * esta función se ejecuta cuando se da click fuera del cuadro de Dialogo
+   */
+    onTouch () {
+      this.isTouched =(this.value_touch=="" )?true:false ; //Compruebo de que haya selecionado algo
     }
   }
+}
 </script>

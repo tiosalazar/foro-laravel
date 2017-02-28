@@ -28,10 +28,10 @@
   </div>
   </template>
   <script>
-  /*Se Realiza el import de multiselect*/
-  import Multiselect from 'vue-multiselect'
-  module.exports= {
-    components: { Multiselect},
+    /*Se Realiza el import de multiselect*/
+    import Multiselect from 'vue-multiselect'
+    module.exports= {
+      components: { Multiselect},
     props:['select'], //en la propiedad select se va a meter la opción por defecto
     data () {
       return {
@@ -60,34 +60,34 @@
       },
       /*
        Funcion para organizar la visualización del select
-      */
-      nameWithLang ({ nombre, nombre_contacto }) {
+       */
+       nameWithLang ({ nombre, nombre_contacto }) {
         return `${nombre} — ${nombre_contacto}`
       },
       /*
          Cuando se selecione algo se realiza la siguiente función
-       */
-      updateSelected (newSelected) {
-        if (newSelected != null && newSelected != undefined) {
-          this.id_cliente = newSelected.id;
-          this.value=newSelected;
-          this.$parent.$emit('select_clientes',newSelected);
-        }else {
-          this.id_cliente = 0;
+         */
+         updateSelected (newSelected) {
+          if (newSelected != null && newSelected != undefined) {
+            this.id_cliente = newSelected.id;
+            this.value=newSelected;
+            this.$parent.$emit('select_clientes',newSelected);
+          }else {
+            this.id_cliente = 0;
           this.$parent.$emit('select_clientes','');//emito la variable vasia para comprobar en el padre
         }
       },
       /*
         esta función se ejecuta cuando se remueve un tag
-      */
-      removeSelected () {
-        this.id_cliente = 0;
+        */
+        removeSelected () {
+          this.id_cliente = 0;
         this.$parent.$emit('select_clientes','');//emito la variable vasia para comprobar en el padre
       },
       /*
         esta función se ejecuta cuando se da click fuera del cuadro de Dialogo
-      */
-      onTouch () {
+        */
+        onTouch () {
         this.isTouched =(this.value=="" )?true:false ; //Compruebo de que haya selecionado algo
       }
     }
