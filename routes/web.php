@@ -45,8 +45,8 @@
    Route::get('historico_usuarios', function () {
       return view('admin.equipo.historico_equipo_usuario');
    });
-   Route::get('/years_historico_equipo', 'HistoricoequipoController@getYearHistorico');
-   Route::get('/historico_equipos/{id}','HistoricoequipoController@historico_de_equipos');
+   Route::get('/years_historico_equipo', 'AreaController@getYearHistorico');
+   Route::get('/historico_equipos/{id}','AreaController@historico_de_equipos');
 
 
     /**

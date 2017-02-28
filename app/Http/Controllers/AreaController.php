@@ -176,11 +176,10 @@ class AreaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function historico_equipos(Request $request,$id)
+   
+    public function historico_de_equipos($id,Request $request)
     {
-       
-
-     
+        
         // Si no trae el mes y año en el $request
         // tomar el mes y el año actual
         $year = '';
@@ -196,21 +195,23 @@ class AreaController extends Controller
         }else{
             $month = $now->month;
         }
-
         if ($id=='1') {
-            $historico_equipo = Historico_equipo::select('users.nombre','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad')->join('users','users.id','=','historico_equipos.entidad_id')->where('tipo_de_entidad',$id)
+            $historico_equipo = Historico_equipo::select('users.nombre','historico_equipos.id','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad')->join('users','users.id','=','historico_equipos.entidad_id')->where('tipo_de_entidad',$id)
             ->whereYear('historico_equipos.created_at', $year)
             ->whereMonth('historico_equipos.created_at', $month)
             ->get();
-        }else{
-          $historico_equipo = Historico_equipo::select('areas.nombre','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad')->join('areas','areas.id','=','historico_equipos.entidad_id')->where('tipo_de_entidad',$id)
+             //$historico_equipo=Historico_equipo::with('usuario')->where('tipo_de_entidad',$id)->get();
+
+        } else{
+          $historico_equipo = Historico_equipo::select('areas.nombre','historico_equipos.id','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad')->join('areas','areas.id','=','historico_equipos.entidad_id')->where('tipo_de_entidad',$id)
             ->whereYear('historico_equipos.created_at', $year)
             ->whereMonth('historico_equipos.created_at', $month)
             ->get();  
         }
 
-      
-        return Datatables::of($historico_equipo)->make(true);
+        // Retorno la informacion para el datatable
+         return Datatables::of($historico_equipo)->make(true);
+
     }
 
     /**
