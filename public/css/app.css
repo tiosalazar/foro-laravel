@@ -9151,6 +9151,10 @@ body {
   margin-top: 20px;
 }
 
+.ver_tarea .comentario_box .caja_comentarios p {
+  word-wrap: break-word;
+}
+
 .ver_tarea .comentario_box .comentario_box_container {
   display: -webkit-box;
   display: flex;

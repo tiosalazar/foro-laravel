@@ -250,6 +250,9 @@
 		box-shadow:none;
 		.caja_comentarios{
 			margin-top: 20px;
+			p{
+				word-wrap: break-word;
+			}
 		}
 		.comentario_box_container{
 			display: flex;
