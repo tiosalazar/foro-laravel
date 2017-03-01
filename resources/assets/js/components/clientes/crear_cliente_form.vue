@@ -39,8 +39,9 @@
               <!-- /.form-group -->
             </div>
             <div class="col-xs-6 col-md-12">
-              <button type="button" v-show="agregar" v-on:click="addCliente" class="btn btn-block btn-success aa">Agregar</button>
-              <button type="button" v-show="!agregar" v-on:click="editCliente(cliente)" class="btn btn-block btn-success aa">Actualizar</button>
+              <button type="button" v-show="agregar" v-on:click="addCliente" class="btn btn-success aa">Agregar</button>
+              <button type="button" v-show="!agregar" v-on:click="editCliente(cliente)" class="btn btn-success aa">Actualizar</button>
+              <a v-show="!agregar" href="/clientes/listado" class="btn btn-primary pull-right aa">Volver al listado de Clientes</a>
             </div>
             </form>
           <!-- /.row -->

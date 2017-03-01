@@ -103,6 +103,16 @@ a:hover, a:focus {
   text-decoration: none;
 }
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.form-group.has-error .help-block {
+  position: absolute;
+}
+
 .titulos_foro h3 {
   margin-left: 2%;
   margin-bottom: 30px;
