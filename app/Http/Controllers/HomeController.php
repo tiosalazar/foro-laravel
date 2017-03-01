@@ -123,7 +123,7 @@ class HomeController extends Controller
        //Local Descomentar el Siguiente y comentar el de producción
        $path = public_path("images\avatars\\");
        //para Producción descomentar el siguiente
-       //$path = "\public_html\foro\images\avatars\\";
+       // $path = "images/avatars/";
        $userauth = Auth::user()->id;
        $user= User::findOrFail($userauth);
        $user->fill(['img_perfil'=>'/images/avatars/'.$nombre.'.'.$ext]);
