@@ -33,18 +33,18 @@
             <!-- /.row -->
             <div class="row">
               <div class="col-sm-6">
-                <div class="form-group required">
-                 <label><strong>Prioridad</strong></label>
+                <div class="form-group same-height required">
+                 <label><strong>Prioridad:</strong></label>
                  <button class="btn btn-warning btn-flat prioridad_btn" disabled>{{tarea_info.estado_prioridad.nombre}}</button>
                 </div>
 
-                 <div class="form-group">
+                 <div class="form-group same-height">
                   <label><strong>Área Encargada:</strong></label>
                   <div>{{tarea_info.area.nombre}}</div>
                 </div>
 
-                <div class="form-group">
-                  <label ><strong>Persona Encargada</strong></label>
+                <div class="form-group same-height">
+                  <label ><strong>Persona Encargada:</strong></label>
                   <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id != '3' ">
                     {{tarea_info.usuarioencargado.nombre}} - {{tarea_info.usuarioencargado.apellido}}
                   </div>
@@ -55,11 +55,11 @@
 
 
 
-                 <label for=""><strong>Fecha entrega Área</strong></label>
+                 <label for=""><strong>Fecha entrega Área:</strong></label>
                 <div class="form group input-group date" v-bind:class="{ 'has-error': errors.has('fecha_entrega_area') }">
 
                       <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id == '4'|| estado_solicitud.id == '5'">
-                           {{tarea_info.fecha_entrega_area}}
+                           {{tarea_info.fecha_entrega_area | date_format}}
                         </div>
                        <div class="contenedor_fecha" v-else>
 
@@ -79,26 +79,26 @@
 
               <div class="col-sm-6 columna2">
 
-                <div class="form-group">
-                  <label><strong>Fase del Projecto</strong></label>
+                <div class="form-group same-height">
+                  <label><strong>Fase del Projecto:</strong></label>
                   <div>{{tarea_info.planeacion_fase.nombre}}</div>
                 </div>
 
-                <div class="form-group">
-                   <label><strong>Fecha de entrega al cliente</strong></label>
-                  <div>{{tarea_info.fecha_entrega_cliente}}</div>
+                <div class="form-group same-height">
+                   <label><strong>Fecha de entrega al cliente:</strong></label>
+                  <div>{{tarea_info.fecha_entrega_cliente | date_format}}</div>
                 </div>
 
-                 <div class="form-group">
+                 <div class="form-group same-height">
                   <label><strong>Estado de solicitud: </strong></label>
                   <select_estados tipo_estado="1"  :select="tarea_info.estado"></select_estados>
                 </div>
 
 
-                <label for=""><strong>Fecha entrega cuentas</strong></label>
+                <label for=""><strong>Fecha entrega cuentas:</strong></label>
                 <div class="form group input-group date" v-bind:class="{ 'has-error': errors.has('fecha_entrega_cuentas') }">
                     <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id == '4'|| estado_solicitud.id == '5'">
-                           {{tarea_info.fecha_entrega_cuentas}}
+                           {{tarea_info.fecha_entrega_cuentas | date_format}}
                     </div>
                   <div class="contenedor_fecha" v-else>
                       <div class="input-group-addon" >
@@ -115,10 +115,12 @@
 
               </div>
 
+              <div class="col-sm-12">
                 <div class="form-group ruta_server">
-                  <label><strong>Ruta server</strong></label>
+                  <label><strong>Ruta server:</strong></label>
                   <p>{{tarea_info.enlaces_externos}}</p>
                 </div>
+              </div>
 
             </div>
             <div class="row">
@@ -131,7 +133,7 @@
 
               <div class="col-sm-4">
                 <div class="form-group" v-bind:class="{ 'has-error': errors.has('fecha_entrega_cuentas') }">
-                  <label for=""><strong>Tiempo estimado Jefe</strong></label>
+                  <label for=""><strong>Tiempo estimado Jefe:</strong></label>
                   <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id == '4'|| estado_solicitud.id == '5'">
                       {{tarea_info.tiempo_estimado}}
                   </div>
@@ -146,13 +148,13 @@
               <div class="col-sm-4">
                <div v-if="(rol_actual==='colaborador' && tarea_info.estados_id == '3') || (rol_actual==='coordinador'  && estado_solicitud.id == '2' )">
                   <div class="form-group" v-bind:class="{ 'has-error': errors.has('timepo_real') }">
-                      <label for=""><strong>Tiempo Real</strong></label>
+                      <label for=""><strong>Tiempo Real:</strong></label>
                       <input type="number" placeholder="Tiempo Real" name="timepo_real" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_real" required="required" v-validate data-vv-rules="required">
                   </div>
               </div>
               <div v-else>
                   <div class="form-group" >
-                      <label for=""><strong>Tiempo Real</strong></label>
+                      <label for=""><strong>Tiempo Real:</strong></label>
                       <!-- <br> -->
                       <div>{{tarea_info.tiempo_real}}</div>
                   </div>
@@ -162,7 +164,7 @@
             </div>
 
             <div class="form-group">
-              <label><strong>Descripción de la trea</strong></label>
+              <label><strong>Descripción de la trea:</strong></label>
               <p>{{tarea_info.descripcion}}</p>
             </div>
 
@@ -172,7 +174,7 @@
             <div class="alert alert-danger alert_ups"> Ups, ¿Que sucedio? </div>
             <p class="text_alert">*Escribre que sucedió en el campo de observaciones, recuerda que es obligatorio</p>
             </div>
-              <label for="descripcion">Comentario</label>
+              <label for="descripcion">Comentario:</label>
               <textarea class="form-control" rows="3"  name="descripcion"  id="descripcion" v-model="descripcion" placeholder="Descripción" required="required"></textarea>
             </div>
 
@@ -345,6 +347,10 @@
 
           //Asigno toda la informacion traida del api a la variable tarea_info
           this.tarea_info=obj;
+          // this.tarea_info.fecha_entrega_cliente = (this.tarea_info.fecha_entrega_cliente)?moment(this.tarea_info.fecha_entrega_cliente).format('DD | MMM | YYYY'):'';
+          // this.tarea_info.fecha_entrega_area = (this.tarea_info.fecha_entrega_area)?moment(this.tarea_info.fecha_entrega_area).format('DD | MMM | YYYY'):'';
+          // this.tarea_info.fecha_entrega_cuentas = (this.tarea_info.fecha_entrega_cuentas)?moment(this.tarea_info.fecha_entrega_cuentas).format('DD | MMM | YYYY'):'';
+
           //Asignos los comentarios para el v-for   
 
           this.comentarios_array=obj.comentario;
@@ -363,6 +369,13 @@
     }
 
 
+  },
+  filters: {
+    date_format: function (value) {
+      if (!value) return ''
+
+      return (value)?moment(value).format('DD | MMM | YYYY'):'';
+    }
   },
   methods:{
    asignar_tarea:function(){

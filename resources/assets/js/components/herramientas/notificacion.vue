@@ -92,7 +92,6 @@
 				this.$parent.$emit('new_notify',1);
 			},
 			onInfinite() {
-				console.log('infinite',this.last)
 				if (this.last) {
 					return false;
 				}
@@ -101,13 +100,13 @@
 				this.$http.get(window._baseURL+'/pageNotifications'
 					, {
 						params: {
-							page: this.notificaciones.length /4 +1,
+							page: parseInt(this.notificaciones.length /4) +1,
 						},
 					}).then((res) => {
 						console.log(res)
 						if (res.body.data.length >=1) {
 							this.notificaciones = this.notificaciones.concat(res.body.data);
-							if (res.body.to == null) {
+							if (res.body.to == null || res.body.to == res.body.total) {
 								this.loading = false
 								this.hidden = true
 								this.last=true;

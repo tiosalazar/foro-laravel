@@ -16,6 +16,9 @@ return [
     'ots'   => 'Orden de Trabajo',
     'crear_ot' => 'Crear OT',
     'listar_ot' => 'Listar OT',
+    'clientes'   => 'Clientes',
+    'crear_cliente' => 'Crear Cliente',
+    'listar_cliente' => 'Listar Cliente',
     'usuarios' => 'Equipo',
     'listar_usuarios' => 'Usuarios',
     'crear_usuarios' => 'Crear Usuarios',
@@ -39,5 +42,7 @@ return [
     'trafico' => 'Tráfico',
     'soporte' => 'Soporte',
     'fases_planeacion' => 'Fases de Planeación',
+    'historico_areas' => 'Hist&oacute;rico &Aacute;reas',
+    'historico_usuarios' => 'Hist&oacute;rico Usuarios',
 
 ];

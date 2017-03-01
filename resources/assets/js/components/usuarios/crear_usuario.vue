@@ -1,9 +1,5 @@
 <template >
       <div  :class="{'box box-primary': visualizar != 1 }" id="crear_user">
-        <div class="box-header" v-show="visualizar != 1">
-            <h3>{{titulo}}</h3>
-
-        </div>
 
         <div class="box-body">
             <form  role="form" class="row">
@@ -100,7 +96,7 @@
 
            <button class="btn btn-primary" v-bind:class="{ 'hidden': botonGuardar }" @click="addUser">Guardar</button>
            <button class="btn btn-primary" v-bind:class="{ 'hidden': botonEditar }" @click="updateaddUser">Actualizar</button>
-           <a href="/equipo/directorio" v-bind:class="{ 'hidden': botonEditar }"><button class="btn btn-default">Volver a listado áreas</button></a>
+           <a href="/equipo/directorio" v-bind:class="{ 'hidden': botonEditar }"><button class="btn btn-primary pull-right">Volver a listado Usuarios</button></a>
 
         </div>
     </div>
@@ -200,6 +196,7 @@
             if (this.errors.any()) {
               return false
             }
+            let that = this;
             this.usuarios.fecha_nacimiento = moment(this.usuarios.fecha_nacimiento).format('YYYY-MM-DD');
             this.$http.post(window._apiURL+'usuarios',this.usuarios)
             .then(function (response) {
@@ -222,6 +219,7 @@
               if($('#tabla_usuarios') ){
                 $('#tabla_usuarios').DataTable().ajax.reload();
               }
+              setTimeout(function(){ that.errors.clear(); }, 50);
 
 
 

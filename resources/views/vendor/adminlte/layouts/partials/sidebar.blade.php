@@ -102,12 +102,12 @@
       <!--Clientes -->
       @if( Auth::user()->can('ver_clientes') )
       <li class="treeview {{ Request::is('clientes/*') ? 'active' : '' }}">
-        <a href="#"><i class='fuente-icon'>a</i> <span>Clientes</span> <i class="fa fa-caret-left pull-right fa-lg"></i></a>
+        <a href="#"><i class='fuente-icon'>a</i> <span>{{  trans('texto_menu.clientes') }}</span> <i class="fa fa-caret-left pull-right fa-lg"></i></a>
         <ul class="treeview-menu">
           @if(Auth::user()->can('crear_clientes'))
-          <li><a href="{{ url('clientes/crear') }}">Crear cliente</a></li>
+          <li><a href="{{ url('clientes/crear') }}">{{  trans('texto_menu.crear_cliente') }}</a></li>
           @endif
-          <li><a href="{{ url('clientes/listado') }}">Listar clientes</a></li>
+          <li><a href="{{ url('clientes/listado') }}">{{  trans('texto_menu.listar_cliente') }}</a></li>
         </ul>
       </li>
       @endif
@@ -134,13 +134,13 @@
 
       <!--Historico Áreas -->
       @if( Auth::user()->can('ver_historico_areas') )
-      <li class="treeview " ><a href="{{ url('historico_areas') }}"><i class='fa fa-line-chart'></i><span>Historico Áreas</span></a></li>
+      <li class="treeview " ><a href="{{ url('historico_areas') }}"><i class='fa fa-line-chart'></i><span>{{  trans('texto_menu.historico_areas') }}</span></a></li>
       @endif
       <!-- .Historico Áreas -->
 
         <!--Historico Usuarios -->
       @if( Auth::user()->can('ver_historico_usuarios') )
-      <li class="treeview " ><a href="{{ url('historico_usuarios') }}"><i class='fa fa-history'></i><span>Historico Usuarios</span></a></li>
+      <li class="treeview " ><a href="{{ url('historico_usuarios') }}"><i class='fa fa-history'></i><span>{{  trans('texto_menu.historico_usuarios') }}</span></a></li>
       @endif
       <!-- .HistoricoUsuarios -->
 

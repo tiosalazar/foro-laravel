@@ -1,9 +1,12 @@
 <template >
    <div>
+      <div class="titulos_foro">
+      <h3 class="box-title"><span class="span_descripcion1">Áreas</span></h3>
+     </div>
       <div class="box box-primary collapsed-box" id="main-app">
 
         <div class="box-header with-border">
-            <h3 class="box-title">Crear nueva área</h3>
+            <h3 class="box-title">Crear nueva</h3>
 
             <div class="box-tools pull-right">
               <button type="button" class="btn btn-box-tool btn-info" data-widget="collapse"><i class="fa fa-plus"></i></button>

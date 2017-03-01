@@ -8,6 +8,9 @@
 @section('main-content')
 
 	<section>
+		<div class="titulos_foro">
+			<h3 class="box-title"><span class="span_descripcion1">Tr&aacute;fico</span></h3>
+		 </div>
 	   <ver_tareas area=""></ver_tareas>
 
 	</section>
