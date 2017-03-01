@@ -102,12 +102,12 @@
       <!--Clientes -->
       @if( Auth::user()->can('ver_clientes') )
       <li class="treeview {{ Request::is('clientes/*') ? 'active' : '' }}">
-        <a href="#"><i class='fuente-icon'>a</i> <span>Clientes</span> <i class="fa fa-caret-left pull-right fa-lg"></i></a>
+        <a href="#"><i class='fuente-icon'>a</i> <span>{{  trans('texto_menu.clientes') }}</span> <i class="fa fa-caret-left pull-right fa-lg"></i></a>
         <ul class="treeview-menu">
           @if(Auth::user()->can('crear_clientes'))
-          <li><a href="{{ url('clientes/crear') }}">Crear cliente</a></li>
+          <li><a href="{{ url('clientes/crear') }}">{{  trans('texto_menu.crear_cliente') }}</a></li>
           @endif
-          <li><a href="{{ url('clientes/listado') }}">Listar clientes</a></li>
+          <li><a href="{{ url('clientes/listado') }}">{{  trans('texto_menu.listar_cliente') }}</a></li>
         </ul>
       </li>
       @endif

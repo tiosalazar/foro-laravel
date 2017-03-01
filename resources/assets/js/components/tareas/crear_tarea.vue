@@ -214,6 +214,8 @@
 			            toastr.success(respuesta.body.msg,'',this.option_toast);
 			            this.tarea= {};
 			            this.select_ot='';
+			            this.ot={usuario:{nombre:''}, cliente:{nombre:''} };
+			            this.current_date='';
 			            this.prioridad='';
 			            this.fase='';
 			            this.estado="";
