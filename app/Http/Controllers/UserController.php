@@ -121,11 +121,11 @@ class UserController extends Controller
         $output=array();
         $users= User::with(['roles'=> function ($query)
         {
-            $query->where('estado',1)->where('name','colaborador')->orWhere('name','coordinador');
+            $query->where('name','colaborador')->orWhere('name','coordinador');
         },'area'=>function ($query) use($id)
         {
             $query->where('id',$id);
-        }])
+        }])->where('estado',1)
         ->get();
         // Validar sólo los que tengan area y rol
         foreach ($users as $key => $user) {
