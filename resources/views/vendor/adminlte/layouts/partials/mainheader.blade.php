@@ -116,7 +116,7 @@
                                   @endif
                                 <p>
                                     {{ Auth::user()->nombre }}
-                                    <small>{{ Auth::user()->rol->name}}</small>
+                                    <small>{{ Auth::user()->rol->display_name}}</small>
                                 </p>
                             </li>
                             <!-- Menu Body -->

@@ -134,13 +134,13 @@
 
       <!--Historico Áreas -->
       @if( Auth::user()->can('ver_historico_areas') )
-      <li class="treeview " ><a href="{{ url('historico_areas') }}"><i class='fa fa-line-chart'></i><span>Historico Áreas</span></a></li>
+      <li class="treeview " ><a href="{{ url('historico_areas') }}"><i class='fa fa-line-chart'></i><span>{{  trans('texto_menu.historico_areas') }}</span></a></li>
       @endif
       <!-- .Historico Áreas -->
 
         <!--Historico Usuarios -->
       @if( Auth::user()->can('ver_historico_usuarios') )
-      <li class="treeview " ><a href="{{ url('historico_usuarios') }}"><i class='fa fa-history'></i><span>Historico Usuarios</span></a></li>
+      <li class="treeview " ><a href="{{ url('historico_usuarios') }}"><i class='fa fa-history'></i><span>{{  trans('texto_menu.historico_usuarios') }}</span></a></li>
       @endif
       <!-- .HistoricoUsuarios -->
 

@@ -1,9 +1,5 @@
 <template >
       <div  :class="{'box box-primary': visualizar != 1 }" id="crear_user">
-        <div class="box-header" v-show="visualizar != 1">
-            <h3>{{titulo}}</h3>
-
-        </div>
 
         <div class="box-body">
             <form  role="form" class="row">
