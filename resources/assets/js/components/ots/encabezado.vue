@@ -140,8 +140,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6" v-show="$parent.visualizacion == 'true'">
-				<div class="form-group required" >
+			<div class="col-lg-6 col-md-6" v-show="$parent.visualizacion == 'true'">
+				<div class="form-group required row" >
 					<label  class="col-sm-12 " > Total Horas Adicionales  </label>
 					<div class="col-sm-12">
 						<div class="campo_azul col-sm-12">

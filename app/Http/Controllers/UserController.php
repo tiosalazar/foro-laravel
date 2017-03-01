@@ -121,7 +121,7 @@ class UserController extends Controller
         $output=array();
         $users= User::with(['roles'=> function ($query)
         {
-            $query->where('name','colaborador')->orWhere('name','coordinador');
+            $query->where('estado',1)->where('name','colaborador')->orWhere('name','coordinador');
         },'area'=>function ($query) use($id)
         {
             $query->where('id',$id);

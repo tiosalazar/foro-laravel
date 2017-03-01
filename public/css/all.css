@@ -8028,7 +8028,7 @@ a:hover, a:focus {
 }
 
 .Formulario_OT .detalle_horas {
-  margin-top: 25px;
+  margin-top: 10px;
 }
 
 .separador {
@@ -8181,6 +8181,12 @@ textarea.form-control {
 
 .boton_foro.succes {
   background: #3b9600;
+}
+
+@media screen and (max-width: 1180px) {
+  .boton_foro.succes {
+    white-space: pre-line;
+  }
 }
 
 .boton_foro.succes:hover {
