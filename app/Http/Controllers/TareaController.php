@@ -130,7 +130,7 @@ class TareaController extends Controller
 
                     // Validar si tiene horas suficientes para hacer la Tarea
                     if (!is_null($horas_area->tiempo_estimado_ot) &&
-                        $horas_area->tiempo_estimado_ot + $horas_area->tiempo_extra >= $horas_area->tiempo_real) {
+                        $horas_area->tiempo_estimado_ot + $horas_area->tiempo_extra > $horas_area->tiempo_real) {
 
                         $tarea->save();
                         $maker = User::findOrFail($request->usuarios_id);
