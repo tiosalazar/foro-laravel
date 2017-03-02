@@ -321,169 +321,154 @@
 
         },
         created: function() {
-
           this.$on('select_ejecutivo', function(v) {
             this.encargado=v;
           });
-
           this.$on('select_estado', function(v) {
             this.estado_solicitud=v;
-
-        //ALerta atencion cuentas, descripcion o comentario obligatorio
-        if (this.estado_solicitud.nombre=="Atención Cuentas") {
-         this.descripcion_requerida=false;
-       }else{
-        this.descripcion_requerida=true;
-      }
-    });
-
-
-
-      //Recibe la propiedad arraytarea desde la vista y verifico si es indefinida o no
-      if (this.arraytarea!=undefined) {
-        var obj = JSON.parse(this.arraytarea);
-          //Asigno la informacion de la ot
-          this.ot=obj.ot;
-
-          //Asigno toda la informacion traida del api a la variable tarea_info
-          this.tarea_info=obj;
-          // this.tarea_info.fecha_entrega_cliente = (this.tarea_info.fecha_entrega_cliente)?moment(this.tarea_info.fecha_entrega_cliente).format('DD | MMM | YYYY'):'';
-          // this.tarea_info.fecha_entrega_area = (this.tarea_info.fecha_entrega_area)?moment(this.tarea_info.fecha_entrega_area).format('DD | MMM | YYYY'):'';
-          // this.tarea_info.fecha_entrega_cuentas = (this.tarea_info.fecha_entrega_cuentas)?moment(this.tarea_info.fecha_entrega_cuentas).format('DD | MMM | YYYY'):'';
-
-          //Asignos los comentarios para el v-for   
-
-          this.comentarios_array=obj.comentario;
-          this.comentarios_array.reverse();
-
-        }
-
-
-     //Asigno el rol actual
-     this.usuario_actual_comentar= this.id_usuario_actual;
-     this.rol_actual=this.rol_usuario_actual;
-     this.encargado = {id:this.tarea_info.usuarioencargado.id}
-
-     if (this.rol_actual=="colaborador") {
-      this.encargado=this.tarea_info.usuarioencargado;
-    }
-
-
-  },
-  filters: {
-    date_format: function (value) {
-      if (!value) return ''
-
-      return (value)?moment(value).format('DD | MMM | YYYY'):'';
-    }
-  },
-  methods:{
-   asignar_tarea:function(){
-
-    if (!(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5 || this.estado_solicitud.id == 7)) {
-      this.$validator.validateAll();
-    }
-    if (this.errors.any()) {
-      return false
-    }
-
-    if (this.estado_solicitud.nombre=="Atención Cuentas" && this.descripcion=="" ) {
-
-      return false
-
-    }
-
-      //Datos a enviar al asignar la tarea y comentarios
-      let fecha_area=(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5|| this.estado_solicitud.id == 7)?null:moment(this.tarea_info.fecha_entrega_area).format('YYYY-MM-DD');
-      let fecha_cuentas=(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5|| this.estado_solicitud.id == 7)?null:moment(this.tarea_info.fecha_entrega_cuentas).format('YYYY-MM-DD');
-
-        //Datos a enviar
-        let data = 
-        {
-          encargado_id:this.encargado.id,
-          estados_id:this.estado_solicitud.id,
-          tiempo_estimado:this.tarea_info.tiempo_estimado,
-          fecha_entrega_area:fecha_area,
-          fecha_entrega_cuentas:fecha_cuentas,
-          usuarios_comentario_id:this.id_usuario_actual,
-          tareas_id:this.tarea_info.id,
-          comentarios:this.descripcion,
-          tiempo_real:this.tarea_info.tiempo_real,
-          is_comment:(this.tarea_info.estados_id== 2 && this.rol_usuario_actual !='coordinador')? 1: 0,
-        };
-        
-        //Método que envia los datos al api rest
-        this.$http.put(window._apiURL+'tareas/'+this.tarea_info.id, data)
-        .then(function (respuesta) {
-
-          let that = this;
-          that.message ='';
-
-          if (respuesta.status != '200') {
-            if (Object.keys(respuesta.body.request).length>0) {
-
-              $.each(respuesta.body.request, function(index, value) {
-                that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-                that.errors_return[index] = 'has-warning';
-              });
+            //Alerta atencion cuentas, descripcion o comentario obligatorio
+            if (this.estado_solicitud.nombre=="Atención Cuentas") {
+            this.descripcion_requerida=false;
+             }else{
+              this.descripcion_requerida=true;
             }
-
-            toastr.warning(that.message,respuesta.body.msg,this.option_toast);
-          }else{
-            if (respuesta.body.error == 0) {
-              toastr.success(respuesta.body.msg,'',this.option_toast);
-              this.descripcion="";
-
-              this.comentarios_array.unshift(respuesta.body.user_coment);
-              setTimeout(function(){ that.errors.clear(); }, 50); 
-
-            }else{
-              $.each(respuesta.body.obj, function(index, value) {
-                that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-                that.errors_return[index] = 'has-warning';
-              });
-              if (respuesta.body.request.fecha_entrega_area=="Invalid date") {
-               toastr.error(that.message,"Fecha area "+respuesta.body.request.fecha_entrega_area,this.option_toast);
-             }
-
-             if (respuesta.body.request.fecha_entrega_cuentas=="Invalid date") {
-              toastr.error(that.message,"Fecha cuentas "+respuesta.body.request.fecha_entrega_cuentas,this.option_toast);
-            }
-
-            toastr.error(that.message,respuesta.body.msg,this.option_toast);
-
-
+          });
+          //Recibe la propiedad arraytarea desde la vista y verifico si es indefinida o no
+          if (this.arraytarea!=undefined) {
+            var obj = JSON.parse(this.arraytarea);
+            //Asigno la informacion de la ot
+            this.ot=obj.ot;
+            //Asigno toda la informacion traida del api a la variable tarea_info
+            this.tarea_info=obj;
+            //Asignos los comentarios para el v-for   
+            this.comentarios_array=obj.comentario;
+            this.comentarios_array.reverse();
           }
-        }
-      }).then(() => {  
-       this.errors.clear();
-       console.log(this.errors);
-     });
-    },
-    enviarcomentarios:function(){
-      if (this.descripcion=="") {
-        this.descripcion_requerida=false;
-        return false;
-      }
-      let data = {
-        comentarios:this.descripcion,
-        usuarios_comentario_id:this.id_usuario_actual,
-        is_comment:1,
-        tareas_id:this.tarea_info.id
-      }
+          //Asigno el rol actual
+          this.usuario_actual_comentar= this.id_usuario_actual;
+          this.rol_actual=this.rol_usuario_actual;
+          this.encargado = {id:this.tarea_info.usuarioencargado.id}
+          if (this.rol_actual=="colaborador") {
+            this.encargado=this.tarea_info.usuarioencargado;
+          }
+          if (this.id_usuario_actual == this.tarea_info.encargado_id) {
+            this.tarea_info.estado=0;
+          }
+        },
+      filters: {
+        date_format: function (value) {
+          if (!value) return ''
 
-      this.$http.put(window._apiURL+'tareas/'+this.tarea_info.id, data)
-      .then(function(respuesta){
-       this.descripcion="";
-       this.descripcion_requerida=true;
-       this.comentarios_array.unshift(respuesta.body.user_coment);
-       toastr.success(respuesta.body.msg,'',this.option_toast);
-     });
-    },
-    updateResource(data){
-      this.comentarios_array = data
-    }
-  }
+          return (value)?moment(value).format('DD | MMM | YYYY'):'';
+        }
+      },
+      methods:{
+       asignar_tarea:function(){
+
+        if (!(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5 || this.estado_solicitud.id == 7)) {
+          this.$validator.validateAll();
+        }
+        if (this.errors.any()) {
+          return false
+        }
+
+        if (this.estado_solicitud.nombre=="Atención Cuentas" && this.descripcion=="" ) {
+
+          return false
+
+        }
+
+          //Datos a enviar al asignar la tarea y comentarios
+          let fecha_area=(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5|| this.estado_solicitud.id == 7)?null:moment(this.tarea_info.fecha_entrega_area).format('YYYY-MM-DD');
+          let fecha_cuentas=(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5|| this.estado_solicitud.id == 7)?null:moment(this.tarea_info.fecha_entrega_cuentas).format('YYYY-MM-DD');
+
+            //Datos a enviar
+            let data = 
+            {
+              encargado_id:this.encargado.id,
+              estados_id:this.estado_solicitud.id,
+              tiempo_estimado:this.tarea_info.tiempo_estimado,
+              fecha_entrega_area:fecha_area,
+              fecha_entrega_cuentas:fecha_cuentas,
+              usuarios_comentario_id:this.id_usuario_actual,
+              tareas_id:this.tarea_info.id,
+              comentarios:this.descripcion,
+              tiempo_real:this.tarea_info.tiempo_real,
+              is_comment:(this.tarea_info.estados_id== 2 && this.rol_usuario_actual !='coordinador')? 1: 0,
+            };
+            
+            //Método que envia los datos al api rest
+            this.$http.put(window._apiURL+'tareas/'+this.tarea_info.id, data)
+            .then(function (respuesta) {
+
+              let that = this;
+              that.message ='';
+
+              if (respuesta.status != '200') {
+                if (Object.keys(respuesta.body.request).length>0) {
+
+                  $.each(respuesta.body.request, function(index, value) {
+                    that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+                    that.errors_return[index] = 'has-warning';
+                  });
+                }
+
+                toastr.warning(that.message,respuesta.body.msg,this.option_toast);
+              }else{
+                if (respuesta.body.error == 0) {
+                  toastr.success(respuesta.body.msg,'',this.option_toast);
+                  this.descripcion="";
+
+                  this.comentarios_array.unshift(respuesta.body.user_coment);
+                  setTimeout(function(){ that.errors.clear(); }, 50); 
+
+                }else{
+                  $.each(respuesta.body.obj, function(index, value) {
+                    that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+                    that.errors_return[index] = 'has-warning';
+                  });
+                  if (respuesta.body.request.fecha_entrega_area=="Invalid date") {
+                   toastr.error(that.message,"Fecha area "+respuesta.body.request.fecha_entrega_area,this.option_toast);
+                 }
+
+                 if (respuesta.body.request.fecha_entrega_cuentas=="Invalid date") {
+                  toastr.error(that.message,"Fecha cuentas "+respuesta.body.request.fecha_entrega_cuentas,this.option_toast);
+                }
+
+                toastr.error(that.message,respuesta.body.msg,this.option_toast);
+
+
+              }
+            }
+          }).then(() => {  
+           this.errors.clear();
+           console.log(this.errors);
+         });
+        },
+        enviarcomentarios:function(){
+          if (this.descripcion=="") {
+            this.descripcion_requerida=false;
+            return false;
+          }
+          let data = {
+            comentarios:this.descripcion,
+            usuarios_comentario_id:this.id_usuario_actual,
+            is_comment:1,
+            tareas_id:this.tarea_info.id
+          }
+
+          this.$http.put(window._apiURL+'tareas/'+this.tarea_info.id, data)
+          .then(function(respuesta){
+           this.descripcion="";
+           this.descripcion_requerida=true;
+           this.comentarios_array.unshift(respuesta.body.user_coment);
+           toastr.success(respuesta.body.msg,'',this.option_toast);
+         });
+        },
+        updateResource(data){
+          this.comentarios_array = data
+        }
+      }
 
 }
 
