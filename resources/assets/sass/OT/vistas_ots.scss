@@ -108,7 +108,7 @@
 }
 
 .detalle_horas{
-  margin-top: 25px;
+  margin-top: 10px;
 }
 
 }
@@ -268,6 +268,9 @@ textarea.form-control {
 }
 .boton_foro.succes{
    background: #3b9600;
+   @media screen and (max-width: 1180px) {
+    white-space: pre-line;
+  }
 }
 .boton_foro.succes:hover{
    color:white;

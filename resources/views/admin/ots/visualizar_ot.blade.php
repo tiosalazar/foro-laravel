@@ -74,12 +74,12 @@
 													<div class="col-sm-6 ">
 														<ul>
 															<div class="row">
-																<div class="form-group col-md-4 col-sm-6" ><li><strong>Horas  {{ $area['area']['nombre'] }}: </strong></li> </div>
-																<div class="form-group col-md-6 detalle_horas col-sm-6"><li><span> {{$area['tiempo_estimado_ot']}} Horas</span></li> </div>
+																<div class="col-md-7 col-sm-7" ><li><strong>Horas  {{ $area['area']['nombre'] }}: </strong></li> </div>
+																<div class=" col-md-5 detalle_horas col-sm-5"><li><span> {{$area['tiempo_estimado_ot']}} Horas</span></li> </div>
 															</div>
 															<div class="row">
-																<div class="form-group col-md-4 col-sm-6" ><li><strong>Horas Adicionales: </strong></li></div>
-																<div class="form-group col-md-6 detalle_horas col-sm-6"><li><span>{{$area['tiempo_extra']}} Horas</span> </li></div>
+																<div class="col-md-7 col-sm-7" ><li><strong>Horas Adicionales: </strong></li></div>
+																<div class=" col-md-5 detalle_horas col-sm-5"><li><span>{{$area['tiempo_extra']}} Horas</span> </li></div>
 															</div>
 														</ul>
 													</div>
