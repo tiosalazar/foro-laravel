@@ -29,6 +29,7 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
      Route::resource('fases', 'FaseController');
      Route::resource('tipos_fase', 'TipoFaseController');
      Route::resource('tareas', 'TareaController');
+     Route::resource('divisas', 'DivisasController');
      // OTs
      Route::resource('ots', 'OtController');
      Route::put('actualizar_estado_ot/{id}', 'OtController@updateEstadoOT');
@@ -39,10 +40,6 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
               return response()->json($tipo_compra);
     });
     Route::get('select_clientes', 'ClienteController@select_clientes');
-    Route::get('divisas', function (Request $request) {
-                    $divisas= App\Divisa::all();
-                 return response()->json($divisas);
-    });
 
 
 });

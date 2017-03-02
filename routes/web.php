@@ -205,5 +205,13 @@
     return view('admin.fases_proyecto.crear_fase');
   });
 
+  // Divisas
+  Route::get('/herramientas/divisas',function ($value=''){
+     if (!Auth::user()->can('ver_fases_planeacion')) {
+        return Redirect::to('home');
+      }
+    return view('admin.divisas.crear_divisa');
+  });
+
 
 });

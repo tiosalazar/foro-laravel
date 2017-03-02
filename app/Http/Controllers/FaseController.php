@@ -170,13 +170,24 @@ class FaseController extends Controller
     {
         $fase= Planeacion_fase::findOrFail($id);
         $fase->estado = 1;
-        $fase->save();
-        return response([
-            'status' => Response::HTTP_OK,
-            'response_time' => microtime(true) - LARAVEL_START,
-            'obj' => $fase,
-            'msg' => 'Fase del Proyecto borrada con éxito',
+        try {
+            $fase->save();
+            return response([
+                'status' => Response::HTTP_OK,
+                'response_time' => microtime(true) - LARAVEL_START,
+                'obj' => $fase,
+                'msg' => 'Fase del Proyecto borrada con éxito',
             ],Response::HTTP_OK);
+        } catch (Exception $e) {
+            return response([
+                'status' => Response::HTTP_BAD_REQUEST,
+                'response_time' => microtime(true) - LARAVEL_START,
+                'error' => 'Fallo en la creacion de la Fase del proyecto. Comunicate con soporte',
+                'consola' =>$e->getMessage(),
+                'obj' => $fase,
+                'msg' => 'Error al borrar la Fase del Proyecto, comunicate con soporte',
+            ],Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**

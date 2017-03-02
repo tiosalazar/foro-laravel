@@ -144,11 +144,17 @@
       @endif
       <!-- .HistoricoUsuarios -->
 
-      <!--Trafico -->
+      <!--Fases Planeacion -->
       @if( Auth::user()->can('ver_fases_planeacion') )
       <li class="treeview  {{ Request::is('fases') ? 'active' : '' }}"><a href="{{ url('fases') }}"><i class='fa fa-paper-plane'></i><span>{{  trans('texto_menu.fases_planeacion') }}</span></a></li>
       @endif
-      <!-- .Trafico -->
+      <!-- .Fases Planeacion -->
+
+      <!--Divisas -->
+      @if( Auth::user()->can('ver_fases_planeacion') )
+      <li class="treeview  {{ Request::is('fases') ? 'active' : '' }}"><a href="{{ url('fases') }}"><i class='fa fa-paper-plane'></i><span>{{  trans('texto_menu.divisas') }}</span></a></li>
+      @endif
+      <!-- .Divisas -->
 
 
     </ul><!-- /.sidebar-menu -->
