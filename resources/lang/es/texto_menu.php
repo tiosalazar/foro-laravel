@@ -45,5 +45,7 @@ return [
     'historico_areas' => 'Hist&oacute;rico &Aacute;reas',
     'historico_usuarios' => 'Hist&oacute;rico Usuarios',
     'divisas' => 'Divisas',
+    'herramientas' => 'Herramientas',
+    'informes' => 'Informes',
 
 ];

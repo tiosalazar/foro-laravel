@@ -125,8 +125,8 @@
   Route::get('/all_tareas/{id}','TareaController@showAllTareas');
   Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
 
- // Fasses Planeación
-     Route::get('/list_fases','FaseController@listFases');
+  // Listar Fases de  Planeación
+  Route::get('/list_fases','FaseController@listFases');
 
   // Equipo
     Route::get('equipo/areas', function () {
@@ -157,30 +157,10 @@
     Route::get('equipo/usuarios/editar/{id}',['middleware' => ['permission:editar_usuarios'], 'uses' =>  'UserController@editar_usuario']);
 
 
- /*
- * Vista trafico
- */
-  Route::get('/trafico', function () {
-   if (!Auth::user()->can('ver_trafico')) {
-     return Redirect::to('home');
-   }
-   return view('admin.trafico.trafico');
- })->name('trafico');
 
-    //Historico Equipo
-    Route::get('/historico_areas', function () {
-       if (!Auth::user()->can('ver_historico_areas')) {
-        return Redirect::to('home');
-      }
-      return view('admin.equipo.historico_equipo_area');
-    });
 
-    Route::get('/historico_usuarios', function () {
-       if (!Auth::user()->can('ver_historico_usuarios')) {
-        return Redirect::to('home');
-      }
-      return view('admin.equipo.historico_equipo_usuario');
-    });
+    
+
 
     Route::get('/years_historico_equipo', 'AreaController@getYearHistorico');
 
@@ -196,22 +176,59 @@
     return view('admin.notificaciones.listar_notificaciones');
   });
 
+  // Herramientas
+  Route::group(['prefix' => 'informes'], function () {
+    Route::get('/', function ()    {
+          // Uses Auth Middleware
+    });
 
-  // Fases del Proyecto
-  Route::get('/fases',function ($value=''){
-     if (!Auth::user()->can('ver_fases_planeacion')) {
+    // Trafico
+    Route::get('trafico', function () {
+       if (!Auth::user()->can('ver_trafico')) {
+         return Redirect::to('home');
+       }
+       return view('admin.trafico.trafico');
+    })->name('trafico');
+
+      //Historico Equipo
+    Route::get('historico_areas', function () {
+       if (!Auth::user()->can('ver_historico_areas')) {
         return Redirect::to('home');
       }
-    return view('admin.fases_proyecto.crear_fase');
-  });
-
-  // Divisas
-  Route::get('/herramientas/divisas',function ($value=''){
-     if (!Auth::user()->can('ver_fases_planeacion')) {
+      return view('admin.equipo.historico_equipo_area');
+    });
+    // historico Usuarios
+    Route::get('historico_usuarios', function () {
+       if (!Auth::user()->can('ver_historico_usuarios')) {
         return Redirect::to('home');
       }
-    return view('admin.divisas.crear_divisa');
+      return view('admin.equipo.historico_equipo_usuario');
+    });
   });
+
+  // Herramientas
+  Route::group(['prefix' => 'herramientas'], function () {
+      Route::get('/', function ()    {
+          // Uses Auth Middleware
+      });
+
+      // Divisas
+      Route::get('divisas',function ($value=''){
+         if (!Auth::user()->can('ver_fases_planeacion')) {
+            return Redirect::to('home');
+          }
+        return view('admin.divisas.crear_divisa');
+      });
+
+      // Fases del Proyecto
+      Route::get('/fases',function ($value=''){
+         if (!Auth::user()->can('ver_fases_planeacion')) {
+            return Redirect::to('home');
+          }
+        return view('admin.fases_proyecto.crear_fase');
+      });
+  });
+  
 
 
 });
