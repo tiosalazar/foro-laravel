@@ -10,6 +10,7 @@ use Validator;
 use Illuminate\Http\Response;
 use Exception;
 use Carbon\Carbon;
+use Lang;
 
 class DivisasController extends Controller
 {
@@ -142,6 +143,7 @@ class DivisasController extends Controller
                     'response_time' => microtime(true) - LARAVEL_START,
                     'obj' => $divisa,
                     'msg' => 'Divisa actualizada con éxito',
+                    'lang'=> Lang::get('texto_menu.crear_ot'),
                     ],Response::HTTP_OK);
              }catch(Exception $e){
                 return response([
