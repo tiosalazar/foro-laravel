@@ -49,6 +49,9 @@ Vue.component('listado_areas', require('./components/areas/listado_areas.vue'));
 Vue.component('historico_equipos', require('./components/areas/historico_equipos.vue'));
 //Fin Componentes Bcaldas
 
+//Tipos de compra
+Vue.component('tipos_compra_crear', require('./components/tipos_compras/tipos_compra_crear.vue'));
+Vue.component('tipos_compra_editar', require('./components/tipos_compras/tipos_compra_editar.vue'));
 
 const app = new Vue({
     el: '#app',

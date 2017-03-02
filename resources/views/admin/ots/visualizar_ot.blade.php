@@ -6,8 +6,8 @@
 
 @section('main-content')
 <div class="container-fluid spark-screen">
-	<div class="col-md-8 col-md-offset-2">
-		<span  class="span_titulo1">Resúmen  </span><span  class="span_titulo2" >de la  OT</span>
+	<div class="col-md-8 col-md-offset-1 titulo_seccion_ot">
+		<span  class="span_titulo1">Resúmen</span><span  class="span_titulo2" >de la  OT</span>
 	</div>
 
 	<div class="row Formulario_OT" id="formulario_ot_actualizacion">
@@ -149,7 +149,7 @@
 																<li><strong>Item:</strong></li>
 																<li><span> {{$compra['tipo_compra']['nombre'] }}</span></li>
 																<li><strong>Descripción:</strong></li>
-																<li><span> {{$compra['descripcion'] }}</span></li>
+																<li><span class="ot_visualizar_descripcion"> {{$compra['descripcion'] }}</span></li>
 																<li><strong>Provedor:</strong></li>
 																<li><span> {{$compra['provedor'] }}</span></li>
 																<li><strong>Moneda:</strong></li>
@@ -183,7 +183,7 @@
 											<div style="height:20px"></div>
 											<div class="col-md-12">
 												<div class="box-body">
-													<div class="form-group">
+													<div class="form-group ot_visualizar_observaciones">
 														{{ $ot['observaciones'] }}
 													</div>
 												</div>

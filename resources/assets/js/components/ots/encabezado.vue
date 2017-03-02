@@ -136,7 +136,7 @@
 						</div>
 							<!--<input type="text" class="form-control" required="required"  id="horas_disponibles" v-model=" horas_disponibles" disabled placeholder="Numero de Horas Disponibles">
 						-->
-						<span  class="help-block" v-show="datos_encabezado.h_pasadas">Se ha pasado del numero de horas permitidas para el Area</span>
+						<span  class="help-block" style="position:relative; display: inline-block;" v-show="datos_encabezado.h_pasadas">Se ha pasado del numero de horas permitidas para el Area</span>
 					</div>
 				</div>
 			</div>

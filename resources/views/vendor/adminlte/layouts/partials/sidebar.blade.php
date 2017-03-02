@@ -150,6 +150,12 @@
       @endif
       <!-- .Trafico -->
 
+      <!--Tiposcompra -->
+      @if( Auth::user()->can('ver_fases_planeacion') )
+      <li class="treeview"><a href="{{ url('tiposcompra') }}"><i class='fa fa-cart-plus '></i><span>{{  trans('texto_menu.tipos_compra') }}</span></a></li>
+      @endif
+      <!-- .Tiposcompra -->
+
 
     </ul><!-- /.sidebar-menu -->
     </section>

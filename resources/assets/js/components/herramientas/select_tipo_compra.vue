@@ -84,6 +84,7 @@ module.exports= {
     },
     onTouch () {
       this.isTouched =(this.seleccionado=="" )?true:false ;//Compruebo de que haya selecionado algo
+      this.fetchTips();
     }
 
   }

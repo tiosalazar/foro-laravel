@@ -8,8 +8,8 @@
               <div class="box-header-tittle" >
                 <div class="img-circle" >{{listado_tarea.ot.cliente_inicial}}</div>
                 <div class="box-header-content">
-                  <h4>{{listado_tarea.ot.cliente.nombre}}</h4>
-                  <p>{{listado_tarea.nombre_tarea}}</p>
+                  <h4>{{listado_tarea.ot.cliente.nombre }}</h4>
+                  <p>{{listado_tarea.nombre_tarea | long_tarea_titulo }}</p>
                   <span>{{listado_tarea.created_at}}7</span>
                 </div>
                 
@@ -17,7 +17,7 @@
               
             </div>
             <div class="box-body" >
-              <p >{{listado_tarea.descripcion}}</p>
+              <p >{{listado_tarea.descripcion | long_tarea_descripcion }}</p>
             </div>
             <div class="box-footer footer_tarea" >             
              <a v-bind:href="_baseURL+listado_tarea.url"> <button class="btn btn-primary button_tarea" >Ver tarea</button></a>
@@ -45,6 +45,16 @@
         }
       }
     },
+    filters: {
+      //Filtro personalizado para mostrar un número determinado de caracteres de una variable de vue js
+      long_tarea_descripcion: function(string) {
+        return string.substring(0, 60);
+      },
+      //Filtro personalizado para mostrar un número determinado de caracteres de una variable de vue js
+      long_tarea_titulo: function(string) {
+        return string.substring(0, 42);
+      }
+    },
     created: function() {
       datos= JSON.parse(this.lista_tareas);
       this.listado_tareas=datos;
@@ -54,6 +64,7 @@
         this.cargar_ok=true;
       }
     },
+
     methods:{
       //Con esta funcion muestro otros cuatro elementos al dar clic sobre el boton ver mas
       cargar_mas: function(){
@@ -65,6 +76,7 @@
         }
       }
     }
+    
 
   }
 

@@ -11,16 +11,16 @@
       <div class="col-md-12 ">
         <div style="height:22px;"></div>
         <div class="row">
-          <div class="form-group col-lg-6 col-md-12 col-sm-12" v-bind:class="{ 'has-error': errors.has('horas_area'+id_area) }">
+          <div class="col-lg-6 col-md-12 col-sm-12" v-bind:class="{ 'has-error': errors.has('horas_area'+id_area) }">
             <div class="row">
                <label for="horas_area" class="col-sm-6 "><h5>Horas de {{ area }}</h5> </label>
                 <div class="col-sm-6">
-                  <input type="text" @input="emitirData(),guardarDatos()"  style="margin-top: 12px;" :name="'horas_area'+id_area"  v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control text-center" :id="'horas_area'+id_area" v-model="nhoras" placeholder="No. Horas">
+                  <input type="text" @input="emitirData(),guardarDatos()"   :name="'horas_area'+id_area"  v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control text-center" :id="'horas_area'+id_area" v-model="nhoras" placeholder="No. Horas">
                   <span  class="help-block" v-show="errors.has('horas_area'+id_area)">{{ errors.first('horas_area'+id_area) }}</span>
                 </div>
             </div>
         </div>
-        <div class="form-group col-lg-6 col-md-12 col-sm-12"  v-bind:class="{ 'has-error': h_pasadas }">
+        <div class="col-lg-6 col-md-12 col-sm-12"  v-bind:class="{ 'has-error': h_pasadas }">
           <div class="row">
             <label for="horas_area" class="col-sm-6 "><h5>Resumen de horas de {{ area }}</h5> </label>
           <div class="col-sm-6">
@@ -59,12 +59,12 @@
           <div class="form-group col-md-12 col-lg-6" v-bind:class="{ 'has-error': errors.has('nombre_requerimiento'+index) }">
           <label class="sr-only" for="nombre_requerimiento">Nombre Requerimiento</label>
           <input type="text" @input="guardarDatos" :name="'nombre_requerimiento'+index" v-validate data-vv-rules="required|min:3" data-vv-as="Nombre Requerimiento" v-model="ed.model_nom" class="form-control" :id="'nombre_requerimiento'+index" placeholder="Nombre Requerimiento">
-          <span  class="help-block" v-show="errors.has('nombre_requerimiento'+index)">{{ errors.first('nombre_requerimiento'+index) }}</span>
+          <span  class="help-block" style="position:relative;" v-show="errors.has('nombre_requerimiento'+index)">{{ errors.first('nombre_requerimiento'+index) }}</span>
         </div>
         <div class="form-group  col-md-6 col-lg-3"  v-bind:class="{ 'has-error': errors.has('no_horas_req'+index) }">
           <label class="sr-only" for="no_horas_req">N° Horas</label>
           <input type="text" @input="realizarCalculo(),guardarDatos()" :name="'no_horas_req'+index" v-validate data-vv-rules="required|numeric" data-vv-as="No horas"  v-model="ed.model_horas" class="form-control" :id="'no_horas_req'+index" placeholder="No. Horas">
-          <span  class="help-block" v-show="errors.has('no_horas_req'+index)">{{ errors.first('no_horas_req'+index) }}</span>
+          <span  class="help-block" style="position:relative;" v-show="errors.has('no_horas_req'+index)">{{ errors.first('no_horas_req'+index) }}</span>
         </div>
         <div class="form-group  col-md-6 col-lg-3"  v-show="$parent.visualizacion != 'true'" >
           <button type="button" @click="deleteRequerimiento" class="btn btn-danger boton_foro error">Eliminar</button>
@@ -73,7 +73,6 @@
       </section>
 
     </div>
-    <div style="height:12px;"></div>
     <div class=""  v-show="$parent.visualizacion != 'true'">
         <button type="button" @click="addRequerimiento" class="btn btn-block btn-success boton_foro add_req">Añadir Requerimiento</button>
     </div>

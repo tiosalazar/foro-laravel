@@ -44,5 +44,7 @@ return [
     'fases_planeacion' => 'Fases de Planeación',
     'historico_areas' => 'Hist&oacute;rico &Aacute;reas',
     'historico_usuarios' => 'Hist&oacute;rico Usuarios',
+    'tipos_compra' => 'Tipos de Compra',
+
 
 ];

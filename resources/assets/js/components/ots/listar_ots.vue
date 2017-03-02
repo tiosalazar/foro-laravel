@@ -112,7 +112,8 @@
 							      	return '<span class="label label-estado estado-'+full.estado.tipos_estados_id+'-'+full.estado.id+' ">'+full.estado.nombre+'</span>';
 
 							  }
-							}
+							},
+							{ className: "listar_ot_descripcion", "targets": [ 9 ] }
 
 							],
 							autoWidth: false,
