@@ -36,6 +36,10 @@ Vue.component('crear_tipos_fase',require('./components/fases_proyecto/crear_tipo
 Vue.component('editar_fase',require('./components/fases_proyecto/editar_fase.vue'));
 Vue.component('editar_tipo_fase',require('./components/fases_proyecto/editar_tipo_fase.vue'));
 
+// Divisas
+Vue.component('crear_divisa',require('./components/divisas/crear_divisa.vue'));
+Vue.component('editar_divisa',require('./components/divisas/editar_divisa.vue'));
+
 //Componentes Dsalazar
 Vue.component('formulario_anadir_requerimiento', require('./components/ots/formulario_anadir_requerimiento.vue'));
 Vue.component('listar_ots', require('./components/ots/listar_ots.vue'));

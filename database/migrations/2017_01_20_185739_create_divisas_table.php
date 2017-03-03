@@ -16,7 +16,8 @@ class CreateDivisasTable extends Migration
         Schema::create('divisas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre',45);
-            $table->decimal('tasa_conversion',6,4)->nullable();
+            $table->decimal('tasa_conversion',15,2)->nullable();
+            $table->tinyInteger('estado')->default(0);
             $table->timestamps();
         });
     }

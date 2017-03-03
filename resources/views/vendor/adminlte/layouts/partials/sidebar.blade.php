@@ -126,29 +126,49 @@
           @endif
         </ul>
       </li>
-     <!--Trafico -->
-      @if( Auth::user()->can('ver_trafico') )
-      <li class="treeview  {{ Request::is('trafico') ? 'active' : '' }}"><a href="{{ url('trafico') }}"><i class='fa fa-calendar'></i><span>{{  trans('texto_menu.trafico') }}</span></a></li>
-      @endif
-      <!-- .Trafico -->
+      <!-- .Equipo -->
+     
 
-      <!--Historico Áreas -->
-      @if( Auth::user()->can('ver_historico_areas') )
-      <li class="treeview " ><a href="{{ url('historico_areas') }}"><i class='fa fa-line-chart'></i><span>{{  trans('texto_menu.historico_areas') }}</span></a></li>
-      @endif
-      <!-- .Historico Áreas -->
+      <!-- Informes -->
+      <li class="treeview {{ Request::is('informes/*') ? 'active' : '' }}">
+        <a href="#"><i class='fa fa-bar-chart'></i> <span>{{ trans('texto_menu.informes') }}</span> <i class="fa fa-caret-left pull-right fa-lg"></i></a>
+        <ul class="treeview-menu">
+          <!--Trafico -->
+          @if( Auth::user()->can('ver_trafico') )
+          <li class="treeview  {{ Request::is('informes/trafico') ? 'active' : '' }}"><a href="{{ url('informes/trafico') }}"><i class='fa fa-calendar'></i><span>{{  trans('texto_menu.trafico') }}</span></a></li>
+          @endif
+          <!-- .Trafico -->
+          <!--Historico Usuarios -->
+          @if( Auth::user()->can('ver_historico_usuarios') )
+          <li class="treeview " ><a href="{{ url('historico_usuarios') }}"><i class='fa fa-history'></i><span>{{  trans('texto_menu.historico_usuarios') }}</span></a></li>
+          @endif
+          <!-- .HistoricoUsuarios -->
+          <!--Historico Áreas -->
+          @if( Auth::user()->can('ver_historico_areas') )
+          <li class="treeview " ><a href="{{ url('historico_areas') }}"><i class='fa fa-line-chart'></i><span>{{  trans('texto_menu.historico_areas') }}</span></a></li>
+          @endif
+          <!-- .Historico Áreas -->
+        </ul>
+      </li>
+      <!-- .Informes -->
 
-        <!--Historico Usuarios -->
-      @if( Auth::user()->can('ver_historico_usuarios') )
-      <li class="treeview " ><a href="{{ url('historico_usuarios') }}"><i class='fa fa-history'></i><span>{{  trans('texto_menu.historico_usuarios') }}</span></a></li>
-      @endif
-      <!-- .HistoricoUsuarios -->
-
-      <!--Trafico -->
-      @if( Auth::user()->can('ver_fases_planeacion') )
-      <li class="treeview  {{ Request::is('fases') ? 'active' : '' }}"><a href="{{ url('fases') }}"><i class='fa fa-paper-plane'></i><span>{{  trans('texto_menu.fases_planeacion') }}</span></a></li>
-      @endif
-      <!-- .Trafico -->
+      <!-- Herramientas -->
+      <li class="treeview {{ Request::is('herramientas/*') ? 'active' : '' }}">
+        <a href="#"><i class='fa fa-cogs'></i> <span>{{ trans('texto_menu.herramientas') }}</span> <i class="fa fa-caret-left pull-right fa-lg"></i></a>
+        <ul class="treeview-menu">
+          <!--Divisas -->
+          @if( Auth::user()->can('ver_fases_planeacion') )
+          <li><a href="{{ url('herramientas/divisas') }}"><i class='fa fa-money'></i><span>{{  trans('texto_menu.divisas') }}</span></a></li>
+          @endif
+          <!--Divisas -->
+          <!--Fases Planeacion -->
+          @if( Auth::user()->can('ver_fases_planeacion') )
+          <li class="treeview  {{ Request::is('herramientas/fases') ? 'active' : '' }}"><a href="{{ url('herramientas/fases') }}"><i class='fa fa-paper-plane'></i><span>{{  trans('texto_menu.fases_planeacion') }}</span></a></li>
+          @endif
+          <!-- .Fases Planeacion -->
+        </ul>
+      </li>
+      <!-- .Herramientas -->
 
 
     </ul><!-- /.sidebar-menu -->

@@ -50,6 +50,7 @@
     },
     computed:{
       isInvalid () {
+        console.log(this.isTouched,this.value)
         return (this.isTouched &&  this.value=="" )?true:false//Compruebo de que haya selecionado algo
       },
       value: function () {
@@ -88,6 +89,7 @@
         if (newSelected != null && newSelected != undefined) {
           this.id_estado = newSelected.id;
           this.value=newSelected;
+          console.log(newSelected)
           this.$parent.$emit('select_estado',newSelected);
           if (this.cambiar_estado != '' && this.cambiar_estado != null ) {
             this.$http.put(window._apiURL+'actualizar_estado_ot/'+this.cambiar_estado, newSelected.id)
