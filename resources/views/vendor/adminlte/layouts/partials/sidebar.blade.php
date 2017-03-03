@@ -166,15 +166,17 @@
           <li class="treeview  {{ Request::is('herramientas/fases') ? 'active' : '' }}"><a href="{{ url('herramientas/fases') }}"><i class='fa fa-paper-plane'></i><span>{{  trans('texto_menu.fases_planeacion') }}</span></a></li>
           @endif
           <!-- .Fases Planeacion -->
+
+          <!--Tiposcompra -->
+          @if( Auth::user()->can('ver_fases_planeacion') )
+          <li class="treeview"><a href="{{ url('tiposcompra') }}"><i class='fa fa-cart-plus '></i><span>{{  trans('texto_menu.tipos_compra') }}</span></a></li>
+          @endif
+      <!-- .Tiposcompra -->
         </ul>
       </li>
       <!-- .Herramientas -->
 
-      <!--Tiposcompra -->
-      @if( Auth::user()->can('ver_fases_planeacion') )
-      <li class="treeview"><a href="{{ url('tiposcompra') }}"><i class='fa fa-cart-plus '></i><span>{{  trans('texto_menu.tipos_compra') }}</span></a></li>
-      @endif
-      <!-- .Tiposcompra -->
+      
 
 
     </ul><!-- /.sidebar-menu -->
