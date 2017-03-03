@@ -7989,6 +7989,10 @@ input[type=number]::-webkit-outer-spin-button {
   border: 1px solid #d8d8d8;
 }
 
+.Formulario_OT .formulario_ot_panel .ot_visualizar_observaciones {
+  word-break: break-all;
+}
+
 .Formulario_OT .nav-tabs-custom {
   margin-bottom: -1px;
 }
@@ -8135,8 +8139,13 @@ input[type=number]::-webkit-outer-spin-button {
   height: 100%;
 }
 
+.titulo_seccion_ot {
+  margin-bottom: 25px;
+}
+
 #formulario_ot_actualizacion .titulo_interna_ot {
   color: #002E60;
+  margin-top: 0;
 }
 
 #formulario_ot_actualizacion .campo_fecha {
@@ -8145,8 +8154,12 @@ input[type=number]::-webkit-outer-spin-button {
 
 #formulario_ot_actualizacion .listado_requerimientos_resumen {
   display: inline-block;
-  width: 47%;
   padding: 20px 50px;
+  width: 50%;
+}
+
+#formulario_ot_actualizacion .listado_requerimientos_resumen .ot_visualizar_descripcion {
+  word-break: break-word;
 }
 
 .modal_personalizado .close {
@@ -8274,6 +8287,10 @@ sub, sup {
   #encabezado_ot .form-group {
     padding: 0px 0px 0px 0px;
   }
+}
+
+.listar_ot_descripcion {
+  word-break: break-all;
 }
 
 body {
@@ -8496,6 +8513,14 @@ body {
 
 .tarea_perfil .tarea_perfil_box .box-header-tittle .box-header-content {
   line-height: 10px;
+}
+
+.tarea_perfil .tarea_perfil_box .box-header-tittle .box-header-content p {
+  word-break: break-all;
+}
+
+.tarea_perfil .tarea_perfil_box .box-body {
+  word-break: break-all;
 }
 
 .tarea_perfil .tarea_perfil_box .box-footer {
@@ -8884,6 +8909,10 @@ body {
 .titulo h3 span {
   font-weight: bold;
   font-size: 27px;
+}
+
+.descripcion_tarea {
+  word-break: break-all;
 }
 
 .link_paginador {

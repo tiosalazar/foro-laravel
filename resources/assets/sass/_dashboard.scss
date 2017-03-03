@@ -206,12 +206,16 @@ body{
 			 }
 			 .box-header-content{
 			 	line-height: 10px;
+			 	p{
+			 		word-break: break-all;
+			 	}
+			 	
 			 }
 
 		 }
 		
 		 .box-body{
-	
+				word-break: break-all;
 		 }
 		 .box-footer{
 		 	padding: 0;

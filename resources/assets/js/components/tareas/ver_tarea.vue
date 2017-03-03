@@ -23,7 +23,7 @@
                 <ul>
                   <li><strong>Proyecto:</strong><span> {{ot.nombre}}</span></li>
                   <li><strong>Cliente:</strong><span> {{ot.cliente.nombre}}</span></li>
-                  <li><strong>Solicitud:</strong><span> {{tarea_info.nombre_tarea}}</span></li>
+                  <li><strong>Solicitud:</strong><span class="descripcion_tarea"> {{tarea_info.nombre_tarea}}</span></li>
 
                 </ul>
               </div>
@@ -164,8 +164,8 @@
             </div>
 
             <div class="form-group">
-              <label><strong>Descripción de la trea:</strong></label>
-              <p>{{tarea_info.descripcion}}</p>
+              <label><strong >Descripción de la trea:</strong></label>
+              <p class="descripcion_tarea" >{{tarea_info.descripcion}}</p>
             </div>
 
             <div class="form-group required" >

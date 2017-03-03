@@ -27,6 +27,7 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
      Route::resource('usuarios_tarea', 'UserController@UsuariosArea');
      Route::resource('roles', 'RolController');
      Route::resource('fases', 'FaseController');
+     Route::resource('tipos_compra', 'TiposCompraController');
      Route::resource('tipos_fase', 'TipoFaseController');
      Route::resource('tareas', 'TareaController');
      Route::resource('divisas', 'DivisasController');
@@ -34,11 +35,7 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
      Route::resource('ots', 'OtController');
      Route::put('actualizar_estado_ot/{id}', 'OtController@updateEstadoOT');
      Route::post('solicitarHoras', 'OtController@solicitarHoras');
-
-     Route::get('tipos_compra', function (Request $request) {
-                 $tipo_compra= App\Tipos_compra::all();
-              return response()->json($tipo_compra);
-    });
+     
     Route::get('select_clientes', 'ClienteController@select_clientes');
 
 

@@ -230,5 +230,10 @@
   });
   
 
+   // Tipos de compra
+  Route::get('/tiposcompra', function(){
+   return view('admin.tipos_compras.crear_tipo_compra'); 
+  });
+
 
 });

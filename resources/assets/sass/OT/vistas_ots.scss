@@ -66,6 +66,9 @@
 }
 .formulario_ot_panel{
   border: 1px solid #d8d8d8;
+  .ot_visualizar_observaciones{
+    word-break: break-all;
+  }
 }
 .nav-tabs-custom {
     margin-bottom: -1px;
@@ -212,19 +215,24 @@ input[type=radio]:checked + label:before {
   }
 
 }
+.titulo_seccion_ot{
+  margin-bottom: 25px;
+}
 #formulario_ot_actualizacion{
   .titulo_interna_ot{
    color: $azul-profundo;
+   margin-top: 0;
   }
-
   .campo_fecha{
      font-weight: 600;
-
   }
   .listado_requerimientos_resumen {
     display: inline-block;
-    width: 47%;
     padding: 20px 50px;
+    width: 50%;
+    .ot_visualizar_descripcion{
+      word-break: break-word;
+    }
 }
 
 }
@@ -337,4 +345,8 @@ sub, sup {
     padding: 0px 0px 0px 0px;
 }
 
+}
+
+.listar_ot_descripcion{
+  word-break: break-all;
 }

@@ -47,4 +47,6 @@ return [
     'divisas' => 'Divisas',
     'herramientas' => 'Herramientas',
     'informes' => 'Informes',
+    'tipos_compra' => 'Tipos de Compra',
+
 ];

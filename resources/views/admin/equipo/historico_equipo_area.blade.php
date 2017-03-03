@@ -10,7 +10,8 @@
 	<section>
 
 	<div class="titulos_foro">
-    	<h3 class="box-title"><span class="span_descripcion1">Hist&oacute;rico</span> <span class="span_descripcion2">Equipos por Área</span></h3>
+    	<h3 class="box-title"><span class="span_descripcion1">Hist&oacute;rico</span> <span class="span_descripcion2">
+    	Equipos por &Aacute;rea</span></h3>
     </div>
 	   <historico_equipos :area="2"></historico_equipos>
 			

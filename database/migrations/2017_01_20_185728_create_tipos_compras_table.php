@@ -16,6 +16,7 @@ class CreateTiposComprasTable extends Migration
         Schema::create('tipos_compras', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre',45);
+            $table->tinyInteger('estado')->default(1);
             $table->timestamps();
         });
     }
