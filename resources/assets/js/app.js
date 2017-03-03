@@ -40,6 +40,9 @@ Vue.component('editar_tipo_fase',require('./components/fases_proyecto/editar_tip
 Vue.component('crear_divisa',require('./components/divisas/crear_divisa.vue'));
 Vue.component('editar_divisa',require('./components/divisas/editar_divisa.vue'));
 
+// Asignar Roles
+Vue.component('asignar_roles',require('./components/roles/asignar_roles.vue'));
+
 //Componentes Dsalazar
 Vue.component('formulario_anadir_requerimiento', require('./components/ots/formulario_anadir_requerimiento.vue'));
 Vue.component('listar_ots', require('./components/ots/listar_ots.vue'));

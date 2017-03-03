@@ -155,13 +155,6 @@
     });
 
     Route::get('equipo/usuarios/editar/{id}',['middleware' => ['permission:editar_usuarios'], 'uses' =>  'UserController@editar_usuario']);
-
-
-
-
-    
-
-
     Route::get('/years_historico_equipo', 'AreaController@getYearHistorico');
 
     Route::get('/historico_equipos/{id}',['middleware' => ['permission:ver_historico_areas'], 'uses' => 'AreaController@historico_de_equipos']);
