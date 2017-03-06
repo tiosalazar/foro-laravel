@@ -48,7 +48,7 @@ class OtController extends Controller
         return  $ots->getFormatFecha($ots->fecha_inicio);
      })
       ->addColumn('fecha_final', function($ots) {
-       return $ots->getFormatFecha($ots->fecha_final); 
+       return $ots->getFormatFecha($ots->fecha_final);
     })
       ->addColumn('acciones', function($ots) {
        $ver_ot='<a href="visualizar/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver OT</a>';
@@ -134,7 +134,7 @@ class OtController extends Controller
                $model_compras->save();
             }
             DB::commit();
-            
+
             //Notificar al usuario Owner cuando se cree una OT
             $maker=Auth::user();
             $Rol=Role::where('name','owner')->first();
@@ -295,11 +295,11 @@ class OtController extends Controller
 
          try
          {
-            //Busca el usuario en la BD
+            //Busca la OT en la BD
             $ot=  Ot::findOrFail($id);
             $ot->fill($data['datos_encabezado']);
             $ot->save();
-
+           $debug=[];
 
             $requerimientos=$data['requerimientos'];
             $compras=$data['compras'];
@@ -310,7 +310,13 @@ class OtController extends Controller
             $tiempos_x_area= Tiempos_x_Area::where('ots_id',$id_ot)->get();
             $model_descripcion_requerimiento=  Requerimientos_Ot::where('ots_id',$id_ot)->get();
             $j=0;
+
+            $debug["count_tiempos"]=count($tiempos_x_area);
+            $debug["count_req"]=count($requerimientos);
             foreach ($requerimientos as $requerimiento) {
+               if(  ($index ==  count($requerimientos)-1) &&   (count($tiempos_x_area) < count($requerimientos)) ){
+                   break;
+               }
                /*Agrego el tiempo por Area */
                $tiempos_x_area[$index]->tiempo_estimado_ot=$requerimiento['horas'];
                $tiempos_x_area[$index]->tiempo_extra=$requerimiento['tiempo_extra'];
@@ -319,12 +325,19 @@ class OtController extends Controller
                /*El siguiente for recorre el listado de requerimientos y los agrega */
                for ($i=0; $i < count($requerimiento['requerimientos']) ; $i++) {
                   $arreglo=$requerimiento['requerimientos'][$i];
-                  $arreglo_ingresar= array('nombre' => $arreglo['model_nom'],'horas'=> $arreglo['model_horas']);
-                  $model_descripcion_requerimiento[$j]->fill( $arreglo_ingresar);
-                  $model_descripcion_requerimiento[$j]->save();
+                  $arreglo_ingresar= array('nombre' => $arreglo['model_nom'],'horas'=> $arreglo['model_horas'],'areas_id' =>$requerimiento['area'],'ots_id' =>$id_ot);
+                  try {
+                     $model_descripcion_requerimiento[$j]->fill( $arreglo_ingresar);
+                     $model_descripcion_requerimiento[$j]->save();
+                  } catch (Exception $e) {
+                     $model_descripcion_requerimiento= new Requerimientos_Ot;
+                     $model_descripcion_requerimiento->fill( $arreglo_ingresar);
+                     $model_descripcion_requerimiento->save();
+                  }
                   $j++;
                }
 
+               unset($requerimientos[$index-1]);
                $index++;
 
             }
@@ -336,6 +349,29 @@ class OtController extends Controller
                $model_compras[$index]->save();
                $index++;
             }
+
+
+            /*Si el numero no concuerda es porque hay un nuevo requerimiento*/
+           if( count($requerimientos) > 0 ){
+
+             foreach ($requerimientos as $requerimiento) {
+                 $tiempos_x_area= new Tiempos_x_Area;
+                 /*Agrego el tiempo por Area */
+             $tiempos_x_area->tiempo_estimado_ot=$requerimiento['horas'];
+                 $tiempos_x_area->ots_id=$id_ot;
+                 $tiempos_x_area->areas_id=$requerimiento['area'];
+                 $tiempos_x_area->save();
+                 /*El siguiente for recorre el listado de requerimientos y los agrega */
+            for ($i=0; $i < count($requerimiento['requerimientos']) ; $i++) {
+                    $model_descripcion_requerimiento= new Requerimientos_Ot;
+                    $arreglo=$requerimiento['requerimientos'][$i];
+                    $arreglo_ingresar= array('nombre' => $arreglo['model_nom'],'horas'=> $arreglo['model_horas'],'areas_id'=>$requerimiento['area'],'ots_id'=>$id_ot);
+                    $model_descripcion_requerimiento->fill( $arreglo_ingresar);
+                    $model_descripcion_requerimiento->save();
+                 }
+              }
+
+           }
 
             //Guardar el Historico
             $historico= new Historico_Ot;
@@ -357,7 +393,7 @@ class OtController extends Controller
                'status' => Response::HTTP_OK,
                'response_time' => microtime(true) - LARAVEL_START,
                'msg' => 'Se han Actualizado los datos de la OT ', //Mensaje a mostrar en el Front
-               'obj' => $ot
+               'obj' => $debug
                ],Response::HTTP_OK);
 
          }catch(Exception $e){
@@ -400,7 +436,7 @@ class OtController extends Controller
                'status' => Response::HTTP_BAD_REQUEST,
                'response_time' => microtime(true) - LARAVEL_START,
                'error' => 'fallo_al_eliminar',
-               'consola' => $ot->Tarea, 
+               'consola' => $ot->Tarea,
                'msg' => 'Esta OT ya tiene tareas Asignadas, por lo tanto no se puede eliminar', //Mensaje a mostrar en el Front
                ],Response::HTTP_BAD_REQUEST);
 
@@ -575,7 +611,7 @@ class OtController extends Controller
         // return response()->json($ot->tareas);
 
        // Initialize the array which will be passed into the Excel
-       $otsArray = []; 
+       $otsArray = [];
 
        // Define the Excel spreadsheet headers
        $otsEncabezado[] = ['OT',$ot->referencia ,'Fecha Inicio',$ot->fecha_inicio,'Horas Totales',$ot->horas_totales];
@@ -598,14 +634,14 @@ class OtController extends Controller
 
         $excel->sheet('resumen', function($sheet) use($otsArray)  {
           $headings = array('Datos Generales de la OT');
-          $sheet->prependRow(1, $headings); 
-          $sheet->row(2, $otsArray[0][0]);   
-          $sheet->row(3, $otsArray[1][0]);       
+          $sheet->prependRow(1, $headings);
+          $sheet->row(2, $otsArray[0][0]);
+          $sheet->row(3, $otsArray[1][0]);
           $headings = array('Resumen de tareas de la OT ');
-          $sheet->prependRow(5, $headings); 
+          $sheet->prependRow(5, $headings);
           $headings = array('ÁREA','HORAS ÁREA','ENCARGADO','REQUERIMIENTOS','FECHA INICIO SOLICITUD','FECHA DE ENTREGA EJECUTIVA','TIEMPO REAL','TIEMPO ESTIMADO JEFE','TIEMPO ESTIMADO MAPA DE CLIENTE');
-          $sheet->prependRow(7, $headings);  
-          $sheet->fromArray($otsArray[2], null, 'A8', false, false);  
+          $sheet->prependRow(7, $headings);
+          $sheet->fromArray($otsArray[2], null, 'A8', false, false);
 
           $sheet->cell('A1', function($cell) {
                // Set font

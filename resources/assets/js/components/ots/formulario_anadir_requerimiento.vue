@@ -16,7 +16,7 @@
 					<div class="nav-tabs-custom">
 						<ul class="nav nav-tabs" >
 							<li v-for="area in listado_areas"  :class="{'active': area.nombre==listado_areas[0].nombre } " ><a @click="tabs_areas($event,area.id)" :data-id="'tab_'+area.id" :href="'#tab_'+area.id" data-toggle="tab">{{area.nombre}}</a></li>
-							
+
 						</ul>
 						<div class="tab-content" >
 							<div class="tab-pane"  v-for="area in listado_areas" :class="{'active': area.nombre==listado_areas[0].nombre } "  :id="'tab_'+area.id">
@@ -270,18 +270,18 @@
 			},
 			methods:{
 				fetchTips: function(){
-					if (this.visualizacion !='true') {
+					//if (this.visualizacion !='true') {
 						this.$http.get( window._apiURL+'areas')
 						.then(function(respuesta){
 							this.listado_areas=respuesta.body;
 							this.$localStorage.set('listado_areas',respuesta.body);
 						}.bind(this));
 
-					}else{
+					/*}else{
 						var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
 						this.listado_areas=arreglo_visualizar.listado_areas;
 						this.$localStorage.set('listado_areas',arreglo_visualizar.listado_areas);
-					}
+					}*/
 					this.datos_encabezado=this.$localStorage.get('datos_encabezado');
 				},
 				llenarDatosSiesVisualizacion: function(){
@@ -328,6 +328,7 @@
 								requerimientos: this.procesarTodosRequerimientos(),
 								compras: this.procesarTodosCompras()
 							};
+							console.log(datos_procesados);
 							if(this.visualizacion != 'true'){
 								this.$http.post(window._apiURL+'ots', datos_procesados)
 								.then(function(respuesta){
@@ -358,7 +359,7 @@
 										this.limpiarComprasRequerimientos();
 										this.datos_requerimiento=[];
 										this.datos_compras=[];
-										setTimeout(function () { 
+										setTimeout(function () {
 											location.reload(true);
 										}, 500);
 									}
@@ -403,7 +404,7 @@
 									toastr.error(this.message,response.body.msg,this.option_toast);
 								});
 							}
-							
+
 
 						} catch (e) {
 							console.log(e);
@@ -618,7 +619,7 @@
 
              },
 			/*
-             función la cual me valida los datos de todas las areas antes de guardar 
+             función la cual me valida los datos de todas las areas antes de guardar
              */
              comprobarDatosTodosRequerimientos: function(){
              	var total_areas  =this.$localStorage.get('listado_areas');
