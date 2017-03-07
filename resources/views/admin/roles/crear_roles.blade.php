@@ -11,4 +11,5 @@
 		<h3 class="box-title"><span class="span_descripcion1">Roles</span></h3>
 	 </div>
 	<roles></roles>
+	<asignar_roles></asignar_roles>
 @endsection

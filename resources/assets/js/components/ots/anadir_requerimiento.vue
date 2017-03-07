@@ -41,7 +41,7 @@
         <div class="form-group col-md-6 col-sm-6" v-bind:class="{ 'has-error': errors.has('horas_extra_area'+id_area) }">
           <label :for="'horas_extra_area'+id_area" class="col-sm-6 nopadding"><h5>Horas Extra {{ area }}</h5> </label>
           <div class="col-sm-6">
-            <input type="text" @input="emitirData(),guardarDatos()"  style="margin-top: 12px;" :name="'horas_extra_area'+id_area"  v-validate data-vv-rules="numeric" data-vv-as="Horas Extra Area" class="form-control text-center" :id="'horas_extra_area'+id_area" v-model="nhextra" :placeholder="'Horas Extra '+area">
+            <input type="text" @input="emitirData(),guardarDatos()"  style="margin-top: 12px;" :name="'horas_extra_area'+id_area"  v-validate data-vv-rules="decimal:2" data-vv-as="Horas Extra Area" class="form-control text-center" :id="'horas_extra_area'+id_area" v-model="nhextra" :placeholder="'Horas Extra '+area">
             <span  class="help-block" v-show="errors.has('horas_extra_area'+id_area)">{{ errors.first('horas_extra_area'+id_area) }}</span>
           </div>
         </div>
@@ -73,7 +73,7 @@
       </section>
 
     </div>
-    <div class=""  v-show="$parent.visualizacion != 'true'">
+    <div class="" ><!--v-show="$parent.visualizacion != 'true'" -->
         <button type="button" @click="addRequerimiento" class="btn btn-block btn-success boton_foro add_req">Añadir Requerimiento</button>
     </div>
 
@@ -211,6 +211,7 @@ module.exports={
     this.$validator.validateAll();
     if (!this.errors.any()) {
       this.requerimiento.push(Vue.util.extend({}, this.requerimiento));
+      console.log(this.requerimiento);
     }
   },
   /*
