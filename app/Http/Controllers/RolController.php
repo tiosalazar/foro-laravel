@@ -8,7 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
 use Illuminate\Http\Response;
 use Exception;
-
+use App\Permission;
 
 
 
@@ -156,7 +156,62 @@ class RolController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+    }
+
+    /*
+    *DSO 07-03-2017
+    * Listartodos los permisos permisos
+    * @return \Illuminate\Http\Response
+    */
+    public function showAllPermisions()
+    {
+        $permisos= Permission::all();
+        return response()->json($permisos);
+
+    }
+
+    /*
+    *DSO 07-03-2017
+    * @param  int  $id
+    * @return \Illuminate\Http\Response
+    */
+    public function showPermisionsbyRole($id)
+    {
+        
+        $role=Role::findOrFail($id);
+       return response()->json($role->perms);
+
+    }
+    /*
+    *DSO 07-03-2017
+    * @param  \Illuminate\Http\Request  $request
+    * @param  int  $id
+    * @return \Illuminate\Http\Response
+    */
+    public function updatePermisionsbyRole(Request $request, $id)
+    {
+                       
+        try {
+             $role=Role::findOrFail($id);
+             //$permisos2=["id"=> 21,"id"=> 22,"id"=> 23];  
+             $role->perms()->sync( $request->data );                     
+              return response([
+                            'status' => Response::HTTP_OK,
+                            'response_time' => microtime(true) - LARAVEL_START,
+                            'obj' => $role,
+                            'msg' => 'Se han actualizado correctamente los permisos del Rol '.$role->display_name,
+                        ],Response::HTTP_OK);
+
+        }catch(Exception $e){
+                    return response([
+                        'status' => Response::HTTP_BAD_REQUEST,
+                        'response_time' => microtime(true) - LARAVEL_START,
+                        'error' => 'Fallo en la asigación de permisos al Rol '.$role->display_name,
+                        'consola' =>$e->getMessage(),
+                        'request' => $request->all()
+                    ],Response::HTTP_BAD_REQUEST);
+               }
     }
 
    /*DSO 24-01-2016 Funcion para validar los campos al ingreso de un usuario

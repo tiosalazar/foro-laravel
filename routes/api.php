@@ -38,5 +38,10 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
      
     Route::get('select_clientes', 'ClienteController@select_clientes');
 
+    //Permisos Roles
+     Route::get('permisos','RolController@showAllPermisions');
+     Route::get('permisos_role/{id}','RolController@showPermisionsbyRole');
+     Route::put('permisos_role/{id}','RolController@updatePermisionsbyRole');
+
 
 });

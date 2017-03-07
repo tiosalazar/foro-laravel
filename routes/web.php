@@ -13,9 +13,8 @@
 
 
   Auth::routes();
-  Route::get('/console','UserController@AgregarRoll');
-
- Route::group(['middleware' => 'auth'], function () {
+  Route::get('/console','RolController@showAllPermisions');
+  Route::group(['middleware' => 'auth'], function () {
     
     Route::get('/home', 'HomeController@index');
     Route::get('/','HomeController@index');
