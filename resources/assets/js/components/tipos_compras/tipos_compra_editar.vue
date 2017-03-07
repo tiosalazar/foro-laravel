@@ -9,7 +9,7 @@
         <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]" >
           <label>Nombre</label>
           <input type="text" v-model="compra.nombre" v-validate data-vv-rules="required|min:3" name="nombre" id="nombre" class="form-control" required="required">
-          <span  class="help-block" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
+          <span  class="help-block" style="position:relative;" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
         </div>
       </div>
       <div class="col-xs-12 col-md-12">
@@ -91,9 +91,22 @@
       EditTipoCompra: function() {
        this.$http.put(window._apiURL+'tipos_compra/'+this.compra.id, this.compra)
        .then(function(respuesta){
-           toastr.success(respuesta.body.msg,'',this.option_toast);
-
-       });
+               if (respuesta.status != '200') {
+                  if (Object.keys(respuesta.body.obj).length>0) {
+                    this.setErrors(respuesta.body.obj);
+                  }
+                  toastr.warning(this.message,respuesta.body.msg,this.option_toast);
+                } else {
+                  toastr.success(respuesta.body.msg,'',this.option_toast);
+                  setTimeout(function(){ that.errors.clear(); }, 50); 
+                }
+               
+             }, (response) => {
+              if (Object.keys(response.body.obj).length>0) {
+                this.setErrors(response.body.obj);
+              }
+              toastr.error(this.message,response.body.msg,this.option_toast);
+            });
       },
       showModal:function(input) {
         $('#modal-fase').modal('show');
