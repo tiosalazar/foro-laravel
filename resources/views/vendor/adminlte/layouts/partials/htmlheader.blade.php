@@ -19,6 +19,8 @@
 
     <link href="{{url('/')}}/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="{{url('/')}}/css/responsive.dataTables.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{url('/')}}/css/font-awesome.css"/>
+    <link rel="stylesheet" href="{{url('/')}}/css/build.css"/>
 
 
     <script>

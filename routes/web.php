@@ -219,6 +219,14 @@
           }
         return view('admin.fases_proyecto.crear_fase');
       });
+
+       // Permisos
+      Route::get('/permisos',function ($value=''){
+         if (!Auth::user()->can('ver_fases_planeacion')) {
+            return Redirect::to('home');
+          }
+        return view('admin.roles.permisos');
+      });
   });
   
 
