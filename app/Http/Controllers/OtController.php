@@ -312,11 +312,17 @@ class OtController extends Controller
             $j=0;
 
             $debug["count_tiempos"]=count($tiempos_x_area);
+            $debug["count_req"]=0;
             $debug["count_req"]=count($requerimientos);
+            $debug["veces_entra"]=0;
+            $debug["count_req2"]=0;
+            $debug["sali_bien"]='';
             foreach ($requerimientos as $requerimiento) {
-               if(  ($index ==  count($requerimientos)-1) &&   (count($tiempos_x_area) < count($requerimientos)) ){
+               if(  $index >= count($tiempos_x_area)  ){
+                  $debug["sali_bien"]='entre a salir bien';
                    break;
                }
+
                /*Agrego el tiempo por Area */
                $tiempos_x_area[$index]->tiempo_estimado_ot=$requerimiento['horas'];
                $tiempos_x_area[$index]->tiempo_extra=$requerimiento['tiempo_extra'];
@@ -330,6 +336,7 @@ class OtController extends Controller
                      $model_descripcion_requerimiento[$j]->fill( $arreglo_ingresar);
                      $model_descripcion_requerimiento[$j]->save();
                   } catch (Exception $e) {
+                     $debug["veces_entra"]=  $debug["veces_entra"]+1;
                      $model_descripcion_requerimiento= new Requerimientos_Ot;
                      $model_descripcion_requerimiento->fill( $arreglo_ingresar);
                      $model_descripcion_requerimiento->save();
@@ -337,7 +344,7 @@ class OtController extends Controller
                   $j++;
                }
 
-               unset($requerimientos[$index-1]);
+               unset($requerimientos[$index]);
                $index++;
 
             }
@@ -350,14 +357,15 @@ class OtController extends Controller
                $index++;
             }
 
-
+            $debug["count_req2"]=count($requerimientos);
             /*Si el numero no concuerda es porque hay un nuevo requerimiento*/
            if( count($requerimientos) > 0 ){
 
              foreach ($requerimientos as $requerimiento) {
                  $tiempos_x_area= new Tiempos_x_Area;
                  /*Agrego el tiempo por Area */
-             $tiempos_x_area->tiempo_estimado_ot=$requerimiento['horas'];
+                 $tiempos_x_area->tiempo_estimado_ot=$requerimiento['horas'];
+                 $tiempos_x_area->tiempo_extra=$requerimiento['tiempo_extra'];
                  $tiempos_x_area->ots_id=$id_ot;
                  $tiempos_x_area->areas_id=$requerimiento['area'];
                  $tiempos_x_area->save();
@@ -403,6 +411,7 @@ class OtController extends Controller
                'response_time' => microtime(true) - LARAVEL_START,
                'error' => 'fallo_al_actualizar',
                'consola' =>$e->getMessage(),
+               'debug'=> $debug,
                'request' =>$request->all()
                ],Response::HTTP_BAD_REQUEST);
          }
