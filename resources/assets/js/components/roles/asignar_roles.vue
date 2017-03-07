@@ -2,33 +2,23 @@
 <template>
 
   <div>
-    <div class="box box-primary">
 
+    <div class="box box-primary">
       <div class="box-header">
-        <h3 class="box-title">Asignar Roles</h3>
+        <h3 class="box-title" style="padding-left:1%; margin-bottom:20px;">Asignar Permisos</h3>
       </div>
+
       <div class="box-body no-padding">
-        <form action="">
-          <div class="col-md-3">
-            <label class="checkbox-inline">
-              <input type="checkbox" id="inlineCheckbox1" value="option1"> 1
-            </label>
-          </div>
-          <div class="col-md-3">
-            <label class="checkbox-inline">
-              <input type="checkbox" id="inlineCheckbox2" value="option2"> 2
-            </label>
-          </div>
-          <div class="col-md-3">
-            <label class="checkbox-inline">
-              <input type="checkbox" id="inlineCheckbox3" value="option3"> 3
-            </label>
-          </div>
-          <div class="col-md-3">
-            <label class="checkbox-inline">
-              <input type="checkbox" id="inlineCheckbox4" value="option4"> 4
-            </label>
-          </div>
+        <form action="" class="form" style="    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap; padding-left:2%;padding-right:2%;">
+         <div class="checkbox checkbox-success" style="width:25%;">
+              <input id="checkbox_ver" class="styled" type="checkbox">
+              <label for="checkbox_ver">
+                  Ver
+              </label>
+         </div> 
+
         </form>
       </div>
     </div>
@@ -60,6 +50,9 @@
     }
   },
   watch : {},
+  mounted(){
+
+  },
   methods:{
     setErrors:function(object) {
       this.message='';
