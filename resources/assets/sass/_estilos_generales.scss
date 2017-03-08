@@ -111,3 +111,46 @@ input[type=number]::-webkit-outer-spin-button {
 .same-height{
     min-height: 80px;
   }
+
+.permisos{
+	.alerta{
+		
+		font-size: 17px;
+		margin-bottom: 35px;
+		margin-top: 28px;
+        margin-left: 30px;
+	}
+	.select_rol{
+		width: 200px;
+		margin-left: 12px;
+	}
+	.form-permisos{
+	    display: flex;
+	    justify-content: flex-start;
+	    flex-wrap: wrap; 
+	    padding-left:2%;
+	    padding-right:2%;
+	}
+	.box-header{
+		display: flex;
+	}
+	.box-title{
+		padding-left:1%; 
+		margin-bottom:20px;
+	}
+	.permisos_check{
+		width: 25%;
+		height: 30px;
+		margin-top: 0px;
+	}
+	.box-footer{
+		text-align: center;
+		.guardar_roles{
+			width: 130px;
+		    font-size: 17px;
+		    margin-top: 5px;
+		    margin-bottom: 5px;
+	    }
+	}
+	
+}

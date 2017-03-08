@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
      $this->command->info('Planeacion_tipos table seeded!');
      $this->call('Planeacion_fases');
      $this->command->info('Planeacion_fases table seeded!');
-      $this->call('Permission_Role');
+     $this->call('Permission_Role');
      $this->command->info('Permisos Generados seeded!');
      $this->call('Estados_Roles');
      $this->command->info('Roles en Estados Generados seeded!');
@@ -98,6 +98,12 @@ class PermisosTableSeeder extends Seeder {
         App\Permission::create(array('name' => 'ver_historico_usuarios','display_name'=>'Historico Usuarios','description'=>'Puede ver el Historico de usuarios' ));
         //Permisos sobre Fases Planeación
         App\Permission::create(array('name' => 'ver_fases_planeacion','display_name'=>'Fases Planeación','description'=>'Puede ver las fases de planeación' ));
+        //Permiso informes
+        App\Permission::create(array('name' => 'ver_informes','display_name'=>'Informes','description'=>'Puede ver las herramientas del foro' ));
+        //Permiso herramientas
+        App\Permission::create(array('name' => 'ver_herramientas','display_name'=>'Herramientas','description'=>'Puede ver los informes' ));
+        //Permisos por rol
+        App\Permission::create(array('name' => 'ver_permisos','display_name'=>'Permisos','description'=>'Puede ver y editar los permisos por rol' ));
 
     }
 

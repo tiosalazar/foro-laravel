@@ -179,7 +179,7 @@ class RolController extends Controller
     public function showPermisionsbyRole($id)
     {
         
-        $role=Role::findOrFail($id);
+       $role=Role::findOrFail($id);    
        return response()->json($role->perms);
 
     }
@@ -195,7 +195,13 @@ class RolController extends Controller
         try {
              $role=Role::findOrFail($id);
              //$permisos2=["id"=> 21,"id"=> 22,"id"=> 23];  
-             $role->perms()->sync( $request->data );                     
+             // $role->perms()->sync( $request->data ); 
+             $arraypermisos = array();
+             $dato=$request->all();
+             foreach ($dato as $key => $value) {
+                 array_push($arraypermisos,$value);
+             }
+             $role->perms()->sync( $arraypermisos);                      
               return response([
                             'status' => Response::HTTP_OK,
                             'response_time' => microtime(true) - LARAVEL_START,
@@ -209,7 +215,8 @@ class RolController extends Controller
                         'response_time' => microtime(true) - LARAVEL_START,
                         'error' => 'Fallo en la asigación de permisos al Rol '.$role->display_name,
                         'consola' =>$e->getMessage(),
-                        'request' => $request->all()
+                        'request' => $request->all(),
+                        'id'=>$id,
                     ],Response::HTTP_BAD_REQUEST);
                }
     }

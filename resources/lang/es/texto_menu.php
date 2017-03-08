@@ -48,5 +48,6 @@ return [
     'herramientas' => 'Herramientas',
     'informes' => 'Informes',
     'tipos_compra' => 'Tipos de Compra',
+    'permisos' => 'Permisos',
 
 ];

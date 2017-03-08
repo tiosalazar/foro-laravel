@@ -13,7 +13,7 @@
 
 
   Auth::routes();
-  Route::get('/console','RolController@showAllPermisions');
+  Route::get('/console/{id}','RolController@updatePermisionsbyRole');
   Route::group(['middleware' => 'auth'], function () {
     
     Route::get('/home', 'HomeController@index');
@@ -169,7 +169,7 @@
   });
 
   // Herramientas
-  Route::group(['prefix' => 'informes'], function () {
+  Route::group(['prefix' => ' '], function () {
     Route::get('/', function ()    {
           // Uses Auth Middleware
     });
@@ -220,15 +220,17 @@
         return view('admin.fases_proyecto.crear_fase');
       });
 
-       // Permisos
-      Route::get('/permisos',function ($value=''){
-         if (!Auth::user()->can('ver_fases_planeacion')) {
-            return Redirect::to('home');
-          }
-        return view('admin.roles.permisos');
-      });
+      
   });
-  
+
+ // Permisos
+    Route::get('/permisos',function ($value=''){
+       if (!Auth::user()->can('ver_permisos')) {
+          return Redirect::to('home');
+        }
+      return view('admin.roles.permisos');
+    });
+
 
    // Tipos de compra
   Route::get('/tiposcompra', function(){
