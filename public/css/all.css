@@ -8179,6 +8179,16 @@ input[type=number]::-webkit-outer-spin-button {
   border-top-color: #15baee;
 }
 
+.dates .form-group:last-child .datepicker {
+  position: initial;
+  z-index: 5;
+}
+
+.dates .form-group:last-child .datepicker input {
+  position: inherit;
+  z-index: 5;
+}
+
 .input-group.date .datepicker input {
   width: 107%;
   text-align: center;
