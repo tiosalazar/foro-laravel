@@ -169,7 +169,7 @@
   });
 
   // Herramientas
-  Route::group(['prefix' => ' '], function () {
+  Route::group(['prefix' => 'informes'], function () {
     Route::get('/', function ()    {
           // Uses Auth Middleware
     });
