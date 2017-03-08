@@ -288,7 +288,7 @@ textarea.form-control {
     padding: 12px 0px 46px 0px;
   }
   /*AB - 23-02-2017 */
-  .has-error{
+  .help-block{
     position: absolute;
   }
   .same-height{
@@ -348,5 +348,5 @@ sub, sup {
 }
 
 .listar_ot_descripcion{
-  word-break: break-all;
+  word-break: inherit !important;
 }

@@ -41,7 +41,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-7">
-                    <div class="checkbox icheck">
+                    <div class="icheck">
                         <label>
                             <input type="checkbox" name="remember"> <span class="span_check">{{ trans('adminlte_lang::message.remember') }}</span>
                         </label>

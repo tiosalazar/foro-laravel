@@ -86,8 +86,12 @@ input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none; 
   margin: 0; 
 }
+.form-group{
+	margin-bottom: 20px;
+}
 .form-group.has-error .help-block{
 	position: absolute;
+	margin-top: 0;
 }
 .titulos_foro{
 	h3{

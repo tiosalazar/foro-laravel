@@ -8,8 +8,8 @@
 @section('main-content')
 
 	<div class="titulos_foro">
-		<h3 class="box-title"><span class="span_descripcion1">Permisos</span></h3>
+		<h3 class="box-title"><span class="span_descripcion1">Roles</span></h3>
 	 </div>
-	<asignar_roles></asignar_roles>
+	<roles></roles>
 	
 @endsection

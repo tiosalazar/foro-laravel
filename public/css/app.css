@@ -109,8 +109,13 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
 }
 
+.form-group {
+  margin-bottom: 20px;
+}
+
 .form-group.has-error .help-block {
   position: absolute;
+  margin-top: 0;
 }
 
 .titulos_foro h3 {
@@ -8273,7 +8278,7 @@ textarea.form-control {
   padding: 12px 0px 46px 0px;
 }
 
-#encabezado_ot .has-error {
+#encabezado_ot .help-block {
   position: absolute;
 }
 
@@ -8339,7 +8344,7 @@ sub, sup {
 }
 
 .listar_ot_descripcion {
-  word-break: break-all;
+  word-break: inherit !important;
 }
 
 body {

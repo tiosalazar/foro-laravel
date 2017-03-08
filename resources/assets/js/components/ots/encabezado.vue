@@ -39,7 +39,7 @@
 				</div>
 
 				<div class="col-md-6 col-sm-6 col-xs-12 same-height">
-					<div class="form-group required row  radio">
+					<div class="form-group required row">
 						<label for="valor_total" class="col-sm-12 "><sup>*</sup> Fee </label>
 						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('fee') }">
 							<div class="col-sm-4 col-xs-6 formulario">
