@@ -196,23 +196,41 @@ input[type=radio]:checked + label:before {
     border-top-color: #15baee;
 }
 
-
+.dates{
+  .form-group{
+    &:last-child{
+     .datepicker{
+      position: initial;
+      z-index: 5;
+      input{
+        position: inherit;
+        z-index: 5;
+      }
+     }
+    }
+  }
+}
 
 .input-group.date{
-  .datepicker input{
-    width: 107%;
-    text-align: center;
-    margin-left: -4%;
-    height: 141%;
-    margin-top: -4%;
-    border: 0;
-      /* AB - 23-02-2017 */
-    width: 100%;
-    margin-left: 0;
-    margin-top: 0;
-    height: 100%;
+ 
+  .datepicker{
+    input{
+      width: 107%;
+      text-align: center;
+      margin-left: -4%;
+      height: 141%;
+      margin-top: -4%;
+      border: 0;
+        /* AB - 23-02-2017 */
+      width: 100%;
+      margin-left: 0;
+      margin-top: 0;
+      height: 100%;
+
+    }
 
   }
+  
 
 }
 .titulo_seccion_ot{
@@ -291,6 +309,7 @@ textarea.form-control {
   .help-block{
     position: absolute;
   }
+
   .same-height{
     min-height: 80px;
   }
