@@ -1,4 +1,3 @@
-
 <template>
 
   <div class="permisos">
@@ -123,5 +122,3 @@
   }
 }
 </script>
-
-
