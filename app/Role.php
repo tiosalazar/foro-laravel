@@ -38,4 +38,14 @@ class Role extends EntrustRole
     return $this->belongsToMany('App\Estado', 'estados_x_roles', 'roles_id', 'estados_id');
   }
 
+
+    /**
+     * The products that belong to the shop.
+     */
+    public function permission()
+    {
+        return $this->belongsToMany('App\Permission' , 'permission_role',  'role_id', 'permission_id' );
+    }
+ 
+
 }

@@ -13,9 +13,8 @@
 
 
   Auth::routes();
-  Route::get('/console','UserController@AgregarRoll');
-
- Route::group(['middleware' => 'auth'], function () {
+  Route::get('/console/{id}','RolController@updatePermisionsbyRole');
+  Route::group(['middleware' => 'auth'], function () {
     
     Route::get('/home', 'HomeController@index');
     Route::get('/','HomeController@index');
@@ -170,7 +169,7 @@
   });
 
   // Herramientas
-  Route::group(['prefix' => 'informes'], function () {
+  Route::group(['prefix' => ' '], function () {
     Route::get('/', function ()    {
           // Uses Auth Middleware
     });
@@ -220,8 +219,18 @@
           }
         return view('admin.fases_proyecto.crear_fase');
       });
+
+      
   });
-  
+
+ // Permisos
+    Route::get('/permisos',function ($value=''){
+       if (!Auth::user()->can('ver_permisos')) {
+          return Redirect::to('home');
+        }
+      return view('admin.roles.permisos');
+    });
+
 
    // Tipos de compra
   Route::get('/tiposcompra', function(){

@@ -130,6 +130,7 @@
      
 
       <!-- Informes -->
+      @if( Auth::user()->can('ver_informes') )
       <li class="treeview {{ Request::is('informes/*') ? 'active' : '' }}">
         <a href="#"><i class='fa fa-bar-chart'></i> <span>{{ trans('texto_menu.informes') }}</span> <i class="fa fa-caret-left pull-right fa-lg"></i></a>
         <ul class="treeview-menu">
@@ -140,19 +141,21 @@
           <!-- .Trafico -->
           <!--Historico Usuarios -->
           @if( Auth::user()->can('ver_historico_usuarios') )
-          <li class="treeview " ><a href="{{ url('historico_usuarios') }}"><i class='fa fa-history'></i><span>{{  trans('texto_menu.historico_usuarios') }}</span></a></li>
+          <li class="treeview " ><a href="{{ url('informes/historico_usuarios') }}"><i class='fa fa-history'></i><span>{{  trans('texto_menu.historico_usuarios') }}</span></a></li>
           @endif
           <!-- .HistoricoUsuarios -->
           <!--Historico Áreas -->
           @if( Auth::user()->can('ver_historico_areas') )
-          <li class="treeview " ><a href="{{ url('historico_areas') }}"><i class='fa fa-line-chart'></i><span>{{  trans('texto_menu.historico_areas') }}</span></a></li>
+          <li class="treeview " ><a href="{{ url('informes/historico_areas') }}"><i class='fa fa-line-chart'></i><span>{{  trans('texto_menu.historico_areas') }}</span></a></li>
           @endif
           <!-- .Historico Áreas -->
         </ul>
       </li>
+       @endif
       <!-- .Informes -->
 
       <!-- Herramientas -->
+      @if( Auth::user()->can('ver_herramientas') )
       <li class="treeview {{ Request::is('herramientas/*') ? 'active' : '' }}">
         <a href="#"><i class='fa fa-cogs'></i> <span>{{ trans('texto_menu.herramientas') }}</span> <i class="fa fa-caret-left pull-right fa-lg"></i></a>
         <ul class="treeview-menu">
@@ -166,15 +169,23 @@
           <li class="treeview  {{ Request::is('herramientas/fases') ? 'active' : '' }}"><a href="{{ url('herramientas/fases') }}"><i class='fa fa-paper-plane'></i><span>{{  trans('texto_menu.fases_planeacion') }}</span></a></li>
           @endif
           <!-- .Fases Planeacion -->
+
+          <!--Tiposcompra -->
+          @if( Auth::user()->can('ver_fases_planeacion') )
+          <li class="treeview"><a href="{{ url('tiposcompra') }}"><i class='fa fa-cart-plus '></i><span>{{  trans('texto_menu.tipos_compra') }}</span></a></li>
+          @endif
+      <!-- .Tiposcompra -->
         </ul>
       </li>
+       @endif
       <!-- .Herramientas -->
 
-      <!--Tiposcompra -->
-      @if( Auth::user()->can('ver_fases_planeacion') )
-      <li class="treeview"><a href="{{ url('tiposcompra') }}"><i class='fa fa-cart-plus '></i><span>{{  trans('texto_menu.tipos_compra') }}</span></a></li>
-      @endif
-      <!-- .Tiposcompra -->
+      <!-- .Permisos por rol -->
+       @if( Auth::user()->can('ver_permisos') )
+          <li class="treeview"><a href="{{ url('permisos') }}"><i class='fa fa-key '></i><span>{{  trans('texto_menu.permisos') }}</span></a></li>
+       @endif
+     <!-- Permisos por rol -->
+      
 
 
     </ul><!-- /.sidebar-menu -->

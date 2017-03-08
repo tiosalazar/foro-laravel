@@ -26,12 +26,12 @@ class DivisasController extends Controller
             return response()->json($divisas);
         } catch (Exception $e) {
             return response([
-                                'status' => Response::HTTP_BAD_REQUEST,
-                                'response_time' => microtime(true) - LARAVEL_START,
-                                'divisas' => $divisas,
-                                'error'=>$e->getMessage(),
-                                'msg' => 'No se pudo traer las divisas'
-                            ],Response::HTTP_BAD_REQUEST);
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'response_time' => microtime(true) - LARAVEL_START,
+                    'divisas' => $divisas,
+                    'error'=>$e->getMessage(),
+                    'msg' => 'No se pudo traer las divisas'
+                ],Response::HTTP_BAD_REQUEST);
         }
     }
 
