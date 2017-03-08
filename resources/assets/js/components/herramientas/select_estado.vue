@@ -40,6 +40,7 @@
         estados:[],
         id_estado:0,
         isTouched: false,
+        value:0,
         option_toast:{
           timeOut: 5000,
           "positionClass": "toast-top-center",
@@ -50,7 +51,6 @@
     },
     computed:{
       isInvalid () {
-        console.log(this.isTouched,this.value)
         return (this.isTouched &&  this.value=="" )?true:false//Compruebo de que haya selecionado algo
       },
       value: function () {

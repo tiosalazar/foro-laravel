@@ -127,7 +127,7 @@
               <div class="col-sm-4">
                 <div class="form-group">
                   <label for="tiempo_mapa_cliente"><strong>Tiempo estimado cliente</strong></label>
-                  <div>{{tarea_info.tiempo_mapa_cliente}} Horas</div>
+                  <div v-show="tarea_info.tiempo_mapa_cliente">{{tarea_info.tiempo_mapa_cliente}} Horas</div>
                 </div>
               </div>
 

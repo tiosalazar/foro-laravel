@@ -13,6 +13,7 @@
       :options-limit="300"
       :allow-empty="false"
       :value="value"
+      @open="fetchTips"
       @input="updateSelected"
       @close="onTouch"
       :option-height="104">

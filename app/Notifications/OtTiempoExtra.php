@@ -70,7 +70,7 @@ class OtTiempoExtra extends Notification
             'descripcion' => $this->user->nombre. ' ha solicitado '.$this->horas.' adicionales para el area de '.$this->area.' ',
             'created_at' => date('Y-m-d H:i:s'),
             'img_perfil' => $this->user->img_perfil,
-            'link'          => '/ots/visualizar/'.$this->ot->id,
+            'link'          => '/ots/editar/'.$this->ot->id,
         ];
     }
 }

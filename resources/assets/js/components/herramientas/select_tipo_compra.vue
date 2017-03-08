@@ -15,6 +15,7 @@
       @input="updateSelected"
       @remove="removeSelected"
       @close="onTouch"
+      @open="fetchTips"
       :option-height="104">
     </Multiselect>
       <!--Se deja un Hidden por si se va a implementar en un form no tener que hacer emits -->
