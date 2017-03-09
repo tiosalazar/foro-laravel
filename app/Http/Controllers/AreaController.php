@@ -28,13 +28,13 @@ class AreaController extends Controller
      */
     public function index()
     {
-       $area=Area::all();
+       $area=Area::all()->where('estado','1');
       return response()->json($area);
     }
 
     public function index_areas()
     {
-       $area=Area::all()->where('estado','1');
+          $area=Area::all();
       return response()->json($area);
     }
 

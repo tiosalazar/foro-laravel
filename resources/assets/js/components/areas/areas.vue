@@ -95,7 +95,7 @@
             this.areaarray.estado=1;
             var input = this.areaarray;
             var that = this;
-            this.$http.post(window._apiURL+'areas',input)
+            this.$http.post(window._apiURL+'listar_areas',input)
             .then(function(respuesta){
                 that.message ='';
                 if (respuesta.status != '200') {

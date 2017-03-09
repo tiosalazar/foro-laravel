@@ -260,10 +260,10 @@ class TiposComprasTableSeeder extends Seeder {
     public function run()
     {
         DB::table('tipos_compras')->delete();
-        App\Tipos_Compra::create(array('nombre' => 'Pauta'));
-        App\Tipos_Compra::create(array('nombre' => 'Hosting'));
-        App\Tipos_Compra::create(array('nombre' => 'Plugin'));
-        App\Tipos_Compra::create(array('nombre' => 'B. Imagenes') );
+        App\Tipos_compra::create(array('nombre' => 'Pauta'));
+        App\Tipos_compra::create(array('nombre' => 'Hosting'));
+        App\Tipos_compra::create(array('nombre' => 'Plugin'));
+        App\Tipos_compra::create(array('nombre' => 'B. Imagenes') );
     }
 
 }
