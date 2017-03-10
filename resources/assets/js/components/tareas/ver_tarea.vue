@@ -326,6 +326,7 @@
           });
           this.$on('select_estado', function(v) {
             this.estado_solicitud=v;
+            this.tarea_info.estado = v;
             //Alerta atencion cuentas, descripcion o comentario obligatorio
             if (this.estado_solicitud.nombre=="Atención Cuentas") {
             this.descripcion_requerida=false;
@@ -352,7 +353,8 @@
             this.encargado=this.tarea_info.usuarioencargado;
           }
           if (this.id_usuario_actual == this.tarea_info.encargado_id) {
-            this.tarea_info.estado=0;
+            this.tarea_info.estado="";
+            console.log('encargado ! ');
           }
         },
       filters: {

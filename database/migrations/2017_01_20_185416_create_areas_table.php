@@ -17,7 +17,7 @@ class CreateAreasTable extends Migration
             $table->increments('id');
             $table->string('nombre',45);
             $table->string('extencion_tel',45);
-            $table->decimal('horas_consumidas',15,3)->default(0);
+            $table->decimal('horas_consumidas',15,2)->default(0);
             $table->tinyInteger('estado')->default(1);
             $table->timestamps();
         });

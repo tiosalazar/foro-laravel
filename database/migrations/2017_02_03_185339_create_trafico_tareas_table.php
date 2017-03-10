@@ -19,8 +19,8 @@ class CreateTraficoTareasTable extends Migration
       $table->dateTime('fecha_entrega_estimada')->nullable();
       $table->string('descripcion',255);
       $table->string('enlaces_externos',150)->nullable();
-      $table->decimal('tiempo_estimado',15,3)->nullable();
-      $table->decimal('tiempo_real',15,3)->nullable();
+      $table->decimal('tiempo_estimado',15,2)->nullable();
+      $table->decimal('tiempo_real',15,2)->nullable();
       $table->dateTime('fecha_entrega_cliente');
       $table->integer('estados_id')->nullable();
       $table->integer('areas_id')->nullable();

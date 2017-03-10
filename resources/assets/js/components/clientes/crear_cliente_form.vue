@@ -144,8 +144,9 @@
 		            toastr.warning(this.message,response.body.msg,this.option_toast);
 		          } else {
 		            toastr.success(response.body.msg,'',this.option_toast);
-		            this.cliente={};
-		            setTimeout(function(){ that.errors.clear(); }, 50);
+		            setTimeout(function () {
+						location.pathname= '/clientes/listado';
+					}, 500);
 		          }
 		        }, function(err) {
 		          if (Object.keys(err.body.obj).length>0) {
