@@ -49,15 +49,24 @@ class EstadoController extends Controller
      */
     public function show($id)
     {
-      // $Estado= Estado::where('tipos_estados_id',$id)->get();
-      // return response()->json($Estado);
-        if ($id == 1) {
-            $rol = Auth::user()->rol;
-            $estados = $rol->estados;
-        } else {
-            $estados= Estado::where('tipos_estados_id',$id)->get();
+        /**
+         *  1      = Estados correspondientes al Rol
+         *  2      = Todos los estados de Ot menos Terminado (10)
+         *  otro   = Traer todos los estaddos correspondientes al ID 
+         */
+        switch ($id) {
+            case '1':
+                $rol = Auth::user()->rol;
+                $estados = $rol->estados;
+                break;
+            case '2':
+                $estados= Estado::where('tipos_estados_id',$id)->where('id','!=','10')->get();
+                break;
+            
+            default:
+                $estados= Estado::where('tipos_estados_id',$id)->get();
+                break;
         }
-        
      
       return response()->json($estados);
     }
