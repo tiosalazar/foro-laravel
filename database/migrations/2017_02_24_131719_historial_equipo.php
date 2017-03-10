@@ -16,8 +16,8 @@ class HistorialEquipo extends Migration
         Schema::create('historico_equipos', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('entidad_id')->unsigned();
-            $table->decimal('horas_disponibles',15,3)->nullable();
-            $table->decimal('horas_gastadas',15,3)->nullable();
+            $table->decimal('horas_disponibles',15,2)->nullable();
+            $table->decimal('horas_gastadas',15,2)->nullable();
             $table->integer('tipo_de_entidad')->unsigned();
             $table->timestamps();
         });
