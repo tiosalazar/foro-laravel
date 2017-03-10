@@ -6,7 +6,7 @@
       <div class="box-header">
          <div>
           <h3 class="box-title" >Asignar Permisos</h3>
-          <select_rol class="select_rol" :refresh="rol"></select_rol> 
+          <select_rol class="select_rol" :refresh="0" permisosid="roles"></select_rol> 
          </div>
         <!-- <div class="alert alert-danger alerta" v-show="alerta">Debe seleccionar un rol</div> -->
       </div>
@@ -40,13 +40,14 @@
    created: function(){
     this.permisos();
     this.$on('rol_option', function(v) {
-      // this.rol=v.id;
-      this.ObtenerPermisosRol(v.id);
+    this.roles=v.id;
+    this.ObtenerPermisosRol(v.id);
     });
    },
   data(){
     return{
-      rol:'1',
+      rol:'',
+      roles:'',
       alerta:false,
       listado_permisos:[],
       permisos_marcados:[],
@@ -87,13 +88,13 @@
         });
     },
     UpdatePermisosRol:function(){
-        if (this.rol=="") {
+        if (this.roles=="") {
            this.alerta=true;
            toastr.error("","Debe seleccionar un Rol",this.option_toast);
            return false;
         }
        let that = this;
-       this.$http.put(window._apiURL+'permisos_role/'+this.rol+'', this.permisos_marcados )
+       this.$http.put(window._apiURL+'permisos_role/'+this.roles+'', this.permisos_marcados )
         .then(function(respuesta){
           that.message ='';
         if (respuesta.status != '200') {

@@ -32,11 +32,11 @@
 
   module.exports= {
    components: { Multiselect},
-   props: ['refresh'],
+   props: ['refresh','permisosid'],
    data () {
     return {
       roles:[],
-      id_rol: 0,
+      // id_rol: 0,
       isTouched: false,
       value_touch:'',
       value:{}
@@ -51,11 +51,13 @@
         this.fetchTips();
         this.value={id: this.refresh.id, display_name: this.refresh.id_rol};
         this.id_rol=this.refresh.id;
-
       },
       watch : {
         refresh : function (value) {
          this.value=0;
+       },
+       permisosid : function (value) {
+         this.value=value;
        }
      },
      methods:{
