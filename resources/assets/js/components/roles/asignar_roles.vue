@@ -40,13 +40,13 @@
    created: function(){
     this.permisos();
     this.$on('rol_option', function(v) {
-      this.rol=v.id;
-      this.ObtenerPermisosRol(this.rol);
+      // this.rol=v.id;
+      this.ObtenerPermisosRol(v.id);
     });
    },
   data(){
     return{
-      rol:'',
+      rol:'1',
       alerta:false,
       listado_permisos:[],
       permisos_marcados:[],

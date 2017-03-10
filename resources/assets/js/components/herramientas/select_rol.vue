@@ -71,7 +71,7 @@
        this.id_rol = newSelected.id;
        this.value_touch=newSelected;
        this.$parent.$emit('rol_option',newSelected);
-
+       console.log(newSelected);
      }else {
        this.id_rol = 0;
      }
