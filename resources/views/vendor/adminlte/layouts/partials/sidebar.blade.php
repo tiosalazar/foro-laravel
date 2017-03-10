@@ -78,7 +78,7 @@
          <li><a href="{{route('cuentas')}}">{{ trans('texto_menu.cuentas') }}</a></li>
          @endif
           @if(Auth::user()->can('ver_foro_soporte'))
-         <li><a href="{{route('soporte')}}">{{ trans('texto_menu.soporte') }}</a></li>
+        <!-- <li><a href="{{route('soporte')}}">{{ trans('texto_menu.soporte') }}</a></li>-->
          @endif
           @if( Auth::user()->can('crear_tareas') )
           <li><a href="{{ url('crear_tarea') }}">{{ trans('texto_menu.creacion_tareas') }}</a></li>

@@ -42,7 +42,7 @@
                  <div class="col-md-6 same-height">
                    <div class="form-group" v-bind:class="[errors_return.telefono,{ 'has-error': errors.has('telefono') }]">
                     <label for="telefono_usuario">Teléfono</label>
-                    <input type="text" class="form-control" id="telefono_usuario" name="telefono"  v-model="usuarios.telefono" placeholder="Teléfono" v-validate data-vv-rules="required|numeric|max:30">
+                    <input type="text" class="form-control" id="telefono_usuario" name="telefono"  v-model="usuarios.telefono" placeholder="Teléfono" v-validate data-vv-rules="numeric|max:30">
                      <span  class="help-block error_absolute" v-show="errors.has('telefono')">{{ errors.first('telefono') }}</span>
                  </div>
                  </div>
@@ -54,17 +54,15 @@
                  </div>
                   </div>
                   <div class="col-md-6 same-height">
-                  <div class="" v-bind:class="[errors_return.fecha_nacimiento,{ 'has-error': errors.has('fecha_nacimiento') }]">
+                  <div class="form-group required" v-bind:class="[errors_return.fecha_nacimiento,{ 'has-error': errors.has('fecha_nacimiento') }]">
                     <label for="fecha_nacimiento">Fecha de nacimiento</label>
-
                     <div class="input-group date">
                       <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                      <datepicker language="es" id="fecha_inicio" required="required" v-validate data-vv-rules="required" data-vv-as="Fecha de Inicio" placeholder="Fecha nacimiento"  v-model="usuarios.fecha_nacimiento" name="fecha_inicio" class="form-control"  format="dd-MM-yyyy"></datepicker>
+                      <datepicker language="es" id="fecha_inicio" required="required" v-validate data-vv-rules="required" data-vv-as="Fecha de Nacimiento" placeholder="Fecha nacimiento"  v-model="usuarios.fecha_nacimiento" name="fecha_nacimiento" class="form-control"  format="dd-MM-yyyy"></datepicker>
                     </div>
-
-                    <!-- <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" v-model="usuarios.fecha_nacimiento"  placeholder="Fecha nacimiento" v-validate data-vv-rules="required"> -->
                      <span  class="help-block error_absolute" v-show="errors.has('fecha_nacimiento')">{{ errors.first('fecha_nacimiento') }}</span>
-                 </div></div>
+                 </div>
+                 </div>
                   <div class="col-md-6 same-height">
                     <div class="form-group" >
                     <label for="rol_usuario">Rol</label>

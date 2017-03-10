@@ -63,7 +63,7 @@ class OtTiempoExtraAprobado extends Notification
             'id_tarea' => $this->ot->id,
             'nombre' => $this->user->nombre,
             'cargo' => $this->user->cargo,
-            'descripcion' => $this->user->nombre. ' ha editado su Orden de trabajo con la referencia '.$this->ot->referencia.' y el nombre '.$this->ot->nombre.' ' ,
+            'descripcion' => $this->user->nombre. ' ha editado su Orden de trabajo con la referencia #'.$this->ot->referencia.' con el nombre '.$this->ot->nombre.' ' ,
             'created_at' => date('Y-m-d H:i:s'),
             'img_perfil' => $this->user->img_perfil,
             'link'          => '/ots/visualizar/'.$this->ot->id,

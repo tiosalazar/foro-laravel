@@ -40,13 +40,13 @@
    created: function(){
     this.permisos();
     this.$on('rol_option', function(v) {
-      // this.rol=v.id;
+      this.rol=v;
       this.ObtenerPermisosRol(v.id);
     });
    },
   data(){
     return{
-      rol:'1',
+      rol:'',
       alerta:false,
       listado_permisos:[],
       permisos_marcados:[],
@@ -93,7 +93,7 @@
            return false;
         }
        let that = this;
-       this.$http.put(window._apiURL+'permisos_role/'+this.rol+'', this.permisos_marcados )
+       this.$http.put(window._apiURL+'permisos_role/'+this.rol.id+'', this.permisos_marcados )
         .then(function(respuesta){
           that.message ='';
         if (respuesta.status != '200') {

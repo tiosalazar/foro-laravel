@@ -10,7 +10,7 @@ use App\Notifications\TareaCreada;
 use App\Notifications\TareaPendiente;
 use App\Notifications\TareaProgramada;
 use App\Notifications\TareaRealizada;
-use App\Notifications\TareaOK;
+use App\Notifications\TareaOk;
 use App\Notifications\TareaAtencionCuentas;
 use App\Notifications\TareaAtencionArea;
 use App\Notifications\ComentarioNuevoTarea;
@@ -404,7 +404,7 @@ class TareaController extends Controller
                 case '1':
                 // Enviar notificacion al nuevo encargado
                 User::findOrFail($tarea->usuarios_id)
-                ->notify(new TareaOK($makerBefore,$tarea));
+                ->notify(new TareaOk($makerBefore,$tarea));
                 break;
                 case '2':
                 $encargado_area= User::where('roles_id',4)
