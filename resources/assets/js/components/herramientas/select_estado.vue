@@ -40,7 +40,6 @@
         estados:[],
         id_estado:0,
         isTouched: false,
-        value:0,
         option_toast:{
           timeOut: 5000,
           "positionClass": "toast-top-center",

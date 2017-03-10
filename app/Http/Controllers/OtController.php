@@ -317,6 +317,7 @@ class OtController extends Controller
             $debug["veces_entra"]=0;
             $debug["count_req2"]=0;
             $debug["sali_bien"]='';
+             $debug["sali_bien2"]='';
             foreach ($requerimientos as $requerimiento) {
                if(  $index >= count($tiempos_x_area)  ){
                   $debug["sali_bien"]='entre a salir bien';
@@ -352,10 +353,16 @@ class OtController extends Controller
             $index=0;
             $model_compras= Compras_Ot::where('ots_id',$id_ot)->get();
             foreach ($compras as $compra) {
+               if(  $index >= count($model_compras)  ){
+                  $debug["sali_bien2"]='entre a salir bien Compras';
+                   break;
+               }
                $model_compras[$index]->fill($compra);
                $model_compras[$index]->save();
+               unset($compras[$index]);
                $index++;
             }
+
 
             $debug["count_req2"]=count($requerimientos);
             /*Si el numero no concuerda es porque hay un nuevo requerimiento*/
@@ -380,6 +387,14 @@ class OtController extends Controller
               }
 
            }
+
+         /*El siguiente for recorre el listado de compras y los agrega*/
+            foreach ($compras as $compra) {
+               $model_compras= new Compras_Ot;
+               $model_compras->fill($compra);
+               $model_compras->ots_id=$id_ot;
+               $model_compras->save();
+            }
 
             //Guardar el Historico
             $historico= new Historico_Ot;

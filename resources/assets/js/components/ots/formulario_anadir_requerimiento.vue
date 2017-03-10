@@ -29,7 +29,7 @@
 										</div>
 									</div>
 									<div style="height:22px"></div>
-									<div class="row"  v-show="visualizacion != 'true'">
+									<div class="row">
 										<div class="col-md-12">
 											<div class="row mensaje_info" role="alert">
 												<div class="col-md-2 text-center ">
@@ -288,7 +288,9 @@
 					if (this.visualizacion=='true') {
 						var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
 						var datos_encabezado= arreglo_visualizar.datos_encabezado;
+						var datos_compras= arreglo_visualizar.final_com;
 						this.descripcion_ot=datos_encabezado.observaciones;
+						this.diabled_compras =(datos_compras.length > 0)?false:true;
 					}
 
 				},

@@ -44,7 +44,7 @@
   </section>
 </div>
 
-<div class="row"  v-show="$parent.visualizacion != 'true'">
+<div class="row">
   <div class="col-md-12 text-center">
     <div class="col-md-5 col-md-offset-1">
       <button type="button" @click="addRequerimiento" :class="{'disabled' : disabled }" class="btn btn-block boton_foro btn-success succes col-sm-3" :disabled="disabled">Añadir Compra</button>
@@ -90,7 +90,7 @@
     },
     computed:{
       disabled: function(){
-        return this.$parent.diabled_compras ;
+        return this.$parent.diabled_compras;
       }
     },
     created: function(){
@@ -145,10 +145,11 @@
                if(arreglo_compras[idx].compras != undefined && arreglo_compras[idx].compras != null && arreglo_compras[idx].area == this.id_area ){
                  datos=[{compras:arreglo_compras[idx].compras }];
                    this.$localStorage.set('datos_compra_'+arreglo_compras[idx].area,JSON.stringify(datos));//busca dependiendo del Área
-                 }else{
+                   this.disabled=false;
+                 }/*else{
                    this.compra_asociada=[];
 
-                 }
+                 }*/
                }
           }
       },

@@ -120,7 +120,7 @@
         //Consultar api de areas
         consultarApiAreas:function(){
 
-          this.$http.get(window._apiURL+'listar_areas')
+          this.$http.get(window._apiURL+'areas')
               .then(function(respuesta){
                 this.areas=respuesta.body;
                 // console.log(respuesta);

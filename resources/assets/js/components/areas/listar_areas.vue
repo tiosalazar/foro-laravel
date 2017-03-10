@@ -56,7 +56,7 @@
 
                         <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]">
                           <label for="nombre_area_edit">Editar nombre del área</label>
-                          <input type="text" class="form-control" id="nombre_area_edit" name="nombre" v-model="areaedit.nombre" placeholder="Editar nombre" v-validate data-vv-rules="required|alpha_num|max:30">
+                          <input type="text" class="form-control" id="nombre_area_edit" name="nombre" v-model="areaedit.nombre" placeholder="Editar nombre" v-validate data-vv-rules="required|alpha_num_spaces|max:30">
                           <span  class="help-block error_absolute" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
                         </div>
 
@@ -121,7 +121,7 @@ import VeeValidate, { Validator } from 'vee-validate';
       },
      methods:{
         list_areas_api: function(){
-            this.$http.get(window._apiURL+'areas')
+            this.$http.get(window._apiURL+'listar_areas')
               .then(function(respuesta){
                 this.list_areas=respuesta.body;
               });
