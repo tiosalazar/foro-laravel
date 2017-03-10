@@ -79,7 +79,9 @@ class PermisosTableSeeder extends Seeder {
         App\Permission::create(array('name' => 'ver_foro_desarrollo','display_name'=>'Ver Foro de Desarrollo','description'=>'Puede Ver' ));
         App\Permission::create(array('name' => 'ver_foro_contenidos','display_name'=>'Ver Foro de Contenidos','description'=>'Puede Ver' ));
         App\Permission::create(array('name' => 'ver_foro_digital','display_name'=>'Ver Foro de Digital','description'=>'Puede Ver' ));
-        App\Permission::create(array('name' => 'ver_foro_soporte','display_name'=>'Ver Foro de Soporte','description'=>'Puede Ver' ));
+       // App\Permission::create(array('name' => 'ver_foro_soporte','display_name'=>'Ver Foro de Soporte','description'=>'Puede Ver' ));
+        App\Permission::create(array('name' => 'ver_foro_cuentas','display_name'=>'Ver Foro de Cuentas','description'=>'Puede Ver' ));
+        
         App\Permission::create(array('name' => 'ver_foro_colaborador','display_name'=>'Ver Foro Colaborador','description'=>'Muestra el foro dependiendo del area del colaborador' ));
         //Permisos Sobre Areas
         App\Permission::create(array('name' => 'ver_listado_areas','display_name'=>'Ver Areas','description'=>'Puede Ver' ));
@@ -120,7 +122,7 @@ class AreasTableSeeder extends Seeder {
         App\Area::create(array('nombre' => 'Contenidos','extencion_tel' => '0281','estado' => '1') );
         App\Area::create(array('nombre' => 'Digital Performance','extencion_tel' => '0581','estado' => '1') );
         App\Area::create(array('nombre' => 'Cuentas','extencion_tel' => '0581','estado' => '1') );
-        App\Area::create(array('nombre' => 'Soporte','extencion_tel' => '07881','estado' => '1') );
+       // App\Area::create(array('nombre' => 'Soporte','extencion_tel' => '07881','estado' => '1') );
 
     }
 
@@ -329,7 +331,7 @@ class Permission_Role extends Seeder {
                                    ->orWhere('name','ver_foro_desarrollo')
                                    ->orWhere('name','ver_foro_diseno')
                                    ->orWhere('name','ver_foro_contenidos')
-                                   ->orWhere('name','ver_foro_soporte')
+                                   ->orWhere('name','ver_foro_cuentas')
                                    ->orWhere('name','ver_foro_digital')
                                    ->orWhere('name','crear_clientes')
                                    ->orWhere('name','editar_clientes')->get();
@@ -343,7 +345,6 @@ class Permission_Role extends Seeder {
                                    ->orWhere('name','ver_foro_desarrollo')
                                    ->orWhere('name','ver_foro_diseno')
                                    ->orWhere('name','ver_foro_contenidos')
-                                   ->orWhere('name','ver_foro_soporte')
                                    ->orWhere('name','ver_foro_digital')
                                    ->orWhere('name','editar_tareas')
                                    ->get();
