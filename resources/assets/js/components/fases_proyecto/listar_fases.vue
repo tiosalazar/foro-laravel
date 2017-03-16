@@ -88,7 +88,10 @@
         this.message='';
         var that = this;
         $.each(object, function(index, value) {
-          that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+          let campo = index.replace(/_id/g, '');
+          campo = campo.replace(/_/g, ' ');
+          value = value[0].replace(/ id /g, '');
+          that.message += '<strong>'+campo + '</strong>: '+value+ '</br>';
           that.errors_return[index] = 'has-warning';
         });
       },

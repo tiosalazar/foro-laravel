@@ -59,7 +59,10 @@
           this.message='';
           var that = this;
           $.each(object, function(index, value) {
-            that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+            let campo = index.replace(/_id/g, '');
+            campo = campo.replace(/_/g, ' ');
+            value = value[0].replace(/ id /g, '');
+            that.message += '<strong>'+campo + '</strong>: '+value+ '</br>';
             that.errors_return[index] = 'has-warning';
           });
         },
@@ -81,16 +84,20 @@
             } else {
               toastr.success(respuesta.body.msg,'',this.option_toast);
               that.divisa = {};
-              setTimeout(function(){ that.errors.clear(); }, 50); 
+              setTimeout(function(){ that.errors.clear(); }, 50);
             }
           }, (response) => {
             that.message = '';
-            if (Object.keys(response.body.obj).length>0) {
-              this.setErrors(response.body.obj);
-            }else{
-              that.message = response.body.error;
+            if (err.status == 404) {
+              toastr.error('No se encontraron resultados, verfique la informacion','Error',this.option_toast);
+            } else {
+              if (Object.keys(err.body.obj).length>0) {
+                this.setErrors(err.body.obj);
+              }else{
+                that.message = response.body.error;
+              }
+              toastr.error(this.message,err.body.msg,this.option_toast);
             }
-            toastr.error(that.message,response.body.msg,this.option_toast);
           });
         },
       }

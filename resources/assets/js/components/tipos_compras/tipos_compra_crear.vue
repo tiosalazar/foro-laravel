@@ -1,7 +1,7 @@
 <template>
   <div>
     <form class="row" name="agregar_compra" id="agregar_cliente">
-  
+
       <div class="col-xs-12 col-md-12">
         <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]" >
           <label>Nombre</label>
@@ -10,12 +10,12 @@
         </div>
       </div>
       <div class="col-xs-12 col-md-12">
-        <button type="button" v-on:click="crearcompra" class="btn btn-flat btn-success">Crear</button> 
+        <button type="button" v-on:click="crearcompra" class="btn btn-flat btn-success">Crear</button>
       </div>
     </form>
-  
+
   </div>
-   
+
   </template>
 
 <script>
@@ -44,8 +44,8 @@
         }
       }
     },
-    created:function() { 
- 
+    created:function() {
+
     },
     methods: {
       crearcompra:function(){
@@ -58,25 +58,34 @@
                   toastr.warning(this.message,respuesta.body.msg,this.option_toast);
                 } else {
                   toastr.success(respuesta.body.msg,'',this.option_toast);
-                  setTimeout(function(){ that.errors.clear(); }, 50); 
+                  setTimeout(function(){ that.errors.clear(); }, 50);
                 }
-               
+
              }, (response) => {
-              if (Object.keys(response.body.obj).length>0) {
-                this.setErrors(response.body.obj);
+               if (err.status == 404) {
+                toastr.error('No se encontraron resultados, verfique la informacion','Error',this.option_toast);
+              } else {
+                if (Object.keys(err.body.obj).length>0) {
+                  this.setErrors(err.body.obj);
+                }else{
+                  that.message = response.body.error;
+                }
+                toastr.error(this.message,err.body.msg,this.option_toast);
               }
-              toastr.error(this.message,response.body.msg,this.option_toast);
             });
-      },   
+      },
       setErrors:function(object) {
         this.message='';
         var that = this;
         $.each(object, function(index, value) {
-          that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+          let campo = index.replace(/_id/g, '');
+          campo = campo.replace(/_/g, ' ');
+          value = value[0].replace(/ id /g, '');
+          that.message += '<strong>'+campo + '</strong>: '+value+ '</br>';
           that.errors_return[index] = 'has-warning';
         });
       },
-     
+
     }
   }
 </script>

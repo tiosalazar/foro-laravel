@@ -232,16 +232,16 @@
            </paginate>
            <!-- Paginacion, paginate link tiene sus propiedades del componente instalado de vue js -->
            <div class="link_paginador">
-             <paginate-links for="comentarios_array" 
+             <paginate-links for="comentarios_array"
              :show-step-links="true"
              :step-links="{
                 next: 'Siguiente',
                 prev: 'Atrás'
-              }" 
+              }"
             :classes="{
               'ul': 'pagination',
               '.next > a': 'next-link',
-              '.prev > a': ['prev-link'] 
+              '.prev > a': ['prev-link']
             }" :hide-single-page="true" >
              </paginate-links>
            </div>
@@ -341,7 +341,7 @@
             this.ot=obj.ot;
             //Asigno toda la informacion traida del api a la variable tarea_info
             this.tarea_info=obj;
-            //Asignos los comentarios para el v-for   
+            //Asignos los comentarios para el v-for
             this.comentarios_array=obj.comentario;
             this.comentarios_array.reverse();
           }
@@ -365,6 +365,17 @@
         }
       },
       methods:{
+        setErrors:function(object) {
+  		        this.message='';
+  		        let that = this;
+  		        $.each(object, function(index, value) {
+  							let campo = index.replace(/_id/g, '');
+  							campo = campo.replace(/_/g, ' ');
+  							value = value[0].replace(/ id /g, '');
+  							that.message += '<strong>'+campo + '</strong>: '+value+ '</br>';
+  		          that.errors_return[index] = 'has-warning';
+  		        });
+  		    },
        asignar_tarea:function(){
 
         if (!(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5 || this.estado_solicitud.id == 7)) {
@@ -382,7 +393,7 @@
           let fecha_cuentas=(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5|| this.estado_solicitud.id == 7)?null:moment(this.tarea_info.fecha_entrega_cuentas).format('YYYY-MM-DD');
 
             //Datos a enviar
-            let data = 
+            let data =
             {
               encargado_id:this.encargado.id,
               estados_id:this.estado_solicitud.id,
@@ -395,7 +406,7 @@
               tiempo_real:this.tarea_info.tiempo_real,
               is_comment:(this.tarea_info.estados_id== 2 && this.rol_usuario_actual !='coordinador')? 1: 0,
             };
-            
+
             //Método que envia los datos al api rest
             this.$http.put(window._apiURL+'tareas/'+this.tarea_info.id, data)
             .then(function (respuesta) {
@@ -404,24 +415,22 @@
               that.message ='';
 
               if (respuesta.status != '200') {
-                if (Object.keys(respuesta.body.request).length>0) {
-
-                  $.each(respuesta.body.request, function(index, value) {
-                    that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-                    that.errors_return[index] = 'has-warning';
-                  });
-                }
-
-                toastr.warning(that.message,respuesta.body.msg,this.option_toast);
-              }else{
+                 if (Object.keys(respuesta.body.obj).length>0) {
+                   this.setErrors(respuesta.body.obj);
+                 }
+                 toastr.warning(this.message,respuesta.body.msg,this.option_toast);
+               }else{
                 if (respuesta.body.error == 0) {
                   toastr.success(respuesta.body.msg,'',this.option_toast);
                   this.descripcion="";
                   this.comentarios_array.unshift(respuesta.body.user_coment);
-                  setTimeout(function(){ that.errors.clear(); }, 50); 
+                  setTimeout(function(){ that.errors.clear(); }, 50);
                 }else{
                   $.each(respuesta.body.obj, function(index, value) {
-                    that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+                    let campo = index.replace(/_id/g, '');
+                    campo = campo.replace(/_/g, ' ');
+                    value = value[0].replace(/ id /g, '');
+                    that.message += '<strong>'+campo + '</strong>: '+value+ '</br>';
                     that.errors_return[index] = 'has-warning';
                   });
                   if (respuesta.body.request.fecha_entrega_area=="Invalid date") {
@@ -433,7 +442,7 @@
                   toastr.error(that.message,respuesta.body.msg,this.option_toast);
                 }
             }
-          }).then(() => {  
+          }).then(() => {
            this.errors.clear();
            console.log(this.errors);
          });

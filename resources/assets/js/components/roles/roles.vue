@@ -99,7 +99,10 @@
         this.message='';
         let that = this;
         $.each(object, function(index, value) {
-          that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+          let campo = index.replace(/_id/g, '');
+          campo = campo.replace(/_/g, ' ');
+          value = value[0].replace(/ id /g, '');
+          that.message += '<strong>'+campo + '</strong>: '+value+ '</br>';
           that.errors_return[index] = 'has-warning';
         });
       },
@@ -123,7 +126,7 @@
         toastr.success(respuesta.body.msg,'',this.option_toast);
         this.id_rol_passing={'id':respuesta.body.obj.id,'name':respuesta.body.obj.name,'display_name':respuesta.body.obj.display_name,'description':respuesta.body.obj.description};
         this.rolarray={};
-        setTimeout(function(){ that.errors.clear(); }, 50); 
+        setTimeout(function(){ that.errors.clear(); }, 50);
       }
     },(response) => {
       console.log(response);

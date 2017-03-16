@@ -189,6 +189,17 @@
           this.titulo=this.titulor;
         },
         methods:{
+          setErrors:function(object) {
+            this.message='';
+            var that = this;
+            $.each(object, function(index, value) {
+              let campo = index.replace(/_id/g, '');
+              campo = campo.replace(/_/g, ' ');
+              value = value[0].replace(/ id /g, '');
+              that.message += '<strong>'+campo + '</strong>: '+value+ '</br>';
+              that.errors_return[index] = 'has-warning';
+            });
+          },
           addUser:function(user) {
             this.$validator.validateAll();
             if (this.errors.any()) {
@@ -200,13 +211,9 @@
             .then(function (response) {
 
               if (response.status != '200') {
-               if (Object.keys(response.obj).length>0) {
-
-                $.each(respuesta.body.obj, function(index, value) {
-                  that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-                  that.errors_return[index] = 'has-warning';
-                });
-              }
+                if (Object.keys(response.body.obj).length>0) {
+                  this.setErrors(response.body.obj);
+                }
               toastr.warning(that.message,respuesta.body.msg,this.option_toast);
             }else{
               console.log(response);
@@ -225,18 +232,17 @@
           },(response) => {
            let that = this;
            that.message ='';
-
-           console.log(response);
-           if (Object.keys(response.body.obj).length>0) {
-
-            $.each(response.body.obj, function(index, value) {
-              that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
-              that.errors_return[index] = 'has-warning';
-            });
+           if (err.status == 404) {
+            toastr.error('No se encontraron resultados, verfique la informacion','Error',this.option_toast);
+          } else {
+            if (Object.keys(err.body.obj).length>0) {
+              this.setErrors(err.body.obj);
+            }else{
+              that.message = response.body.error;
+            }
+            toastr.error(this.message,err.body.msg,this.option_toast);
           }
-
-          toastr.error(that.message,response.body.msg,this.option_toast);
-        }).then(() => {  
+        }).then(() => {
          this.errors.clear();
          console.log(this.errors);
        });
