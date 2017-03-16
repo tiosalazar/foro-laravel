@@ -8818,10 +8818,12 @@ body {
 
 .perfil-box .box_perfil .box_perfil_foto {
   padding-left: 0;
+  padding-right: 0;
 }
 
 .perfil-box .box_perfil .box_perfil_foto .box_perfil_foto_img {
   padding-left: 0;
+  padding-right: 0;
 }
 
 .perfil-box .box_perfil .box_perfil_foto .box_perfil_foto_img-2 {
@@ -8868,6 +8870,11 @@ body {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   flex-direction: column;
+}
+
+.perfil-box .info_perfil .correo {
+  display: -webkit-box;
+  display: flex;
 }
 
 .perfil-box .info_perfil strong {
@@ -8958,6 +8965,9 @@ body {
   }
   .box_perfil_foto .box_perfil_foto_img {
     width: 50%;
+  }
+  .info_perfil .correo {
+    display: inherit !important;
   }
 }
 

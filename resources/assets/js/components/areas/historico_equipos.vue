@@ -131,8 +131,6 @@
 		    // Agregar Selects al dibujar la tabla
 		    $('#tabla_tareas').on( 'draw.dt', function () {
 		    	// Llamar estados de las taras
-
-
 				$.ajax( window._baseURL+"/years_historico_equipo" )
 		    	.done(function(response) {
 		    	 	// limpiar el select

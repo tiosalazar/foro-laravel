@@ -71,7 +71,7 @@
 					             <div class="box-body">
 					               <div class="info_perfil">
 					              	 <strong ><i class="fuente-icon margin-r-5">p</i> Encargado &nbsp| <span>{{$user_encargado}}</span> </strong>
-					              	 <strong><i class="fuente-icon margin-r-5">b</i> Correo &nbsp| <span>{{Auth::user()->email}}</span> </strong>
+					              	 <strong class="correo"><i class="fuente-icon margin-r-5">b</i> Correo<span> |&nbsp{{Auth::user()->email}}</span> </strong>
 					              	 <strong><i class="fuente-icon margin-r-5">t</i> Teléfono &nbsp|  <span>{{Auth::user()->telefono}}</span></strong>
 					              	 <strong><i class="fuente-icon margin-r-5">d</i> Cumpleaños &nbsp| <span> {{Auth::user()->getFechaNacimiento(Auth::user()->fecha_nacimiento) }}</span> </strong>	
 					               </div>

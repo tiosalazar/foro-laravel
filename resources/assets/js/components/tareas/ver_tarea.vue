@@ -405,7 +405,7 @@
             //Método que envia los datos al api rest
             this.$http.put(window._apiURL+'tareas/'+this.tarea_info.id, data)
             .then(function (respuesta) {
-
+              console.log(respuesta);
               let that = this;
               that.message ='';
 
