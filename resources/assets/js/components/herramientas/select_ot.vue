@@ -14,9 +14,9 @@
       @input="updateSelected"
       @close="onTouch"
       @search-change="asyncFind"
-      :internal-search="false" 
-      :loading="isLoading" 
-      :limit="3" 
+      :internal-search="false"
+      :loading="isLoading"
+      :limit="3"
       :limit-text="limitText"
       id="ajax"
       :value="value_select"
@@ -70,8 +70,8 @@
           /*
           * Funcion para organizar la visualización del select
           */
-          nameWithLang ({ nombre, referencia }) {
-            return `# ${referencia} - ${nombre}`
+          nameWithLang ({ nombre, referencia, cliente}) {
+            return `# ${referencia} - ${nombre} - ${cliente.nombre}`
           },
           updateSelected (newSelected) {
             if (newSelected != null && newSelected != undefined) {
