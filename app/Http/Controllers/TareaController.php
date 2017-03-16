@@ -255,10 +255,10 @@ class TareaController extends Controller
             $tarea_historico = new Historico_Tarea;
             $data['tiempo_estimado']=$tarea->tiempo_estimado;
             $data['tiempo_real']=$tarea->tiempo_real;
-            $data['comentarios_id']=$comentario->id; 
-            $data['encargado_id']=$tarea->encargado_id; 
-            $data['estados_id']=$tarea->estados_id; 
-            $data['usuarios_id']=$tarea->usuarios_id;                           
+            $data['comentarios_id']=$comentario->id;
+            $data['encargado_id']=$tarea->encargado_id;
+            $data['estados_id']=$tarea->estados_id;
+            $data['usuarios_id']=$tarea->usuarios_id;
             $data['tareas_id']=$tarea->id;
             $data['editor_id']=Auth::user()->id;
             $tarea_historico->fill($data);
@@ -329,11 +329,11 @@ class TareaController extends Controller
                 ->where('areas_id', $tarea->areas_id)
                 ->first();
                 $tarea->encargado_id = $encargado_area->id;
-            }else 
+            }else
             // Atención Cuentas (4)
             if($tarea->estados_id == 4){
                 $tarea->encargado_id = $tarea->usuarios_id;
-            }else 
+            }else
             // Tarea OK
             if($tarea->estados_id == 1){
                 // Tarea OK, guardar horas en usuario->horas gastadas
@@ -454,10 +454,10 @@ class TareaController extends Controller
             $tarea_historico = new Historico_Tarea;
             $data['tiempo_estimado']=$tarea->tiempo_estimado;
             $data['tiempo_real']=$tarea->tiempo_real;
-            $data['comentarios_id']=$comentario->id; 
-            $data['encargado_id']=$tarea->encargado_id; 
-            $data['estados_id']=$tarea->estados_id; 
-            $data['usuarios_id']=$tarea->usuarios_id;                           
+            $data['comentarios_id']=$comentario->id;
+            $data['encargado_id']=$tarea->encargado_id;
+            $data['estados_id']=$tarea->estados_id;
+            $data['usuarios_id']=$tarea->usuarios_id;
             $data['tareas_id']=$tarea->id;
             $data['editor_id']=Auth::user()->id;
             $tarea_historico->fill($data);
@@ -607,6 +607,70 @@ return response()->json($respuesta);
             return $years;
         }
         return [];
+    }
+    /**
+     * Traer semanas del año
+     **/
+    public function getWeekYear()
+    {
+        $week = array();
+        $current_week = Carbon::now()->weekOfYear;
+        for ($i=1; $i <=  $current_week; $i++) {
+          array_push($week, (string)$i);
+        }
+        return $week;
+        // $start = Carbon::now()->startOfWeek();
+        // $end = Carbon::now()->endOfWeek();
+        // return [$start->format('y-m-d : H-m-s'),$end->format('y-m-d  H-m-s')];
+    }
+    /**
+     * Listar tareas del Trafico
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     **/
+    public function getTrafico(Request $request)
+    {
+      $output= array();
+      // Si no trae el mes y año en el $request
+      // tomar el mes y el año actual
+      $year = '';
+      $month = '';
+      $start = '';
+      $end = '';
+      $now = Carbon::now();
+      if ($request->has('year')) {
+          $year = $request->get('year');
+      }else{
+          $year = $now->year;
+      }
+      if ($request->has('month')) {
+          $month = $request->get('month');
+      }else{
+          $month = $now->month;
+      }
+      $tarea = Tarea::with(['ot' => function ($query) {
+          // Tareas activas
+          $query->where('estado', 1);
+      },'ot.cliente','usuarioencargado','estado' => function ($query) {
+          $estado_programado= Estado::where('nombre','Programado')->first();
+          $query->where('id', '=', $estado_programado->id);
+      },'area'])
+      ->whereBetween('created_at',array($now->startOfWeek()->format('y-m-d : H-m-s'),$now->endOfWeek()->format('y-m-d : H-m-s')))
+      ->get();
+
+      // selecciona solos los que tiene el area especifico
+      foreach ($tarea as $key => $value) {
+          if ($value->area && $value->ot && $value->ot->cliente && $value->estado ) {
+              array_push($output, $value);
+          }
+      }
+      // Se conviert en collection para que lo reciba el Datatable
+      $output = collect($output);
+      return Datatables::of($output)
+      ->editColumn('created_at', function ($tarea) {
+          return $tarea->created_at->format('d-M-Y');
+      })
+      ->make(true);
     }
 
     /**
