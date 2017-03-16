@@ -181,7 +181,13 @@
 
           </div>
           <!-- /.box-body -->
-           <div v-if=" (estado_solicitud.id==1 && rol_actual =='coordinador')" >
+          <div v-if=" (rol_actual =='owner')" >
+                <div class="box-footer text-center">
+                  <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Actualizar</button>
+                  <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Comentar</button>
+                </div>
+           </div>
+           <div v-else-if=" (estado_solicitud.id==1 && rol_actual =='coordinador')" >
                 <div class="box-footer text-center">
                   <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Actualizar</button>
                 </div>
