@@ -116,6 +116,7 @@
 
 }
 
+
 .separador{
   height: 1px;
   border: 0px;
@@ -368,4 +369,18 @@ sub, sup {
 
 .listar_ot_descripcion{
   word-break: inherit !important;
+}
+.btn_accion {
+    display: inline-flex;
+    width: 50%;
+    color: white;
+    height: 28px;
+    border: 1px solid white;
+    text-align: center;
+    vertical-align: middle;
+    i{
+      text-align: center;
+      margin: 21%;
+      vertical-align: middle;
+    }
 }

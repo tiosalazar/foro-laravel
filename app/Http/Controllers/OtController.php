@@ -42,7 +42,7 @@ class OtController extends Controller
       $ots= Ot::orderBy('created_at', 'ASC')->get();
 
       $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->get();
-
+      
       return Datatables::of( $ots)
       ->addColumn('fecha_inicio', function($ots) {
         return  $ots->getFormatFecha($ots->fecha_inicio);
@@ -51,10 +51,11 @@ class OtController extends Controller
        return $ots->getFormatFecha($ots->fecha_final);
     })
       ->addColumn('acciones', function($ots) {
-       $ver_ot='<a href="visualizar/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit"   aria-label="View">Ver OT</a>';
-       $editar_ot=(Auth::user()->can('editar_ots') )?'<a href="editar/'.$ots->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit" aria-label="View">Editar OT</a>':'';
-       $eliminar_ot=(Auth::user()->can('editar_ots') )?'<button type="button" id="cli-'.$ots->id.'" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente"  data-toggle="modal" data-target="#myModal">Eliminar OT</button>':'';
-       return $ver_ot.$editar_ot.$eliminar_ot;
+       $ver_ot='<a href="visualizar/'.$ots->id.'" class="btn_accion estado-2-10 btn-success"  title="Ver Ot" aria-label="View"><i class="fa fa-eye" aria-hidden="true"></i></a>';
+       $editar_ot=(Auth::user()->can('editar_ots') )?'<a href="editar/'.$ots->id.'" title="Editar Ot"  class="btn_accion btn-info" aria-label="View"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>':'';
+       $exportar_ot=(Auth::user()->can('editar_ots') )?'<a href="exportar/'.$ots->id.'" title="Exportar Ot"  class="btn_accion estado-2-10" aria-label="View"><i class="fa fa-file-excel-o" aria-hidden="true"></i></a>':'';
+       $eliminar_ot=(Auth::user()->can('editar_ots') )?'<a href="#" id="cli-'.$ots->id.'" title="Eliminar Ot"  class="btn_accion delete_cliente btn-danger"  data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></a>':'';
+       return $ver_ot.$editar_ot.$exportar_ot.$eliminar_ot;
     })
       ->make(true);
 
@@ -631,41 +632,66 @@ class OtController extends Controller
        $ot->tiempos_x_area;
        $ot->Cliente;
        $ot->Usuario;
-       $ot->tareas=Tarea::with('area','usuario','estado')->where('estados_id', 1)->get();
+       $ot->tareas=Tarea::with('area','usuario','estado')->where('estados_id', 1)->where('ots_id',$ot->id)->get();
         // return response()->json($ot->tareas);
 
        // Initialize the array which will be passed into the Excel
        $otsArray = [];
+       $areasArray =[];
 
        // Define the Excel spreadsheet headers
-       $otsEncabezado[] = ['OT',$ot->referencia ,'Fecha Inicio',$ot->fecha_inicio,'Horas Totales',$ot->horas_totales];
-       $otsEncabezado2[] = ['Cliente',$ot->cliente['nombre'],'Fecha Final',$ot->fecha_final,'Horas Disponibles',$ot->horas_disponibles,'Horas Extra',$ot->total_horas_extra];
+       $otsEncabezado[] = ['OT',$ot->referencia ,'Fecha Inicio',$ot->getFormatFechaShowInfo($ot->fecha_inicio),'Horas Totales',$ot->horas_totales];
+       $otsEncabezado2[] = ['Cliente',$ot->cliente['nombre'],'Fecha Final',$ot->getFormatFechaShowInfo($ot->fecha_final),'Horas Disponibles',$ot->horas_disponibles,'Horas Extra',$ot->total_horas_extra];
        $otsDescripcion = [];
 
+       $areasEncabezado=[];
+       $areasEncabezado2=[];
+       $areasEncabezado3=[];
+       $total_contra=0;
+       $total_real=0;
+
+       foreach ($ot->tiempos_x_area as  $tiempo_area) {
+            array_push( $areasEncabezado,Area::findOrFail($tiempo_area['areas_id'])->nombre );
+            array_push( $areasEncabezado2,$tiempo_area['tiempo_estimado_ot'] );
+            array_push( $areasEncabezado3,$tiempo_area['tiempo_real'] );
+            $total_contra += $tiempo_area['tiempo_estimado_ot'];
+            $total_real += $tiempo_area['tiempo_real'];
+       }
+        array_push( $areasEncabezado,'TOTAL' );
+        array_push( $areasEncabezado2, $total_contra);
+        array_push( $areasEncabezado3, $total_real );
+
        foreach($ot->tareas as $tarea){
-        array_push( $otsDescripcion, array($tarea['area']['nombre'],$tarea['area']['horas_consumidas'],$tarea['usuario']['nombre'].' '.$tarea['usuario']['apellido'],$tarea['nombre_tarea'],
-         $tarea['created_at'],$tarea['fecha_entrega_cuentas'], $tarea['tiempo_real'], $tarea['tiempo_estimado'], $tarea['tiempo_mapa_cliente']) );
+        array_push( $otsDescripcion, array($tarea['area']['nombre'],$tarea['nombre_tarea'],$ot->getFormatFechaShowInfo($tarea['created_at']),$ot->getFormatFechaShowInfo($tarea['fecha_entrega_cuentas']), $tarea['tiempo_estimado'],$tarea['tiempo_real'], $tarea['tiempo_mapa_cliente'],$tarea['usuario']['nombre'].' '.$tarea['usuario']['apellido']) );
      }
      array_push($otsArray, $otsEncabezado);
      array_push($otsArray, $otsEncabezado2);
      array_push($otsArray, $otsDescripcion);
-
-     Excel::create('Resumen_OT', function($excel) use($otsArray)  {
+     array_push($areasArray, $areasEncabezado);
+     array_push($areasArray, $areasEncabezado2);
+     array_push($areasArray,  $areasEncabezado3);
+  //     return response()->json( $ot->tareas);
+     Excel::create( $ot->Cliente['nombre'].'_'.$ot->nombre.'_'.'OT_#'.$ot->referencia.'', function($excel) use($otsArray,$areasArray)  {
             // Set the spreadsheet title, creator, and description
         $excel->setTitle('Resumen de la OT ');
         $excel->setCreator('Gestor de proccesos')->setCompany('Himalaya');
         $excel->setDescription('Resumen de la OT');
 
-        $excel->sheet('resumen', function($sheet) use($otsArray)  {
+        $excel->sheet('resumen', function($sheet) use($otsArray,$areasArray)  {
           $headings = array('Datos Generales de la OT');
           $sheet->prependRow(1, $headings);
           $sheet->row(2, $otsArray[0][0]);
           $sheet->row(3, $otsArray[1][0]);
-          $headings = array('Resumen de tareas de la OT ');
+          $headings = array('Resumen de Areas de la OT ');
           $sheet->prependRow(5, $headings);
-          $headings = array('ÁREA','HORAS ÁREA','ENCARGADO','REQUERIMIENTOS','FECHA INICIO SOLICITUD','FECHA DE ENTREGA EJECUTIVA','TIEMPO REAL','TIEMPO ESTIMADO JEFE','TIEMPO ESTIMADO MAPA DE CLIENTE');
-          $sheet->prependRow(7, $headings);
-          $sheet->fromArray($otsArray[2], null, 'A8', false, false);
+          $sheet->row(6, $areasArray[0]);
+          $sheet->row(7, $areasArray[1]);
+          $sheet->row(8, $areasArray[2]);
+          $headings = array('Resumen de tareas de la OT ');
+          $sheet->prependRow(9, $headings);
+          $headings = array('ÁREA','REQUERIMIENTOS','FECHA SOLICITUD','FECHA DE ENTREGA','TIEMPO REAL','TIEMPO ESTIMADO JEFE','TIEMPO ESTIMADO MAPA DE CLIENTE','ENCARGADO');
+          $sheet->prependRow(11, $headings);
+          $sheet->fromArray($otsArray[2], null, 'A12', false, false);
 
           $sheet->cell('A1', function($cell) {
                // Set font
@@ -685,15 +711,29 @@ class OtController extends Controller
              ));
 
          });
+           $sheet->cell('A9', function($cell) {
+               // Set font
+            $cell->setFont(array(
+             'family'     => 'Calibri',
+             'size'       => '14',
+             'bold'       =>  true
+             ));
+
+         });
 
           $sheet->cells('A2:A3', function($cells) {$cells->setFontWeight('bold');});
+          $sheet->cells('B2:B3', function($cells) {$cells->setAlignment('left');});
           $sheet->cells('C2:C3', function($cells) {$cells->setFontWeight('bold');});
+          $sheet->cells('D2:D3', function($cells) {$cells->setAlignment('right');});
           $sheet->cells('E2:E3', function($cells) {$cells->setFontWeight('bold');});
+          $sheet->cells('F2:G3', function($cells) {$cells->setAlignment('center');});
           $sheet->cells('G2:G3', function($cells) {$cells->setFontWeight('bold');});
-          $sheet->cells('A7:I7', function($cells) {$cells->setFontWeight('bold');});
-
+          $sheet->cells('H2:H3', function($cells) {$cells->setAlignment('center');});
+          $sheet->cells('A11:H11', function($cells) {$cells->setFontWeight('bold');});
+          
+          $sheet->cells('A2:E8', function($cells) {$cells->setAlignment('center');});
           // Set border for range
-          $sheet->setBorder('A7:I40', 'thin');
+          $sheet->setBorder('A11:H40', 'thin');
 
        });
 
