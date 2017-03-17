@@ -42,8 +42,38 @@ class OtController extends Controller
       $ots= Ot::orderBy('created_at', 'ASC')->get();
 
       $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->get();
+
+      return response()->json($ots);
+   
+   }
+
+      /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+   public function datatable_index(Request $request)
+   {  
+      $output= array();
+
+      $ots= Ot::orderBy('created_at', 'ASC')->get();
+      $fee= $request->fee;
+      $estado= $request->estados; 
+      if ($request->has('fee') && $fee !='all'  && $estado !='all') {
+          $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->where('estados_id',$estado)->where('fee', $fee )->get();
+        }else{
+         $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->get();
+        }
+       
+      if ($request->has('estados') &&  $estado !='all'  && $fee !='all') {
+          $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->where('fee', $fee )->where('estados_id',$estado)->get();
+        }else{
+         $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->get();
+        }  
       
-      return Datatables::of( $ots)
+
+      $output = collect($ots);
+      return Datatables::of($output)
       ->addColumn('fecha_inicio', function($ots) {
         return  $ots->getFormatFecha($ots->fecha_inicio);
      })

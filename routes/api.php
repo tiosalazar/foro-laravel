@@ -35,6 +35,8 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
      Route::resource('ots', 'OtController');
      Route::put('actualizar_estado_ot/{id}', 'OtController@updateEstadoOT');
      Route::post('solicitarHoras', 'OtController@solicitarHoras');
+     Route::get('ots_datatable','OtController@datatable_index');
+     
      
     Route::get('select_clientes', 'ClienteController@select_clientes');
 

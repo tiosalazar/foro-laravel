@@ -23,7 +23,8 @@
 
 		 <form method="POST" id="search-form" class="form-inline" role="form">
 	        <div class="drop">
-	         Fee	<select name="fee" id="fee"  class="form-control  multiselect">
+	         	<select name="fee" id="fee"  class="form-control  multiselect">
+	                <option value="">Fee</option>
 	        	    <option value="all">Todos</option>
 		        	<option value="1">Si</option>
 		        	<option value="0">No</option>
@@ -78,12 +79,12 @@
 				"<'row'<'col-xs-12't>>"+
 				"<'row'<'col-xs-12'<'row'<'col-xs-6'i><'col-xs-6'p>>>>",
 				processing: true,
-				serverSide: false,
+				serverSide: true,
 				deferRender: true,
-				'ajax': {
-					'url': window._apiURL+"ots",
-					'type': 'GET',
-					'beforeSend': function (request) {
+			    ajax: {
+					url: window._apiURL+"ots_datatable/",
+					type: 'GET',
+					beforeSend: function (request) {
 						request.setRequestHeader("Authorization", 'Bearer '+Laravel.api_token);
 					},
 					data: function (d) {
@@ -92,12 +93,12 @@
 				},
 				columns: [
 				{ data: 'referencia', name: 'referencia' },
-				{ data: 'usuario.nombre', name: 'usuario' },
-				{ data: 'cliente.nombre', name: 'cliente' },
+				{ data: 'usuario.nombre', name: 'usuario.nombre' },
+				{ data: 'cliente.nombre', name: 'cliente.nombre' },
 				{ data: 'nombre', name: 'nombre' },
-				{ data: 'fee', name: 'fee' },
+				{ data: 'fee', name: 'fee', orderable: false, searchable: false },
 				{ data: 'fecha_inicio', name: 'fecha_inicio' },
-				{ data: 'estado.id', name: 'estado.id' },
+				{ data: 'estado.id', name: 'estado.nombre' },
 				{ data: 'horas_totales', name: 'horas_totales' },
 				{ data: 'valor', name: 'valor' },
 				{ data: 'observaciones', name: 'observaciones', orderable: false, searchable: false },
@@ -178,7 +179,7 @@
 
 			 // Agregar Selects al dibujar la tabla
 		    $('#tabla_tareas').on( 'draw.dt', function () {
-		    // Llamar estados de las taras
+
 				// Agregar las formulario a datatable
 				$('#search-form').appendTo('.selects');
 			} );
