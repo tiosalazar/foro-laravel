@@ -58,18 +58,12 @@ class OtController extends Controller
 
       $ots= Ot::orderBy('created_at', 'ASC')->get();
       $fee= $request->fee;
-      $estado= $request->estados; 
-      if ($request->has('fee') && $fee !='all'  && $estado !='all') {
-          $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->where('estados_id',$estado)->where('fee', $fee )->get();
+      if ($request->has('fee') && $fee !='all' ) {
+          $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->where('fee', $fee )->get();
         }else{
          $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->get();
         }
-       
-      if ($request->has('estados') &&  $estado !='all'  && $fee !='all') {
-          $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->where('fee', $fee )->where('estados_id',$estado)->get();
-        }else{
-         $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->get();
-        }  
+
       
 
       $output = collect($ots);
@@ -662,7 +656,7 @@ class OtController extends Controller
        $ot->tiempos_x_area;
        $ot->Cliente;
        $ot->Usuario;
-       $ot->tareas=Tarea::with('area','usuario','estado')->where('estados_id', 1)->where('ots_id',$ot->id)->get();
+       $ot->tareas=Tarea::with('area','usuario','estado','usuarioencargado')->where('estados_id', 1)->where('ots_id',$ot->id)->get();
         // return response()->json($ot->tareas);
 
        // Initialize the array which will be passed into the Excel
@@ -692,7 +686,7 @@ class OtController extends Controller
         array_push( $areasEncabezado3, $total_real );
 
        foreach($ot->tareas as $tarea){
-        array_push( $otsDescripcion, array($tarea['area']['nombre'],$tarea['nombre_tarea'],$ot->getFormatFechaShowInfo($tarea['created_at']),$ot->getFormatFechaShowInfo($tarea['fecha_entrega_cuentas']), $tarea['tiempo_estimado'],$tarea['tiempo_real'], $tarea['tiempo_mapa_cliente'],$tarea['usuario']['nombre'].' '.$tarea['usuario']['apellido']) );
+        array_push( $otsDescripcion, array($tarea['area']['nombre'],$tarea['nombre_tarea'],$ot->getFormatFechaShowInfo($tarea['created_at']),$ot->getFormatFechaShowInfo($tarea['fecha_entrega_cuentas']), $tarea['tiempo_estimado'],$tarea['tiempo_real'], $tarea['tiempo_mapa_cliente'],$tarea['usuarioencargado']['nombre'].' '.$tarea['usuarioencargado']['apellido']) );
      }
      array_push($otsArray, $otsEncabezado);
      array_push($otsArray, $otsEncabezado2);
