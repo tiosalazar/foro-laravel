@@ -139,7 +139,19 @@
 		color:$font-gris;
 	}
 }
+.trafico{
+	#tabla_tareas_wrapper{
+		margin-bottom: 120px;
+		.datepicker{
+			width: 150px;
+			input{
+				width: 100%;
+			}
+		}
+	}
+}
 #tabla_tareas_wrapper{
+
 	label{
 		width: 100%;
 		input{
@@ -157,8 +169,8 @@
 			display: inline-block;
 			position: relative;
 			&:before{
-				width: 0; 
-				height: 0; 
+				width: 0;
+				height: 0;
 				display: block;
 				border-left: 4px solid transparent;
 				border-right: 4px solid transparent;
@@ -169,6 +181,10 @@
 				content: " ";
 				z-index: 98;
 			}
+			.datepicker {
+				margin: 0;
+				padding: 0;
+			}
 			@media screen and (max-width: 768px) {
 				display: block;
 			}
@@ -178,7 +194,7 @@
 			-webkit-appearance: none;
 		    -moz-appearance: none;
 		    appearance: none;
-			
+
 		}
 	}
 }
@@ -208,7 +224,7 @@
 }
 
 .user_created_and_area{
-	position:relative; 
+	position:relative;
 	float:right;
 	margin-right:18px;
 	margin-bottom: 20px;
@@ -245,7 +261,7 @@
 	}
 	.alert_ups{
 		background-color:#E94800 !important;
-		text-align: center; 
+		text-align: center;
 		font-size:  16px;
 		font-weight: bold;
 	}
@@ -263,7 +279,7 @@
 				width:65px;
 			}
 			.info_comentarios{
-				display:flex; 
+				display:flex;
 				flex-direction:column;
 				margin-left: 10px;
 				span{
@@ -298,7 +314,7 @@
 			word-wrap: break-word;
 		}
 	}
-	
+
 	.columna2{
 		padding-bottom: 30px;
 	}

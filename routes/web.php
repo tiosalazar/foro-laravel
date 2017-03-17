@@ -15,7 +15,7 @@
   Auth::routes();
   Route::get('/console/{id}','RolController@updatePermisionsbyRole');
   Route::group(['middleware' => 'auth'], function () {
-    
+
     Route::get('/home', 'HomeController@index');
     Route::get('/','HomeController@index');
 
@@ -121,7 +121,9 @@
   });
 
   Route::get('/years_tarea', 'TareaController@getYearTarea');
+  Route::get('/week_of_year', 'TareaController@getWeekYear');
   Route::get('/all_tareas/{id}','TareaController@showAllTareas');
+  Route::get('/trafico','TareaController@getTrafico');
   Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
 
   // Listar Fases de  Planeación
@@ -220,7 +222,7 @@
         return view('admin.fases_proyecto.crear_fase');
       });
 
-      
+
   });
 
  // Permisos
@@ -234,7 +236,7 @@
 
    // Tipos de compra
   Route::get('/tiposcompra', function(){
-   return view('admin.tipos_compras.crear_tipo_compra'); 
+   return view('admin.tipos_compras.crear_tipo_compra');
   });
 
 

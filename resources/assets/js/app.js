@@ -24,6 +24,9 @@ Vue.component('ver_tareas', require('./components/tareas/ver_tareas.vue'));
 Vue.component('ver_tarea', require('./components/tareas/ver_tarea.vue'));
 Vue.component('tareas_perfil', require('./components/tareas/tareas_perfil.vue'));
 
+// Trafico
+Vue.component('listar_trafico', require('./components/trafico/listar.vue'));
+
 // Notificaciones
 Vue.component('notificacion',require('./components/herramientas/notificacion.vue'));
 Vue.component('notificaciones_total',require('./components/herramientas/notificaciones_total.vue'));

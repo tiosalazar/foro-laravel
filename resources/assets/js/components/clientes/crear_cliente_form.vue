@@ -102,37 +102,46 @@
 		        this.message='';
 		        var that = this;
 		        $.each(object, function(index, value) {
-		          that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+							let campo = index.replace(/_id/g, '');
+		          campo = campo.replace(/_/g, ' ');
+		          value = value[0].replace(/ id /g, '');
+		          that.message += '<strong>'+campo + '</strong>: '+value+ '</br>';
 		          that.errors_return[index] = 'has-warning';
 		        });
 		    },
-			addCliente: function(e) {
-				this.$validator.validateAll();
-			    if (this.errors.any()) {
-			        return false
-			    }
-	            let that = this;
-				this.$http.post(window._apiURL+'clientes', this.cliente)
-	             .then(function(respuesta){
-	             	that.message ='';
-	             	if (respuesta.status != '200') {
-	             		if (Object.keys(respuesta.body.obj).length>0) {
-		             		this.setErrors(respuesta.body.obj);
-		             	}
-	             		toastr.warning(that.message,respuesta.body.msg,this.option_toast);
-	             	} else {
-	             		toastr.success(respuesta.body.msg,'',this.option_toast);
-	             		this.cliente={};
-	             		setTimeout(function(){ that.errors.clear(); }, 50);
-	             	}
-	             }, (response) => {
-	             	that.message = '';
-	             	if (Object.keys(response.body.obj).length>0) {
-	             		this.setErrors(response.body.obj);
-	             	}
-				    toastr.error(that.message,response.body.msg,this.option_toast);
-				  });
-			},
+				addCliente: function(e) {
+					this.$validator.validateAll();
+					if (this.errors.any()) {
+						return false
+					}
+					let that = this;
+					this.$http.post(window._apiURL+'clientes', this.cliente)
+					.then(function(respuesta){
+						that.message ='';
+						if (respuesta.status != '200') {
+							if (Object.keys(respuesta.body.obj).length>0) {
+								this.setErrors(respuesta.body.obj);
+							}
+							toastr.warning(that.message,respuesta.body.msg,this.option_toast);
+						} else {
+							toastr.success(respuesta.body.msg,'',this.option_toast);
+							this.cliente={};
+							setTimeout(function(){ that.errors.clear(); }, 50);
+						}
+					}, (err) => {
+						that.message = '';
+						if (err.status == 404) {
+							toastr.error('No se encontraron resultados, verfique la informacion','Error',this.option_toast);
+						} else {
+							if (Object.keys(err.body.obj).length>0) {
+								this.setErrors(err.body.obj);
+							}else{
+								that.message = response.body.error;
+							}
+							toastr.error(this.message,err.body.msg,this.option_toast);
+						}
+					});
+				},
 			editCliente: function(client) {
 				let that = this;
 		        this.$http.put(window._apiURL+'clientes/'+client.id, client)
@@ -149,10 +158,16 @@
 					}, 500);
 		          }
 		        }, function(err) {
-		          if (Object.keys(err.body.obj).length>0) {
-		            this.setErrors(err.body.obj);
-		          }
-		          toastr.error(this.message,err.body.msg,this.option_toast);
+							if (err.status == 404) {
+								toastr.error('No se encontraron resultados, verfique la informacion','Error',this.option_toast);
+							} else {
+								if (Object.keys(err.body.obj).length>0) {
+									this.setErrors(err.body.obj);
+								}else{
+									that.message = response.body.error;
+								}
+								toastr.error(this.message,err.body.msg,this.option_toast);
+							}
 		        })
 		      },
 			deleteRequerimiento: function(e) {

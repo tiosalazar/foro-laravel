@@ -81,7 +81,7 @@ class PermisosTableSeeder extends Seeder {
         App\Permission::create(array('name' => 'ver_foro_digital','display_name'=>'Ver Foro de Digital','description'=>'Puede Ver' ));
        // App\Permission::create(array('name' => 'ver_foro_soporte','display_name'=>'Ver Foro de Soporte','description'=>'Puede Ver' ));
         App\Permission::create(array('name' => 'ver_foro_cuentas','display_name'=>'Ver Foro de Cuentas','description'=>'Puede Ver' ));
-        
+
         App\Permission::create(array('name' => 'ver_foro_colaborador','display_name'=>'Ver Foro Colaborador','description'=>'Muestra el foro dependiendo del area del colaborador' ));
         //Permisos Sobre Areas
         App\Permission::create(array('name' => 'ver_listado_areas','display_name'=>'Ver Areas','description'=>'Puede Ver' ));
@@ -148,6 +148,7 @@ class Tipos_estadosTableSeeder extends Seeder {
         App\Tipos_estado::create(array('nombre' => 'Estados Tareas'));
         App\Tipos_estado::create(array('nombre' => 'Estados OT') );
         App\Tipos_estado::create(array('nombre' => 'Prioridad Tarea') );
+        App\Tipos_estado::create(array('nombre' => 'Trafico') );
 
     }
 
@@ -253,6 +254,13 @@ class EstadosTableSeeder extends Seeder {
           App\Estado::create(array('nombre' => 'Alta','tipos_estados_id'=> 3) );
           App\Estado::create(array('nombre' => 'Media','tipos_estados_id'=> 3) );
           App\Estado::create(array('nombre' => 'Baja','tipos_estados_id'=> 3) );
+
+          App\Estado::create(array('nombre' => 'Programado','tipos_estados_id'=> 4) );
+          App\Estado::create(array('nombre' => 'Revisar','tipos_estados_id'=> 4) );
+          App\Estado::create(array('nombre' => 'Entregado','tipos_estados_id'=> 4) );
+          App\Estado::create(array('nombre' => 'Incumplimiento','tipos_estados_id'=> 4) );
+          App\Estado::create(array('nombre' => 'Pendiente de Entrega','tipos_estados_id'=> 4) );
+          App\Estado::create(array('nombre' => 'Programar','tipos_estados_id'=> 4) );
     }
 
 }

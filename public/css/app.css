@@ -8357,6 +8357,7 @@ sub, sup {
   word-break: inherit !important;
 }
 
+<<<<<<< HEAD
 .btn_accion {
   display: -webkit-inline-box;
   display: inline-flex;
@@ -8374,6 +8375,8 @@ sub, sup {
   vertical-align: middle;
 }
 
+=======
+>>>>>>> origin/aborrero
 body {
   font-family: 'Ubuntu', sans-serif;
 }
@@ -8835,12 +8838,18 @@ body {
 
 .perfil-box .box_perfil .box_perfil_foto {
   padding-left: 0;
+<<<<<<< HEAD
   padding-right: 0;
+=======
+>>>>>>> origin/aborrero
 }
 
 .perfil-box .box_perfil .box_perfil_foto .box_perfil_foto_img {
   padding-left: 0;
+<<<<<<< HEAD
   padding-right: 0;
+=======
+>>>>>>> origin/aborrero
 }
 
 .perfil-box .box_perfil .box_perfil_foto .box_perfil_foto_img-2 {
@@ -8889,11 +8898,14 @@ body {
   flex-direction: column;
 }
 
+<<<<<<< HEAD
 .perfil-box .info_perfil .correo {
   display: -webkit-box;
   display: flex;
 }
 
+=======
+>>>>>>> origin/aborrero
 .perfil-box .info_perfil strong {
   margin-bottom: 8px;
   color: #727272;
@@ -8983,9 +8995,12 @@ body {
   .box_perfil_foto .box_perfil_foto_img {
     width: 50%;
   }
+<<<<<<< HEAD
   .info_perfil .correo {
     display: inherit !important;
   }
+=======
+>>>>>>> origin/aborrero
 }
 
 .boton_hidden {
@@ -9146,6 +9161,21 @@ body {
   color: #6F6F6F;
 }
 
+<<<<<<< HEAD
+=======
+.trafico #tabla_tareas_wrapper {
+  margin-bottom: 120px;
+}
+
+.trafico #tabla_tareas_wrapper .datepicker {
+  width: 150px;
+}
+
+.trafico #tabla_tareas_wrapper .datepicker input {
+  width: 100%;
+}
+
+>>>>>>> origin/aborrero
 #tabla_tareas_wrapper label {
   width: 100%;
 }
@@ -9181,6 +9211,14 @@ body {
   z-index: 98;
 }
 
+<<<<<<< HEAD
+=======
+#tabla_tareas_wrapper .filtros .drop .datepicker {
+  margin: 0;
+  padding: 0;
+}
+
+>>>>>>> origin/aborrero
 @media screen and (max-width: 768px) {
   #tabla_tareas_wrapper .filtros .drop {
     display: block;
@@ -9336,10 +9374,13 @@ body {
   margin-bottom: 35px;
 }
 
+<<<<<<< HEAD
 .ver_tarea .ruta_server p {
   word-wrap: break-word;
 }
 
+=======
+>>>>>>> origin/aborrero
 .ver_tarea .columna2 {
   padding-bottom: 30px;
 }

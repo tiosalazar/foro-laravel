@@ -178,7 +178,10 @@
 		        this.message='';
 		        let that = this;
 		        $.each(object, function(index, value) {
-		          that.message += value+ '</br>';
+							let campo = index.replace(/_id/g, '');
+							campo = campo.replace(/_/g, ' ');
+							value = value[0].replace(/ id /g, '');
+							that.message += '<strong>'+campo + '</strong>: '+value+ '</br>';
 		          that.errors_return[index] = 'has-warning';
 		        });
 		    },
@@ -189,7 +192,7 @@
 			agregarTarea:function(e) {
 				// Serializo la fecha del datepicker
 				// y la asigno a la tarea
-				this.tarea.fecha_entrega_cliente = 
+				this.tarea.fecha_entrega_cliente =
 					(this.fecha_entrega_cliente)?moment(this.fecha_entrega_cliente).format('YYYY-MM-DD : HH-mm-ss'):null;
 				this.$validator.validateAll();
 		        if (this.errors.any()) {
@@ -201,7 +204,7 @@
 				this.tarea.areas_id = this.area.id;
 				this.tarea.usuarios_id = this.user;
 				this.tarea.prioridad_id=this.prioridad.id;
-				
+
 				let that = this;
 				this.$http.post(window._apiURL+'tareas',this.tarea)
 		         .then(function(respuesta){
@@ -221,14 +224,20 @@
 			            this.estado="";
 			            this.refresh=0;
 			            this.fecha_entrega_cliente = '';
-			            setTimeout(function(){ that.errors.clear(); }, 50); 
+			            setTimeout(function(){ that.errors.clear(); }, 50);
 			          }
 		           console.log(respuesta);
-		         }, (response) => {
-		          if (Object.keys(response.body.obj).length>0) {
-		            this.setErrors(response.body.obj);
-		          }
-		          toastr.error(this.message,response.body.msg,this.option_toast);
+		         }, (err) => {
+							 if (err.status == 404) {
+ 		            toastr.error('No se encontraron resultados, verfique la informacion','Error',this.option_toast);
+ 		          } else {
+ 		            if (Object.keys(err.body.obj).length>0) {
+ 		              this.setErrors(err.body.obj);
+ 		            }else{
+ 		              that.message = response.body.error;
+ 		            }
+ 		            toastr.error(this.message,err.body.msg,this.option_toast);
+ 		          }
 		        });
 			},
 		},

@@ -6,7 +6,7 @@
       <div class="box-header">
          <div>
           <h3 class="box-title" >Asignar Permisos</h3>
-          <select_rol class="select_rol" :refresh="0" permisosid="roles"></select_rol> 
+          <select_rol class="select_rol" :refresh="0" permisosid="roles"></select_rol>
          </div>
         <!-- <div class="alert alert-danger alerta" v-show="alerta">Debe seleccionar un rol</div> -->
       </div>
@@ -18,7 +18,7 @@
               <label :for="listado_permiso.name">
                   {{listado_permiso.display_name}}
               </label>
-         </div>   
+         </div>
         </form>
         <div class="box-footer">
           <input type="button" class="btn btn-info guardar_roles" value="Guardar" @click="UpdatePermisosRol">
@@ -63,7 +63,10 @@
       this.message='';
       let that = this;
       $.each(object, function(index, value) {
-        that.message += '<strong>'+index + '</strong>: '+value+ '</br>';
+        let campo = index.replace(/_id/g, '');
+        campo = campo.replace(/_/g, ' ');
+        value = value[0].replace(/ id /g, '');
+        that.message += '<strong>'+campo + '</strong>: '+value+ '</br>';
         that.errors_return[index] = 'has-warning';
       });
     },
@@ -107,18 +110,18 @@
             toastr.success(respuesta.body.msg,'',this.option_toast);
             this.id_rol_passing={'id':respuesta.body.obj.id,'name':respuesta.body.obj.name,'display_name':respuesta.body.obj.display_name,'description':respuesta.body.obj.description};
             this.rolarray={};
-            setTimeout(function(){ that.errors.clear(); }, 50); 
+            setTimeout(function(){ that.errors.clear(); }, 50);
           }
         },(response) => {
-         
+
           that.message = '';
           if (Object.keys(response.body.request).length>0) {
             this.setErrors(respuesta.body.request);
           }
           toastr.error(that.message,response.body.msg,this.option_toast);
-       
+
           this.alerta=false;
-       });  
+       });
     }
   }
 }

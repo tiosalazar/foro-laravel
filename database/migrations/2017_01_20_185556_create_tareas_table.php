@@ -31,6 +31,8 @@ class CreateTareasTable extends Migration
             $table->integer('planeacion_fases_id')->unsigned();
             $table->integer('encargado_id')->nullable();
             $table->integer('prioridad_id')->nullable();
+            $table->integer('estado_trafico_id')->nullable();
+            $table->integer('comentario_trafico')->nullable();
             $table->timestamps();
 
                $table->foreign('estados_id')->references('id')->on('estados')
