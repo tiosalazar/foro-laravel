@@ -5,11 +5,15 @@
 		        <tr>
 		          <th >OT</th>
 		          <th >Cliente</th>
+		          <th >Ejecutivo</th>
+							<th >Encargado</th>
+							<th >Fecha de Solicitud</th>
 		          <th >Requerimiento</th>
-		          <th >Fecha de Solicitud</th>
-		          <th >Encargado</th>
+		          <th >Fecha Entrega Área</th>
+		          <th >Fecha Entrega Cuentas</th>
 		          <th >Estado</th>
 		          <th >Acciones</th>
+		          <th >Comentarios</th>
 		        </tr>
 		    </thead>
         </table>
@@ -123,13 +127,16 @@
 				columns: [
 				{ data: 'ot.referencia', name: 'ot.referencia' },
 				{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre' },
-				{ data: 'nombre_tarea', name: 'nombre_tarea' },
-				{ data: 'created_at', name: 'created_at' },
+				{ data: 'ejecutivo', name: 'ejecutivo' },
 				{ data: 'usuarioencargado.nombre', name: 'usuarioencargado.nombre' },
+				{ data: 'created_at', name: 'created_at' },
+				{ data: 'nombre_tarea', name: 'nombre_tarea' },
+				{ data: 'fecha_entrega_area', name: 'fecha_entrega_area' },
+				{ data: 'fecha_entrega_cuentas', name: 'fecha_entrega_cuentas' },
 				],
 				columnDefs: [
 				{
-					"targets": [5],
+					"targets": [8],
 					"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
 						   	return '<span class="label label-estado estado-'+data.estado.tipos_estados_id+'-'+data.estado.id+' ">'+data.estado.nombre+'</span>';
@@ -137,12 +144,19 @@
 						   }
 						},
 						{
-							"targets": [6],
+							"targets": [9],
 							"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
 						   	return '<a href="'+window._baseURL+'/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block"   aria-label="View">Ver tarea</a>';
 						   }
-						}
+						},
+						{
+							"targets": [10],
+							"data": null,
+						   "render": function(data, type, full) { // Devuelve el contenido personalizado
+						   	return '<textarea name="comentario"></textarea>';
+						   }
+						},
 						],
 						autoWidth: false,
 						responsive: true,

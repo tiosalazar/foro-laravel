@@ -652,7 +652,7 @@ return response()->json($respuesta);
       },'ot.cliente','usuarioencargado','estado' => function ($query) {
           $estado_programado= Estado::where('nombre','Programado')->first();
           $query->where('id', '=', $estado_programado->id);
-      },'area'])
+      },'area','usuario'])
       ->whereBetween('created_at',array($f_inicio,$f_final))
       ->get();
 
@@ -665,7 +665,16 @@ return response()->json($respuesta);
       // Se conviert en collection para que lo reciba el Datatable
       $output = collect($output);
       return Datatables::of($output)
+      ->addColumn('ejecutivo', function ($tarea) {
+        return $tarea->usuario->nombre[0].$tarea->usuario->apellido[0];
+      })
       ->editColumn('created_at', function ($tarea) {
+          return $tarea->created_at->format('d-M-Y');
+      })
+      ->editColumn('fecha_entrega_area', function ($tarea) {
+          return $tarea->created_at->format('d-M-Y');
+      })
+      ->editColumn('fecha_entrega_cuentas', function ($tarea) {
           return $tarea->created_at->format('d-M-Y');
       })
       ->make(true);
