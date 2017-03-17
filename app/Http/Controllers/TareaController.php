@@ -260,6 +260,8 @@ class TareaController extends Controller
             $data['estados_id']=$tarea->estados_id; 
             $data['usuarios_id']=$tarea->usuarios_id;                           
             $data['tareas_id']=$tarea->id;
+            $data['fecha_entrega_area']=$tarea->fecha_entrega_area;
+            $data['fecha_entrega_cuentas']=$tarea->fecha_entrega_cuentas;
             $data['editor_id']=Auth::user()->id;
             $tarea_historico->fill($data);
             try {
@@ -459,6 +461,8 @@ class TareaController extends Controller
             $data['estados_id']=$tarea->estados_id; 
             $data['usuarios_id']=$tarea->usuarios_id;                           
             $data['tareas_id']=$tarea->id;
+            $data['fecha_entrega_area']=$tarea->fecha_entrega_area;
+            $data['fecha_entrega_cuentas']=$tarea->fecha_entrega_cuentas;
             $data['editor_id']=Auth::user()->id;
             $tarea_historico->fill($data);
             $tarea_historico->save();
@@ -472,6 +476,8 @@ class TareaController extends Controller
             $respuesta["mensaje"]="OK";
             $respuesta["msg"]="Asignado con exito";
             $respuesta["usuario"]=$encargado_area;
+            $respuesta["tarea_historico"]=$tarea_historico;
+
             // $respuesta["horas"]=$horas_area;
             foreach ($tarea->comentario as $key => $value) {
                 if ($value->user->id==$request->usuarios_comentario_id) {

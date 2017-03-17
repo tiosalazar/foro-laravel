@@ -3,8 +3,10 @@
 		padding-left: 0;
 		.box_perfil_foto{
 			padding-left: 0;
+			padding-right: 0;
 			.box_perfil_foto_img{
 				padding-left: 0;
+				padding-right: 0;
 			}
 			.box_perfil_foto_img-2{
 				height: 240px; 
@@ -45,6 +47,9 @@
 	.info_perfil{
 	display: flex;
 	flex-direction: column;
+		.correo{
+			display: flex;
+		}
 		strong{
 			margin-bottom: 8px;
 			color:#727272;
@@ -126,6 +131,12 @@
     	width: 50%;
     }
   }
+
+  	.info_perfil{
+		.correo{
+			display: inherit !important;
+		}
+	}
 }
 
     
