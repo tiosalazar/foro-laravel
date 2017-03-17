@@ -12,6 +12,7 @@
 		          <th >Fecha Entrega Área</th>
 		          <th >Fecha Entrega Cuentas</th>
 		          <th >Estado</th>
+		          <th >Estado Tr&aacute;fico</th>
 		          <th >Acciones</th>
 		          <th >Comentarios</th>
 		        </tr>
@@ -133,10 +134,11 @@
 				{ data: 'nombre_tarea', name: 'nombre_tarea' },
 				{ data: 'fecha_entrega_area', name: 'fecha_entrega_area' },
 				{ data: 'fecha_entrega_cuentas', name: 'fecha_entrega_cuentas' },
+				{ data: 'estados_trafico', name: 'estados_trafico' },
 				],
 				columnDefs: [
 				{
-					"targets": [8],
+					"targets": [9],
 					"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
 						   	return '<span class="label label-estado estado-'+data.estado.tipos_estados_id+'-'+data.estado.id+' ">'+data.estado.nombre+'</span>';
@@ -144,14 +146,14 @@
 						   }
 						},
 						{
-							"targets": [9],
+							"targets": [10],
 							"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
 						   	return '<a href="'+window._baseURL+'/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block"   aria-label="View">Ver tarea</a>';
 						   }
 						},
 						{
-							"targets": [10],
+							"targets": [11],
 							"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
 						   	return '<textarea name="comentario" id="comentario"></textarea>';

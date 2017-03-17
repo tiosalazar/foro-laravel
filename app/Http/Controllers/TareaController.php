@@ -668,6 +668,15 @@ return response()->json($respuesta);
       ->addColumn('ejecutivo', function ($tarea) {
         return $tarea->usuario->nombre[0].$tarea->usuario->apellido[0];
       })
+      ->addColumn('estados_trafico', function ($user) {
+          $options ='';
+          $estados = Estado::where('tipos_estados_id',4)->get();
+          foreach ($estados as $key => $value) {
+            $options .= '<option value="'.$value->id.'">'.$value->nombre.'</option>';
+          }
+          $select = '<select name="estados_trafico" class="form-control">'.$options.'</select>';
+          return $select;
+      })
       ->editColumn('created_at', function ($tarea) {
           return $tarea->created_at->format('d-M-Y');
       })
