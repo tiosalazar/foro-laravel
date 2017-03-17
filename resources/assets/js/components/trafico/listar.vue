@@ -154,7 +154,7 @@
 							"targets": [10],
 							"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
-						   	return '<textarea name="comentario"></textarea>';
+						   	return '<textarea name="comentario" id="comentario"></textarea>';
 						   }
 						},
 						],
@@ -186,6 +186,7 @@
 						},
 
 					});
+			// $('#comentario').editable();
 			// Enviar los datos del filtro personalizado
 			$('#search-form').on('submit', function(e) {
 				oTable.draw();
