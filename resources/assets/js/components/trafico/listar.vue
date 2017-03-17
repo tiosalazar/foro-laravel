@@ -1,6 +1,6 @@
 <template>
-	<div class="tarea  table-responsive">
-        <table class="table  table-striped table-hover table-responsive datatable-foro table-bordered dataTable no-footer" role="grid" id="tabla_tareas" cellspacing="0" width="100%">
+	<div class="tarea  table-responsive trafico">
+        <table class=" table  table-striped table-hover table-responsive datatable-foro table-bordered dataTable no-footer " role="grid" id="tabla_tareas" cellspacing="0" width="100%">
 		  <thead>
 		        <tr>
 		          <th >OT</th>
@@ -14,45 +14,51 @@
 		    </thead>
         </table>
         <form method="POST" id="search-form" class="form-inline" role="form">
-	        <div class="drop" v-show="this.area !='' ">
-	        	<select name="estados" id="estados"  class="form-control multiselect">
-		        	<option value="">Estados</option>
-		        </select>
-	        </div>
-	        <div class="drop">
-	        	<select name="year" id="year"  class="form-control multiselect">
-		        	<option value="">Año</option>
-		        </select>
-	        </div>
-	        <div class="drop">
-	        	<select name="month" id="month"  class="form-control multiselect">
-		        	<option value="">Mes</option>
-		        	<option value="01">Enero</option>
-		        	<option value="02">Febrero</option>
-		        	<option value="03">Marzo</option>
-		        	<option value="04">Abril</option>
-		        	<option value="05">Mayo</option>
-		        	<option value="06">Junio</option>
-		        	<option value="07">Julio</option>
-		        	<option value="08">Agosto</option>
-		        	<option value="09">Septiembre</option>
-		        	<option value="10">Octubre</option>
-		        	<option value="11">Noviembre</option>
-		        	<option value="12">Diciembre</option>
-		        </select>
-	        </div>
-          <div class="drop">
+					<div class="drop">
+						<datepicker language="es"
+							id="fecha_inicio"
+							required="required" v-validate data-vv-rules="required"
+							@input="guardarDatos"
+							:disabled="disabled"
+							data-vv-as="Fecha de Inicio"
+							placeholder="Fecha Inicio"
+							v-model="fechas.to"
+							name="fecha_inicio"
+							class="form-control"
+							format="dd-MM-yyyy">
+						</datepicker>
+						<input type="hidden" name="f_inicio" v-model="start">
+					</div>
+					<div class="drop">
+						<datepicker language="es"
+							id="fecha_final"
+							required="required" v-validate data-vv-rules="required"
+							@input="guardarDatos"
+							:disabled="disabled"
+							data-vv-as="Fecha Final"
+							placeholder="Fecha Final"
+							v-model="fechas.from"
+							name="fecha_final"
+							class="form-control"
+							format="dd-MM-yyyy">
+						</datepicker>
+						<input type="hidden" name="f_final" v-model="end">
+					</div>
+          <!-- <div class="drop">
 	        	<select name="week" id="week"  class="form-control multiselect">
 		        	<option value="">Semana</option>
 		        </select>
-	        </div>
+	        </div> -->
             <button type="submit" class="btn btn-info btn-flat">Buscar</button>
         </form>
 	</div>
 </template>
 <script>
 	import table from 'datatables.net';
+	import Datepicker from 'vuejs-datepicker';
+	import moment from 'moment';
 	module.exports={
+		components: {Datepicker},
 		props: [],
 		data(){
 			return{
@@ -60,6 +66,15 @@
 				tareas:[],
 				estado:{},
 				boton_hidden:false,
+				disabled:{
+					from:moment().toDate(),
+				},
+				fechas:{
+					to:'',
+					from:'',
+				},
+				start:'',
+				end:'',
 			}
 		},
 		created: function(){
@@ -72,6 +87,18 @@
 			});
 		},
 		watch:{},
+		computed:{
+	      // start: function (val) {
+	      //   let thing = val
+	      //   console.log(thing)
+	      //   return thing;
+	      // },
+				// end: function (val) {
+	      //   let thing = val
+	      //   console.log(thing)
+	      //   return thing;
+	      // },
+	  },
 		mounted(){
 			let that = this;
 			var oTable = $('#tabla_tareas').DataTable({
@@ -85,10 +112,11 @@
 				ajax: {
 					url: window._baseURL+"/trafico",
 					data: function (d) {
-						d.estados = $('select[name=estados]').val();
-						d.year = $('select[name=year]').val();
-						d.month = $('select[name=month]').val();
-						d.week = $('select[name=week]').val();
+						// d.estados = $('select[name=estados]').val();
+						// d.year = $('select[name=year]').val();
+						// d.month = $('select[name=month]').val();
+						d.f_inicio = $('input[name=f_inicio]').val();
+						d.f_final = $('input[name=f_final]').val();
 					},
 
 				},
@@ -151,42 +179,8 @@
 			});
 		    // Agregar Selects al dibujar la tabla
 		    $('#tabla_tareas').on( 'draw.dt', function () {
-		    // Llamar estados de las taras
+		    // Llamar estados de las tareas
 
-		    $.ajax({ url:window._apiURL+"estados/1",headers: {
-		    	'Authorization':'Bearer '+Laravel.api_token}})
-		    .done(function(response) {
-		    	 	// limpiar el select
-		    	 	var option;
-		    	 	$('#estados')
-		    	 	.find('option')
-		    	 	.remove()
-		    	 	.end()
-		    	 	.append('<option value="">Estados</option>')
-				    // llenar select dinamicamente
-				    response.forEach(function(item,index) {
-				    	option = $('<option>');
-				    	option.attr('value', item.id).text(item.nombre);
-				    	$('#estados').append(option);
-				    })
-				})
-
-		    $.ajax( window._baseURL+"/years_tarea" )
-		    .done(function(response) {
-		    	 	// limpiar el select
-		    	 	let option;
-		    	 	$('#year')
-		    	 	.find('option')
-		    	 	.remove()
-		    	 	.end()
-		    	 	.append('<option value="">Año</option>')
-				    // llenar select dinamicamente
-				    response.forEach(function(item,index) {
-				    	option = $('<option>');
-				    	option.attr('value', item).text(item);
-				    	$('#year').append(option);
-				    })
-				})
         $.ajax( window._baseURL+"/week_of_year" )
 		    .done(function(response) {
 		    	 	// limpiar el select
@@ -211,7 +205,16 @@
 
 		},
 		methods:{
-
+			guardarDatos:function () {
+				if (this.fechas.to !== '') {
+					this.start = moment(this.fechas.to).format('YYYY-MM-DD');
+				}
+				if (this.fechas.from!=='') {
+					console.log('end',this.end)
+					this.end = moment(this.fechas.from).format('YYYY-MM-DD');
+				}
+				console.log(this.start,this.end);
+			}
 		},
 
 	}

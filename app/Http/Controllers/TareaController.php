@@ -633,20 +633,18 @@ return response()->json($respuesta);
       $output= array();
       // Si no trae el mes y año en el $request
       // tomar el mes y el año actual
-      $year = '';
-      $month = '';
-      $start = '';
-      $end = '';
+      $f_inicio = '';
+      $f_final = '';
       $now = Carbon::now();
-      if ($request->has('year')) {
-          $year = $request->get('year');
+      if ($request->has('f_inicio')) {
+          $f_inicio = $request->get('f_inicio');
       }else{
-          $year = $now->year;
+          $f_inicio = $now->startOfWeek()->format('y-m-d H-m-s');
       }
-      if ($request->has('month')) {
-          $month = $request->get('month');
+      if ($request->has('f_final')) {
+          $f_final = $request->get('f_final');
       }else{
-          $month = $now->month;
+          $f_final = $now->endOfWeek()->format('y-m-d H-m-s');
       }
       $tarea = Tarea::with(['ot' => function ($query) {
           // Tareas activas
@@ -655,7 +653,7 @@ return response()->json($respuesta);
           $estado_programado= Estado::where('nombre','Programado')->first();
           $query->where('id', '=', $estado_programado->id);
       },'area'])
-      ->whereBetween('created_at',array($now->startOfWeek()->format('y-m-d : H-m-s'),$now->endOfWeek()->format('y-m-d : H-m-s')))
+      ->whereBetween('created_at',array($f_inicio,$f_final))
       ->get();
 
       // selecciona solos los que tiene el area especifico

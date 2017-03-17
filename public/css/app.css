@@ -9119,6 +9119,18 @@ body {
   color: #6F6F6F;
 }
 
+.trafico #tabla_tareas_wrapper {
+  margin-bottom: 120px;
+}
+
+.trafico #tabla_tareas_wrapper .datepicker {
+  width: 150px;
+}
+
+.trafico #tabla_tareas_wrapper .datepicker input {
+  width: 100%;
+}
+
 #tabla_tareas_wrapper label {
   width: 100%;
 }
@@ -9152,6 +9164,11 @@ body {
   right: 5px;
   content: " ";
   z-index: 98;
+}
+
+#tabla_tareas_wrapper .filtros .drop .datepicker {
+  margin: 0;
+  padding: 0;
 }
 
 @media screen and (max-width: 768px) {
