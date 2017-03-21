@@ -35,13 +35,15 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
      Route::resource('ots', 'OtController');
      Route::put('actualizar_estado_ot/{id}', 'OtController@updateEstadoOT');
      Route::post('solicitarHoras', 'OtController@solicitarHoras');
-     
+
     Route::get('select_clientes', 'ClienteController@select_clientes');
 
     //Permisos Roles
      Route::get('permisos','RolController@showAllPermisions');
      Route::get('permisos_role/{id}','RolController@showPermisionsbyRole');
      Route::put('permisos_role/{id}','RolController@updatePermisionsbyRole');
+
+     Route::post('save_trafic/{id}', 'TareaController@saveTrafic');
 
 
 });

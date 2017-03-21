@@ -668,14 +668,18 @@ return response()->json($respuesta);
       ->addColumn('ejecutivo', function ($tarea) {
         return $tarea->usuario->nombre[0].$tarea->usuario->apellido[0];
       })
-      ->addColumn('estados_trafico', function ($user) {
+      ->addColumn('estados_trafico', function ($tarea) {
           $options ='';
           $estados = Estado::where('tipos_estados_id',4)->get();
           foreach ($estados as $key => $value) {
-            $options .= '<option value="'.$value->id.'">'.$value->nombre.'</option>';
+            $selected = ($tarea->estados_trafico == $value->id) ? "selected" :"";
+            $options .= '<option value="'.$value->id.'" '.$selected.'>'.$value->nombre.'</option>';
           }
-          $select = '<select name="estados_trafico" class="form-control">'.$options.'</select>';
+          $select = '<select name="estados_trafico'.$tarea->id.'" id="estados_trafico'.$tarea->id.'" class="form-control">'.$options.'</select>';
           return $select;
+      })
+      ->addColumn('comentario', function ($tarea) {
+        return '<textarea id="comentario'.$tarea->id.'">'.$tarea->comentario_trafico.'</textarea>';
       })
       ->editColumn('created_at', function ($tarea) {
           return $tarea->created_at->format('d-M-Y');
@@ -687,6 +691,31 @@ return response()->json($respuesta);
           return $tarea->created_at->format('d-M-Y');
       })
       ->make(true);
+    }
+
+    public function saveTrafic(Request $request, $id)
+    {
+      $tarea  = Tarea::findOrFail($id);
+      if ($request->has('comentario')) {
+        $tarea->comentario_trafico = $request->input('comentario');
+      }
+      if ($request->has('estado_trafico')) {
+        $tarea->estado_trafico_id = $request->input('estado_trafico');
+      }
+      try {
+        $tarea->save();
+      } catch (Exception $e) {
+        return response([
+            'status' => Response::HTTP_BAD_REQUEST,
+            'response_time' => microtime(true) - LARAVEL_START,
+            'msg' => 'Error al actualizar la tarea.',
+            'error' => 'ERR_05',
+            // 'obj' =>$vl->errors(),
+            'tarea' =>$tarea,
+            'request' =>$request,
+            ],Response::HTTP_BAD_REQUEST);
+      }
+
     }
 
     /**

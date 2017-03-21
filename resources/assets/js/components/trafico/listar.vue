@@ -11,10 +11,10 @@
 		          <th >Requerimiento</th>
 		          <th >Fecha Entrega Área</th>
 		          <th >Fecha Entrega Cuentas</th>
-		          <th >Estado</th>
-		          <th >Estado Tr&aacute;fico</th>
+							<th >Estado Tr&aacute;fico</th>
+							<th >Comentarios</th>
+							<th >Estado</th>
 		          <th >Acciones</th>
-		          <th >Comentarios</th>
 		        </tr>
 		    </thead>
         </table>
@@ -92,18 +92,7 @@
 			});
 		},
 		watch:{},
-		computed:{
-	      // start: function (val) {
-	      //   let thing = val
-	      //   console.log(thing)
-	      //   return thing;
-	      // },
-				// end: function (val) {
-	      //   let thing = val
-	      //   console.log(thing)
-	      //   return thing;
-	      // },
-	  },
+		computed:{},
 		mounted(){
 			let that = this;
 			var oTable = $('#tabla_tareas').DataTable({
@@ -117,9 +106,6 @@
 				ajax: {
 					url: window._baseURL+"/trafico",
 					data: function (d) {
-						// d.estados = $('select[name=estados]').val();
-						// d.year = $('select[name=year]').val();
-						// d.month = $('select[name=month]').val();
 						d.f_inicio = $('input[name=f_inicio]').val();
 						d.f_final = $('input[name=f_final]').val();
 					},
@@ -135,29 +121,31 @@
 				{ data: 'fecha_entrega_area', name: 'fecha_entrega_area' },
 				{ data: 'fecha_entrega_cuentas', name: 'fecha_entrega_cuentas' },
 				{ data: 'estados_trafico', name: 'estados_trafico' },
+				{ data: 'comentario', name: 'comentario' },
 				],
 				columnDefs: [
 				{
-					"targets": [9],
+					"targets": [10],
 					"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
 						   	return '<span class="label label-estado estado-'+data.estado.tipos_estados_id+'-'+data.estado.id+' ">'+data.estado.nombre+'</span>';
 
 						   }
 						},
-						{
-							"targets": [10],
-							"data": null,
-						   "render": function(data, type, full) { // Devuelve el contenido personalizado
-						   	return '<a href="'+window._baseURL+'/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block"   aria-label="View">Ver tarea</a>';
-						   }
-						},
+						// {
+						// 	"targets": [10],
+						// 	"data": null,
+						//    "render": function(data, type, full) { // Devuelve el contenido personalizado
+						//    	return '<textarea id="comentario'+data.id+'"></textarea>';
+						//    }
+						// },
 						{
 							"targets": [11],
 							"data": null,
-						   "render": function(data, type, full) { // Devuelve el contenido personalizado
-						   	return '<textarea name="comentario" id="comentario"></textarea>';
-						   }
+							"render": function(data, type, full) { // Devuelve el contenido personalizado
+								return '<a href="'+window._baseURL+'/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block" aria-label="View">Ver tarea</a>'+
+								'<button id="'+data.id+'" class="save_trafic btn btn-success btn-xs btn-flat btn-block " aria-label="View">Guardar</button>';
+							}
 						},
 						],
 						autoWidth: false,
@@ -188,7 +176,21 @@
 						},
 
 					});
-			// $('#comentario').editable();
+
+				$('#tabla_tareas tbody').on('click','.save_trafic',function (e) {
+					e.preventDefault();
+					var id = $(this).attr('id');
+					id = id.replace( /^\D+/g, '');
+					var data = {estado_trafico:$('#estados_trafico'+id).val(),comentario:$('#comentario'+id).val()};
+					$.ajax( {url: window._apiURL+"save_trafic/"+id,
+									type:'POST' ,
+									data:data,
+									beforeSend: function (request) { request.setRequestHeader("Authorization", 'Bearer '+Laravel.api_token) }
+								})
+			    .done(function(response) {
+						// console.log(response);
+					});
+				})
 			// Enviar los datos del filtro personalizado
 			$('#search-form').on('submit', function(e) {
 				oTable.draw();
@@ -217,7 +219,6 @@
 				})
 				// Agregar las formulario a datatable
 				$('#search-form').appendTo('.selects');
-
 			} );
 
 		},
