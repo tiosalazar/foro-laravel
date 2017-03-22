@@ -81,10 +81,10 @@
 a:hover, a:focus {
 text-decoration: none;
 }
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 .form-group{
 	margin-bottom: 20px;
@@ -118,7 +118,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .permisos{
 	.alerta{
-		
+
 		font-size: 17px;
 		margin-bottom: 35px;
 		margin-top: 28px;
@@ -131,7 +131,7 @@ input[type=number]::-webkit-outer-spin-button {
 	.form-permisos{
 	    display: flex;
 	    justify-content: flex-start;
-	    flex-wrap: wrap; 
+	    flex-wrap: wrap;
 	    padding-left:2%;
 	    padding-right:2%;
 	}
@@ -139,7 +139,7 @@ input[type=number]::-webkit-outer-spin-button {
 		display: flex;
 	}
 	.box-title{
-		padding-left:1%; 
+		padding-left:1%;
 		margin-bottom:20px;
 	}
 	.permisos_check{
@@ -156,5 +156,9 @@ input[type=number]::-webkit-outer-spin-button {
 		    margin-bottom: 5px;
 	    }
 	}
-	
+
+}
+// Asterisco rojo en formlarios
+label sup{
+	color: #ff0000;
 }

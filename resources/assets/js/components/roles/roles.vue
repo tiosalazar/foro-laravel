@@ -14,12 +14,12 @@
     <div class="box-body">
       <div  role="form"  action="#">
         <div class="form-group required" v-bind:class="[errors_return.name,{ 'has-error': errors.has('name') }]">
-          <label for="nombre_rol">Nombre  <sup>*</sup> </label>
+          <label for="nombre_rol"><sup>*</sup> Nombre   </label>
           <input type="text" v-model="rolarray.name"  class="form-control" name="name" id="nombre_rol" placeholder="Nombre logico del rol" data-vv-as="Nombre Logico" v-validate data-vv-rules="required|alpha_num|min:3" >
           <span  class="help-block" v-show="errors.has('name')">{{ errors.first('name') }}</span>
         </div>
         <div class="form-group required" v-bind:class="[errors_return.Nombre,{ 'has-error': errors.has('Nombre') }]">
-          <label for="nombre_rol">Nombre a Mostrar   <sup>*</sup> </label>
+          <label for="nombre_rol"><sup>*</sup> Nombre a Mostrar    </label>
           <input type="text" v-model="rolarray.display_name"  class="form-control" name="Nombre" id="Nombre_rol" data-vv-as="Nombre a mostrar" placeholder="Nombre del rol"  v-validate data-vv-rules="required|alpha_num_spaces|min:3" >
           <span  class="help-block" v-show="errors.has('Nombre')">{{ errors.first('Nombre') }}</span>
         </div>

@@ -33,7 +33,7 @@ Vue.component('notificaciones_total',require('./components/herramientas/notifica
 Vue.component('listar_notificaciones',require('./components/notificaciones/listar_notificaciones.vue'));
 
 // Fases del Proyecto
-Vue.component('listar_fases',require('./components/fases_proyecto/listar_fases.vue'));
+// Vue.component('listar_fases',require('./components/fases_proyecto/listar_fases.vue'));
 Vue.component('crear_fase',require('./components/fases_proyecto/crear_fase.vue'));
 Vue.component('crear_tipos_fase',require('./components/fases_proyecto/crear_tipos_fase.vue'));
 Vue.component('editar_fase',require('./components/fases_proyecto/editar_fase.vue'));

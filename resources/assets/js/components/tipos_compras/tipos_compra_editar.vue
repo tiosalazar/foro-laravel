@@ -7,7 +7,7 @@
       </div>
       <div class="col-xs-12 col-md-12">
         <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]" >
-          <label>Nombre</label>
+          <label><sup>*</sup> Nombre</label>
           <input type="text" v-model="compra.nombre" v-validate data-vv-rules="required|min:3" name="nombre" id="nombre" class="form-control" required="required">
           <span  class="help-block" style="position:relative;" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
         </div>

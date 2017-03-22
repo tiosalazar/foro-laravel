@@ -2,13 +2,13 @@
 	<form class="row" name="agregar_cliente" id="agregar_cliente">
             <div class="col-xs-6 col-md-12">
               <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]" >
-                <label>Nombre</label>
+                <label><sup>*</sup> Nombre</label>
                 <input type="text" v-model="cliente.nombre" v-validate data-vv-rules="required|alpha_num_spaces|min:3" name="nombre" id="nombre" class="form-control" required="required">
                 <span  class="help-block" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
               </div>
               <!-- /.form-group -->
               <div class="form-group" v-bind:class="[errors_return.nombre_contacto,{ 'has-error': errors.has('nombre_contacto') }]">
-                <label>Nombre de contacto</label>
+                <label><sup>*</sup> Nombre de contacto</label>
                 <input type="text" v-model="cliente.nombre_contacto" data-vv-as="Nombre de contacto" v-validate data-vv-rules="required|alpha_num_spaces|min:3"  name="nombre_contacto" id="nombre_contacto" class="form-control">
                 <span  class="help-block" v-show="errors.has('nombre_contacto')">{{ errors.first('nombre_contacto') }}</span>
               </div>
@@ -17,7 +17,7 @@
             <!-- /.col -->
             <div class="col-xs-6 col-md-12">
               <div class="form-group" v-bind:class="[errors_return.nit,{ 'has-error': errors.has('nit') }]">
-                <label>NIT</label>
+                <label><sup>*</sup> NIT</label>
                 <input type="text" v-model="cliente.nit" data-vv-as="Nit" v-validate data-vv-rules="required|min:6" name="nit" id="nit" class="form-control" required="required">
                 <span  class="help-block" v-show="errors.has('nit')">{{ errors.first('nit') }}</span>
               </div>
