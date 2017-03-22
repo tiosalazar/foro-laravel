@@ -92,9 +92,9 @@
 
         <div class="box-footer">
 
-           <button class="btn btn-primary" v-bind:class="{ 'hidden': botonGuardar }" @click="addUser">Guardar</button>
-           <button class="btn btn-primary" v-bind:class="{ 'hidden': botonEditar }" @click="updateaddUser">Actualizar</button>
-           <a href="/equipo/directorio" v-bind:class="{ 'hidden': botonEditar }"><button class="btn btn-primary pull-right">Volver a listado Usuarios</button></a>
+           <button class="btn btn-primary pull-right" v-bind:class="{ 'hidden': botonGuardar }" @click="addUser">Guardar</button>
+           <button class="btn btn-primary pull-right" v-bind:class="{ 'hidden': botonEditar }" @click="updateaddUser">Actualizar</button>
+           <a href="/equipo/usuarios" v-bind:class="{ 'hidden': botonEditar }"><button class="btn btn-primary pull-left">Volver a listado Usuarios</button></a>
 
         </div>
     </div>
@@ -167,7 +167,6 @@
       }
     },
     created: function(){
-      console.log(this.disabled);
       this.$on('rol_option', function(v) {
         this.usuarios.roles_id=v.id;
       });
