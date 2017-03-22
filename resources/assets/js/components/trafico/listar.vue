@@ -11,9 +11,9 @@
 		          <th >Requerimiento</th>
 		          <th >Fecha Entrega Área</th>
 		          <th >Fecha Entrega Cuentas</th>
+							<th >Estado</th>
 							<th >Estado Tr&aacute;fico</th>
 							<th >Comentarios</th>
-							<th >Estado</th>
 		          <th >Acciones</th>
 		        </tr>
 		    </thead>
@@ -120,18 +120,19 @@
 				{ data: 'nombre_tarea', name: 'nombre_tarea' },
 				{ data: 'fecha_entrega_area', name: 'fecha_entrega_area' },
 				{ data: 'fecha_entrega_cuentas', name: 'fecha_entrega_cuentas' },
+				{ data: 'estado', name: 'estado' },
 				{ data: 'estados_trafico', name: 'estados_trafico' },
 				{ data: 'comentario', name: 'comentario' },
 				],
 				columnDefs: [
-				{
-					"targets": [10],
-					"data": null,
-						   "render": function(data, type, full) { // Devuelve el contenido personalizado
-						   	return '<span class="label label-estado estado-'+data.estado.tipos_estados_id+'-'+data.estado.id+' ">'+data.estado.nombre+'</span>';
-
-						   }
-						},
+					// {
+					// "targets": [10],
+					// "data": null,
+					// 	   "render": function(data, type, full) { // Devuelve el contenido personalizado
+					// 	   	return '<span class="label label-estado estado-'+data.estado.tipos_estados_id+'-'+data.estado.id+' ">'+data.estado.nombre+'</span>';
+					//
+					// 	   }
+					// 	},
 						// {
 						// 	"targets": [10],
 						// 	"data": null,
@@ -182,14 +183,21 @@
 					var id = $(this).attr('id');
 					id = id.replace( /^\D+/g, '');
 					var data = {estado_trafico:$('#estados_trafico'+id).val(),comentario:$('#comentario'+id).val()};
+					var toastr_opt = {timeOut: 5000, "positionClass": "toast-top-center","closeButton": true,}
 					$.ajax( {url: window._apiURL+"save_trafic/"+id,
 									type:'POST' ,
 									data:data,
 									beforeSend: function (request) { request.setRequestHeader("Authorization", 'Bearer '+Laravel.api_token) }
 								})
 			    .done(function(response) {
+						toastr.success(response.msg,'',toastr_opt);
 						// console.log(response);
-					});
+					}).fail(function(response) {
+						if (response.status==404) {
+							response.msg = 'No se encontro la ruta';
+						}
+				    toastr.error(response.msg,'Error',toastr_opt);
+				  });
 				})
 			// Enviar los datos del filtro personalizado
 			$('#search-form').on('submit', function(e) {

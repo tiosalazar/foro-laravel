@@ -668,11 +668,14 @@ return response()->json($respuesta);
       ->addColumn('ejecutivo', function ($tarea) {
         return $tarea->usuario->nombre[0].$tarea->usuario->apellido[0];
       })
+      ->addColumn('estado', function ($tarea) {
+        return '<span class="label label-estado estado-'.$tarea->estado->tipos_estados_id.'-'.$tarea->estado->id.' ">'.$tarea->estado->nombre.'</span>';
+      })
       ->addColumn('estados_trafico', function ($tarea) {
           $options ='';
           $estados = Estado::where('tipos_estados_id',4)->get();
           foreach ($estados as $key => $value) {
-            $selected = ($tarea->estados_trafico == $value->id) ? "selected" :"";
+            $selected = ($tarea->estado_trafico_id == $value->id) ? "selected" :"";
             $options .= '<option value="'.$value->id.'" '.$selected.'>'.$value->nombre.'</option>';
           }
           $select = '<select name="estados_trafico'.$tarea->id.'" id="estados_trafico'.$tarea->id.'" class="form-control">'.$options.'</select>';
@@ -704,13 +707,19 @@ return response()->json($respuesta);
       }
       try {
         $tarea->save();
+        return response([
+            'status' => Response::HTTP_OK,
+            'response_time' => microtime(true) - LARAVEL_START,
+            'msg' => 'Tarea actualizada.',
+            'tarea' =>$tarea,
+            ],Response::HTTP_OK);
       } catch (Exception $e) {
         return response([
             'status' => Response::HTTP_BAD_REQUEST,
             'response_time' => microtime(true) - LARAVEL_START,
             'msg' => 'Error al actualizar la tarea.',
             'error' => 'ERR_05',
-            // 'obj' =>$vl->errors(),
+            'consola' =>$e->getMessage(),
             'tarea' =>$tarea,
             'request' =>$request,
             ],Response::HTTP_BAD_REQUEST);
