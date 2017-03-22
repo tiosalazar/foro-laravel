@@ -189,17 +189,21 @@ class UserController extends Controller
 
                                 //Busca el usuario en la BD
                                 $user=  User::findOrFail($id);
+                                $userpass=$user->password;
 
+                               
                                 // Si la data es valida se la asignamos al usuario
-
                                 $user->fill($request->all());
 
-                                //Encriptamos la contraeña
-                                 $user->password=bcrypt($request->password);
+                                if ($request->has('password') && !is_null($request->password)) {
+                                  //Encriptamos la contraeña
+                                  $user->password=bcrypt($request->password);
+                                }                               
+                                   
 
                                 // Guardamos el usuario
                                 $respuesta["obj"]=$request;
-                                $user->update();
+                                $user->save();
                                 $respuesta["msg"]='Editado con exito';
 
                                $respuesta["error"]=0;
