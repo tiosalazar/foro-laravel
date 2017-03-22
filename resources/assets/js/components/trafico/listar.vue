@@ -49,11 +49,6 @@
 						</datepicker>
 						<input type="hidden" name="f_final" v-model="end">
 					</div>
-          <!-- <div class="drop">
-	        	<select name="week" id="week"  class="form-control multiselect">
-		        	<option value="">Semana</option>
-		        </select>
-	        </div> -->
             <button type="submit" class="btn btn-info btn-flat">Buscar</button>
         </form>
 	</div>
@@ -102,7 +97,6 @@
 				processing: true,
 				serverSide: true,
 				deferRender: true,
-				// ajax: "/api/v1/tareas",
 				ajax: {
 					url: window._baseURL+"/trafico",
 					data: function (d) {
@@ -125,31 +119,7 @@
 				{ data: 'comentario', name: 'comentario' },
 				{ data: 'actions', name: 'actions' },
 				],
-				columnDefs: [
-					// {
-					// "targets": [10],
-					// "data": null,
-					// 	   "render": function(data, type, full) { // Devuelve el contenido personalizado
-					// 	   	return '<span class="label label-estado estado-'+data.estado.tipos_estados_id+'-'+data.estado.id+' ">'+data.estado.nombre+'</span>';
-					//
-					// 	   }
-					// 	},
-						// {
-						// 	"targets": [10],
-						// 	"data": null,
-						//    "render": function(data, type, full) { // Devuelve el contenido personalizado
-						//    	return '<textarea id="comentario'+data.id+'"></textarea>';
-						//    }
-						// },
-						// {
-						// 	"targets": [11],
-						// 	"data": null,
-						// 	"render": function(data, type, full) { // Devuelve el contenido personalizado
-						// 		return '<a href="'+window._baseURL+'/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block" aria-label="View">Ver tarea</a>'+
-						// 		'<button id="'+data.id+'" class="save_trafic btn btn-success btn-xs btn-flat btn-block " aria-label="View">Guardar</button>';
-						// 	}
-						// },
-						],
+				columnDefs: [],
 						autoWidth: false,
 						responsive: true,
 						language: {
@@ -181,10 +151,12 @@
 
 				$('#tabla_tareas tbody').on('click','.save_trafic',function (e) {
 					e.preventDefault();
+					// Obtener id del elemento
 					var id = $(this).attr('id');
 					id = id.replace( /^\D+/g, '');
 					var data = {estado_trafico:$('#estados_trafico'+id).val(),comentario:$('#comentario'+id).val()};
 					var toastr_opt = {timeOut: 5000, "positionClass": "toast-top-center","closeButton": true,}
+					// Actualziar tarea en trafico
 					$.ajax( {url: window._apiURL+"save_trafic/"+id,
 									type:'POST' ,
 									data:data,
@@ -192,7 +164,6 @@
 								})
 			    .done(function(response) {
 						toastr.success(response.msg,'',toastr_opt);
-						// console.log(response);
 					}).fail(function(response) {
 						if (response.status==404) {
 							response.msg = 'No se encontro la ruta';
@@ -237,10 +208,8 @@
 					this.start = moment(this.fechas.to).format('YYYY-MM-DD');
 				}
 				if (this.fechas.from!=='') {
-					console.log('end',this.end)
 					this.end = moment(this.fechas.from).add(23,'h').add(59,'m').add(59,'s').format('YYYY-MM-DD H:m:s');
 				}
-				console.log(this.start,this.end);
 			}
 		},
 

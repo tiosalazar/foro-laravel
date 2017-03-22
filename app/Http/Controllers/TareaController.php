@@ -626,13 +626,13 @@ return response()->json($respuesta);
     /**
      * Listar tareas del Trafico
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Datatable
      **/
     public function getTrafico(Request $request)
     {
       $output= array();
-      // Si no trae el mes y año en el $request
-      // tomar el mes y el año actual
+      // Si no trae fecha de inicio y f_final
+      // toma la semana actual
       $f_inicio = '';
       $f_final = '';
       $now = Carbon::now();
@@ -672,9 +672,11 @@ return response()->json($respuesta);
         return '<span class="label label-estado estado-'.$tarea->estado->tipos_estados_id.'-'.$tarea->estado->id.' ">'.$tarea->estado->nombre.'</span>';
       })
       ->addColumn('estados_trafico', function ($tarea) {
+          // Llenar select con estados del trafico
           $options ='';
           $estados = Estado::where('tipos_estados_id',4)->get();
           foreach ($estados as $key => $value) {
+            // seleccionar valor de la BD
             $selected = ($tarea->estado_trafico_id == $value->id) ? "selected" :"";
             $options .= '<option value="'.$value->id.'" '.$selected.'>'.$value->nombre.'</option>';
           }
@@ -685,11 +687,10 @@ return response()->json($respuesta);
         return '<textarea id="comentario'.$tarea->id.'">'.$tarea->comentario_trafico.'</textarea>';
       })
       ->addColumn('actions', function ($tarea) {
+        // Permisos para acciones de trafico
         $ver_tarea = (Auth::user()->can('ver_trafico') )?'<a href="'.url('/').'/ver_tarea/'.$tarea->id.'" class="btn btn-primary btn-xs btn-flat btn-block" aria-label="View">Ver tarea</a>':'';
         $guardar_tarea = (Auth::user()->can('editar_trafico') )?'<button id="'.$tarea->id.'" class="save_trafic btn btn-success btn-xs btn-flat btn-block " aria-label="View">Guardar</button>':'';
         return $ver_tarea.$guardar_tarea;
-        // return '<a href="'.url('/').'/ver_tarea/'.$tarea->id.'" class="btn btn-primary btn-xs btn-flat btn-block" aria-label="View">Ver tarea</a>'.
-        // '<button id="'.$tarea->id.'" class="save_trafic btn btn-success btn-xs btn-flat btn-block " aria-label="View">Guardar</button>';
       })
       ->editColumn('created_at', function ($tarea) {
           return $tarea->created_at->format('d-M-Y');
@@ -702,7 +703,13 @@ return response()->json($respuesta);
       })
       ->make(true);
     }
-
+    /**
+     * Actualizar campos de Trafico.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function saveTrafic(Request $request, $id)
     {
       $tarea  = Tarea::findOrFail($id);

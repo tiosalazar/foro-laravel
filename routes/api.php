@@ -42,7 +42,7 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
      Route::get('permisos','RolController@showAllPermisions');
      Route::get('permisos_role/{id}','RolController@showPermisionsbyRole');
      Route::put('permisos_role/{id}','RolController@updatePermisionsbyRole');
-
+     // Actualizar traficp
      Route::post('save_trafic/{id}', 'TareaController@saveTrafic');
 
 
