@@ -3,12 +3,12 @@
         <table class="table  table-striped table-hover table-responsive datatable-foro table-bordered dataTable no-footer" role="grid" id="tabla_tareas" cellspacing="0" width="100%">
 		  <thead>
 		        <tr>
-		          <th >OT</th>
-		          <th >Cliente</th>
-		          <th >Requerimiento</th>
-		          <th >Fecha de Solicitud</th>
-		          <th >Encargado</th>
+		          <th >Id</th>
+		          <th >Nombre</th>
+		          <th >Horas Disponibles</th>
+		          <th >Horas Gastadas</th>
 		          <th >Tipo</th>
+		          <th >Fecha</th>
 		        </tr>
 		    </thead>
         </table>
@@ -81,10 +81,11 @@
 					{ data: 'horas_disponibles', name: 'horas_disponibles' },
 					{ data: 'horas_gastadas', name: 'horas_gastadas' },
 					{ data: 'tipo_de_entidad', name: 'tipo_de_entidad' },
+					{ data: 'created_at', name: 'created_at' },
 				],
 				columnDefs: [
 					{
-						"targets": [5],
+						"targets": [4],
 						"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
 						   	return (full.tipo_de_entidad==1)? 'Usuario' : 'Área';
@@ -130,8 +131,6 @@
 		    // Agregar Selects al dibujar la tabla
 		    $('#tabla_tareas').on( 'draw.dt', function () {
 		    	// Llamar estados de las taras
-
-
 				$.ajax( window._baseURL+"/years_historico_equipo" )
 		    	.done(function(response) {
 		    	 	// limpiar el select

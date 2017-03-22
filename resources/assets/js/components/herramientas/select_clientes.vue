@@ -8,7 +8,7 @@
         :options="clientes"
         selected-label=""
         deselect-label=""
-        :custom-label="nameWithLang"  placeholder="Seleccione un Cliente" label="nombre" track-by="nombre"
+        placeholder="Seleccione un Cliente" label="nombre" track-by="nombre"
         select-label=""
         :close-on-select="true"
         :value="value"
@@ -61,9 +61,9 @@
       /*
        Funcion para organizar la visualización del select
        */
-       nameWithLang ({ nombre, nombre_contacto }) {
+     /*  nameWithLang ({ nombre, nombre_contacto }) {
         return `${nombre} — ${nombre_contacto}`
-      },
+      },*/
       /*
          Cuando se selecione algo se realiza la siguiente función
          */

@@ -1,7 +1,7 @@
 <template>
-	<div>
+		<div class="tarea  table-responsive">
 
-		<table class="table table-striped table-hover datatable-foro table-bordered dataTable no-footer" id="tabla_usuarios">
+		<table class="table table-striped table-hover datatable-foro table-bordered dataTable no-footer" id="tabla_tareas">
 			<thead>
 				<tr>
 					<th >Num. OT </th>
@@ -20,6 +20,18 @@
 			</thead>
 
 		</table>
+
+		 <form method="POST" id="search-form" class="form-inline" role="form">
+	        <div class="drop">
+	         	<select name="fee" id="fee"  class="form-control  multiselect">
+	                <option value="">Fee</option>
+	        	    <option value="all">Todos</option>
+		        	<option value="1">Si</option>
+		        	<option value="0">No</option>
+		        </select>
+	        </div>
+	        <button type="submit" class="btn btn-info btn-flat">Buscar</button>
+         </form>
 
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 			<div class="modal-dialog" role="document">
@@ -62,25 +74,31 @@
 			}
 		},
 		mounted () {
-			$('#tabla_usuarios').DataTable({
+			var oTable = $('#tabla_tareas').DataTable({
+				dom: "<'row'<'col-xs-12'<'row filtros'<'col-xs-6 col-sm-6 col-lg-4 selects'><'col-xs-6 col-sm-6 col-lg-5'f><'col-xs-4 col-sm-4 col-lg-3'l>>>r>"+
+				"<'row'<'col-xs-12't>>"+
+				"<'row'<'col-xs-12'<'row'<'col-xs-6'i><'col-xs-6'p>>>>",
 				processing: true,
-				serverSide: false,
+				serverSide: true,
 				deferRender: true,
-				'ajax': {
-					'url': window._apiURL+"ots",
-					'type': 'GET',
-					'beforeSend': function (request) {
+			    ajax: {
+					url: window._apiURL+"ots_datatable/",
+					type: 'GET',
+					beforeSend: function (request) {
 						request.setRequestHeader("Authorization", 'Bearer '+Laravel.api_token);
-					}
+					},
+					data: function (d) {
+						d.fee = $('select[name=fee]').val();
+					},
 				},
 				columns: [
 				{ data: 'referencia', name: 'referencia' },
-				{ data: 'usuario.nombre', name: 'usuario' },
-				{ data: 'cliente.nombre', name: 'cliente' },
+				{ data: 'usuario.nombre', name: 'usuario.nombre' },
+				{ data: 'cliente.nombre', name: 'cliente.nombre' },
 				{ data: 'nombre', name: 'nombre' },
-				{ data: 'fee', name: 'fee' },
+				{ data: 'fee', name: 'fee', orderable: false, searchable: false },
 				{ data: 'fecha_inicio', name: 'fecha_inicio' },
-				{ data: 'estado.id', name: 'estado.id' },
+				{ data: 'estado.id', name: 'estado.nombre' },
 				{ data: 'horas_totales', name: 'horas_totales' },
 				{ data: 'valor', name: 'valor' },
 				{ data: 'observaciones', name: 'observaciones', orderable: false, searchable: false },
@@ -146,13 +164,25 @@
 						});
 
 			$(document).ready(function(e) {
-				$('#tabla_usuarios tbody').on('click', 'td .delete_cliente', function (e) {
+				$('#tabla_tareas tbody').on('click', 'td .delete_cliente', function (e) {
 					var id = $(this).attr('id');
 					id = id.split('-');
 					console.log(id[1]);
 					$('#id_cliente').val(id[1]);
 				})
 			});
+			// Enviar los datos del filtro personalizado
+			$('#search-form').on('submit', function(e) {
+				oTable.draw();
+				e.preventDefault();
+			});
+
+			 // Agregar Selects al dibujar la tabla
+		    $('#tabla_tareas').on( 'draw.dt', function () {
+
+				// Agregar las formulario a datatable
+				$('#search-form').appendTo('.selects');
+			} );
 
 		},
 		methods:{
@@ -167,7 +197,7 @@
         	} else {
         		$('#myModal').modal('hide')
         		toastr.success(response.body.msg,'',this.option_toast);
-        		$('#tabla_usuarios').DataTable().ajax.reload();
+        		$('#tabla_tareas').DataTable().ajax.reload();
             // this.clientes.splice(index,1);
         }
     },function(err) {
