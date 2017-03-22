@@ -5,28 +5,28 @@
             <form  role="form" class="row">
                 <div class="col-md-6 same-height">
                   <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]">
-                    <label for="nombre_usuario">Nombre</label>
+                    <label for="nombre_usuario"><sup>*</sup> Nombre </label>
                     <input type="text" class="form-control" id="nombre_usuario" name="nombre" v-model="usuarios.nombre" placeholder="Nombre" v-validate data-vv-rules="required|alpha_num_spaces|max:50">
                     <span  class="help-block error_absolute" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
                 </div>
                 </div>
                 <div class="col-md-6 same-height">
                   <div class="form-group" v-bind:class="[errors_return.apellido,{ 'has-error': errors.has('apellido') }]">
-                    <label for="apellidos_usuario">Apellidos</label>
+                    <label for="apellidos_usuario"><sup>*</sup> Apellidos </label>
                     <input type="text" class="form-control" id="apellidos_usuario" name="apellido"  v-model="usuarios.apellido" placeholder="Apellidos" v-validate data-vv-rules="required|alpha_num_spaces|max:50">
                     <span  class="help-block error_absolute" v-show="errors.has('apellido')">{{ errors.first('apellido') }}</span>
                 </div>
                 </div>
                 <div class="col-md-6 same-height">
                   <div class="form-group" v-bind:class="[errors_return.email,{ 'has-error': errors.has('email') }]">
-                    <label for="email_usuario">Email</label>
+                    <label for="email_usuario"><sup>*</sup> Email </label>
                     <input type="email" class="form-control" id="email_usuario"  name="email" v-model="usuarios.email" placeholder="Email" v-validate data-vv-rules="required|email">
                      <span  class="help-block error_absolute" v-show="errors.has('email')">{{ errors.first('email') }}</span>
                 </div>
                 </div>
                  <div class="col-md-6 same-height">
                    <div class="form-group" v-bind:class="[errors_return.password,{ 'has-error': errors.has('password') }]">
-                    <label for="contrasena_usuario">Contraseña</label>
+                    <label for="contrasena_usuario"><sup>*</sup> Contraseña </label>
                     <input type="text" class="form-control" id="contrasena_usuario" name="password" v-model="usuarios.password"  placeholder="Contraseña" v-validate :data-vv-rules="validacioncontrasena">
 
                      <span  class="help-block error_absolute" v-show="errors.has('password')">{{ errors.first('password') }}</span>
@@ -34,7 +34,7 @@
                  </div>
                  <div class="col-md-6 same-height">
                    <div class="form-group" v-bind:class="[errors_return.cargo,{ 'has-error': errors.has('cargo') }]">
-                    <label for="cargo_usuario">Cargo</label>
+                    <label for="cargo_usuario"><sup>*</sup> Cargo </label>
                     <input type="text" class="form-control" id="cargo_usuario" name="cargo" v-model="usuarios.cargo"  placeholder="Cargo" v-validate data-vv-rules="required|alpha_num_spaces|max:30">
                      <span  class="help-block error_absolute" v-show="errors.has('cargo')">{{ errors.first('cargo') }}</span>
                  </div>
@@ -48,7 +48,7 @@
                  </div>
                   <div class="col-md-6 same-height">
                     <div class="form-group" v-bind:class="[errors_return.horas_disponible,{ 'has-error': errors.has('horas_disponible') }]">
-                    <label for="horas_usuario">Horas al mes</label>
+                    <label for="horas_usuario"><sup>*</sup> Horas al mes </label>
                     <input type="text" class="form-control" id="horas_usuario" name="horas_disponible" v-model="usuarios.horas_disponible"  placeholder="Horas Disponibles" v-validate data-vv-rules="required|decimal|max:30">
                      <span  class="help-block error_absolute" v-show="errors.has('horas_disponible')">{{ errors.first('horas_disponible') }}</span>
                  </div>
@@ -58,21 +58,21 @@
                     <label for="fecha_nacimiento">Fecha de nacimiento</label>
                     <div class="input-group date">
                       <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                      <datepicker language="es" id="fecha_inicio" required="required" v-validate data-vv-rules="required" data-vv-as="Fecha de Nacimiento" placeholder="Fecha nacimiento"  v-model="usuarios.fecha_nacimiento" name="fecha_nacimiento" class="form-control"  format="dd-MM-yyyy"></datepicker>
+                      <datepicker language="es" id="fecha_inicio" required="required" v-validate data-vv-rules="required" data-vv-as="Fecha de Nacimiento" placeholder="Fecha nacimiento"  v-model="usuarios.fecha_nacimiento" name="fecha_nacimiento" class="form-control" :disabled="disabled"  format="dd-MM-yyyy"></datepicker>
                     </div>
                      <span  class="help-block error_absolute" v-show="errors.has('fecha_nacimiento')">{{ errors.first('fecha_nacimiento') }}</span>
                  </div>
                  </div>
                   <div class="col-md-6 same-height">
                     <div class="form-group" >
-                    <label for="rol_usuario">Rol</label>
+                    <label for="rol_usuario"><sup>*</sup> Rol </label>
                     <select_rol :refresh="rol"></select_rol>
                     <!-- <input type="text" class="form-control" id="rol_usuario" placeholder="Rol del usuario"> -->
                  </div>
                   </div>
                   <div class="col-md-6 same-height">
                     <div class="form-group">
-                    <label for="area_usuario">Área</label>
+                    <label for="area_usuario"><sup>*</sup> Área </label>
                     <select_area  :refresha="area"></select_area>
                  </div>
                   </div>
@@ -92,9 +92,9 @@
 
         <div class="box-footer">
 
-           <button class="btn btn-primary" v-bind:class="{ 'hidden': botonGuardar }" @click="addUser">Guardar</button>
-           <button class="btn btn-primary" v-bind:class="{ 'hidden': botonEditar }" @click="updateaddUser">Actualizar</button>
-           <a href="/equipo/directorio" v-bind:class="{ 'hidden': botonEditar }"><button class="btn btn-primary pull-right">Volver a listado Usuarios</button></a>
+           <button class="btn btn-primary pull-right" v-bind:class="{ 'hidden': botonGuardar }" @click="addUser">Guardar</button>
+           <button class="btn btn-primary pull-right" v-bind:class="{ 'hidden': botonEditar }" @click="updateaddUser">Actualizar</button>
+           <a href="/equipo/usuarios" v-bind:class="{ 'hidden': botonEditar }"><button class="btn btn-primary pull-left">Volver a listado Usuarios</button></a>
 
         </div>
     </div>
@@ -144,6 +144,10 @@
         botonEditar:'',
         rol:'',
         area:'',
+        disabled:{
+          to:'',
+          from:moment().subtract(18,'y').toDate(),
+        },
         option_toast:{
           timeOut: 5000,
           "positionClass": "toast-top-center",

@@ -2,7 +2,7 @@
 	<form role="form" name="crear_tarea" class="crear_tarea">
 		<div class="box-body col-sm-12">
 			<div class="form-group required">
-				<label for="ot">Nombre el Projecto <sup>*</sup></label>
+				<label for="ot"><sup>*</sup> Nombre el Projecto </label>
 				<select_ot :select="select_ot"></select_ot>
 			</div>
 			<div class="row desc-ot with-border">
@@ -25,19 +25,19 @@
 			<div class="row">
 				<div class="col-sm-2">
 					<div class="form-group required">
-						<label>Prioridad <sup>*</sup></label>
+						<label><sup>*</sup> Prioridad </label>
 						<select_prioridad :select="prioridad"></select_prioridad>
 					</div>
 				</div>
 				<div class="col-sm-6">
 					<div class="form-group required">
-						<label>Fase del Projecto <sup>*</sup></label>
+						<label><sup>*</sup> Fase del Projecto </label>
 						<select_fase :select="fase"></select_fase>
 					</div>
 				</div>
 				<div class="col-sm-4">
 					<div class="form-group required">
-						<label>Área <sup>*</sup></label>
+						<label><sup>*</sup> Área </label>
 						<select_area  :refresha="refresh"></select_area>
 					</div>
 				</div>
@@ -56,7 +56,7 @@
 				</div>
 				<div class="col-sm-8">
 					<div class="form-group required" v-bind:class="[errors_return.nombre_tarea,{ 'has-error': errors.has('nombre_tarea') }]">
-						<label for="nombre_tarea">Nombre de la Solicitud <sup>*</sup></label>
+						<label for="nombre_tarea"><sup>*</sup> Nombre de la Solicitud </label>
 						<input type="text" class="form-control"  id="nombre_tarea" v-model="tarea.nombre_tarea" name="nombre_tarea" placeholder="Solicitud" v-validate data-vv-rules="required|min:4" required="required">
 						<span  class="help-block" v-show="errors.has('nombre_tarea')">{{ errors.first('nombre_tarea') }}</span>
 					</div>
@@ -72,7 +72,7 @@
 			<div class="row">
 				<div class="col-sm-6">
 					<div class="form-group required">
-						<label>Estado <sup>*</sup></label>
+						<label><sup>*</sup> Estado </label>
 						<select_estados tipo_estado="1"  :select="estado" ></select_estados>
 					</div>
 				</div>
@@ -84,7 +84,7 @@
 				</div>
 			</div>
 			<div class="form-group required" v-bind:class="[errors_return.descripcion,{ 'has-error': errors.has('descripcion') }]">
-				<label for="descripcion">Descripción <sup>*</sup></label>
+				<label for="descripcion"><sup>*</sup> Descripción </label>
 				<textarea class="form-control" rows="3"  name="descripcion"  id="descripcion" v-model="tarea.descripcion" placeholder="Descripción" required="required" v-validate data-vv-rules="required|min:4"></textarea>
 				<span  class="help-block" v-show="errors.has('descripcion')">{{ errors.first('descripcion') }}</span>
 			</div>

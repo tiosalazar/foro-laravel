@@ -18,7 +18,7 @@ class CreateTareasTable extends Migration
             $table->string('nombre_tarea',85);
             $table->dateTime('fecha_entrega_area')->nullable();
             $table->dateTime('fecha_entrega_cuentas')->nullable();
-            $table->string('descripcion',255);
+            $table->string('descripcion',2024);
             $table->string('enlaces_externos',150)->nullable();
             $table->decimal('tiempo_estimado',15,2)->nullable();
             $table->decimal('tiempo_real',15,2)->nullable();
@@ -32,7 +32,7 @@ class CreateTareasTable extends Migration
             $table->integer('encargado_id')->nullable();
             $table->integer('prioridad_id')->nullable();
             $table->integer('estado_trafico_id')->nullable();
-            $table->integer('comentario_trafico')->nullable();
+            $table->string('comentario_trafico',2024)->nullable();
             $table->timestamps();
 
                $table->foreign('estados_id')->references('id')->on('estados')
