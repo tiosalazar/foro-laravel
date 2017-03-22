@@ -123,6 +123,7 @@
 				{ data: 'estado', name: 'estado' },
 				{ data: 'estados_trafico', name: 'estados_trafico' },
 				{ data: 'comentario', name: 'comentario' },
+				{ data: 'actions', name: 'actions' },
 				],
 				columnDefs: [
 					// {
@@ -140,14 +141,14 @@
 						//    	return '<textarea id="comentario'+data.id+'"></textarea>';
 						//    }
 						// },
-						{
-							"targets": [11],
-							"data": null,
-							"render": function(data, type, full) { // Devuelve el contenido personalizado
-								return '<a href="'+window._baseURL+'/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block" aria-label="View">Ver tarea</a>'+
-								'<button id="'+data.id+'" class="save_trafic btn btn-success btn-xs btn-flat btn-block " aria-label="View">Guardar</button>';
-							}
-						},
+						// {
+						// 	"targets": [11],
+						// 	"data": null,
+						// 	"render": function(data, type, full) { // Devuelve el contenido personalizado
+						// 		return '<a href="'+window._baseURL+'/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block" aria-label="View">Ver tarea</a>'+
+						// 		'<button id="'+data.id+'" class="save_trafic btn btn-success btn-xs btn-flat btn-block " aria-label="View">Guardar</button>';
+						// 	}
+						// },
 						],
 						autoWidth: false,
 						responsive: true,
@@ -237,7 +238,7 @@
 				}
 				if (this.fechas.from!=='') {
 					console.log('end',this.end)
-					this.end = moment(this.fechas.from).format('YYYY-MM-DD');
+					this.end = moment(this.fechas.from).add(23,'h').add(59,'m').add(59,'s').format('YYYY-MM-DD H:m:s');
 				}
 				console.log(this.start,this.end);
 			}

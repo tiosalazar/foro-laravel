@@ -684,6 +684,13 @@ return response()->json($respuesta);
       ->addColumn('comentario', function ($tarea) {
         return '<textarea id="comentario'.$tarea->id.'">'.$tarea->comentario_trafico.'</textarea>';
       })
+      ->addColumn('actions', function ($tarea) {
+        $ver_tarea = (Auth::user()->can('ver_trafico') )?'<a href="'.url('/').'/ver_tarea/'.$tarea->id.'" class="btn btn-primary btn-xs btn-flat btn-block" aria-label="View">Ver tarea</a>':'';
+        $guardar_tarea = (Auth::user()->can('editar_trafico') )?'<button id="'.$tarea->id.'" class="save_trafic btn btn-success btn-xs btn-flat btn-block " aria-label="View">Guardar</button>':'';
+        return $ver_tarea.$guardar_tarea;
+        // return '<a href="'.url('/').'/ver_tarea/'.$tarea->id.'" class="btn btn-primary btn-xs btn-flat btn-block" aria-label="View">Ver tarea</a>'.
+        // '<button id="'.$tarea->id.'" class="save_trafic btn btn-success btn-xs btn-flat btn-block " aria-label="View">Guardar</button>';
+      })
       ->editColumn('created_at', function ($tarea) {
           return $tarea->created_at->format('d-M-Y');
       })
