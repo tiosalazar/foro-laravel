@@ -58,7 +58,7 @@
                     <label for="fecha_nacimiento">Fecha de nacimiento</label>
                     <div class="input-group date">
                       <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                      <datepicker language="es" id="fecha_inicio" required="required" v-validate data-vv-rules="required" data-vv-as="Fecha de Nacimiento" placeholder="Fecha nacimiento"  v-model="usuarios.fecha_nacimiento" name="fecha_nacimiento" class="form-control"  format="dd-MM-yyyy"></datepicker>
+                      <datepicker language="es" id="fecha_inicio" required="required" v-validate data-vv-rules="required" data-vv-as="Fecha de Nacimiento" placeholder="Fecha nacimiento"  v-model="usuarios.fecha_nacimiento" name="fecha_nacimiento" class="form-control" :disabled="disabled"  format="dd-MM-yyyy"></datepicker>
                     </div>
                      <span  class="help-block error_absolute" v-show="errors.has('fecha_nacimiento')">{{ errors.first('fecha_nacimiento') }}</span>
                  </div>
@@ -144,6 +144,10 @@
         botonEditar:'',
         rol:'',
         area:'',
+        disabled:{
+          to:'',
+          from:moment().subtract(18,'y').toDate(),
+        },
         option_toast:{
           timeOut: 5000,
           "positionClass": "toast-top-center",
@@ -163,6 +167,7 @@
       }
     },
     created: function(){
+      console.log(this.disabled);
       this.$on('rol_option', function(v) {
         this.usuarios.roles_id=v.id;
       });
