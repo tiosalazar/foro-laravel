@@ -186,18 +186,20 @@
 		        });
 		    },
 			getCurrentDate:function(data='') {
-				let today = moment().format('YYYY-MM-DD : HH-mm-ss');
+				let today = moment().format('DD-MMM-YYYY HH:mm:ss');
 				return today;
 			},
 			agregarTarea:function(e) {
 				// Serializo la fecha del datepicker
 				// y la asigno a la tarea
 				this.tarea.fecha_entrega_cliente =
-					(this.fecha_entrega_cliente)?moment(this.fecha_entrega_cliente).format('YYYY-MM-DD : HH-mm-ss'):null;
+					(this.fecha_entrega_cliente)?moment(this.fecha_entrega_cliente).format('YYYY-MM-DD : HH:mm:ss'):null;
+				this.tarea.tiempo_mapa_cliente =
+					(this.tarea.tiempo_mapa_cliente)?this.tarea.tiempo_mapa_cliente:null;
 				this.$validator.validateAll();
-		        if (this.errors.any()) {
-		          return false
-		        }
+		    if (this.errors.any()) {
+		      return false
+		    }
 				this.tarea.estados_id = this.estado.id;
 				this.tarea.ots_id= this.ot.id;
 				this.tarea.planeacion_fases_id = this.fase.id;
@@ -218,7 +220,7 @@
 			            this.tarea= {};
 			            this.select_ot='';
 			            this.ot={usuario:{nombre:''}, cliente:{nombre:''} };
-			            this.current_date='';
+			            this.current_date=moment().format('DD-MMM-YYYY HH:mm:ss');
 			            this.prioridad='';
 			            this.fase='';
 			            this.estado="";

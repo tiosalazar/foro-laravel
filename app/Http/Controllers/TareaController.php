@@ -758,10 +758,10 @@ return response()->json($respuesta);
         return Validator::make($data, [
             'nombre_tarea' => 'required|min:4',
             'descripcion' => 'required|min:4',
-            'enlaces_externos' => 'min:4',
+            'enlaces_externos' => 'nullable|min:4',
             'tiempo_estimado' => 'min:4|numeric',
             'tiempo_real' => 'min:4|numeric',
-            'tiempo_mapa_cliente' => 'min:1|numeric',
+            'tiempo_mapa_cliente' => 'nullable|numeric',
             'estados_id' => 'required',
             'areas_id' => 'required',
             'usuarios_id' => 'required',

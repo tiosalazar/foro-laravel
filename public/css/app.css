@@ -9306,6 +9306,7 @@ body {
 
 .ver_tarea .comentario_box .caja_comentarios p {
   word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .ver_tarea .comentario_box .comentario_box_container {

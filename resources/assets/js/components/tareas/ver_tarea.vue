@@ -146,7 +146,7 @@
               </div>
 
               <div class="col-sm-4">
-               <div v-if="(rol_actual==='colaborador' && tarea_info.estados_id == '3') || (rol_actual==='coordinador'  && estado_solicitud.id == '2' )">
+               <div v-if="(rol_actual==='colaborador' && tarea_info.estados_id == '3') || (rol_actual==='coordinador'  && estado_solicitud.id == '2' ) || (rol_actual==='desarrollo'  && estado_solicitud.id == '2' )">
                   <div class="form-group" v-bind:class="{ 'has-error': errors.has('timepo_real') }">
                       <label for=""><strong>Tiempo Real:</strong></label>
                       <input type="number" placeholder="Tiempo Real" name="timepo_real" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_real" required="required" v-validate data-vv-rules="required">
