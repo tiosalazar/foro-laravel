@@ -157,7 +157,8 @@ class TareaController extends Controller
                             'response_time' => microtime(true) - LARAVEL_START,
                             'obj' => [],
                             'horas_area ' => $horas_area,
-                            'error' => 'ERR_04',
+                            // 'error' => 'ERR_04',
+                            'error' => config('constants.ERR_01'),
                             'msg' => 'No tienes tiempo suficiente para esta tarea.',
                             ],Response::HTTP_BAD_REQUEST);
                     }

@@ -1,11 +1,15 @@
 <template>
   <div class="row">
   <section class="titulo">
-    <button type="button" name="back-btn" class="btn btn-primary btn-flat btn-back" onclick="history.go(-1);">
-      <i class="fa fa-chevron-left" aria-hidden="true"></i>
-      &nbsp;Atrás
-    </button>
-     <h3 class="box-title"><span class="span_descripcion1">Detalle de la</span> <span class="span_descripcion2">Tarea</span></h3>
+
+     <h3 class="box-title go-back">
+       <button type="button" name="back-btn" class="btn btn-primary btn-flat btn-back" onclick="history.go(-1);">
+         <i class="fa fa-chevron-left" aria-hidden="true"></i>
+         &nbsp;Atrás
+       </button>
+       <span class="span_descripcion1">
+       Detalle de la</span> <span class="span_descripcion2">Tarea</span>
+     </h3>
   </section>
     <div class="col-md-8 col-md-offset-2">
       <div class="box box-widget tarea ver_tarea">

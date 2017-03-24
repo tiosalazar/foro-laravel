@@ -1,9 +1,13 @@
 
 // Crear Tarea
 .titulo{
+
 	h3{
 		margin-left: 15%;
 		margin-bottom: 30px;
+		&.go-back{
+			margin-left: 0;
+		}
 		span{
 			font-weight: bold;
 			font-size: 27px;
@@ -252,7 +256,9 @@
 
 //Ver tarea
 .btn-back{
-	margin-left: 5%;
+	margin-right: 2%;
+	margin-left: 3%;
+	vertical-align: top;
 }
 .ver_tarea{
 	padding: 70px;

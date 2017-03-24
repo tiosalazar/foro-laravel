@@ -9001,6 +9001,10 @@ body {
   margin-bottom: 30px;
 }
 
+.titulo h3.go-back {
+  margin-left: 0;
+}
+
 .titulo h3 span {
   font-weight: bold;
   font-size: 27px;
@@ -9277,7 +9281,9 @@ body {
 }
 
 .btn-back {
-  margin-left: 5%;
+  margin-right: 2%;
+  margin-left: 3%;
+  vertical-align: top;
 }
 
 .ver_tarea {
