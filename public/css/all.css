@@ -9276,6 +9276,10 @@ body {
   }
 }
 
+.btn-back {
+  margin-left: 5%;
+}
+
 .ver_tarea {
   padding: 70px;
 }

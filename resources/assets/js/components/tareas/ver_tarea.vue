@@ -1,6 +1,10 @@
 <template>
   <div class="row">
   <section class="titulo">
+    <button type="button" name="back-btn" class="btn btn-primary btn-flat btn-back" onclick="history.go(-1);">
+      <i class="fa fa-chevron-left" aria-hidden="true"></i>
+      &nbsp;Atrás
+    </button>
      <h3 class="box-title"><span class="span_descripcion1">Detalle de la</span> <span class="span_descripcion2">Tarea</span></h3>
   </section>
     <div class="col-md-8 col-md-offset-2">
@@ -58,7 +62,7 @@
                  <label for=""><strong>Fecha entrega Área:</strong></label>
                 <div class="form group input-group date" v-bind:class="{ 'has-error': errors.has('fecha_entrega_area') }">
 
-                      <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id == '4'|| estado_solicitud.id == '5'">
+                      <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id != '3'">
                            {{tarea_info.fecha_entrega_area | date_format}}
                         </div>
                        <div class="contenedor_fecha" v-else>
@@ -91,13 +95,20 @@
 
                  <div class="form-group same-height">
                   <label><strong>Estado de solicitud: </strong></label>
-                  <select_estados tipo_estado="1"  :select="tarea_info.estado"></select_estados>
+                  <!-- <div class="" v-if=" rol_actual !='coordinador' &&  rol_actual!='owner' && (id_usuario_actual != tarea_info.encargado_id && tarea_info.estados_id == '1')"> -->
+                  <div class="" v-if="(id_usuario_actual == tarea_info.encargado_id && tarea_info.estados_id != '1' && tarea_info.estados_id != '2') || (rol_actual =='coordinador' && tarea_info.estados_id == '2')">
+                    <select_estados tipo_estado="1"  :select="tarea_info.estado"></select_estados>
+                  </div>
+                  <div v-else>
+                    <span v-bind:class="'label label-estado estado-'+[estado.tipos_estados_id]+'-'+[estado.id]">{{estado.nombre}}</span>
+
+                  </div>
                 </div>
 
 
                 <label for=""><strong>Fecha entrega cuentas:</strong></label>
                 <div class="form group input-group date" v-bind:class="{ 'has-error': errors.has('fecha_entrega_cuentas') }">
-                    <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id == '4'|| estado_solicitud.id == '5'">
+                    <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id != '3'">
                            {{tarea_info.fecha_entrega_cuentas | date_format}}
                     </div>
                   <div class="contenedor_fecha" v-else>
@@ -134,7 +145,7 @@
               <div class="col-sm-4">
                 <div class="form-group" v-bind:class="{ 'has-error': errors.has('fecha_entrega_cuentas') }">
                   <label for=""><strong>Tiempo estimado Jefe:</strong></label>
-                  <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id == '4'|| estado_solicitud.id == '5'">
+                  <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id != '3' ">
                       {{tarea_info.tiempo_estimado}}
                   </div>
                   <div v-else>
@@ -285,7 +296,7 @@
         fecha_entrega_area:'',
         select_ot:this.arraytarea.ot,
         prioridad:'',
-        estado:this.arraytarea.estado,
+        estado:'',
         estado_solicitud:'',
         encargado:'',
         fase:'',
@@ -347,6 +358,8 @@
             this.ot=obj.ot;
             //Asigno toda la informacion traida del api a la variable tarea_info
             this.tarea_info=obj;
+            this.estado = obj.estado;
+            console.log(this.estado);
             //Asignos los comentarios para el v-for
             this.comentarios_array=obj.comentario;
             this.comentarios_array.reverse();
