@@ -343,7 +343,7 @@ class TareaController extends Controller
                 // y en Area->horas gastadas
 
                 $colaborador = User::findOrFail($tarea->encargado_id);
-                $colaborador->horas_gastadas = $tarea->tiempo_real;
+                $colaborador->horas_gastadas += $tarea->tiempo_real;
 
                 $area = Area::findOrFail($tarea->areas_id);
                 $area->horas_consumidas +=$tarea->tiempo_real;
