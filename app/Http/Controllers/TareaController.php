@@ -432,8 +432,9 @@ class TareaController extends Controller
                 break;
                 case '5':
                 // Enviar notificacion al nuevo encargado
+                $sender = User::findOrFail(Auth::user()->id);
                 User::findOrFail($tarea->encargado_id)
-                ->notify(new TareaAtencionArea($makerBefore,$tarea));
+                ->notify(new TareaAtencionArea($sender,$tarea));
                 break;
                 case '7':
                 // Creador de la solicitud - Ejecutiva
@@ -501,6 +502,7 @@ class TareaController extends Controller
             $respuesta["msg"]="Error  datos incorrectos";
             $respuesta["request"]=$request->all();
             $respuesta["obj"]=$vl->errors();
+            $respuesta["ids"]=Auth::user()->id;
 
        }
 

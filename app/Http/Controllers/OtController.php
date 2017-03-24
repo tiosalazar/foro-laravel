@@ -44,7 +44,7 @@ class OtController extends Controller
       $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->get();
 
       return response()->json($ots);
-   
+
    }
 
       /**
@@ -53,7 +53,7 @@ class OtController extends Controller
    * @return \Illuminate\Http\Response
    */
    public function datatable_index(Request $request)
-   {  
+   {
       $output= array();
 
       $ots= Ot::orderBy('created_at', 'ASC')->get();
@@ -64,7 +64,7 @@ class OtController extends Controller
          $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->get();
         }
 
-      
+
 
       $output = collect($ots);
       return Datatables::of($output)
@@ -754,7 +754,7 @@ class OtController extends Controller
           $sheet->cells('G2:G3', function($cells) {$cells->setFontWeight('bold');});
           $sheet->cells('H2:H3', function($cells) {$cells->setAlignment('center');});
           $sheet->cells('A11:H11', function($cells) {$cells->setFontWeight('bold');});
-          
+
           $sheet->cells('A2:E8', function($cells) {$cells->setAlignment('center');});
           // Set border for range
           $sheet->setBorder('A11:H40', 'thin');

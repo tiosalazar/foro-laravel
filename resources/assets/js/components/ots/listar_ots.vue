@@ -110,7 +110,7 @@
 					"targets": [8],
 					"data": null,
 						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-						       	return  numeral(data).format('0,0');
+						       	return  numeral(data).format('$0,0');
 
 						       }
 						   },
@@ -205,7 +205,7 @@
     	toastr.error(this.message,err.body.msg,this.option_toast);
     })
 
-    }	
+    }
 
 
 }
