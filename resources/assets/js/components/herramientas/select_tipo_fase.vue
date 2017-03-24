@@ -30,7 +30,7 @@
   import Multiselect from 'vue-multiselect'
     module.exports= {
        components: { Multiselect},
-          props: ['tipos' ,'valor'],
+          props: ['tipos' ,'valor','select'],
       data () {
           return {
             tipos_fase:[],
@@ -44,7 +44,10 @@
       computed:{
         isInvalid () {
           return (this.isTouched &&  this.value=="" )?true:false //Compruebo de que haya selecionado algo
-        }
+        },
+        value: function () {
+        return this.select;
+       }
       },
       created: function(){
         this.fetchTips();
