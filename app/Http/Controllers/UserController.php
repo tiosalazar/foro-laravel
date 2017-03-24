@@ -191,31 +191,35 @@ class UserController extends Controller
                                 $user=  User::findOrFail($id);
                                 $userpass=$user->password;
 
-                               
+
                                 // Si la data es valida se la asignamos al usuario
                                 $user->fill($request->all());
 
                                 if ($request->has('password') && !is_null($request->password)) {
                                   //Encriptamos la contraeña
                                   $user->password=bcrypt($request->password);
-                                }                               
-                                   
+                                }
+
 
                                 // Guardamos el usuario
-                                $respuesta["obj"]=$request;
                                 $user->save();
-                                $respuesta["msg"]='Editado con exito';
-
-                               $respuesta["error"]=0;
-                               $respuesta["mensaje"]="OK";
+                               return response([
+                                     'status' => Response::HTTP_OK,
+                                     'response_time' => microtime(true) - LARAVEL_START,
+                                     'msg' => 'Editado con exito',
+                                     'request' => $request->all()
+                                 ],Response::HTTP_OK);
                              }
                     }catch(Exception $e){
-                       $respuesta["error"]="usuario_no_encontrado";
-                       $respuesta["codigo_error"]="UC_Update_dontfind";
-                       $respuesta["mensaje"]="Usuario no encontrado";
-                       $respuesta["consola"]=$e;
+                       return response([
+                           'status' => Response::HTTP_BAD_REQUEST,
+                           'response_time' => microtime(true) - LARAVEL_START,
+                           'error' => "usuario_no_encontrado",
+                           'consola' =>$e->getMessage(),
+                           'msg' =>"Usuario no encontrado",
+                           'request' => $request->all()
+                       ],Response::HTTP_BAD_REQUEST);
                    }
-        return response()->json($respuesta);
 
     }
 
@@ -360,7 +364,7 @@ class UserController extends Controller
 
         $today = Carbon::now();
         foreach ($notifications as $key => $notify) {
-            $notify->time_ago = $today->diffForHumans($notify->created_at);    
+            $notify->time_ago = $today->diffForHumans($notify->created_at);
         }
         return response()->json($notifications);
     }
@@ -394,7 +398,7 @@ class UserController extends Controller
 
         $notifications = $user->notifications;
 
-        
+
     }
 
 

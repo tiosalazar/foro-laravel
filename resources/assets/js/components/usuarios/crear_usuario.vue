@@ -258,7 +258,7 @@
           if (this.errors.any()) {
             return false
           }
-          
+
 
 
           var estado_user = parseInt(this.usuarios.estado);
@@ -266,11 +266,33 @@
           let that = this;
 
             if (this.usuarios.password=="") {
-            var datos = {nombre:this.usuarios.nombre,apellido:this.usuarios.apellido,email:this.usuarios.email,cargo:this.usuarios.cargo,telefono:this.usuarios.telefono,horas_disponible:this.usuarios.horas_disponible,fecha_nacimiento:this.usuarios.fecha_nacimiento, estado:estado_user, roles_id:this.usuarios.roles_id, areas_id:this.usuarios.areas_id};
+            var datos = {
+              nombre:this.usuarios.nombre,
+              apellido:this.usuarios.apellido,
+              email:this.usuarios.email,
+              cargo:this.usuarios.cargo,
+              telefono:this.usuarios.telefono,
+              horas_disponible:this.usuarios.horas_disponible,
+              fecha_nacimiento:moment(this.usuarios.fecha_nacimiento).format('YYYY-MM-DD'),
+              estado:estado_user,
+              roles_id:this.usuarios.roles_id,
+              areas_id:this.usuarios.areas_id};
           }else{
-            var datos = {nombre:this.usuarios.nombre,apellido:this.usuarios.apellido,email:this.usuarios.email,password:this.usuarios.password,cargo:this.usuarios.cargo,telefono:this.usuarios.telefono,horas_disponible:this.usuarios.horas_disponible,fecha_nacimiento:this.usuarios.fecha_nacimiento, estado:estado_user, roles_id:this.usuarios.roles_id, areas_id:this.usuarios.areas_id};
+            var datos = {
+              nombre:this.usuarios.nombre,
+              apellido:this.usuarios.apellido,
+              email:this.usuarios.email,
+              password:this.usuarios.password,
+              cargo:this.usuarios.cargo,
+              telefono:this.usuarios.telefono,
+              horas_disponible:this.usuarios.horas_disponible,
+              fecha_nacimiento:moment(this.usuarios.fecha_nacimiento).format('YYYY-MM-DD'),
+              estado:estado_user,
+              roles_id:this.usuarios.roles_id,
+              areas_id:this.usuarios.areas_id
+            };
           }
-      
+
           //Peticion enviando los datos actualizados
           this.$http.put(window._apiURL+'usuarios/'+this.usuarios.id+'', datos).then(function(response){
             if (response.status != '200') {
@@ -300,7 +322,7 @@
         });
 
         }
-  
+
       }
     }
 </script>
