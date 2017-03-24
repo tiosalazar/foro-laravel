@@ -153,7 +153,7 @@
                       {{tarea_info.tiempo_estimado}}
                   </div>
                   <div v-else>
-                    <input type="number" placeholder="horas estimadas" name="horas_estimadas" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_estimado" required="required">
+                    <input type="text" placeholder="horas estimadas" name="horas_estimadas" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_estimado" required="required|numeric">
                   </div>
 
                 </div>
@@ -164,7 +164,7 @@
                <div v-if="(rol_actual==='colaborador' && tarea_info.estados_id == '3') || (rol_actual==='coordinador'  && estado_solicitud.id == '2' ) || (rol_actual==='desarrollo'  && estado_solicitud.id == '2' )">
                   <div class="form-group" v-bind:class="{ 'has-error': errors.has('timepo_real') }">
                       <label for=""><strong>Tiempo Real:</strong></label>
-                      <input type="number" placeholder="Tiempo Real" name="timepo_real" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_real" required="required" v-validate data-vv-rules="required">
+                      <input type="text" placeholder="Tiempo Real" name="timepo_real" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_real" required="required" v-validate data-vv-rules="required|numeric">
                   </div>
               </div>
               <div v-else>
@@ -447,7 +447,8 @@
                   toastr.success(respuesta.body.msg,'',this.option_toast);
                   this.descripcion="";
                   this.comentarios_array.unshift(respuesta.body.user_coment);
-                  setTimeout(function(){ that.errors.clear(); }, 50);
+                   setTimeout(function () {location.reload(true);}, 500);
+                  //setTimeout(function(){ that.errors.clear(); }, 50);
                 }else{
                   $.each(respuesta.body.obj, function(index, value) {
                     let campo = index.replace(/_id/g, '');

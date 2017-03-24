@@ -10,7 +10,7 @@
       <!-- /.form-group -->
       <div class="form-group">
         <label><sup>*</sup> Tipo planeacion</label>
-        <select_tipo_fase></select_tipo_fase>
+        <select_tipo_fase :select="this.tipo_fase"></select_tipo_fase>
       </div>
       <!-- /.form-group -->
     </div>
@@ -41,6 +41,7 @@
           isActive:true,
           fase: {},
           message :'',
+          tipo_fase:'',
           option_toast:{
             timeOut: 5000,
             "positionClass": "toast-top-center",
@@ -93,6 +94,7 @@
             } else {
               toastr.success(respuesta.body.msg,'',this.option_toast);
               that.fase = {};
+              this.tipo_fase='';
               setTimeout(function(){ that.errors.clear(); }, 50);
             }
           }, (err) => {

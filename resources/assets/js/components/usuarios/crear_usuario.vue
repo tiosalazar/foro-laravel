@@ -223,8 +223,8 @@
               console.log(response);
               toastr.success(response.body.msg,'',this.option_toast);
               this.usuarios={};
-              this.rol=0;
-              this.area=0;
+              this.rol='';
+              this.area='';
               if($('#tabla_usuarios') ){
                 $('#tabla_usuarios').DataTable().ajax.reload();
               }
