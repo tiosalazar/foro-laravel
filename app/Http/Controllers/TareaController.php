@@ -578,6 +578,9 @@ return response()->json($respuesta);
         ->editColumn('created_at', function ($tarea) {
             return $tarea->created_at->format('d-M-Y');
         })
+        ->addColumn('encargado', function ($tarea) {
+          return $tarea->usuarioencargado->nombre .' '. $tarea->usuarioencargado->apellido;
+        })
         ->make(true);
 
     }

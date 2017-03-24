@@ -1,16 +1,18 @@
 <template >
  <section class="col-xs-12">
-   <table class="table table-bordered table-striped table-hover datatable-foro" id="tabla_clientes">
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Cargo</th>
-        <th>Descripción</th>
-        <th>Fecha</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-  </table>
+   <div class="table-responsive">
+     <table class="table table-responsive table-bordered table-striped table-hover datatable-foro" id="tabla_clientes">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Cargo</th>
+          <th>Descripción</th>
+          <th>Fecha</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+    </table>
+   </div>
 </section>
 </template>
 <script>

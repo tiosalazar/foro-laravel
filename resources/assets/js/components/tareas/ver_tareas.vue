@@ -58,7 +58,7 @@
 			}
 		},
 		created: function(){
-			
+
 			if ( (typeof(this.area) == 'undefined') || this.area=="" ) {
 				this.area = -1;
 			}
@@ -91,7 +91,7 @@
 				{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre' },
 				{ data: 'nombre_tarea', name: 'nombre_tarea' },
 				{ data: 'created_at', name: 'created_at' },
-				{ data: 'usuarioencargado.nombre', name: 'usuarioencargado.nombre' },
+				{ data: 'encargado', name: 'encargado' },
 				],
 				columnDefs: [
 				{
@@ -188,7 +188,7 @@
 
 		},
 		methods:{
-			
+
 		},
 
 	}
