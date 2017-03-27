@@ -36,7 +36,7 @@
    data () {
     return {
       roles:[],
-      // id_rol: 0,
+      id_rol: 0,
       isTouched: false,
       value_touch:'',
       value:{}
@@ -54,7 +54,7 @@
       },
       watch : {
         refresh : function (value) {
-         this.value=0;
+         this.value=value;
        },
        permisosid : function (value) {
          this.value=value;
@@ -65,7 +65,7 @@
        this.$http.get(window._apiURL+'roles')
        .then(function(respuesta){
          this.roles=respuesta.body;
-       }.bind(this));
+       });
      },
 
      updateSelected (newSelected) {
