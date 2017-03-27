@@ -52,7 +52,7 @@
       },
       watch : {
         refresha : function (value) {
-           this.value2=0;
+           this.value2=value;
         }
       },
       methods:{
@@ -60,7 +60,7 @@
                this.$http.get(window._apiURL+'areas')
              .then(function(respuesta){
                      this.areas=respuesta.body;
-             }.bind(this));
+             });
           },
          updateSelected (newSelected) {
             if (newSelected != null && newSelected != undefined) {
