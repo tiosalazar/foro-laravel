@@ -3,7 +3,7 @@
     <form class="row" name="agregar_fase" id="agregar_cliente">
       <!-- <div class="box-body"> -->
       <div class="col-xs-12 col-sm-12">
-        <select_fase ></select_fase>
+        <select_fase :select="fase_select"></select_fase>
       </div>
       <div class="col-xs-12 col-md-12">
         <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]" >
@@ -67,6 +67,7 @@
       return {
         isActive:true,
         fase: {},
+        fase_select: 0,
         message :'',
         tipo_fase:0,
         fase_a_borrar:{},
@@ -124,6 +125,7 @@
           } else {
             toastr.success(response.body.msg,'',this.option_toast);
             this.fase={};
+            this.fase_select={};
             this.tipo_fase=0;
           }
         }, function(err) {
@@ -155,7 +157,8 @@
           } else {
             toastr.success(response.body.msg,'',this.option_toast);
             this.fase={};
-            this.tipo_fase=0;
+            this.tipo_fase={};
+            this.fase_select={};
             $('#modal-fase').modal('hide');
           }
         }, function(err) {

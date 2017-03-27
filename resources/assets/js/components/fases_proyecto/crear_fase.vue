@@ -84,7 +84,6 @@
           var that = this;
           this.$http.post(window._apiURL+'fases', this.fase)
           .then(function(respuesta){
-            console.log(respuesta)
             that.message ='';
             if (respuesta.status != '200') {
               if (Object.keys(respuesta.body.obj).length>0) {
@@ -94,7 +93,7 @@
             } else {
               toastr.success(respuesta.body.msg,'',this.option_toast);
               that.fase = {};
-              this.tipo_fase='';
+              this.tipo_fase={};
               setTimeout(function(){ that.errors.clear(); }, 50);
             }
           }, (err) => {

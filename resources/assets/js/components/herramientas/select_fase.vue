@@ -6,8 +6,8 @@
       select-label=""
       selected-label=""
       deselect-label=""
-      group-values="fases" 
-      group-label="tipo" 
+      group-values="fases"
+      group-label="tipo"
       :searchable="true" placeholder="Seleccione la Fase del projecto" label="nombre" track-by="nombre"
       :options-limit="100"
       :allow-empty="false"
@@ -43,6 +43,11 @@
         value: function () {
           return this.select;
         },
+      },
+      watch:{
+        select:function (value) {
+          this.value = value;
+        }
       },
       created: function(){
         this.fetchTips();

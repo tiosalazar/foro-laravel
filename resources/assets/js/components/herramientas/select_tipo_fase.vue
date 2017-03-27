@@ -46,7 +46,8 @@
           return (this.isTouched &&  this.value=="" )?true:false //Compruebo de que haya selecionado algo
         },
         value: function () {
-        return this.select;
+          console.log(this.select);
+          return this.select;
        }
       },
       created: function(){
@@ -60,6 +61,9 @@
               console.log(respuesta.body)
                      this.value=respuesta.body[0];
              }.bind(this));
+        },
+        select:function (value) {
+          this.value = value;
         }
       },
       methods:{
