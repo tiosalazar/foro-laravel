@@ -93,7 +93,7 @@
         <div class="box-footer">
 
            <button class="btn btn-primary pull-right" v-bind:class="{ 'hidden': botonGuardar }" @click="addUser">Guardar</button>
-           <button class="btn btn-primary pull-right" v-bind:class="{ 'hidden': botonEditar }" @click="updateaddUser">Actualizar</button>
+           <button class="btn btn-success pull-right" v-bind:class="{ 'hidden': botonEditar }" @click="updateaddUser">Actualizar</button>
            <a href="/equipo/usuarios" v-bind:class="{ 'hidden': botonEditar }"><button class="btn btn-primary pull-left">Volver a listado Usuarios</button></a>
 
         </div>
