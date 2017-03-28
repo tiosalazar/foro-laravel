@@ -14,7 +14,7 @@
 
   Auth::routes();
   Route::get('/console/{id}','RolController@updatePermisionsbyRole');
-  Route::group(['middleware' => 'auth'], function () {
+  Route::group(['middleware' => ['auth','login_estado']], function () {
 
     Route::get('/home', 'HomeController@index');
     Route::get('/','HomeController@index');

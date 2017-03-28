@@ -7,7 +7,6 @@
 
 @section('main-content')
 
-	
 	   <div class="modal fade " id="image_upload">
 	   <div class="modal-dialog">
 		     <div class="modal-content">
@@ -81,7 +80,7 @@
 							</div>
 						</div>
 					</div>
-					
+				
 
 						<!--{{ trans('adminlte_lang::message.logged') }}-->
 					</div>
