@@ -169,7 +169,7 @@ class UsuariosTableSeeder extends Seeder {
         $rol= App\Role::where('name','desarrollo')->first();
         $area= App\Area::where('nombre','Desarrollo')->first();
         App\User::create(array('nombre' => 'Desarrollo','apellido' => 'Himalaya','cargo' => 'Tester','telefono' => '1111111','email' => 'desarrollo@himalayada.com',
-        'estado'=>1,'horas_disponible' => 1,'api_token'=> str_random(60),'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' =>$area['id']));
+        'estado'=>2,'horas_disponible' => 1,'api_token'=> str_random(60),'password' => '$2y$10$lfVPsPgKJ2UB/KlvTu/jOukCtlyMM9ItCeXVJPWcm34YwNh0hMboG','fecha_nacimiento' => '2017-01-01','roles_id' => $rol['id'],'areas_id' =>$area['id']));
         $user =   App\User::where('email','desarrollo@himalayada.com')->first();
         $user->attachRole($rol);
 
