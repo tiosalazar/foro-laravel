@@ -88,15 +88,15 @@
             }
           }, (response) => {
             that.message = '';
-            if (err.status == 404) {
+            if (response.status == 404) {
               toastr.error('No se encontraron resultados, verfique la informacion','Error',this.option_toast);
             } else {
-              if (Object.keys(err.body.obj).length>0) {
-                this.setErrors(err.body.obj);
+              if (Object.keys(response.body.obj).length>0) {
+                this.setErrors(response.body.obj);
               }else{
                 that.message = response.body.error;
               }
-              toastr.error(this.message,err.body.msg,this.option_toast);
+              toastr.error(this.message,response.body.msg,this.option_toast);
             }
           });
         },

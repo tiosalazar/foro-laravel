@@ -61,14 +61,14 @@
                   setTimeout(function(){ that.errors.clear(); }, 50);
                 }
 
-             }, (response) => {
+             }, (err) => {
                if (err.status == 404) {
                 toastr.error('No se encontraron resultados, verfique la informacion','Error',this.option_toast);
               } else {
                 if (Object.keys(err.body.obj).length>0) {
                   this.setErrors(err.body.obj);
                 }else{
-                  that.message = response.body.error;
+                  that.message = err.body.error;
                 }
                 toastr.error(this.message,err.body.msg,this.option_toast);
               }
