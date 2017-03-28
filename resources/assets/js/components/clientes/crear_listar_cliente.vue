@@ -218,7 +218,7 @@
             if (Object.keys(err.body.obj).length>0) {
               this.setErrors(err.body.obj);
             }else{
-              that.message = response.body.error;
+              that.message = err.body.error;
             }
             $('#myModal').modal('hide')
             toastr.error(this.message,err.body.msg,this.option_toast);

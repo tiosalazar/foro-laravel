@@ -194,7 +194,7 @@
                   var that = this;
                   that.message = '';
                   if (Object.keys(response.body.request).length>0) {
-                    this.setErrors(respuesta.body.request);
+                    this.setErrors(response.body.request);
                   }
                   toastr.error(that.message,response.body.msg,this.option_toast);
                 });
