@@ -15,7 +15,7 @@
       <!-- /.form-group -->
     </div>
     <div class="col-xs-12 col-md-12">
-      <button type="button" v-on:click="addDivisa" class="btn btn-flat btn-primary">Agregar</button>
+      <button type="button" v-on:click="addDivisa" class="btn btn-flat btn-success pull-right">Agregar</button>
     </div>
     <!-- </div> -->
   </form>

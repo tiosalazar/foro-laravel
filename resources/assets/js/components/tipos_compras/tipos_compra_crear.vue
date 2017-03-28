@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="col-xs-12 col-md-12">
-        <button type="button" v-on:click="crearcompra" class="btn btn-flat btn-success">Crear</button>
+        <button type="button" v-on:click="crearcompra" class="btn btn-flat btn-success pull-right">Crear</button>
       </div>
     </form>
 

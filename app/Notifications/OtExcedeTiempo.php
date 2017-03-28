@@ -20,10 +20,11 @@ class OtExcedeTiempo extends Notification
      * @param App/Ot $ot
      * @return void
      */
-    public function __construct($user,$ot)
+    public function __construct($user,$ot,$area)
     {
         $this->user = $user;
         $this->ot = $ot;
+        $this->area = $area;
     }
 
     /**
@@ -63,7 +64,7 @@ class OtExcedeTiempo extends Notification
             'id_tarea'      => $this->ot->id,
             'nombre'        => $this->user->nombre,
             'cargo'         => $this->user->cargo,
-            'descripcion'   => $this->ot->nombre. ' ha excedido el tiempo asignado para el Área',
+            'descripcion'   => '#'.$this->ot->referencia.' - '.$this->ot->nombre. ' ha excedido el tiempo asignado para el Área '.$this->area->nombre,
             'created_at'    => date('Y-m-d H:i:s'),
             'img_perfil'    => $this->user->img_perfil,
             'link'          => '/ots/visualizar/'.$this->ot->id

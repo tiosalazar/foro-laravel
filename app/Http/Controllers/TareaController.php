@@ -363,8 +363,9 @@ class TareaController extends Controller
                 if (!is_null($tarea->tiempo_real) && $tarea->tiempo_real !=0) {
 
                     if ( $horas_area->tiempo_real + $tarea->tiempo_real > $horas_area->tiempo_estimado_ot) {
+                      $area = Area::findOrFail($tarea->areas_id);
                         User::findOrFail($tarea->usuarios_id)
-                        ->notify(new OtExcedeTiempo($makerBefore,$horas_area->ots));
+                        ->notify(new OtExcedeTiempo($makerBefore,$horas_area->ots,$area));
                     }
                     $horas_area->tiempo_real +=$tarea->tiempo_real;
                     $horas_area->save();
@@ -699,7 +700,7 @@ return response()->json($respuesta);
           return $select;
       })
       ->addColumn('comentario', function ($tarea) {
-        return '<textarea id="comentario'.$tarea->id.'">'.$tarea->comentario_trafico.'</textarea>';
+        return '<textarea id="comentario'.$tarea->id.'" class="form-control" rows="4" cols="40">'.$tarea->comentario_trafico.'</textarea>';
       })
       ->addColumn('actions', function ($tarea) {
         // Permisos para acciones de trafico
