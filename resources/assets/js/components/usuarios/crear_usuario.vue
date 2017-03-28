@@ -306,6 +306,7 @@
             toastr.warning(that.message,respuesta.body.msg,this.option_toast);
           }else{
             toastr.success(response.body.msg,'',this.option_toast);
+            setTimeout(function(){ this.errors.clear(); }, 50);
             console.log(response);
           }
         },(response) => {

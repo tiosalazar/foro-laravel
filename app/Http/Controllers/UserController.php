@@ -183,7 +183,15 @@ class UserController extends Controller
                     $vl=$this->validatorUpdateUsuario($request->all());
                          if ($vl->fails())
                             {
-                               return response()->json($vl->errors());
+                               //return response()->json($vl->errors());
+                               return response([
+                                   'status' => Response::HTTP_BAD_REQUEST,
+                                   'response_time' => microtime(true) - LARAVEL_START,
+                                   'error' => "usuario_no_encontrado",
+                                   'obj'=>$vl->errors(),
+                                   'msg' =>"Campos invalidos",
+                                   'request' => $request->all()
+                               ],Response::HTTP_BAD_REQUEST);
                             }else
                                 {
 
