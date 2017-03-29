@@ -8378,6 +8378,12 @@ sub, sup {
   vertical-align: middle;
 }
 
+.ot_validacion_guardar .row {
+  width: 100%;
+  margin: 0 auto;
+  padding: 2%;
+}
+
 body {
   font-family: 'Ubuntu', sans-serif;
 }
