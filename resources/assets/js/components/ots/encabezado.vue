@@ -5,6 +5,20 @@
 <!-- Fecha : Enero 2017  -->
 <template>
 	<div class=""  id="encabezado_ot">
+		<div class="box bg-aqua-active">
+			<div class="box-header bg-aqua-active">
+			<h2 class="box-title">Atención</h2>
+
+			<div class="box-tools pull-right bg-aqua-active">
+				<button type="button" class="btn btn-box-tool" data-widget="cerrar" data-toggle="tooltip" title="" data-original-title="cerrar">
+				<i class="fa fa-times" style="color:white;"></i></button>
+			</div>
+			</div>
+			<div class="box-body bg-aqua-active">
+			Recuerda ir guardardando los datos de la <b>OT</b> al terminar de llenar cada un formulario
+			</div>
+			<!-- /.box-body -->
+		</div>
 			<h3 class="box-title"><span class="span_descripcion1">Detalle</span> <span class="span_descripcion2">OT</span></h3>
 		<div class="box-body">
 			<div style="height:22px"></div>

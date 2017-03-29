@@ -74,6 +74,19 @@
 							</div>
 						</div>
 						<div style="height:30px"></div>
+						<div class="row" v-if="can_save_ot==false">
+							<div class="col-md-12 ot_validacion_guardar">
+								<div class="row btn-danger" role="alert">
+									<div class="col-md-2 text-center ">
+										<i class="fa fa-exclamation-triangle fa-3x text-center" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10 letra_mediana">
+										<div class="col-sm-12"> <strong >IMPORTANTE!</strong></div>
+										<div class="col-sm-12">Debes Guardar todos los requerimientos para poder crear la OT</div>
+									</div>
+								</div>
+							</div>
+						</div>
 						<div class="row">
 							<div class=" col-md-12 text-center">
 								<div class="separador"> </div>
@@ -134,6 +147,7 @@
 			props: ['visualizacion','arreglo_visualizar'],
 			data () {
 				return {
+					can_save_ot:false,
 					h_Disponibles:0,
 					listado_areas:[],
 					horas_totales:0,
@@ -586,6 +600,7 @@
               			toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
               			this.$localStorage.set('datos_requerimiento_'+id,JSON.stringify(requerimientos) );
               			this.can_save=true;
+						  this.can_save_ot=true;
               		}
               	}
               },
