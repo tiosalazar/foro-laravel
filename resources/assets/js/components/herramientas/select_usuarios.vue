@@ -95,7 +95,7 @@
            Funcion para organizar la visualización del select
           */
         nameWithLang ({ nombre, apellido }) {
-          return `${nombre} — ${apellido}`
+          return `${nombre}  ${apellido}`
         },
         /*
            Cuando se selecione algo se realiza la siguiente función

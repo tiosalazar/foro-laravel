@@ -35,6 +35,11 @@
               <!-- Información -->
               <div class="col-md-5 col-sm-12 columnas_listar_areas" >
                 <h3 class="titulo_listar_info">Información</h3>
+                 <div class="info_content" v-if="info_user==true">
+                  <h3>Usuario</h3>
+                  <p>{{nombre_user}} <span style="padding:0px 10px;"> </span>{{apellido_user}}</p>
+                   <p>{{email_user}}</p>
+                </div>
                 <div class="info_content">
                   <h3>Área</h3>
                   <p>{{areas_info.nombre}} <span style="padding:0px 10px;">/ </span> <span> Ext: {{areas_info.extencion_tel}}</span></p>
@@ -98,8 +103,12 @@
      data(){
         return{
           url:'',
+          info_user:false,
           url_imagen_defecto:'',
           areas:[],
+          nombre_user:'',
+          email_user:'',
+          apellido_user:'',
           usuarios:[],
           idareaUser:'',
           areas_info:[],
@@ -123,6 +132,7 @@
           this.$http.get(window._apiURL+'areas')
               .then(function(respuesta){
                 this.areas=respuesta.body;
+               
                 // console.log(respuesta);
 
               });
@@ -130,11 +140,9 @@
         consultarApiusuarios:function(areaid){
           $('.list_areas').removeClass( "active" );
           $('#area_'+areaid).addClass('active');
+        
           // The .each() method is unnecessary here:
-          
-
-
-
+     
           this.$http.get(window._apiURL+'usuarios')
           .then(function(respuesta){
             //asigno los usuarios y el id del area para hacer el filtro en el v-for
@@ -142,6 +150,8 @@
             // console.log(this.usuarios);
             this.idareaUser=areaid;
             this.switcharea_user=1;
+            this.info_user=false;
+             
             //consulto la api por el id del area para mostrar la información en la ultima
           });
 
@@ -160,10 +170,14 @@
           });
         },
         userviewinfo:function(usuario){
-          console.log(usuario);
+          console.log('Usuario');
+           this.info_user=true;
            this.switcharea_user=2;
            this.horas_user=usuario.horas_disponible;
            this.horas_disponible_user=parseInt(usuario.horas_disponible)-parseInt(usuario.horas_gastadas);
+           this.nombre_user=usuario.nombre;
+           this.apellido_user=usuario.apellido;
+           this.email_user=usuario.email;
            this.id_user="usuarios/editar/"+usuario.id;
            this.id_user_eliminar=usuario.id;
 

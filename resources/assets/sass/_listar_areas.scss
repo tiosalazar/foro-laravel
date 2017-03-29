@@ -23,7 +23,7 @@
 	.columnas_listar_areas{
 		padding-right: 0;
 		padding-left: 0;
-		height: 450px;
+		height: 550px;
 		background-color: #EDEDED;
         .active{
         	background-color: #15BAEE;
@@ -91,9 +91,7 @@
 			    	border-bottom: 1px dashed gray;
 			    	display: flex;
 			    	line-height: 8px;
-			    	&:last-child{
-
-			    	}
+			    	
 			    	.text_user_listado{
 			    		padding-top: 17px;
     					padding-left: 5%;

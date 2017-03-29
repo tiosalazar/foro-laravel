@@ -7,7 +7,7 @@
 
 @section('main-content')
 	
-	 <div class="container">
+	 <div class="">
         <div class="row">
         <div class="titulos_foro">
 			<h3 class="box-title"><span class="span_descripcion1">Editar</span> <span class="span_descripcion2"> Usuario</span></h3>
