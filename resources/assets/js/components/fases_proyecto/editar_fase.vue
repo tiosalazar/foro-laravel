@@ -19,7 +19,7 @@
         <!-- /.form-group -->
       </div>
       <div class="col-xs-12 col-md-12">
-        <button type="button" v-on:click="editfase" class="btn btn-flat btn-success">Editar</button>
+        <button type="button" v-on:click="editfase" class="btn btn-flat btn-success ">Editar</button>
         <button type="button" v-on:click="showModal(fase)" class="btn btn-flat btn-danger pull-right">Borrar</button>
       </div>
       <!-- </div> -->

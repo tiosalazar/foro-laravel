@@ -191,7 +191,7 @@ class DivisasController extends Controller
     protected function validatorCrearDivisa(array $data)
     {
         return Validator::make($data, [
-            'nombre' => 'required|min:4|alpha',
+            'nombre' => 'required|min:4',
             'tasa_conversion' => 'numeric',
             ]);
     }
