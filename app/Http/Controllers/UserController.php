@@ -357,6 +357,8 @@ class UserController extends Controller
 
         $notifications = $user->notifications;
 
+        $notifications = $notifications->reverse();
+
         return Datatables::of($notifications)->make(true);
 
     }

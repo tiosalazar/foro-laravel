@@ -100,7 +100,7 @@
                  <div class="form-group same-height">
                   <label><strong>Estado de solicitud: </strong></label>
                   <!-- <div class="" v-if=" rol_actual !='coordinador' &&  rol_actual!='owner' && (id_usuario_actual != tarea_info.encargado_id && tarea_info.estados_id == '1')"> -->
-                  <div class="" v-if="(rol_actual =='owner') || (rol_actual =='desarrollo') || (id_usuario_actual == tarea_info.encargado_id && tarea_info.estados_id != '1' && tarea_info.estados_id != '2') || (rol_actual =='coordinador' && tarea_info.estados_id == '2')">
+                  <div class="" v-if="(rol_actual =='owner' && tarea_info.estados_id != '1' ) || (rol_actual =='desarrollo' && tarea_info.estados_id != '1') || (id_usuario_actual == tarea_info.encargado_id && tarea_info.estados_id != '1' && tarea_info.estados_id != '2') || (rol_actual =='coordinador' && tarea_info.estados_id == '2')">
                     <select_estados tipo_estado="1"  :select="tarea_info.estado"></select_estados>
                   </div>
                   <div v-else>
