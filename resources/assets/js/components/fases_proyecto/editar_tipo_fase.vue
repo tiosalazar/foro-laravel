@@ -107,6 +107,7 @@
             toastr.warning(this.message,response.body.msg,this.option_toast);
           } else {
             toastr.success(response.body.msg,'',this.option_toast);
+            this.tipo_fase={};
             this.fase={};
           }
         }, function(err) {

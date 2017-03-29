@@ -55,7 +55,7 @@
       },
       watch : {
         tipos : function (value) {
-          this.value = '';
+          this.value = value;
            this.$http.get(window._apiURL+'tipos_fase/'+value)
              .then(function(respuesta){
               console.log(respuesta.body)
