@@ -273,6 +273,7 @@ class TareaController extends Controller
                     'response_time' => microtime(true) - LARAVEL_START,
                     'msg' => 'Ocurrio un problema guardando el Historico, comunicate con Soporte',
                     'error' => 'ERR_06',
+                    'consola' =>$e->getMessage(),
                     'obj' =>[],
                     'tarea_historico' =>$tarea_historico,
                 ],Response::HTTP_BAD_REQUEST);
@@ -339,46 +340,54 @@ class TareaController extends Controller
             }else
             // Tarea OK
             if($tarea->estados_id == 1){
-                // Tarea OK, guardar horas en usuario->horas gastadas
-                // y en Area->horas gastadas
+                try {
+                  // Tarea OK, guardar horas en usuario->horas gastadas
+                  // y en Area->horas gastadas
 
-                $colaborador = User::findOrFail($tarea->encargado_id);
-                $colaborador->horas_gastadas += $tarea->tiempo_real;
+                  $colaborador = User::findOrFail($tarea->encargado_id);
+                  $colaborador->horas_gastadas += $tarea->tiempo_real;
 
-                $area = Area::findOrFail($tarea->areas_id);
-                $area->horas_consumidas +=$tarea->tiempo_real;
+                  $area = Area::findOrFail($tarea->areas_id);
+                  $area->horas_consumidas +=$tarea->tiempo_real;
 
-                $colaborador->update();
-                $area->update();
-            }
+                  $colaborador->update();
+                  $area->update();
 
+                  // sume Horas Reales en Tiempos_x_area
+                  $horas_area = Tiempos_x_Area::where('ots_id',$tarea->ots_id)
+                  ->where('areas_id',$tarea->areas_id)
+                  ->first();
 
-            // Si la tarea se Realizo (2)
-            // sume Horas Reales en Tiempos_x_area
-            if ($tarea->estados_id == 2) {
-                $horas_area = Tiempos_x_Area::where('ots_id',$tarea->ots_id)
-                ->where('areas_id',$tarea->areas_id)
-                ->first();
+                  if (!is_null($tarea->tiempo_real) && $tarea->tiempo_real !=0) {
 
-                if (!is_null($tarea->tiempo_real) && $tarea->tiempo_real !=0) {
-
-                    if ( $horas_area->tiempo_real + $tarea->tiempo_real > $horas_area->tiempo_estimado_ot) {
-                      $area = Area::findOrFail($tarea->areas_id);
-                        User::findOrFail($tarea->usuarios_id)
-                        ->notify(new OtExcedeTiempo($makerBefore,$horas_area->ots,$area));
-                    }
-                    $horas_area->tiempo_real +=$tarea->tiempo_real;
-                    $horas_area->save();
-                }else{
-                    return response([
-                        'status' => Response::HTTP_BAD_REQUEST,
-                        'response_time' => microtime(true) - LARAVEL_START,
-                        'msg' => 'Tiempo real vacio o nulo',
-                        'error' => 'ERR_06',
-                        'obj' =>$vl->errors(),
-                        'tarea' =>$tarea,
-                        ],Response::HTTP_BAD_REQUEST);
+                      if ( $horas_area->tiempo_real + $tarea->tiempo_real > $horas_area->tiempo_estimado_ot) {
+                        $area = Area::findOrFail($tarea->areas_id);
+                          User::findOrFail($tarea->usuarios_id)
+                          ->notify(new OtExcedeTiempo($makerBefore,$horas_area->ots,$area));
+                      }
+                      $horas_area->tiempo_real +=$tarea->tiempo_real;
+                      $horas_area->save();
+                  }else{
+                      return response([
+                          'status' => Response::HTTP_BAD_REQUEST,
+                          'response_time' => microtime(true) - LARAVEL_START,
+                          'msg' => 'Tiempo real vacio o nulo',
+                          'error' => 'ERR_06',
+                          'obj' =>$vl->errors(),
+                          'tarea' =>$tarea,
+                          ],Response::HTTP_BAD_REQUEST);
+                  }
+                } catch (Exception $e) {
+                  return response([
+                      'status' => Response::HTTP_BAD_REQUEST,
+                      'response_time' => microtime(true) - LARAVEL_START,
+                      'msg' => 'Ocurrio un errordurante el proceso, comunicate con Soporte',
+                      'error' => 'ERR_06',
+                      'consola' =>$e->getMessage(),
+                      'tarea' =>$tarea,
+                      ],Response::HTTP_BAD_REQUEST);
                 }
+
             }
 
             //Guardamos la tarea
@@ -704,9 +713,10 @@ return response()->json($respuesta);
       })
       ->addColumn('actions', function ($tarea) {
         // Permisos para acciones de trafico
-        $ver_tarea = (Auth::user()->can('ver_trafico') )?'<a href="'.url('/').'/ver_tarea/'.$tarea->id.'" class="btn btn-primary btn-xs btn-flat btn-block" aria-label="View">Ver tarea</a>':'';
-        $guardar_tarea = (Auth::user()->can('editar_trafico') )?'<button id="'.$tarea->id.'" class="save_trafic btn btn-success btn-xs btn-flat btn-block " aria-label="View">Guardar</button>':'';
-        return $ver_tarea.$guardar_tarea;
+        $ver_tarea = (Auth::user()->can('ver_trafico') )?'<a href="'.url('/').'/ver_tarea/'.$tarea->id.'" class="btn btn-primary btn-xs btn-flat btn_accion" aria-label="Ver Tarea" title="Ver Tarea"><i class="fa fa-file-text" aria-hidden="true"></i></a>':'';
+        $ver_ot = (Auth::user()->can('ver_ots') )?'<a href="'.url('/').'/ots/visualizar/'.$tarea->ot->id.'" class="btn btn-primary btn-xs btn-flat btn_accion" aria-label="Ver OT"  title="Ver OT"><i class="fa fa-eye" aria-hidden="true"></i></a>':'';
+        $guardar_tarea = (Auth::user()->can('editar_trafico') )?'<button id="'.$tarea->id.'" class="save_trafic btn btn-success btn-default btn-block btn-flat" aria-label="Guardar"  title="Guardar"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>':'';
+        return $ver_tarea.$ver_ot.$guardar_tarea;
       })
       ->editColumn('created_at', function ($tarea) {
           return $tarea->created_at->format('d-M-Y');
