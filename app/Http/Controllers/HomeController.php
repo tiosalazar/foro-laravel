@@ -106,34 +106,41 @@ class HomeController extends Controller
        $nombre= $user_sin_espacios.'_'.$user_id_actual;
       //Archivo
       $archivo= request()->file('image');
-      //Creo la imagen y la redimensiono
-      $make_image = Image::make($archivo);
-       $make_image->resize(230, 240,function ($constraint) {
-        $constraint->aspectRatio();
-        });
-      $file = $make_image->resizeCanvas(230, 240);
-      //Extension
-      $ext=$archivo->guessClientExtension();
 
-      if (($ext=='jpg') OR ($ext=='png') OR ($ext=='jpeg') OR( $ext=='gif') ) {
-        
-        //Guardar imagen
-       $ext='png';
-
-       //Local Descomentar el Siguiente y comentar el de producción
-       $path = public_path("images\avatars\\");
-       //para Producción descomentar el siguiente
-       // $path = "images/avatars/";
-       $userauth = Auth::user()->id;
-       $user= User::findOrFail($userauth);
-       $user->fill(['img_perfil'=>'/images/avatars/'.$nombre.'.'.$ext]);
-       $user->save();
-       $file->save($path.$nombre.'.'.$ext);
-       // $file->storeAs('/avatars/',$nombre.'.'.$ext,'public');
-        return back();
+      if ($archivo==null) {
+         return redirect('/home');
       }else{
 
-         return back();
+        //Creo la imagen y la redimensiono
+        $make_image = Image::make($archivo);
+         $make_image->resize(230, 240,function ($constraint) {
+          $constraint->aspectRatio();
+          });
+        $file = $make_image->resizeCanvas(230, 240);
+        //Extension
+        $ext=$archivo->guessClientExtension();
+
+        if (($ext=='jpg') OR ($ext=='png') OR ($ext=='jpeg') OR( $ext=='gif') ) {
+          
+          //Guardar imagen
+         $ext='png';
+
+         //Local Descomentar el Siguiente y comentar el de producción
+         $path = public_path("images\avatars\\");
+         //para Producción descomentar el siguiente
+         // $path = "images/avatars/";
+         $userauth = Auth::user()->id;
+         $user= User::findOrFail($userauth);
+         $user->fill(['img_perfil'=>'/images/avatars/'.$nombre.'.'.$ext]);
+         $user->save();
+         $file->save($path.$nombre.'.'.$ext);
+         // $file->storeAs('/avatars/',$nombre.'.'.$ext,'public');
+          return back();
+        }else{
+
+           return back();
+        }
+
       }
 
     }
