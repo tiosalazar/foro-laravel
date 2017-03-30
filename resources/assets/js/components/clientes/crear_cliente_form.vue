@@ -9,7 +9,7 @@
               <!-- /.form-group -->
               <div class="form-group" v-bind:class="[errors_return.nombre_contacto,{ 'has-error': errors.has('nombre_contacto') }]">
                 <label><sup>*</sup> Nombre de contacto</label>
-                <input type="text" v-model="cliente.nombre_contacto" data-vv-as="Nombre de contacto" v-validate data-vv-rules="required|alpha_num_spaces|min:3"  name="nombre_contacto" id="nombre_contacto" class="form-control">
+                <input type="text" v-model="cliente.nombre_contacto" data-vv-as="Nombre de contacto" v-validate data-vv-rules="required|alpha_spaces|min:3"  name="nombre_contacto" id="nombre_contacto" class="form-control">
                 <span  class="help-block" v-show="errors.has('nombre_contacto')">{{ errors.first('nombre_contacto') }}</span>
               </div>
               <!-- /.form-group -->
