@@ -115,6 +115,21 @@
 						       }
 						   },
 						   {
+						   	"targets": [9],
+						       "render": function(data, type, full) { // Devuelve el contenido personalizado
+							   
+							   if(data!=""){
+								var observacion_corta = data.substr(0, 30);
+							   
+								return  observacion_corta+"...";
+							   }else{
+								 return "";  
+							   }
+						       
+
+						       }
+						   },
+						   {
 						   	"targets": [4],
 						   	"data": null,
 						       "render": function(data, type, full) { // Devuelve el contenido personalizado

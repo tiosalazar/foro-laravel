@@ -63,9 +63,7 @@ class OtController extends Controller
         }else{
          $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->get();
         }
-
-
-
+        
       $output = collect($ots);
       return Datatables::of($output)
       ->addColumn('fecha_inicio', function($ots) {

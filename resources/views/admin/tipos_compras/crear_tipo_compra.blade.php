@@ -16,13 +16,13 @@
 		<div class="col-md-8 col-md-offset-2">
 		<div class="box box-success">
 			<div class="box-body">
-				<div class="col-md-6 ">
+				<div class="col-md-6 tipos_compra_form1">
 					<h3 class="box-title">Crear</h3>
 					<!-- /.box-header -->
 					<tipos_compra_crear></tipos_compra_crear>
 				</div>
-
-				<div class="col-md-6 ">
+				
+				<div class="col-md-6 tipos_compra_form2">
 					<h3 class="box-title">Editar</h3>
 					<!-- /.box-header -->
 					<tipos_compra_editar></tipos_compra_editar>
