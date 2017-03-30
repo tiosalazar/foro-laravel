@@ -24,10 +24,9 @@
 		 <form method="POST" id="search-form" class="form-inline" role="form">
 	        <div class="drop">
 	         	<select name="fee" id="fee"  class="form-control  multiselect">
-	                <option value="">Fee</option>
-	        	    <option value="all">Todos</option>
-		        	<option value="1">Si</option>
-		        	<option value="0">No</option>
+	        	  <option value="all">Todos</option>
+		        	<option value="1">Fee</option>
+		        	<option value="0">Puntual</option>
 		        </select>
 	        </div>
 	        <button type="submit" class="btn btn-info btn-flat">Buscar</button>
@@ -117,15 +116,15 @@
 						   {
 						   	"targets": [9],
 						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-							   
+
 							   if(data!=""){
 								var observacion_corta = data.substr(0, 30);
-							   
+
 								return  observacion_corta+"...";
 							   }else{
-								 return "";  
+								 return "";
 							   }
-						       
+
 
 						       }
 						   },

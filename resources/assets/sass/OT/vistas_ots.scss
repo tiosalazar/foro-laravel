@@ -213,7 +213,7 @@ input[type=radio]:checked + label:before {
 }
 
 .input-group.date{
- 
+
   .datepicker{
     input{
       width: 107%;
@@ -231,7 +231,7 @@ input[type=radio]:checked + label:before {
     }
 
   }
-  
+
 
 }
 .titulo_seccion_ot{
@@ -247,8 +247,8 @@ input[type=radio]:checked + label:before {
   }
   .listado_requerimientos_resumen {
     display: inline-block;
-    padding: 20px 50px;
-    width: 50%;
+    padding: 20px 15px;
+    width: 49%;
     .ot_visualizar_descripcion{
       word-break: break-word;
     }

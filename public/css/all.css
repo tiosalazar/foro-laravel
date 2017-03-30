@@ -8234,8 +8234,8 @@ label sup {
 
 #formulario_ot_actualizacion .listado_requerimientos_resumen {
   display: inline-block;
-  padding: 20px 50px;
-  width: 50%;
+  padding: 20px 15px;
+  width: 49%;
 }
 
 #formulario_ot_actualizacion .listado_requerimientos_resumen .ot_visualizar_descripcion {
