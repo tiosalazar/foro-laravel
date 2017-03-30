@@ -11,3 +11,10 @@ ftpsync.settings
 public/plugins/
 npm-debug.log
 public/js/app.js
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
