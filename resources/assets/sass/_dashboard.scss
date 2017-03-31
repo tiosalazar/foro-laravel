@@ -148,7 +148,12 @@ body{
 							&:hover{
 								background-color: #15BAEE;
 								color: white;
-							}		
+							}
+							&:hover>i{
+							
+								color: white;
+							}
+									
 						}
 						
 					}
