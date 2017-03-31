@@ -520,7 +520,7 @@ class TareaController extends Controller
             $respuesta["codigo_error"]="Error con la tarea";
             $respuesta["mensaje"]="Error con la tarea";
             // $respuesta["tarea_historico"]=$tarea_historico;
-            $respuesta["consola"]=$e->getMessage();
+            $respuesta["consola"]=$e;
             $respuesta["msg"]="Error  datos incorrectos";
             $respuesta["request"]=$request->all();
             $respuesta["obj"]=$vl->errors();
