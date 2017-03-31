@@ -600,6 +600,9 @@ return response()->json($respuesta);
         ->editColumn('created_at', function ($tarea) {
             return $tarea->created_at->format('d-M-Y');
         })
+        ->editColumn('fecha_entrega_cliente', function ($tarea) {
+            return $tarea->getFormatFecha( $tarea->fecha_entrega_cliente);
+        })
         ->addColumn('encargado', function ($tarea) {
           return $tarea->usuarioencargado->nombre .' '. $tarea->usuarioencargado->apellido;
         })
@@ -608,6 +611,9 @@ return response()->json($respuesta);
         })
         ->addColumn('acciones', function ($tarea) {
           return '<a href="'.url('/').'/ver_tarea/'.$tarea->id.'" title="Ver Tarea" class="btn btn-primary btn-xs btn-flat btn-block" aria-label="View"><i class="fa fa-eye" aria-hidden="true"></i></a>';
+        })
+        ->addColumn('prioridad', function ($tarea) {
+          return $tarea->Estado_prioridad->nombre;
         })
         ->make(true);
 

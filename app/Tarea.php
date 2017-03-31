@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Date\Date;
+use Carbon\Carbon;
 
 class Tarea extends Model
 {
@@ -16,7 +18,11 @@ class Tarea extends Model
     'usuarios_id', 'ots_id', 'planeacion_fases_id', 'encargado_id','prioridad_id',
   ];
 
-
+  public function getFormatFecha($fecha_ingreso)
+ {
+      $fecha= new Date($fecha_ingreso);
+     return ucwords($fecha->format('d-M-Y'));
+ }
   /**
   * Obtiene el Estado que esta asociado a una Tarea
   */
@@ -36,7 +42,7 @@ class Tarea extends Model
   */
   public function Area()
   {
-    return $this->belongsTo('App\Area','areas_id','id');  
+    return $this->belongsTo('App\Area','areas_id','id');
   }
   /**
   * Obtiene el Usuario que esta asociada la Tarea

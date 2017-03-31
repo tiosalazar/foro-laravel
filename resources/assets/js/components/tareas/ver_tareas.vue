@@ -6,7 +6,9 @@
 		          <th >OT</th>
 		          <th >Cliente</th>
 		          <th >Requerimiento</th>
+							<th >Prioridad</th>
 		          <th >Fecha de Solicitud</th>
+							<th >Fecha de Entrega cliente</th>
 		          <th >Encargado</th>
 		          <th >Estado</th>
 		          <th >Acciones</th>
@@ -90,7 +92,9 @@
 				{ data: 'ot.referencia', name: 'ot.referencia' },
 				{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre' },
 				{ data: 'nombre_tarea', name: 'nombre_tarea' },
+				{ data: 'prioridad', name: 'prioridad' },
 				{ data: 'created_at', name: 'created_at' },
+				{ data: 'fecha_entrega_cliente', name: 'fecha_entrega_cliente' },
 				{ data: 'encargado', name: 'encargado' },
 				{ data: 'estado', name: 'estado.nombre' },
 				{ data: 'acciones', name: 'acciones', searchable:false },
