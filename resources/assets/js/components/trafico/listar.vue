@@ -7,6 +7,7 @@
 		          <th >Cliente</th>
 		          <th >Ejecutivo</th>
 							<th >Encargado</th>
+							<th >Área</th>
 							<th >Fecha de Solicitud</th>
 		          <th >Requerimiento</th>
 		          <th >Fecha Entrega Área</th>
@@ -110,6 +111,7 @@
 				{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre' },
 				{ data: 'ejecutivo', name: 'usuario.nombre' },
 				{ data: 'usuarioencargado.nombre', name: 'usuarioencargado.nombre' },
+				{ data: 'area.nombre', name: 'area.nombre' },
 				{ data: 'created_at', name: 'created_at' },
 				{ data: 'nombre_tarea', name: 'nombre_tarea' },
 				{ data: 'fecha_entrega_area', name: 'fecha_entrega_area' },
