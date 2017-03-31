@@ -150,7 +150,7 @@
                 <div class="form-group" v-bind:class="{ 'has-error': errors.has('fecha_entrega_cuentas') }">
                   <label for=""><strong>Tiempo estimado Jefe:</strong></label>
                   <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id != '3' ">
-                      {{tarea_info.tiempo_estimado}}
+                      {{tarea_info.tiempo_estimado}} Horas
                   </div>
                   <div v-else>
                     <input type="text" placeholder="horas estimadas" name="horas_estimadas" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_estimado" required="required|numeric">
@@ -171,7 +171,7 @@
                   <div class="form-group" >
                       <label for=""><strong>Tiempo Real:</strong></label>
                       <!-- <br> -->
-                      <div>{{tarea_info.tiempo_real}}</div>
+                      <div>{{tarea_info.tiempo_real}} Horas</div>
                   </div>
               </div>
                 <span  class="help-block" v-show="errors.has('timepo_real')">{{ errors.first('timepo_real') }}</span>
