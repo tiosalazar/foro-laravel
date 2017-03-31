@@ -19,7 +19,7 @@
 		    </thead>
         </table>
         <form method="POST" id="search-form" class="form-inline" role="form">
-					<div class="drop">
+					<div class="drop select_fecha_trafico1">
 						<datepicker language="es"
 							id="fecha_inicio"
 							required="required" v-validate data-vv-rules="required"
@@ -34,7 +34,7 @@
 						</datepicker>
 						<input type="hidden" name="f_inicio" v-model="start">
 					</div>
-					<div class="drop">
+					<div class="drop select_fecha_trafico2">
 						<datepicker language="es"
 							id="fecha_final"
 							required="required" v-validate data-vv-rules="required"
