@@ -10,6 +10,7 @@ use App\Notifications\TareaCreada;
 use App\Notifications\TareaPendiente;
 use App\Notifications\TareaProgramada;
 use App\Notifications\TareaRealizada;
+use App\Notifications\TareaEntregada;
 use App\Notifications\TareaOk;
 use App\Notifications\TareaAtencionCuentas;
 use App\Notifications\TareaAtencionArea;
@@ -417,11 +418,11 @@ class TareaController extends Controller
             switch ($tarea->estados_id) {
                 case '1':
                 // Enviar notificacion al nuevo encargado
-                $encargado_area= User::where('roles_id',4)
-                ->where('areas_id', $tarea->areas_id)
-                ->first();
-                User::findOrFail($tarea->usuarios_id)
-                ->notify(new TareaOk($encargado_area,$tarea));
+                // $encargado_area= User::where('roles_id',4)
+                // ->where('areas_id', $tarea->areas_id)
+                // ->first();
+                // User::findOrFail($tarea->usuarios_id)
+                // ->notify(new TareaOk($encargado_area,$tarea));
                 break;
                 case '2':
                 $encargado_area= User::where('roles_id',4)
