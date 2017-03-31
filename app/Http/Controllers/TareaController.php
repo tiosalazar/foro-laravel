@@ -463,7 +463,7 @@ class TareaController extends Controller
                 ->first();
                 // Enviar notificacion al nuevo encargado
                 User::findOrFail($tarea->usuarios_id)
-                ->notify(new TareaEntregada($encargado_area->id,$tarea));
+                ->notify(new TareaEntregada($encargado_area,$tarea));
                 break;
 
                 default:
