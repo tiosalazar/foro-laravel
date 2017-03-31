@@ -683,13 +683,16 @@ return response()->json($respuesta);
 
       // selecciona solos los que tiene el area especifico
       foreach ($tarea as $key => $value) {
-          if ($value->area && $value->ot && $value->ot->cliente && $value->estado ) {
+          if (!is_null($value->area) && !is_null($value->ot) && !is_null($value->ot->cliente) && !is_null($value->estado) ) {
               array_push($output, $value);
           }
       }
       // Se conviert en collection para que lo reciba el Datatable
       $output = collect($output);
       return Datatables::of($output)
+      // ->addColumn('encargado', function ($tarea) {
+      //   return $tarea->usuarioencargado->nombre.$tarea->usuarioencargado->apellido;
+      // })
       ->addColumn('ejecutivo', function ($tarea) {
         return $tarea->usuario->nombre[0].$tarea->usuario->apellido[0];
       })
