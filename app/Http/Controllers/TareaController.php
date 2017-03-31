@@ -406,6 +406,7 @@ class TareaController extends Controller
              * al usuario correspondiente
              *
              * 1 - OK
+             * 20 - Entregado
              * 2 - Realizada
              * 3 - Programada
              * 4 - Atencion Cuentas
@@ -452,6 +453,16 @@ class TareaController extends Controller
 
                 // Enviar notificacion al nuevo encargado
                 User::findOrFail($tarea->encargado_id)->notify(new TareaPendiente($maker,$tarea));
+                break;
+
+                case '20':
+                // Entregado
+                $encargado_area= User::where('roles_id',4)
+                ->where('areas_id', $tarea->areas_id)
+                ->first();
+                // Enviar notificacion al nuevo encargado
+                User::findOrFail($tarea->usuarios_id)
+                ->notify(new TareaEntregada($encargado_area->id,$tarea));
                 break;
 
                 default:

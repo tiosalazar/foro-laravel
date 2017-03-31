@@ -202,7 +202,7 @@
                   <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Comentar</button>
                 </div>
            </div>
-           <div v-else-if=" (estado_solicitud.id==1 || estado_solicitud.id==2 || estado_solicitud.id==3) && rol_actual =='coordinador'" >
+           <div v-else-if=" (estado_solicitud.id==1 || estado_solicitud.id==2 || estado_solicitud.id==3 || estado_solicitud.id==20) && rol_actual =='coordinador'" >
                 <div class="box-footer text-center">
                   <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Actualizar</button>
                 </div>

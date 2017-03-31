@@ -262,6 +262,8 @@ class EstadosTableSeeder extends Seeder {
           App\Estado::create(array('nombre' => 'Incumplimiento','tipos_estados_id'=> 4) );
           App\Estado::create(array('nombre' => 'Pendiente de Entrega','tipos_estados_id'=> 4) );
           App\Estado::create(array('nombre' => 'Programar','tipos_estados_id'=> 4) );
+
+          App\Estado::create(array('nombre' => 'Entregado','tipos_estados_id'=> 1 ));
     }
 
 }
@@ -401,6 +403,7 @@ class Estados_Roles extends Seeder {
                           ->orWhere('id','2')
                           ->orWhere('id','3')
                           ->orWhere('id','4')
+                          ->orWhere('id','20')
                           ->get();
     $rol->Estados()->saveMany($estados);
 
