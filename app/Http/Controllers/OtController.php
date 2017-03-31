@@ -63,7 +63,7 @@ class OtController extends Controller
         }else{
          $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->get();
         }
-        
+
       $output = collect($ots);
       return Datatables::of($output)
       ->addColumn('fecha_inicio', function($ots) {
@@ -648,122 +648,122 @@ class OtController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-     public function exportarTodoslosDatos(Request $request, $id){
+   public function exportarTodoslosDatos(Request $request, $id){
 
-       $ot = OT::findOrFail($id);
-       $ot->tiempos_x_area;
-       $ot->Cliente;
-       $ot->Usuario;
-       $ot->tareas=Tarea::with('area','usuario','estado','usuarioencargado')->where('estados_id', 1)->where('ots_id',$ot->id)->get();
-        // return response()->json($ot->tareas);
+    $ot = OT::findOrFail($id);
+    $ot->tiempos_x_area;
+    $ot->Cliente;
+    $ot->Usuario;
+    $ot->tareas=Tarea::with('area','usuario','estado','usuarioencargado')->where('estados_id', 1)->where('ots_id',$ot->id)->get();
+     // return response()->json($ot->tareas);
 
-       // Initialize the array which will be passed into the Excel
-       $otsArray = [];
-       $areasArray =[];
+    // Initialize the array which will be passed into the Excel
+    $otsArray = [];
+    $areasArray =[];
 
-       // Define the Excel spreadsheet headers
-       $otsEncabezado[] = ['OT',$ot->referencia ,'Fecha Inicio',$ot->getFormatFechaShowInfo($ot->fecha_inicio),'Horas Totales',$ot->horas_totales];
-       $otsEncabezado2[] = ['Cliente',$ot->cliente['nombre'],'Fecha Final',$ot->getFormatFechaShowInfo($ot->fecha_final),'Horas Disponibles',$ot->horas_disponibles,'Horas Extra',$ot->total_horas_extra];
-       $otsDescripcion = [];
+    // Define the Excel spreadsheet headers
+    $otsEncabezado[] = ['OT',$ot->referencia ,'Fecha Inicio',$ot->getFormatFechaShowInfo($ot->fecha_inicio),'Horas Totales',$ot->horas_totales];
+    $otsEncabezado2[] = ['Cliente',$ot->cliente['nombre'],'Fecha Final',$ot->getFormatFechaShowInfo($ot->fecha_final),'Horas Disponibles',$ot->horas_disponibles,'Horas Extra',$ot->total_horas_extra];
+    $otsDescripcion = [];
 
-       $areasEncabezado=[];
-       $areasEncabezado2=[];
-       $areasEncabezado3=[];
-       $total_contra=0;
-       $total_real=0;
+    $areasEncabezado=[];
+    $areasEncabezado2=[];
+    $areasEncabezado3=[];
+    $total_contra=0;
+    $total_real=0;
 
-       foreach ($ot->tiempos_x_area as  $tiempo_area) {
-            array_push( $areasEncabezado,Area::findOrFail($tiempo_area['areas_id'])->nombre );
-            array_push( $areasEncabezado2,$tiempo_area['tiempo_estimado_ot'] );
-            array_push( $areasEncabezado3,$tiempo_area['tiempo_real'] );
-            $total_contra += $tiempo_area['tiempo_estimado_ot'];
-            $total_real += $tiempo_area['tiempo_real'];
-       }
-        array_push( $areasEncabezado,'TOTAL' );
-        array_push( $areasEncabezado2, $total_contra);
-        array_push( $areasEncabezado3, $total_real );
-
-       foreach($ot->tareas as $tarea){
-        array_push( $otsDescripcion, array($tarea['area']['nombre'],$tarea['nombre_tarea'],$ot->getFormatFechaShowInfo($tarea['created_at']),$ot->getFormatFechaShowInfo($tarea['fecha_entrega_cuentas']), $tarea['tiempo_estimado'],$tarea['tiempo_real'], $tarea['tiempo_mapa_cliente'],$tarea['usuarioencargado']['nombre'].' '.$tarea['usuarioencargado']['apellido']) );
-     }
-     array_push($otsArray, $otsEncabezado);
-     array_push($otsArray, $otsEncabezado2);
-     array_push($otsArray, $otsDescripcion);
-     array_push($areasArray, $areasEncabezado);
-     array_push($areasArray, $areasEncabezado2);
-     array_push($areasArray,  $areasEncabezado3);
-  //     return response()->json( $ot->tareas);
-     Excel::create( $ot->Cliente['nombre'].'_'.$ot->nombre.'_'.'OT_#'.$ot->referencia.'', function($excel) use($otsArray,$areasArray)  {
-            // Set the spreadsheet title, creator, and description
-        $excel->setTitle('Resumen de la OT ');
-        $excel->setCreator('Gestor de proccesos')->setCompany('Himalaya');
-        $excel->setDescription('Resumen de la OT');
-
-        $excel->sheet('resumen', function($sheet) use($otsArray,$areasArray)  {
-          $headings = array('Datos Generales de la OT');
-          $sheet->prependRow(1, $headings);
-          $sheet->row(2, $otsArray[0][0]);
-          $sheet->row(3, $otsArray[1][0]);
-          $headings = array('Resumen de Areas de la OT ');
-          $sheet->prependRow(5, $headings);
-          $sheet->row(6, $areasArray[0]);
-          $sheet->row(7, $areasArray[1]);
-          $sheet->row(8, $areasArray[2]);
-          $headings = array('Resumen de tareas de la OT ');
-          $sheet->prependRow(9, $headings);
-          $headings = array('ÁREA','REQUERIMIENTOS','FECHA SOLICITUD','FECHA DE ENTREGA','TIEMPO REAL','TIEMPO ESTIMADO JEFE','TIEMPO ESTIMADO MAPA DE CLIENTE','ENCARGADO');
-          $sheet->prependRow(11, $headings);
-          $sheet->fromArray($otsArray[2], null, 'A12', false, false);
-
-          $sheet->cell('A1', function($cell) {
-               // Set font
-            $cell->setFont(array(
-             'family'     => 'Calibri',
-             'size'       => '14',
-             'bold'       =>  true
-             ));
-         });
-
-          $sheet->cell('A5', function($cell) {
-               // Set font
-            $cell->setFont(array(
-             'family'     => 'Calibri',
-             'size'       => '14',
-             'bold'       =>  true
-             ));
-
-         });
-           $sheet->cell('A9', function($cell) {
-               // Set font
-            $cell->setFont(array(
-             'family'     => 'Calibri',
-             'size'       => '14',
-             'bold'       =>  true
-             ));
-
-         });
-
-          $sheet->cells('A2:A3', function($cells) {$cells->setFontWeight('bold');});
-          $sheet->cells('B2:B3', function($cells) {$cells->setAlignment('left');});
-          $sheet->cells('C2:C3', function($cells) {$cells->setFontWeight('bold');});
-          $sheet->cells('D2:D3', function($cells) {$cells->setAlignment('right');});
-          $sheet->cells('E2:E3', function($cells) {$cells->setFontWeight('bold');});
-          $sheet->cells('F2:G3', function($cells) {$cells->setAlignment('center');});
-          $sheet->cells('G2:G3', function($cells) {$cells->setFontWeight('bold');});
-          $sheet->cells('H2:H3', function($cells) {$cells->setAlignment('center');});
-          $sheet->cells('A11:H11', function($cells) {$cells->setFontWeight('bold');});
-
-          $sheet->cells('A2:E8', function($cells) {$cells->setAlignment('center');});
-          // Set border for range
-          $sheet->setBorder('A11:H40', 'thin');
-
-       });
-
-     })->export('xls');
-
-
-
+    foreach ($ot->tiempos_x_area as  $tiempo_area) {
+         array_push( $areasEncabezado,Area::findOrFail($tiempo_area['areas_id'])->nombre );
+         array_push( $areasEncabezado2,number_format($tiempo_area['tiempo_estimado_ot'],2,",",".") );
+         array_push( $areasEncabezado3,number_format($tiempo_area['tiempo_real'],2,",",".") );
+         $total_contra += $tiempo_area['tiempo_estimado_ot'];
+         $total_real += $tiempo_area['tiempo_real'];
+    }
+     array_push( $areasEncabezado,'TOTAL' );
+     array_push( $areasEncabezado2, number_format($total_contra,2,",","."));
+     array_push( $areasEncabezado3,number_format($total_real,2,",",".") );
+//return response()->json( $ot->tareas);
+    foreach($ot->tareas as $tarea){
+     array_push( $otsDescripcion, array($tarea['area']['nombre'],$tarea['nombre_tarea'],$ot->getFormatFechaShowInfo($tarea['created_at']),$ot->getFormatFechaShowInfo($tarea['fecha_entrega_cuentas']), number_format( $tarea['tiempo_estimado'],2,",","."), number_format($tarea['tiempo_real'],2,",","."), number_format( $tarea['tiempo_mapa_cliente'],2,",","."),$tarea['usuarioencargado']['nombre'].' '.$tarea['usuarioencargado']['apellido']) );
   }
+  array_push($otsArray, $otsEncabezado);
+  array_push($otsArray, $otsEncabezado2);
+  array_push($otsArray, $otsDescripcion);
+  array_push($areasArray, $areasEncabezado);
+  array_push($areasArray, $areasEncabezado2);
+  array_push($areasArray,  $areasEncabezado3);
+//     return response()->json( $ot->tareas);
+  Excel::create( $ot->Cliente['nombre'].'_'.$ot->nombre.'_'.'OT_#'.$ot->referencia.'', function($excel) use($otsArray,$areasArray)  {
+         // Set the spreadsheet title, creator, and description
+     $excel->setTitle('Resumen de la OT ');
+     $excel->setCreator('Gestor de proccesos')->setCompany('Himalaya');
+     $excel->setDescription('Resumen de la OT');
+
+     $excel->sheet('resumen', function($sheet) use($otsArray,$areasArray)  {
+       $headings = array('Datos Generales de la OT');
+       $sheet->prependRow(1, $headings);
+       $sheet->row(2, $otsArray[0][0]);
+       $sheet->row(3, $otsArray[1][0]);
+       $headings = array('Resumen de Areas de la OT ');
+       $sheet->prependRow(5, $headings);
+       $sheet->row(6, $areasArray[0]);
+       $sheet->row(7, $areasArray[1]);
+       $sheet->row(8, $areasArray[2]);
+       $headings = array('Resumen de tareas de la OT ');
+       $sheet->prependRow(9, $headings);
+       $headings = array('ÁREA','REQUERIMIENTOS','FECHA SOLICITUD','FECHA DE ENTREGA','TIEMPO REAL','TIEMPO ESTIMADO JEFE','TIEMPO ESTIMADO MAPA DE CLIENTE','ENCARGADO');
+       $sheet->prependRow(11, $headings);
+       $sheet->fromArray($otsArray[2], null, 'A12', false, false);
+
+       $sheet->cell('A1', function($cell) {
+            // Set font
+         $cell->setFont(array(
+          'family'     => 'Calibri',
+          'size'       => '14',
+          'bold'       =>  true
+          ));
+      });
+
+       $sheet->cell('A5', function($cell) {
+            // Set font
+         $cell->setFont(array(
+          'family'     => 'Calibri',
+          'size'       => '14',
+          'bold'       =>  true
+          ));
+
+      });
+        $sheet->cell('A9', function($cell) {
+            // Set font
+         $cell->setFont(array(
+          'family'     => 'Calibri',
+          'size'       => '14',
+          'bold'       =>  true
+          ));
+
+      });
+
+       $sheet->cells('A2:A3', function($cells) {$cells->setFontWeight('bold');});
+       $sheet->cells('B2:B3', function($cells) {$cells->setAlignment('left');});
+       $sheet->cells('C2:C3', function($cells) {$cells->setFontWeight('bold');});
+       $sheet->cells('D2:D3', function($cells) {$cells->setAlignment('right');});
+       $sheet->cells('E2:E3', function($cells) {$cells->setFontWeight('bold');});
+       $sheet->cells('F2:G3', function($cells) {$cells->setAlignment('center');});
+       $sheet->cells('G2:G3', function($cells) {$cells->setFontWeight('bold');});
+       $sheet->cells('H2:H3', function($cells) {$cells->setAlignment('center');});
+       $sheet->cells('A11:H11', function($cells) {$cells->setFontWeight('bold');});
+
+       $sheet->cells('A2:E8', function($cells) {$cells->setAlignment('center');});
+       // Set border for range
+       $sheet->setBorder('A11:H40', 'thin');
+
+    });
+
+  })->export('xls');
+
+
+
+}
 
    /**
    *

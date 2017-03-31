@@ -588,8 +588,14 @@ return response()->json($respuesta);
         ->editColumn('created_at', function ($tarea) {
             return $tarea->created_at->format('d-M-Y');
         })
+        ->editColumn('fecha_entrega_cliente', function ($tarea) {
+            return $tarea->getFormatFecha( $tarea->fecha_entrega_cliente);
+        })
         ->addColumn('encargado', function ($tarea) {
           return $tarea->usuarioencargado->nombre .' '. $tarea->usuarioencargado->apellido;
+        })
+        ->addColumn('prioridad', function ($tarea) {
+          return $tarea->Estado_prioridad->nombre;
         })
         ->make(true);
 
