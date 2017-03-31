@@ -15,11 +15,7 @@
       <!-- /.form-group -->
     </div>
     <div class="col-xs-12 col-md-12">
-<<<<<<< HEAD
       <button type="button" v-on:click="addfase" class="btn btn-flat btn-success pull-right">Agregar</button>
-=======
-      <button type="button" v-on:click="addfase" class="btn btn-flat btn-success">Agregar</button>
->>>>>>> origin/bcaldas
     </div>
     <!-- </div> -->
   </form>
