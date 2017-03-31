@@ -133,7 +133,7 @@
 				fecha_entrega_cliente:'',
 				message:'',
 				disabled:{
-				  "to": new Date(),
+				  "to": moment().subtract(1, 'days').toDate(),
 				},
 				errors_return:{
 		          'nombre':'',
