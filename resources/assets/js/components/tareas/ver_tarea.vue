@@ -94,7 +94,22 @@
 
                 <div class="form-group same-height">
                    <label><strong>Fecha de entrega al cliente:</strong></label>
-                  <div>{{tarea_info.fecha_entrega_cliente | date_format}}</div>
+                   <div class="contenedor_fecha">
+                     {{tarea_info.fecha_entrega_cliente | date_format}}
+                   </div>
+                   <br>
+                   <div v-if="rol_actual=='owner' || rol_actual=='desarrollo'">
+
+                     <div class="input-group date" >
+                       <div class="input-group-addon">
+                         <i class="fa fa-calendar"></i>
+                       </div>
+                       <datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="fecha_entrega_cliente" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
+                     </div>
+                     </div>
+
+
+                  <!-- <div>{{tarea_info.fecha_entrega_cliente | date_format}}</div> -->
                 </div>
 
                  <div class="form-group same-height">
@@ -317,6 +332,10 @@
         usuario_actual_comentar:'',
         area:{},
         message:'',
+        fecha_entrega_cliente:'',
+        disabled:{
+				  "to": moment().subtract(1, 'days').toDate(),
+				},
         errors_return:{
           'nombre':'',
           'horas_estimadas':'',
@@ -428,6 +447,7 @@
               comentarios:this.descripcion,
               tiempo_real:this.tarea_info.tiempo_real,
               is_comment:(this.tarea_info.estados_id== 2 && this.rol_usuario_actual !='coordinador')? 1: 0,
+              fecha_entrega_cliente:(typeof(this.fecha_entrega_cliente) =='undefined' || this.fecha_entrega_cliente=='' )? this.tarea_info.fecha_entrega_cliente : moment(this.fecha_entrega_cliente).format('YYYY-MM-DD'),
             };
 
             //Método que envia los datos al api rest
