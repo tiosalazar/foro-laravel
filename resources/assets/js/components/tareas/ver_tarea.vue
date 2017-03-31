@@ -162,9 +162,10 @@
 
               <div class="col-sm-4">
                <div v-if="(rol_actual==='colaborador' && tarea_info.estados_id == '3') || (rol_actual==='coordinador'  && estado_solicitud.id == '2' ) || (rol_actual==='desarrollo'  && estado_solicitud.id == '2' )">
-                  <div class="form-group" v-bind:class="{ 'has-error': errors.has('timepo_real') }">
+                  <div class="form-group" v-bind:class="{ 'has-error': errors.has('tiempo_real') }">
                       <label for=""><strong>Tiempo Real:</strong></label>
-                      <input type="text" placeholder="Tiempo Real" name="timepo_real" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_real" required="required" v-validate data-vv-rules="required|decimal">
+                      <input type="text" placeholder="Tiempo Real" name="tiempo_real" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_real" required="required" v-validate data-vv-rules="required|decimal">
+                      <span  class="help-block" v-show="errors.has('tiempo_real')">{{ errors.first('tiempo_real') }}</span>
                   </div>
               </div>
               <div v-else>
@@ -174,7 +175,6 @@
                       <div>{{tarea_info.tiempo_real}} Horas</div>
                   </div>
               </div>
-                <span  class="help-block" v-show="errors.has('timepo_real')">{{ errors.first('timepo_real') }}</span>
               </div>
             </div>
 
