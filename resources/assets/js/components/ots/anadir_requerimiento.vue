@@ -15,7 +15,7 @@
             <div class="row">
                <label for="horas_area" class="col-sm-6 "><h5>Horas de {{ area }}</h5> </label>
                 <div class="col-sm-6">
-                  <input type="text" @input="emitirData(),guardarDatos()"   :name="'horas_area'+id_area"  v-validate data-vv-rules="required|numeric" data-vv-as="Horas Area" class="form-control text-center" :id="'horas_area'+id_area" v-model="nhoras" placeholder="No. Horas">
+                  <input type="text" @input="emitirData(),guardarDatos()"   :name="'horas_area'+id_area"  v-validate data-vv-rules="required|decimal:2" data-vv-as="Horas Area" class="form-control text-center" :id="'horas_area'+id_area" v-model="nhoras" placeholder="No. Horas">
                   <span  class="help-block" v-show="errors.has('horas_area'+id_area)">{{ errors.first('horas_area'+id_area) }}</span>
                 </div>
             </div>
@@ -63,7 +63,7 @@
         </div>
         <div class="form-group  col-md-6 col-lg-3"  v-bind:class="{ 'has-error': errors.has('no_horas_req'+index) }">
           <label class="sr-only" for="no_horas_req">N° Horas</label>
-          <input type="text" @input="realizarCalculo(),guardarDatos()" :name="'no_horas_req'+index" v-validate data-vv-rules="required|numeric" data-vv-as="No horas"  v-model="ed.model_horas" class="form-control" :id="'no_horas_req'+index" placeholder="No. Horas">
+          <input type="text" @input="realizarCalculo(),guardarDatos()" :name="'no_horas_req'+index" v-validate data-vv-rules="required|decimal:2" data-vv-as="No horas"  v-model="ed.model_horas" class="form-control" :id="'no_horas_req'+index" placeholder="No. Horas">
           <span  class="help-block" style="position:relative;" v-show="errors.has('no_horas_req'+index)">{{ errors.first('no_horas_req'+index) }}</span>
         </div>
         <div class="form-group  col-md-6 col-lg-3"  v-show="$parent.visualizacion != 'true'" >

@@ -178,3 +178,18 @@ label sup{
     padding-right: 30px;
 	padding-bottom: 20px;
 }
+
+//Selector de fecha trafico
+.select_fecha_trafico1{
+	.datepicker{
+		.calendar{
+			position: absolute;
+			z-index: 9999;
+		}
+	}
+}
+
+.select_fecha_trafico2{
+	position: absolute;
+	z-index: 1;
+}
