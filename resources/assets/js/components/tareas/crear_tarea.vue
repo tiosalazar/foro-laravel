@@ -63,11 +63,18 @@
 				</div>
 			</div>
 
+
+
+			<div class="form-group required" v-bind:class="[errors_return.descripcion,{ 'has-error': errors.has('descripcion') }]">
+				<label for="descripcion"><sup>*</sup> Descripción </label>
+				<textarea class="form-control" rows="3"  name="descripcion"  id="descripcion" v-model="tarea.descripcion" placeholder="Descripción" required="required" v-validate data-vv-rules="required|min:4"></textarea>
+				<span  class="help-block" v-show="errors.has('descripcion')">{{ errors.first('descripcion') }}</span>
+			</div>
+
 			<div class="form-group" v-bind:class="[errors_return.enlaces_externos,{ 'has-error': errors.has('enlaces_externos') }]">
 				<label for="enlaces_externos">Ruta del server</label>
 				<textarea class="form-control" rows="3" name="enlaces_externos"  id="enlaces_externos" v-model="tarea.enlaces_externos" placeholder="Ruta del server"></textarea>
 			</div>
-
 
 			<div class="row">
 				<div class="col-sm-6">
@@ -83,11 +90,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="form-group required" v-bind:class="[errors_return.descripcion,{ 'has-error': errors.has('descripcion') }]">
-				<label for="descripcion"><sup>*</sup> Descripción </label>
-				<textarea class="form-control" rows="3"  name="descripcion"  id="descripcion" v-model="tarea.descripcion" placeholder="Descripción" required="required" v-validate data-vv-rules="required|min:4"></textarea>
-				<span  class="help-block" v-show="errors.has('descripcion')">{{ errors.first('descripcion') }}</span>
-			</div>
+
 
 
 		</div>
