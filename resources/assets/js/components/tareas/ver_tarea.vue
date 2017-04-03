@@ -94,7 +94,22 @@
 
                 <div class="form-group same-height">
                    <label><strong>Fecha de entrega al cliente:</strong></label>
-                  <div>{{tarea_info.fecha_entrega_cliente | date_format}}</div>
+                   <div class="contenedor_fecha">
+                     {{tarea_info.fecha_entrega_cliente | date_format}}
+                   </div>
+                   <br>
+                   <div v-if="rol_actual=='owner' || rol_actual=='desarrollo'">
+
+                     <div class="input-group date" >
+                       <div class="input-group-addon">
+                         <i class="fa fa-calendar"></i>
+                       </div>
+                       <datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="fecha_entrega_cliente" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
+                     </div>
+                     </div>
+
+
+                  <!-- <div>{{tarea_info.fecha_entrega_cliente | date_format}}</div> -->
                 </div>
 
                  <div class="form-group same-height">
@@ -150,7 +165,7 @@
                 <div class="form-group" v-bind:class="{ 'has-error': errors.has('fecha_entrega_cuentas') }">
                   <label for=""><strong>Tiempo estimado Jefe:</strong></label>
                   <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id != '3' ">
-                      {{tarea_info.tiempo_estimado}}
+                      {{tarea_info.tiempo_estimado}} Horas
                   </div>
                   <div v-else>
                     <input type="text" placeholder="horas estimadas" name="horas_estimadas" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_estimado" required="required|numeric">
@@ -162,19 +177,19 @@
 
               <div class="col-sm-4">
                <div v-if="(rol_actual==='colaborador' && tarea_info.estados_id == '3') || (rol_actual==='coordinador'  && estado_solicitud.id == '2' ) || (rol_actual==='desarrollo'  && estado_solicitud.id == '2' )">
-                  <div class="form-group" v-bind:class="{ 'has-error': errors.has('timepo_real') }">
+                  <div class="form-group" v-bind:class="{ 'has-error': errors.has('tiempo_real') }">
                       <label for=""><strong>Tiempo Real:</strong></label>
-                      <input type="text" placeholder="Tiempo Real" name="timepo_real" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_real" required="required" v-validate data-vv-rules="required|decimal">
+                      <input type="text" placeholder="Tiempo Real" name="tiempo_real" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_real" required="required" v-validate data-vv-rules="required|decimal">
+                      <span  class="help-block" v-show="errors.has('tiempo_real')">{{ errors.first('tiempo_real') }}</span>
                   </div>
               </div>
               <div v-else>
                   <div class="form-group" >
                       <label for=""><strong>Tiempo Real:</strong></label>
                       <!-- <br> -->
-                      <div>{{tarea_info.tiempo_real}}</div>
+                      <div>{{tarea_info.tiempo_real}} Horas</div>
                   </div>
               </div>
-                <span  class="help-block" v-show="errors.has('timepo_real')">{{ errors.first('timepo_real') }}</span>
               </div>
             </div>
 
@@ -202,7 +217,7 @@
                   <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Comentar</button>
                 </div>
            </div>
-           <div v-else-if=" (estado_solicitud.id==1 || estado_solicitud.id==2 || estado_solicitud.id==3) && rol_actual =='coordinador'" >
+           <div v-else-if=" (estado_solicitud.id==1 || estado_solicitud.id==2 || estado_solicitud.id==3 || estado_solicitud.id==20) && rol_actual =='coordinador'" >
                 <div class="box-footer text-center">
                   <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Actualizar</button>
                 </div>
@@ -317,6 +332,10 @@
         usuario_actual_comentar:'',
         area:{},
         message:'',
+        fecha_entrega_cliente:'',
+        disabled:{
+				  "to": moment().subtract(1, 'days').toDate(),
+				},
         errors_return:{
           'nombre':'',
           'horas_estimadas':'',
@@ -428,6 +447,7 @@
               comentarios:this.descripcion,
               tiempo_real:this.tarea_info.tiempo_real,
               is_comment:(this.tarea_info.estados_id== 2 && this.rol_usuario_actual !='coordinador')? 1: 0,
+              fecha_entrega_cliente:(typeof(this.fecha_entrega_cliente) =='undefined' || this.fecha_entrega_cliente=='' )? this.tarea_info.fecha_entrega_cliente : moment(this.fecha_entrega_cliente).format('YYYY-MM-DD'),
             };
 
             //Método que envia los datos al api rest

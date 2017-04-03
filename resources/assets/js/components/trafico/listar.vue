@@ -7,6 +7,7 @@
 		          <th >Cliente</th>
 		          <th >Ejecutivo</th>
 							<th >Encargado</th>
+							<th >Área</th>
 							<th >Fecha de Solicitud</th>
 		          <th >Requerimiento</th>
 		          <th >Fecha Entrega Área</th>
@@ -19,7 +20,7 @@
 		    </thead>
         </table>
         <form method="POST" id="search-form" class="form-inline" role="form">
-					<div class="drop">
+					<div class="drop select_fecha_trafico1">
 						<datepicker language="es"
 							id="fecha_inicio"
 							required="required" v-validate data-vv-rules="required"
@@ -34,7 +35,7 @@
 						</datepicker>
 						<input type="hidden" name="f_inicio" v-model="start">
 					</div>
-					<div class="drop">
+					<div class="drop select_fecha_trafico2">
 						<datepicker language="es"
 							id="fecha_final"
 							required="required" v-validate data-vv-rules="required"
@@ -108,16 +109,17 @@
 				columns: [
 				{ data: 'ot.referencia', name: 'ot.referencia' },
 				{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre' },
-				{ data: 'ejecutivo', name: 'ejecutivo' },
+				{ data: 'ejecutivo', name: 'usuario.nombre' },
 				{ data: 'usuarioencargado.nombre', name: 'usuarioencargado.nombre' },
+				{ data: 'area.nombre', name: 'area.nombre' },
 				{ data: 'created_at', name: 'created_at' },
 				{ data: 'nombre_tarea', name: 'nombre_tarea' },
 				{ data: 'fecha_entrega_area', name: 'fecha_entrega_area' },
 				{ data: 'fecha_entrega_cuentas', name: 'fecha_entrega_cuentas' },
-				{ data: 'estado', name: 'estado' },
-				{ data: 'estados_trafico', name: 'estados_trafico' },
-				{ data: 'comentario', name: 'comentario' },
-				{ data: 'actions', name: 'actions' },
+				{ data: 'estado', name: 'estado.nombre'},
+				{ data: 'estados_trafico', name: 'estados_trafico', searchable: false },
+				{ data: 'comentario', name: 'comentario', orderable: false, searchable: false },
+				{ data: 'actions', name: 'actions', orderable: false, searchable: false },
 				],
 				columnDefs: [],
 						autoWidth: false,

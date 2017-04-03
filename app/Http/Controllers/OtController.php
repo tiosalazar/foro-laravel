@@ -26,6 +26,7 @@ use Exception;
 use Yajra\Datatables\Datatables;
 use Excel;
 
+
 class OtController extends Controller
 {
 
@@ -55,7 +56,7 @@ class OtController extends Controller
    public function datatable_index(Request $request)
    {
       $output= array();
-
+         
       $ots= Ot::orderBy('created_at', 'ASC')->get();
       $fee= $request->fee;
       if ($request->has('fee') && $fee !='all' ) {

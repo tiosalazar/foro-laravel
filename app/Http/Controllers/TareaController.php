@@ -10,6 +10,7 @@ use App\Notifications\TareaCreada;
 use App\Notifications\TareaPendiente;
 use App\Notifications\TareaProgramada;
 use App\Notifications\TareaRealizada;
+use App\Notifications\TareaEntregada;
 use App\Notifications\TareaOk;
 use App\Notifications\TareaAtencionCuentas;
 use App\Notifications\TareaAtencionArea;
@@ -406,6 +407,7 @@ class TareaController extends Controller
              * al usuario correspondiente
              *
              * 1 - OK
+             * 20 - Entregado
              * 2 - Realizada
              * 3 - Programada
              * 4 - Atencion Cuentas
@@ -416,11 +418,11 @@ class TareaController extends Controller
             switch ($tarea->estados_id) {
                 case '1':
                 // Enviar notificacion al nuevo encargado
-                $encargado_area= User::where('roles_id',4)
-                ->where('areas_id', $tarea->areas_id)
-                ->first();
-                User::findOrFail($tarea->usuarios_id)
-                ->notify(new TareaOk($encargado_area,$tarea));
+                // $encargado_area= User::where('roles_id',4)
+                // ->where('areas_id', $tarea->areas_id)
+                // ->first();
+                // User::findOrFail($tarea->usuarios_id)
+                // ->notify(new TareaOk($encargado_area,$tarea));
                 break;
                 case '2':
                 $encargado_area= User::where('roles_id',4)
@@ -452,6 +454,16 @@ class TareaController extends Controller
 
                 // Enviar notificacion al nuevo encargado
                 User::findOrFail($tarea->encargado_id)->notify(new TareaPendiente($maker,$tarea));
+                break;
+
+                case '20':
+                // Entregado
+                $encargado_area= User::where('roles_id',4)
+                ->where('areas_id', $tarea->areas_id)
+                ->first();
+                // Enviar notificacion al nuevo encargado
+                User::findOrFail($tarea->usuarios_id)
+                ->notify(new TareaEntregada($encargado_area,$tarea));
                 break;
 
                 default:
@@ -508,7 +520,7 @@ class TareaController extends Controller
             $respuesta["codigo_error"]="Error con la tarea";
             $respuesta["mensaje"]="Error con la tarea";
             // $respuesta["tarea_historico"]=$tarea_historico;
-            $respuesta["consola"]=$e->getMessage();
+            $respuesta["consola"]=$e;
             $respuesta["msg"]="Error  datos incorrectos";
             $respuesta["request"]=$request->all();
             $respuesta["obj"]=$vl->errors();
@@ -593,6 +605,12 @@ return response()->json($respuesta);
         })
         ->addColumn('encargado', function ($tarea) {
           return $tarea->usuarioencargado->nombre .' '. $tarea->usuarioencargado->apellido;
+        })
+        ->addColumn('estado', function ($tarea) {
+          return '<span class="label label-estado estado-'.$tarea->estado->tipos_estados_id.'-'.$tarea->estado->id.' ">'.$tarea->estado->nombre.'</span>';
+        })
+        ->addColumn('acciones', function ($tarea) {
+          return '<a href="'.url('/').'/ver_tarea/'.$tarea->id.'" title="Ver Tarea" class="btn btn-primary btn-xs btn-flat btn-block" aria-label="View"><i class="fa fa-eye" aria-hidden="true"></i></a>';
         })
         ->addColumn('prioridad', function ($tarea) {
           return $tarea->Estado_prioridad->nombre;
@@ -689,13 +707,16 @@ return response()->json($respuesta);
 
       // selecciona solos los que tiene el area especifico
       foreach ($tarea as $key => $value) {
-          if ($value->area && $value->ot && $value->ot->cliente && $value->estado ) {
+          if (!is_null($value->area) && !is_null($value->ot) && !is_null($value->ot->cliente) && !is_null($value->estado) ) {
               array_push($output, $value);
           }
       }
       // Se conviert en collection para que lo reciba el Datatable
       $output = collect($output);
       return Datatables::of($output)
+      // ->addColumn('encargado', function ($tarea) {
+      //   return $tarea->usuarioencargado->nombre.$tarea->usuarioencargado->apellido;
+      // })
       ->addColumn('ejecutivo', function ($tarea) {
         return $tarea->usuario->nombre[0].$tarea->usuario->apellido[0];
       })

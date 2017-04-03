@@ -96,24 +96,10 @@
 				{ data: 'created_at', name: 'created_at' },
 				{ data: 'fecha_entrega_cliente', name: 'fecha_entrega_cliente' },
 				{ data: 'encargado', name: 'encargado' },
+				{ data: 'estado', name: 'estado.nombre' },
+				{ data: 'acciones', name: 'acciones', searchable:false },
 				],
-				columnDefs: [
-				{
-					"targets": [7],
-					"data": null,
-						   "render": function(data, type, full) { // Devuelve el contenido personalizado
-						   	return '<span class="label label-estado estado-'+data.estado.tipos_estados_id+'-'+data.estado.id+' ">'+data.estado.nombre+'</span>';
-
-						   }
-						},
-						{
-							"targets": [8],
-							"data": null,
-						   "render": function(data, type, full) { // Devuelve el contenido personalizado
-						   	return '<a href="'+window._baseURL+'/ver_tarea/'+full.id+'" class="btn btn-primary btn-xs btn-flat btn-block"   aria-label="View">Ver tarea</a>';
-						   }
-						}
-						],
+				columnDefs: [],
 						autoWidth: false,
 						responsive: true,
 						language: {

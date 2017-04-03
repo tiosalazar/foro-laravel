@@ -31,7 +31,7 @@
 								<ul>
 									@if(Auth::user()->hasRole('cuentas') )
 									<div class="row">
-										<div class="col-sm-6">
+										<div class="col-sm-12 col-lg-6">
 											<strong>Estado de OT:</strong>
 											<div style="height:12px"></div>
 											<select_estados tipo_estado="2" cambiar_estado="{{$ot['id']}}" :select="{{$ot['Estado']}}" ></select_estados>

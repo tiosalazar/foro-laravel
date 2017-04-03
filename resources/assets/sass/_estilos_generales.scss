@@ -39,6 +39,9 @@
 .estado-1-7{
 	background-color: $estado-pendiente;
 }
+.estado-1-20{
+	background-color: $estado-pendiente;
+}
 .estado-2-8{
 	background-color: $estado-ongoing;
 }
@@ -174,4 +177,19 @@ label sup{
     padding-left: 30px;
     padding-right: 30px;
 	padding-bottom: 20px;
+}
+
+//Selector de fecha trafico
+.select_fecha_trafico1{
+	.datepicker{
+		.calendar{
+			position: absolute;
+			z-index: 9999;
+		}
+	}
+}
+
+.select_fecha_trafico2{
+	position: absolute;
+	z-index: 1;
 }

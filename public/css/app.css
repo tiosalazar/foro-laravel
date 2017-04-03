@@ -57,6 +57,10 @@
   background-color: #BABABA;
 }
 
+.estado-1-20 {
+  background-color: #BABABA;
+}
+
 .estado-2-8 {
   background-color: #0B5394;
 }
@@ -205,6 +209,16 @@ label sup {
   padding-left: 30px;
   padding-right: 30px;
   padding-bottom: 20px;
+}
+
+.select_fecha_trafico1 .datepicker .calendar {
+  position: absolute;
+  z-index: 9999;
+}
+
+.select_fecha_trafico2 {
+  position: absolute;
+  z-index: 1;
 }
 
 /*!
@@ -8078,7 +8092,7 @@ label sup {
 }
 
 .Formulario_OT .mensaje_info {
-  padding: 20px 10px;
+  padding: 10px 10px;
   background: #15baee;
   color: white;
 }
@@ -8142,6 +8156,7 @@ label sup {
   font-size: 20px;
   font-weight: 300;
   color: #003a81;
+  margin-right: 5px;
 }
 
 .span_descripcion2 {
@@ -8566,6 +8581,10 @@ body {
   color: white;
 }
 
+.skin-blue .main-sidebar .sidebar-menu li ul li a:hover > i {
+  color: white;
+}
+
 .skin-blue .main-sidebar .sidebar-menu .treeview span {
   margin-left: 5%;
 }
@@ -8611,7 +8630,7 @@ body {
   -webkit-box-pack: center;
   justify-content: center;
   height: 60px;
-  width: 60px;
+  min-width: 60px;
   margin-right: 7px;
 }
 

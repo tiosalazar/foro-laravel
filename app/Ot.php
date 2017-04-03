@@ -22,7 +22,7 @@ class Ot extends Model
    public function getFormatFecha($fecha_ingreso)
   {
        $fecha= new Date($fecha_ingreso);
-      return ucwords($fecha->format('d-m-Y'));
+      return ucwords($fecha->format('d-M-Y'));
   }
   public function getFormatFechaShow($fecha_ingreso)
   {
