@@ -58,6 +58,7 @@
                   toastr.warning(this.message,respuesta.body.msg,this.option_toast);
                 } else {
                   toastr.success(respuesta.body.msg,'',this.option_toast);
+                  this.compra={};
                   setTimeout(function(){ that.errors.clear(); }, 50);
                 }
 

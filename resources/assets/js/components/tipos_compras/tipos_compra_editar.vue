@@ -3,7 +3,7 @@
     <form class="row" name="agregar_fase" id="agregar_cliente">
       <!-- <div class="box-body"> -->
       <div class="col-xs-12 col-sm-12">
-        <select_tipo_compra></select_tipo_compra>
+        <select_tipo_compra :select="compra"></select_tipo_compra>
       </div>
       <div class="col-xs-12 col-md-12">
         <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]" >
@@ -101,6 +101,7 @@
                   toastr.warning(this.message,respuesta.body.msg,this.option_toast);
                 } else {
                   toastr.success(respuesta.body.msg,'',this.option_toast);
+                  this.compra={};
                   setTimeout(function(){ that.errors.clear(); }, 50);
                 }
 

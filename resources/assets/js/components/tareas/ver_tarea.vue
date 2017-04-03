@@ -23,7 +23,7 @@
               <div class="col-sm-6 border-right">
                 <ul>
                   <li><strong>Numero de OT:</strong><span> #{{ot.referencia}}</span></li>
-                  <li><strong>Ejecutivo:</strong><span> {{ot.usuario.nombre}}</span></li>
+                  <li><strong>Ejecutivo:</strong><span> {{ot.usuario.nombre}} {{ot.usuario.apellido}}</span></li>
                   <li><strong>Fecha de Solicitud:</strong><span> {{tarea_info.created_at}}</span></li>
                 </ul>
               </div>
@@ -194,7 +194,7 @@
             </div>
 
             <div class="form-group">
-              <label><strong >Descripción de la trea:</strong></label>
+              <label><strong >Descripción de la <textarea name="name" rows="8" cols="80"></textarea>:</strong></label>
               <p class="descripcion_tarea" >{{tarea_info.descripcion}}</p>
             </div>
 

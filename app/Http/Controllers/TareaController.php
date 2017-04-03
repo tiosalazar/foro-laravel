@@ -606,14 +606,14 @@ return response()->json($respuesta);
         ->addColumn('encargado', function ($tarea) {
           return $tarea->usuarioencargado->nombre .' '. $tarea->usuarioencargado->apellido;
         })
+        ->addColumn('prioridad', function ($tarea) {
+          return '<span class="label label-estado estado-'.$tarea->Estado_prioridad->tipos_estados_id.'-'.$tarea->Estado_prioridad->id.' ">'.$tarea->Estado_prioridad->nombre.'</span>';
+        })
         ->addColumn('estado', function ($tarea) {
           return '<span class="label label-estado estado-'.$tarea->estado->tipos_estados_id.'-'.$tarea->estado->id.' ">'.$tarea->estado->nombre.'</span>';
         })
         ->addColumn('acciones', function ($tarea) {
           return '<a href="'.url('/').'/ver_tarea/'.$tarea->id.'" title="Ver Tarea" class="btn btn-primary btn-xs btn-flat btn-block" aria-label="View"><i class="fa fa-eye" aria-hidden="true"></i></a>';
-        })
-        ->addColumn('prioridad', function ($tarea) {
-          return $tarea->Estado_prioridad->nombre;
         })
         ->make(true);
 
