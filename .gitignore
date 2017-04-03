@@ -7,14 +7,9 @@ Homestead.yaml
 .env
 composer.lock
 ftpsync.settings
+
 #ignorar recursos que genera gulp
 public/plugins/
 npm-debug.log
 public/js/app.js
 
-### VisualStudioCode ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json

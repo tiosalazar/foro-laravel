@@ -190,6 +190,10 @@ body{
 		display:  inline-table;
 		margin-left: 4%;
 		 margin-top: 2%;
+		 @media screen and (max-width: 1190px) {
+			width: 90%;
+			display: block;				
+		 }	
 		 .box-header-tittle{
 		 	display: flex;
 		 	 .img-circle{
@@ -213,6 +217,7 @@ body{
 			 	line-height: 10px;
 			 	p{
 			 		word-break: break-all;
+					 line-height: 15px;
 			 	}
 			 	
 			 }
