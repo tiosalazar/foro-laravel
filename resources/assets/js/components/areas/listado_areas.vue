@@ -1,10 +1,10 @@
 <template>
  <div>
-  
-    
+
+
     <div class="row listar_areas_modulo">
       <div  class="user_created_and_area" v-show="this.administrador=='1'">
-         <a :href="url+'/equipo/usuarios'"><span>Crear usuario</span> + </a>    |   <a :href="url+'/equipo/areas'"><span>Crear area</span> + </a>
+         <a :href="url+'/equipo/usuarios'"><span>Crear usuario</span> + </a>    |   <a :href="url+'/equipo/areas'"><span>Crear &aacute;rea</span> + </a>
       </div>
       <div class="col-md-12 ">
 
@@ -13,7 +13,7 @@
               <h3 class="titulo_listar_area">Áreas</h3>
               <ul>
                 <a href="#" v-for="area in areas"><li  @click.prevent="consultarApiusuarios(area.id)" class="list_areas" :id="'area_'+area.id" >{{area.nombre}}</li></a>
-              </ul>        
+              </ul>
             </div>
             <!--fin  Áreas -->
 
@@ -31,7 +31,7 @@
                   </ul>
               </div>
               <!-- Fin usuarios -->
-              
+
               <!-- Información -->
               <div class="col-md-5 col-sm-12 columnas_listar_areas" >
                 <h3 class="titulo_listar_info">Información</h3>
@@ -68,7 +68,7 @@
         </div>
       </div>
 
-   
+
 
      <!-- Eliminar usuario Modal -->
      <div class="modal fade " id="confirm_delete_user">
@@ -132,7 +132,7 @@
           this.$http.get(window._apiURL+'areas')
               .then(function(respuesta){
                 this.areas=respuesta.body;
-               
+
                 // console.log(respuesta);
 
               });
@@ -140,9 +140,9 @@
         consultarApiusuarios:function(areaid){
           $('.list_areas').removeClass( "active" );
           $('#area_'+areaid).addClass('active');
-        
+
           // The .each() method is unnecessary here:
-     
+
           this.$http.get(window._apiURL+'usuarios')
           .then(function(respuesta){
             //asigno los usuarios y el id del area para hacer el filtro en el v-for
@@ -151,7 +151,7 @@
             this.idareaUser=areaid;
             this.switcharea_user=1;
             this.info_user=false;
-             
+
             //consulto la api por el id del area para mostrar la información en la ultima
           });
 

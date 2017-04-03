@@ -8689,7 +8689,7 @@ body {
 }
 
 .listar_areas_modulo .columnas_listar_areas:nth-child(1) ul li {
-  height: 35px;
+  min-height: 35px;
   padding-top: 7px;
   cursor: pointer;
 }

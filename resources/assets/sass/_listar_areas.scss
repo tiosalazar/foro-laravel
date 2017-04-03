@@ -6,7 +6,7 @@
 	@media screen and (max-width: 1300px) {
 		width: auto;
 	}
-	
+
 	/* mixin centrado, fuente y alto titulo de las columnas */
 	@mixin center_text() {
 		-ms-display: flex;
@@ -37,7 +37,7 @@
 			    padding: 0;
 			    text-align: center;
 			    li{
-			    	height: 35px;
+			    	min-height: 35px;
 			    	padding-top: 7px;
 			    	cursor: pointer;
 			    	&:hover{
@@ -45,7 +45,7 @@
 			    		color: white;
 			    		text-decoration: none;
 			    	}
-			    	
+
 			    }
 			    a{
 		    		&:focus{
@@ -55,9 +55,9 @@
 						text-decoration: none;
 		    		 }
 			    }
-			   
+
 			}
-			
+
 		}
 		//ul listado de usuarios
 		&:nth-child(2){
@@ -91,7 +91,7 @@
 			    	border-bottom: 1px dashed gray;
 			    	display: flex;
 			    	line-height: 8px;
-			    	
+
 			    	.text_user_listado{
 			    		padding-top: 17px;
     					padding-left: 5%;
@@ -110,8 +110,8 @@
 			    		color: white;
 			    		cursor:pointer;
 			    		text-decoration: none;
-			    	}			    	
-    			
+			    	}
+
 			    }
 			}
 		}
@@ -142,7 +142,7 @@
 				text-align: center;
 			}
 		}
-		
+
 	}
 	.titulo_listar_area{
 		background-color: #003A81;

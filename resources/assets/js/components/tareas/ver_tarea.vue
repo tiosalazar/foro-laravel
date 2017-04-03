@@ -194,7 +194,7 @@
             </div>
 
             <div class="form-group">
-              <label><strong >Descripción de la <textarea name="name" rows="8" cols="80"></textarea>:</strong></label>
+              <label><strong >Descripción de la tarea :</strong></label>
               <p class="descripcion_tarea" >{{tarea_info.descripcion}}</p>
             </div>
 
