@@ -14,6 +14,10 @@
 
   Auth::routes();
   Route::get('/console/{id}','RolController@updatePermisionsbyRole');
+  //Imprimir Hora
+  Route::get('/hora_actual', function () {
+    echo date("d-m-Y H:m:s");
+  });
   Route::group(['middleware' => ['auth','login_estado']], function () {
 
     Route::get('/home', 'HomeController@index');

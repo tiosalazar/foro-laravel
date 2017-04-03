@@ -11,6 +11,20 @@
 
 			<div class="box-body">
 				<div style="height:22px"></div>
+				<!-- Mensaje de atención -->
+		 <div class="box">
+			 <div class="box-header with-border bg-aqua-active">
+			 <h3 class="box-title bg-aqua-active">Atención</h3>
+
+			 <div class="box-tools pull-right ">
+
+				 <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Cerrar">
+				 <i class="fa fa-times" style="color:white;"></i></button>
+			 </div>
+				 <div>Si vas a aumentar las horas de algún área después de haber guardado un requerimiento, recuerda primero agregarlas en la sección <b>Detalle OT</b> → <b>Horas totales</b>  y guardar.</div>
+			 </div>
+
+		 </div>
 				<div class="col-md-12">
 					<!-- Custom Tabs -->
 					<div class="nav-tabs-custom">
@@ -320,6 +334,9 @@
 					if ( !this.validarDatos(this.datos_encabezado) ) {
 						toastr.error('Error en el Detalle de la OT',"Error al guardar los datos",this.option_toast);
 						return false;
+					}else if(this.h_Disponibles <0){
+							toastr.error("Las horas disponibles de la OT están en negativo, por favor aumentelas para continuar.","Error al guardar los datos",this.option_toast);
+							return false;
 					}else if(this.datos_encabezado.h_pasadas ==true){		/*Compruebo que no se haya pasado de las horas*/
 						toastr.error('El Resúmen de horas no puede dar negativo',"Error al guardar los datos",this.option_toast);
 						return false;
@@ -587,6 +604,14 @@
               guardarDatos: function(id){
               	var index = Object.keys(this.datos_requerimiento).length;
               	var requerimientos =this.datos_requerimiento;
+								if (this.h_Disponibles <0){
+									toastr.error("Las horas disponibles de la OT están en negativo, por favor aumentelas para continuar.","Error al guardar los datos",this.option_toast);
+									this.can_save=false;
+						      this.can_save_ot=false;
+									var body = $("html, body");
+									body.stop().animate({scrollTop:250}, '500', 'swing');
+									return false;
+								}
               	if(this.comprobarDatosRequerimientos()==true) {
               		this.area_temporal=id;
               		if(this.comprobarSiGuardoCompras() == true){
