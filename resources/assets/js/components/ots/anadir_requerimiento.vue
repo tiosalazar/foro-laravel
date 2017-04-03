@@ -174,13 +174,13 @@ module.exports={
         for (let f in arreglo_requerimientos) {
           let idx = Number(f)
           if(this.id_area ==arreglo_requerimientos[idx].area ){
-          this.horas=parseInt(arreglo_requerimientos[idx].horas);
+          this.horas=parseFloat(arreglo_requerimientos[idx].horas);
           this.h_pasadas=this.h_pasadas;
           this.nhextra= arreglo_requerimientos[idx].textra;
 
           var datos=[{
             requerimientos:arreglo_requerimientos[idx].requerimientos,
-            horas: parseInt(arreglo_requerimientos[idx].horas),
+            horas: parseFloat(arreglo_requerimientos[idx].horas),
             tiempo_extra:  this.nhextra,
             h_pasadas: this.h_pasadas
           }];
@@ -237,22 +237,22 @@ module.exports={
       let p = this.requerimiento[idx]
       if (idx === this.requerimiento.length - 1){
         if(p.model_horas){
-          sumatoria += parseInt(p.model_horas)
+          sumatoria += parseFloat(p.model_horas)
         }
       }
       if ( idx != this.requerimiento.length - 1) {
         if(p["model_horas"]){
-          sumatoria += parseInt(p["model_horas"])
+          sumatoria += parseFloat(p["model_horas"])
         }
       }
     }
-     var horas =parseInt(this.nhoras)+parseInt(this.nhextra);
+     var horas =parseFloat(this.nhoras)+parseFloat(this.nhextra);
     if ( horas < sumatoria ) {
       this.h_pasadas=true;
     }else {
       this.h_pasadas=false;
     }
-    this.v_resta= (this.nhoras-sumatoria)+parseInt(this.nhextra);
+    this.v_resta= (this.nhoras-sumatoria)+parseFloat(this.nhextra);
   }
 
 

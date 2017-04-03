@@ -230,10 +230,10 @@
 				Escucha las horas totales emitidas por el encabezado y realiza el calculo
 				*/
 				this.$on('horas_totales', function(v) {
-					this.horas_totales=parseInt(v);
+					this.horas_totales=parseFloat(v);
 					var resta_anterior=0;
 					resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(this.area_temporal);
-					this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
+					this.h_Disponibles=parseFloat((this.horas_totales- this.h_area)-resta_anterior);
 					//this.h_Disponibles += this.h_extra_total;
 				});
 				/*
@@ -241,12 +241,12 @@
 				*/
 				this.$on('horas_area', function(v,h) {
 					this.area_temporal=h;
-					this.h_area=parseInt(v);
+					this.h_area=parseFloat(v);
 					//console.log("This Area :"+h);
 					var resta_anterior=0;
 					resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(this.area_temporal);
 					//console.log("Resta Anterio Horas AArea"+resta_anterior);
-					this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
+					this.h_Disponibles=parseFloat((this.horas_totales- this.h_area)-resta_anterior);
 					//this.h_Disponibles += this.h_extra_total;
 				});
 				/*
@@ -267,7 +267,7 @@
 				*/
 				this.$on('horas_extra_area', function(v,h) {
 					this.area_temporal=h;
-					this.t_extra=parseInt(v);
+					this.t_extra=parseFloat(v);
 					var resta_anterior=0;
 					resta_anterior=(!this.realizarCalculoHorasExtra())?0:this.realizarCalculoHorasExtra(this.area_temporal);
 					this.h_extra_total= this.t_extra+resta_anterior;
@@ -460,7 +460,8 @@
 						if(p.id != area ){
 							hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
 							if (hora_a !=null && hora_a[0].horas !="") {
-								total_a_restar +=parseInt(hora_a[0].horas);
+								console.log(hora_a[0].horas);
+								total_a_restar +=parseFloat(hora_a[0].horas);
 							}
 						}
 
@@ -483,7 +484,7 @@
 						if(p.id != area ){
 							hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
 							if (hora_a !=null && hora_a[0].tiempo_extra !="") {
-								total_a_restar +=parseInt(hora_a[0].tiempo_extra);
+								total_a_restar +=parseFloat(hora_a[0].tiempo_extra);
 							}
 						}
 

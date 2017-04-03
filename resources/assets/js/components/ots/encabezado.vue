@@ -310,8 +310,6 @@ module.exports= {
 
 		},
 		 number_format: function(amount, decimals) {
-		 	//console.log("hola");
-
 			    amount += ''; // por si pasan un numero en vez de un string
 			    amount = parseFloat(amount.replace(/[^0-9\.]/g, '')); // elimino cualquier cosa que no sea numero o punto
 
