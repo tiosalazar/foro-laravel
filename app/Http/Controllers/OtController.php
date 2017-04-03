@@ -56,7 +56,7 @@ class OtController extends Controller
    public function datatable_index(Request $request)
    {
       $output= array();
-         
+
       $ots= Ot::orderBy('created_at', 'ASC')->get();
       $fee= $request->fee;
       if ($request->has('fee') && $fee !='all' ) {
@@ -788,9 +788,9 @@ class OtController extends Controller
    protected function validatorCrearOT(array $data)
    {
       return Validator::make($data, [
-         'nombre' => 'required|min:4|max:45',
+         'nombre' => 'required|min:4',
          'referencia' => 'required|unique:ots,referencia',
-         'valor' => 'required|min:4|max:45',
+         'valor' => 'required|min:4',
          'fecha_inicio' => 'required|date',
          'fecha_final' => 'required|date',
          'clientes_id' => 'required',
@@ -805,8 +805,8 @@ class OtController extends Controller
    protected function validatorEditarOT(array $data)
    {
       return Validator::make($data, [
-         'nombre' => 'required|min:4|max:45',
-         'valor' => 'required|min:4|max:45',
+         'nombre' => 'required|min:4',
+         'valor' => 'required|min:4',
          'fecha_inicio' => 'required|date',
          'fecha_final' => 'required|date',
          'clientes_id' => 'required',

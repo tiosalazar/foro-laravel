@@ -11,13 +11,14 @@
 			<h3 class="box-title bg-aqua-active">Atención</h3>
 
 			<div class="box-tools pull-right ">
-			
+
 				<button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Cerrar">
 				<i class="fa fa-times" style="color:white;"></i></button>
 			</div>
-				<div> Recuerda ir guardardando los datos de la <b>OT</b> al terminar de llenar cada un formulario</div>
+			  <div> Recuerda ir guardardando los datos al terminar de llenar cada sección de la  <b>OT</b></div>
+				<div> cada que realices un cambio recuerda guardarlo en su debida sección del formulario</div>
 			</div>
-			
+
 		</div>
 
 			<h3 class="box-title"><span class="span_descripcion1">Detalle</span> <span class="span_descripcion2">OT</span></h3>
@@ -82,7 +83,7 @@
 					<div class="form-group required row ">
 						<label for="valor_total" class="col-sm-12 "><sup>*</sup> Valor total </label>
 						<div class="col-sm-12" v-bind:class="{ 'has-error': errors.has('valor_total') }">
-							<input type="text" name="valor_total" v-validate data-vv-rules="required|min:4"  @input="guardarDatos(),processValue()" data-vv-as="Valor Total" class="form-control" required="required"  v-model="datos_encabezado.valor_total" id="valor_total" placeholder="$">
+							<input type="text" name="valor_total" v-validate data-vv-rules="required"  @input="guardarDatos(),processValue()" data-vv-as="Valor Total" class="form-control" required="required"  v-model="datos_encabezado.valor_total" id="valor_total" placeholder="$">
 							<span  class="help-block" v-show="errors.has('valor_total')">{{ errors.first('valor_total') }}</span>
 						</div>
 					</div>
@@ -139,8 +140,8 @@
 	</div>
 
 	<div class="col-md-6 col-sm-6 col-xs-12 same-height">
-		
-		
+
+
 		<div class="row">
 			<div :class="{'col-md-6': $parent.visualizacion =='true','col-md-12': $parent.visualizacion !='true'}" >
 				<div class="form-group required row" v-bind:class="{ 'has-error': datos_encabezado.h_pasadas }">

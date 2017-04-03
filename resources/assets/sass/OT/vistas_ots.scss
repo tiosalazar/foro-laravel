@@ -309,11 +309,13 @@ textarea.form-control {
   }
   /*AB - 23-02-2017 */
   .help-block{
+    line-height: 15px;
     position: absolute;
   }
 
   .same-height{
     min-height: 80px;
+    margin-top: 10px;
   }
   .form-control{
     padding: 2px 12px;
