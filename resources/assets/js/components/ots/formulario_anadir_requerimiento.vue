@@ -105,8 +105,11 @@
 							<div class=" col-md-12 text-center">
 								<div class="separador"> </div>
 								<div style="height:30px"></div>
-								<div class="col-md-4 col-md-offset-4" >
+								<div class="col-md-5 col-md-offset-1" >
 									<button type="button"  @click="GuardarOt"  :class="{'disabled' : !can_save }"  class="btn btn-block text-center btn-success boton_foro succes  col-sm-3">Guardar OT</button>
+								</div>
+								<div class="col-md-5 " >
+									<button type="button"  @click="showModalBorrarOt" class="btn btn-block text-center btn-danger boton_foro error  col-sm-3">Eliminar Datos Guardados</button>
 								</div>
 							</div>
 						</div>
@@ -134,6 +137,28 @@
 							</div>
 						</div>
 					</div>
+
+       <!--Modal Borrar los datos de la OT-->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title" id="myModalLabel">Borrar Datos almacenados de la OT</h4>
+								</div>
+								<div class="modal-body">
+									¿ Estas seguro que deseas borrar los datos almacenados, Recuerda que esta acción no se puede deshacer ?
+									<input type="hidden" name="id" id="id_cliente">
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+									<button type="button" v-on:click="BorrarOt" class="btn btn-danger">Borrar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
 				</div>
 			</div>
 		</div>
@@ -446,6 +471,37 @@
 						}
 					}
 				},
+			/*
+       Muestra el Modal de confirmación de borrar los datos de la OT
+			*/
+			showModalBorrarOt:function() {
+				$('#myModal').modal('show');
+			},
+			/*
+       Borrar los datos Guardados en localStorage
+			*/
+			BorrarOt:function() {
+				this.h_Disponibles=0;
+				this.horas_totales=0;
+				this.h_extra_total=0;
+				this.descripcion_ot='';
+				this.message='';
+				this.h_area=0;
+				this.id_tab='';
+				this.form_requerimiento_validado=false;
+				this.validar_requerimientos=false;
+				this.form_compras_validado= false;
+				this.validar_compras=false;
+				this.limpiarDatos=true;
+				this.$localStorage.remove('datos_encabezado');
+				this.limpiarComprasRequerimientos();
+				this.datos_requerimiento=[];
+				this.datos_compras=[];
+				setTimeout(function () {
+					location.reload(true);
+				}, 500);
+
+			},
 			/*
 			realiza el calculo de lashoras por área
 			*/
