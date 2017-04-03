@@ -105,8 +105,11 @@
 							<div class=" col-md-12 text-center">
 								<div class="separador"> </div>
 								<div style="height:30px"></div>
-								<div class="col-md-4 col-md-offset-4" >
+								<div class="col-md-5 col-md-offset-1" >
 									<button type="button"  @click="GuardarOt"  :class="{'disabled' : !can_save }"  class="btn btn-block text-center btn-success boton_foro succes  col-sm-3">Guardar OT</button>
+								</div>
+								<div class="col-md-5 " >
+									<button type="button"  @click="showModalBorrarOt" class="btn btn-block text-center btn-danger boton_foro error  col-sm-3">Eliminar Datos Guardados</button>
 								</div>
 							</div>
 						</div>
@@ -134,6 +137,28 @@
 							</div>
 						</div>
 					</div>
+
+       <!--Modal Borrar los datos de la OT-->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title" id="myModalLabel">Borrar Datos almacenados de la OT</h4>
+								</div>
+								<div class="modal-body">
+									¿ Estas seguro que deseas borrar los datos almacenados, Recuerda que esta acción no se puede deshacer ?
+									<input type="hidden" name="id" id="id_cliente">
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+									<button type="button" v-on:click="BorrarOt" class="btn btn-danger">Borrar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
 				</div>
 			</div>
 		</div>
@@ -230,10 +255,10 @@
 				Escucha las horas totales emitidas por el encabezado y realiza el calculo
 				*/
 				this.$on('horas_totales', function(v) {
-					this.horas_totales=parseInt(v);
+					this.horas_totales=parseFloat(v);
 					var resta_anterior=0;
 					resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(this.area_temporal);
-					this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
+					this.h_Disponibles=parseFloat((this.horas_totales- this.h_area)-resta_anterior);
 					//this.h_Disponibles += this.h_extra_total;
 				});
 				/*
@@ -241,12 +266,12 @@
 				*/
 				this.$on('horas_area', function(v,h) {
 					this.area_temporal=h;
-					this.h_area=parseInt(v);
+					this.h_area=parseFloat(v);
 					//console.log("This Area :"+h);
 					var resta_anterior=0;
 					resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(this.area_temporal);
 					//console.log("Resta Anterio Horas AArea"+resta_anterior);
-					this.h_Disponibles=(this.horas_totales- this.h_area)-resta_anterior;
+					this.h_Disponibles=parseFloat((this.horas_totales- this.h_area)-resta_anterior);
 					//this.h_Disponibles += this.h_extra_total;
 				});
 				/*
@@ -267,7 +292,7 @@
 				*/
 				this.$on('horas_extra_area', function(v,h) {
 					this.area_temporal=h;
-					this.t_extra=parseInt(v);
+					this.t_extra=parseFloat(v);
 					var resta_anterior=0;
 					resta_anterior=(!this.realizarCalculoHorasExtra())?0:this.realizarCalculoHorasExtra(this.area_temporal);
 					this.h_extra_total= this.t_extra+resta_anterior;
@@ -447,6 +472,37 @@
 					}
 				},
 			/*
+       Muestra el Modal de confirmación de borrar los datos de la OT
+			*/
+			showModalBorrarOt:function() {
+				$('#myModal').modal('show');
+			},
+			/*
+       Borrar los datos Guardados en localStorage
+			*/
+			BorrarOt:function() {
+				this.h_Disponibles=0;
+				this.horas_totales=0;
+				this.h_extra_total=0;
+				this.descripcion_ot='';
+				this.message='';
+				this.h_area=0;
+				this.id_tab='';
+				this.form_requerimiento_validado=false;
+				this.validar_requerimientos=false;
+				this.form_compras_validado= false;
+				this.validar_compras=false;
+				this.limpiarDatos=true;
+				this.$localStorage.remove('datos_encabezado');
+				this.limpiarComprasRequerimientos();
+				this.datos_requerimiento=[];
+				this.datos_compras=[];
+				setTimeout(function () {
+					location.reload(true);
+				}, 500);
+
+			},
+			/*
 			realiza el calculo de lashoras por área
 			*/
 			realizarCalculoHoras:function (area) {
@@ -460,7 +516,8 @@
 						if(p.id != area ){
 							hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
 							if (hora_a !=null && hora_a[0].horas !="") {
-								total_a_restar +=parseInt(hora_a[0].horas);
+								console.log(hora_a[0].horas);
+								total_a_restar +=parseFloat(hora_a[0].horas);
 							}
 						}
 
@@ -483,7 +540,7 @@
 						if(p.id != area ){
 							hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
 							if (hora_a !=null && hora_a[0].tiempo_extra !="") {
-								total_a_restar +=parseInt(hora_a[0].tiempo_extra);
+								total_a_restar +=parseFloat(hora_a[0].tiempo_extra);
 							}
 						}
 
