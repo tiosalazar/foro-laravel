@@ -105,8 +105,8 @@ class TareaController extends Controller
                 return response([
                     'status' => Response::HTTP_BAD_REQUEST,
                     'response_time' => microtime(true) - LARAVEL_START,
-                    'msg' => 'Error al crear la tarea',
-                    'error' => 'ERR_01',
+                    'msg' => 'Error al crear la tarea, campos invalidos',
+                    'error' => config('constants.ERR_01'),
                     'obj' =>$vl->errors()
                     ],Response::HTTP_BAD_REQUEST);
             }else{
@@ -123,7 +123,7 @@ class TareaController extends Controller
                         return response([
                             'status' => Response::HTTP_BAD_REQUEST,
                             'response_time' => microtime(true) - LARAVEL_START,
-                            'error' => 'ERR_04',
+                            'error' => config('constants.ERR_02'),
                             'msg' => 'Ot no posee tiempo en esta area',
                             'obj' =>[]
                             ],Response::HTTP_BAD_REQUEST);
@@ -159,7 +159,7 @@ class TareaController extends Controller
                             'obj' => [],
                             'horas_area ' => $horas_area,
                             // 'error' => 'ERR_04',
-                            'error' => config('constants.ERR_01'),
+                            'error' => config('constants.ERR_02'),
                             'msg' => 'No tienes tiempo suficiente para esta tarea.',
                             ],Response::HTTP_BAD_REQUEST);
                     }
@@ -170,8 +170,8 @@ class TareaController extends Controller
                return response([
                 'status' => Response::HTTP_BAD_REQUEST,
                 'response_time' => microtime(true) - LARAVEL_START,
-                'error' => 'ERR_04',
-                'msg' => 'excepcion, fallo la petición',
+                'error' => config('constants.ERR_04'),
+                'msg' => 'Ocurrio un error, por favor comunicate con soporte',
                 'consola' =>$e->getMessage(),
                 'obj' =>[]
                 ],Response::HTTP_BAD_REQUEST);
@@ -183,7 +183,7 @@ class TareaController extends Controller
      return response([
         'status' => Response::HTTP_BAD_REQUEST,
         'response_time' => microtime(true) - LARAVEL_START,
-        'error' => 'ERR_04',
+        'error' => config('constants.ERR_05'),
         'msg' => 'Coordinador no asignado',
         // 'consola' =>$e->getMessage(),
         'obj' =>[]
@@ -243,8 +243,8 @@ class TareaController extends Controller
                 return response([
                     'status' => Response::HTTP_BAD_REQUEST,
                     'response_time' => microtime(true) - LARAVEL_START,
-                    'msg' => 'No se pudo guardar el comentario, comunicate con Soporte',
-                    'error' => 'ERR_06',
+                    'msg' => 'No se pudo guardar el comentario',
+                    'error' => config('constants.ERR_04'),
                     'obj' =>[],
                     'consola' =>$e->getMessage(),
                     'comentario' =>$comentario,
@@ -272,8 +272,8 @@ class TareaController extends Controller
                 return response([
                     'status' => Response::HTTP_BAD_REQUEST,
                     'response_time' => microtime(true) - LARAVEL_START,
-                    'msg' => 'Ocurrio un problema guardando el Historico, comunicate con Soporte',
-                    'error' => 'ERR_06',
+                    'msg' => 'No se pudo guardar el Historico',
+                    'error' => config('constants.ERR_04'),
                     'consola' =>$e->getMessage(),
                     'obj' =>[],
                     'tarea_historico' =>$tarea_historico,
@@ -372,9 +372,8 @@ class TareaController extends Controller
                       return response([
                           'status' => Response::HTTP_BAD_REQUEST,
                           'response_time' => microtime(true) - LARAVEL_START,
-                          'msg' => 'Tiempo real vacio o nulo',
-                          'error' => 'ERR_06',
-                          'obj' =>$vl->errors(),
+                          'msg' => 'Tiempo real es vacio o nulo',
+                          'error' => config('constants.ERR_06'),
                           'tarea' =>$tarea,
                           ],Response::HTTP_BAD_REQUEST);
                   }
@@ -382,8 +381,8 @@ class TareaController extends Controller
                   return response([
                       'status' => Response::HTTP_BAD_REQUEST,
                       'response_time' => microtime(true) - LARAVEL_START,
-                      'msg' => 'Ocurrio un errordurante el proceso, comunicate con Soporte',
-                      'error' => 'ERR_06',
+                      'msg' => 'No se guardaron correctamente las horas.',
+                      'error' => config('constants.ERR_04'),
                       'consola' =>$e->getMessage(),
                       'tarea' =>$tarea,
                       ],Response::HTTP_BAD_REQUEST);
@@ -470,9 +469,8 @@ class TareaController extends Controller
                 return response([
                     'status' => Response::HTTP_BAD_REQUEST,
                     'response_time' => microtime(true) - LARAVEL_START,
-                    'msg' => 'Error al actualizar la tarea. No se envio la notificacion',
-                    'error' => 'ERR_05',
-                    'obj' =>$vl->errors(),
+                    'msg' => 'Error al actualizar la tarea. No se envio la notificación',
+                    'error' => config('constants.ERR_04'),
                     'tarea' =>$tarea,
                     'request' =>$request,
                     ],Response::HTTP_BAD_REQUEST);
@@ -519,11 +517,11 @@ class TareaController extends Controller
             $respuesta["error"]="Error datos incorrectos";
             $respuesta["codigo_error"]="Error con la tarea";
             $respuesta["mensaje"]="Error con la tarea";
+            $respuesta['error'] = config('constants.ERR_04');
             // $respuesta["tarea_historico"]=$tarea_historico;
             $respuesta["consola"]=$e;
             $respuesta["msg"]="Error  datos incorrectos";
             $respuesta["request"]=$request->all();
-            $respuesta["obj"]=$vl->errors();
             $respuesta["ids"]=Auth::user()->id;
 
        }
@@ -785,7 +783,7 @@ return response()->json($respuesta);
             'status' => Response::HTTP_BAD_REQUEST,
             'response_time' => microtime(true) - LARAVEL_START,
             'msg' => 'Error al actualizar la tarea.',
-            'error' => 'ERR_05',
+            'error' => config('constants.ERR_04'),
             'consola' =>$e->getMessage(),
             'tarea' =>$tarea,
             'request' =>$request,
