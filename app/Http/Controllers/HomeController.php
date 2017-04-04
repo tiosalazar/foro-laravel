@@ -67,23 +67,23 @@ class HomeController extends Controller
           $areaauth = Auth::user()->area->id;
           //Si el estado es 7 pendiente muestro al coordinador las tareas de esa área con ese estado
           $tareas = Tarea::where('estados_id', 5)->orwhere('estados_id', 7)->where('areas_id',$areaauth)->get();
-          
+
           //For each con las relaciones de las tareas con ot, id y cliente para mostrarlo en el listado del perfil
           foreach ($tareas as $key => $value) {
             $value->ot->cliente;
             $value['url']="/ver_tarea/".$value->id;
-            $value->ot['cliente_inicial']=substr($value->ot->cliente->nombre, 0,1); // Devuelvo la inicial del cliente           
+            $value->ot['cliente_inicial']=substr($value->ot->cliente->nombre, 0,1); // Devuelvo la inicial del cliente
           }
 
 
         }else{
 
           //Si No es un coordinador muestro las tareas del area si el id del encargado es igual al usuario logeado
-           $tareas = Tarea::where('estados_id','!=', 2)->where('estados_id','!=', 1)->where('encargado_id', Auth::user()->id)->get();
-           foreach ($tareas as $key => $value) { 
+           $tareas = Tarea::where('estados_id','!=', 2)->where('estados_id','!=', 1)->where('estados_id','!=', 20)->where('encargado_id', Auth::user()->id)->get();
+           foreach ($tareas as $key => $value) {
             $value->ot->cliente;
             $value['url']="/ver_tarea/".$value->id;
-            $value->ot['cliente_inicial']=substr($value->ot->cliente->nombre, 0,1); // Devuelvo la inicial del cliente           
+            $value->ot['cliente_inicial']=substr($value->ot->cliente->nombre, 0,1); // Devuelvo la inicial del cliente
           }
 
 
@@ -121,7 +121,7 @@ class HomeController extends Controller
         $ext=$archivo->guessClientExtension();
 
         if (($ext=='jpg') OR ($ext=='png') OR ($ext=='jpeg') OR( $ext=='gif') ) {
-          
+
           //Guardar imagen
          $ext='png';
 
