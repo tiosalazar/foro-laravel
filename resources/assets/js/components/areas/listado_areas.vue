@@ -37,8 +37,10 @@
                 <h3 class="titulo_listar_info">Información</h3>
                  <div class="info_content" v-if="info_user==true">
                   <h3>Usuario</h3>
-                  <p>{{nombre_user}} <span style="padding:0px 10px;"> </span>{{apellido_user}}</p>
+                  <p>{{nombre_user}} <span style="padding:0px 5px;"> </span>{{apellido_user}}</p>
                    <p>{{email_user}}</p>
+                   <p>fecha: {{fecha_nacimiento | date_format}}</p>
+
                 </div>
                 <div class="info_content">
                   <h3>Área</h3>
@@ -95,7 +97,7 @@
 </template>
 
 <script>
-
+import moment from 'moment';
 
 
    module.exports={
@@ -117,8 +119,16 @@
           horas_disponible_user:0,
           id_user:'',
           id_user_eliminar:'',
-          i:1
+          i:1,
+          fecha_nacimiento:'',
         }
+     },
+     filters: {
+       date_format: function (value) {
+         if (!value) return ''
+
+         return (value)?moment(value).format('DD | MMM | YYYY'):'';
+       }
      },
      created: function(){
         this.consultarApiAreas();
@@ -145,6 +155,7 @@
 
           this.$http.get(window._apiURL+'usuarios')
           .then(function(respuesta){
+            console.log(respuesta.body.data)
             //asigno los usuarios y el id del area para hacer el filtro en el v-for
             this.usuarios=respuesta.body.data;
             // console.log(this.usuarios);
@@ -170,14 +181,15 @@
           });
         },
         userviewinfo:function(usuario){
-          console.log('Usuario');
+          console.log('Usuario', usuario);
            this.info_user=true;
            this.switcharea_user=2;
            this.horas_user=usuario.horas_disponible;
-           this.horas_disponible_user=parseInt(usuario.horas_disponible)-parseInt(usuario.horas_gastadas);
+           this.horas_disponible_user=parseFloat(usuario.horas_disponible)-parseFloat(usuario.horas_gastadas);
            this.nombre_user=usuario.nombre;
            this.apellido_user=usuario.apellido;
            this.email_user=usuario.email;
+           this.fecha_nacimiento=usuario.fecha_nacimiento;
            this.id_user="usuarios/editar/"+usuario.id;
            this.id_user_eliminar=usuario.id;
 

@@ -61,12 +61,12 @@ class AreaController extends Controller
         $vl=$this->validatorCrearArea($request->all());
       if ($vl->fails())
          {
-               return response()->json($vl->errors());        
+               return response()->json($vl->errors());
          }else
-             {        
-                    $area= new Area;  
+             {
+                    $area= new Area;
                     $area->fill($request->all());
-                try 
+                try
                 {
                      $area->save();
                       return response([
@@ -84,7 +84,7 @@ class AreaController extends Controller
                         'request' => $request->all()
                     ],Response::HTTP_BAD_REQUEST);
                }
-         }   
+         }
     }
 
     /**
@@ -97,18 +97,19 @@ class AreaController extends Controller
     {
         $area = Area::findOrFail($id);
         $area["total_horas"]=0;
-        $area["coordinador"]='';
-        $area["apellido_coordinador"]='';
-        $area["email"]='';
+        // $area["coordinador"]='';
+        // $area["apellido_coordinador"]='';
+        // $area["email"]='';
         foreach ($area->User as $key => $value) {
             if ($value->estado != 0) {
-                $area["total_horas"] += (int)$value['horas_disponible'];
+                $area["total_horas"] += (float)$value['horas_disponible'];
             }
             $value->Rol;
             if ($value->rol->name=='coordinador') {
                 $area["coordinador"]=$value->nombre;
                 $area["apellido_coordinador"]=$value->apellido;
                 $area["email"]=$value->email;
+                $area["fecha_nacimiento"]=$value->fecha_nacimiento;
             }
 
         }
@@ -137,13 +138,13 @@ class AreaController extends Controller
     public function update(Request $request, $id)
     {
         $respuesta=[];
-                    try 
-                    {       
+                    try
+                    {
                     //Validaciòn de las entradas por el metodo POST
                     $vl=$this->validatorCrearArea($request->all());
                          if ($vl->fails())
                             {
-                               return response()->json($vl->errors());        
+                               return response()->json($vl->errors());
                             }else
                                 {
                                 //Busca el usuario en la BD
@@ -154,10 +155,10 @@ class AreaController extends Controller
                                 $area->update();
                                $respuesta["error"]=0;
                                //BC:  30/01/2017 Retorno la respuesta para actualizar la lista en el front
-                               $respuesta["mensaje"]="OK"; 
+                               $respuesta["mensaje"]="OK";
                                $respuesta["id"]=$id;
                                $respuesta["msg"]='Área editada con éxito';
-                               $respuesta["datos"]=$request->all();                       
+                               $respuesta["datos"]=$request->all();
                              }
                     }catch(Exception $e){
                        $respuesta["error"]="Error Editando el área";
@@ -176,10 +177,10 @@ class AreaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-   
+
     public function historico_de_equipos($id,Request $request)
     {
-        
+
         // Si no trae el mes y año en el $request
         // tomar el mes y el año actual
         $year = '';
@@ -206,7 +207,7 @@ class AreaController extends Controller
           $historico_equipo = Historico_equipo::select('areas.nombre','historico_equipos.id','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad','historico_equipos.created_at')->join('areas','areas.id','=','historico_equipos.entidad_id')->where('tipo_de_entidad',$id)
             ->whereYear('historico_equipos.created_at', $year)
             ->whereMonth('historico_equipos.created_at', $month)
-            ->get();  
+            ->get();
         }
 
         // Retorno la informacion para el datatable
@@ -252,10 +253,10 @@ class AreaController extends Controller
     {
         //
     }
-    /*DSO 24-01-2016 Funcion para validar los campos al ingreso de un usuario 
+    /*DSO 24-01-2016 Funcion para validar los campos al ingreso de un usuario
     * entra el arreglo de datos
     * Sale un arreglo con los errores.
-    */   
+    */
    protected function validatorCrearArea(array $data)
     {
         return Validator::make($data, [
