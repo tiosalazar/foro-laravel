@@ -115,7 +115,7 @@ class HomeController extends Controller
         try {
           //Creo la imagen y la redimensiono
           $ext=$archivo->guessClientExtension();
-          if (($ext!='jpg') OR ($ext!='png') OR ($ext!='jpeg') OR( $ext!='gif')) {
+          if (($ext!='jpg') && ($ext!='png') && ($ext!='jpeg') && ( $ext!='gif')) {
             return back()->with('error', 'No se puedo subir la imagen, formato incorrecto.');
           }
           $make_image = Image::make($archivo);
@@ -138,9 +138,9 @@ class HomeController extends Controller
          $ext='png';
 
          //Local Descomentar el Siguiente y comentar el de producción
-         $path = public_path("images\avatars\\");
+        //  $path = public_path("images\avatars\\");
          //para Producción descomentar el siguiente
-         // $path = "images/avatars/";
+         $path = "images/avatars/";
          $userauth = Auth::user()->id;
          $user= User::findOrFail($userauth);
          $user->fill(['img_perfil'=>'/images/avatars/'.$nombre.'.'.$ext]);
