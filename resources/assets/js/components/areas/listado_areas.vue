@@ -127,7 +127,7 @@ import moment from 'moment';
        date_format: function (value) {
          if (!value) return ''
 
-         return (value)?moment(value).format('DD | MMM | YYYY'):'';
+         return (value)?moment(value).format('DD | MMM '):'';
        }
      },
      created: function(){

@@ -747,10 +747,10 @@ return response()->json($respuesta);
           return $tarea->created_at->format('d-M-Y');
       })
       ->editColumn('fecha_entrega_area', function ($tarea) {
-          return $tarea->created_at->format('d-M-Y');
+          return (!is_null($tarea->fecha_entrega_area)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_area) : 'No definida' ;
       })
       ->editColumn('fecha_entrega_cuentas', function ($tarea) {
-          return $tarea->created_at->format('d-M-Y');
+          return (!is_null($tarea->fecha_entrega_cuentas)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cuentas) : 'No definida' ;
       })
       ->make(true);
     }
