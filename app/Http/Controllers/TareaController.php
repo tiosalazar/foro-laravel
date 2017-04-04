@@ -598,8 +598,8 @@ return response()->json($respuesta);
         ->editColumn('created_at', function ($tarea) {
             return $tarea->created_at->format('d-M-Y');
         })
-        ->editColumn('fecha_entrega_cliente', function ($tarea) {
-            return $tarea->getFormatFecha( $tarea->fecha_entrega_cliente);
+        ->editColumn('fecha_entrega_cuentas', function ($tarea) {
+            return (!is_null($tarea->fecha_entrega_cuentas)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cuentas) : 'No definida' ;
         })
         ->addColumn('encargado', function ($tarea) {
           return $tarea->usuarioencargado->nombre .' '. $tarea->usuarioencargado->apellido;

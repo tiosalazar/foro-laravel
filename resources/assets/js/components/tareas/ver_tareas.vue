@@ -7,8 +7,8 @@
 		          <th >Cliente</th>
 		          <th >Requerimiento</th>
 							<th >Prioridad</th>
-		          <th >Fecha de Solicitud</th>
-							<th >Fecha de Entrega cliente</th>
+		          <th >Fecha de solicitud</th>
+							<th >Fecha de entrega cuentas</th>
 		          <th >Encargado</th>
 		          <th >Estado</th>
 		          <th >Acciones</th>
@@ -94,7 +94,7 @@
 				{ data: 'nombre_tarea', name: 'nombre_tarea' },
 				{ data: 'prioridad', name: 'prioridad' },
 				{ data: 'created_at', name: 'created_at' },
-				{ data: 'fecha_entrega_cliente', name: 'fecha_entrega_cliente' },
+				{ data: 'fecha_entrega_cuentas', name: 'fecha_entrega_cuentas' },
 				{ data: 'encargado', name: 'encargado' },
 				{ data: 'estado', name: 'estado.nombre' },
 				{ data: 'acciones', name: 'acciones', searchable:false },
