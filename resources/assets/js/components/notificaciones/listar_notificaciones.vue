@@ -34,7 +34,7 @@
       var tableClientes = $('#tabla_clientes').DataTable({
         processing: true,
         serverSide: true,
-       
+        stateSave: true,
         'ajax': {
          'url': window._baseURL+"/notificaciones",
          'type': 'GET',

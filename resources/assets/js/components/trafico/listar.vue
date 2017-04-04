@@ -98,6 +98,7 @@
 				processing: true,
 				serverSide: true,
 				deferRender: true,
+				stateSave: true,
 				ajax: {
 					url: window._baseURL+"/trafico",
 					data: function (d) {

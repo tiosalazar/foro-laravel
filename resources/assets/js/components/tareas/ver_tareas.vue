@@ -78,6 +78,7 @@
 				processing: true,
 				serverSide: true,
 				deferRender: true,
+				stateSave: true,
 				// ajax: "/api/v1/tareas",
 				ajax: {
 					url: window._baseURL+"/all_tareas/"+that.area,

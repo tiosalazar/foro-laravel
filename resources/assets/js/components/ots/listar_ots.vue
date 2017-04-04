@@ -80,6 +80,7 @@
 				processing: true,
 				serverSide: true,
 				deferRender: true,
+				stateSave: true,
 			    ajax: {
 					url: window._apiURL+"ots_datatable/",
 					type: 'GET',
