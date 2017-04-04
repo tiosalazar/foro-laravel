@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use App\User;
 use App\Role;
 use App\Tarea;
@@ -111,14 +112,25 @@ class HomeController extends Controller
          return redirect('/home');
       }else{
 
-        //Creo la imagen y la redimensiono
-        $make_image = Image::make($archivo);
-         $make_image->resize(230, 240,function ($constraint) {
-          $constraint->aspectRatio();
-          });
-        $file = $make_image->resizeCanvas(230, 240);
-        //Extension
-        $ext=$archivo->guessClientExtension();
+        try {
+          //Creo la imagen y la redimensiono
+          $ext=$archivo->guessClientExtension();
+          if (($ext!='jpg') OR ($ext!='png') OR ($ext!='jpeg') OR( $ext!='gif')) {
+            return back()->with('error', 'No se puedo subir la imagen, formato incorrecto.');
+          }
+          $make_image = Image::make($archivo);
+           $make_image->resize(230, 240,function ($constraint) {
+            $constraint->aspectRatio();
+            });
+          $file = $make_image->resizeCanvas(230, 240);
+          //Extension
+          Log::info('Usuario: '.Auth::user()->id, array($archivo));
+        } catch (Exception $e) {
+          Log::error('Error al subir imagen: '.$e->getMessage());
+          Log::error('Usuario: '.Auth::user()->id, array($archivo));
+          return back()->with('error', 'No se puedo subir la imagen, intente de nuevo.');
+        }
+
 
         if (($ext=='jpg') OR ($ext=='png') OR ($ext=='jpeg') OR( $ext=='gif') ) {
 
@@ -135,10 +147,9 @@ class HomeController extends Controller
          $user->save();
          $file->save($path.$nombre.'.'.$ext);
          // $file->storeAs('/avatars/',$nombre.'.'.$ext,'public');
-          return back();
+          return back()->with('status', 'Imagen actualizada');
         }else{
-
-           return back();
+           return back()->with('error', 'No se puedo subir la imagen, formato incorrecto.');
         }
 
       }

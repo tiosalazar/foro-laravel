@@ -41,6 +41,15 @@
 			<div class="col-md-7 col-md-offset-2">
 				<div class="">
 					<div class=""></div>
+					@if (session('error'))
+						 <div class="alert alert-error">
+								 {{ session('error') }}
+						 </div>
+				 @elseif (session('status'))
+						<div class="alert alert-success">
+								{{ session('status') }}
+						</div>
+				@endif
 
 					<div class="panel-body">
 					<div class="box perfil-box">
