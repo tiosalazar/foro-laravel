@@ -41,7 +41,7 @@
 		},
 		mounted () {
 			setTimeout(function(){
-				$('#tabla_usuarios').DataTable({
+				var oTable = $('#tabla_usuarios').DataTable({
 					processing: true,
 					serverSide: false,
 					stateSave: true,
@@ -111,6 +111,9 @@
 						   },
 						});
 			}, 1);
+			setInterval( function () {
+		    oTable.ajax.reload();
+			}, 300000 );
 		},
 	}
 </script>

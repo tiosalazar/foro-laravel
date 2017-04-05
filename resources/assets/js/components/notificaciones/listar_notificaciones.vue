@@ -86,6 +86,9 @@
             },
 
           });
+          setInterval( function () {
+    		    tableClientes.ajax.reload();
+    			}, 300000 );
       this.table = tableClientes;
     },
     methods:{

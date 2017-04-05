@@ -174,6 +174,9 @@
 				    toastr.error(response.msg,'Error',toastr_opt);
 				  });
 				})
+				setInterval( function () {
+			    oTable.ajax.reload();
+				}, 300000 );
 			// Enviar los datos del filtro personalizado
 			$('#search-form').on('submit', function(e) {
 				oTable.draw();
