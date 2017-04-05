@@ -11,10 +11,10 @@ class ChangesAfterVersion_1 extends Seeder
   */
   public function run()
   {
-    /*$this->call('Agregar_Estado_Pendiente_Coordinador');
+    $this->call('Agregar_Estado_Pendiente_Coordinador');
     $this->command->info('Se le ha agregado el Estado pendiente al Rol Cordinador');
     $this->call('Modificar_Priodidades');
-    $this->command->info('Se ha modificado el estado "bajo" a "Normal" ');*/
+    $this->command->info('Se ha modificado el estado "bajo" a "Normal" ');
     $this->call('Crear_Permisos_compras');
     $this->command->info('Se han añadido los permisos correspondientes para las compras');
     $this->call('Asignar_Permisos_compras');
