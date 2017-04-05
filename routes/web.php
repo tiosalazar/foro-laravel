@@ -88,7 +88,8 @@
   Route::get('ots/exportar/{id}',['middleware' => ['permission:editar_ots'], 'uses' =>'OtController@exportarTodoslosDatos']);
 
   Route::get('/show_ots_tareas','OtController@showOtEnTareas');
-  Route::get('/show_ots_tareas/{query}','OtController@showOtEnTareasByQuery');
+  Route::get('/show_ots_tareas_query/{query}','OtController@showOtEnTareasByQuery');
+
 
   // Clientes
   Route::get('clientes/crear', function()
