@@ -71,7 +71,7 @@
           * Funcion para organizar la visualización del select
           */
           nameWithLang ({ nombre, referencia, cliente}) {
-            return `# ${referencia} - ${nombre} - ${cliente.nombre}`
+            return `# ${referencia} - ${nombre} - ${cliente}`
           },
           updateSelected (newSelected) {
             if (newSelected != null && newSelected != undefined) {
@@ -95,9 +95,10 @@
         },
         asyncFind (query) {
           this.isLoading = true
-          this.$http.get(window._baseURL+'/show_ots_tareas/'+query).then(response => {
+          this.$http.get(window._baseURL+'/show_ots_tareas_query/'+query).then(response => {
             this.ots = response.body;
-            this.isLoading = false
+            this.isLoading = false;
+           
           })
         },
       }
