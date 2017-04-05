@@ -776,7 +776,10 @@ class OtController extends Controller
       if (is_numeric($query)) {
          $ot = Ot::with(['cliente','usuario'])->where('estados_id', 8)->where('referencia', 'like', '%'.$query.'%')->get();
       } else {
-         $ot = Ot::with(['cliente','usuario'])->where('estados_id', 8)->where('nombre', 'like', '%'.$query.'%')->get();
+         $ot = Ot::with(['cliente'=> function ($subquery) use ($query)
+         {
+           $subquery->orWhere('nombre','like','%'.$query.'%');
+         },'usuario'])->where('estados_id', 8)->orWhere('nombre', 'like', '%'.$query.'%')->get();
       }
       return response()->json($ot);
    }
