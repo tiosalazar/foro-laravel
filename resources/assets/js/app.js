@@ -49,6 +49,9 @@ Vue.component('asignar_roles',require('./components/roles/asignar_roles.vue'));
 //Componentes Dsalazar
 Vue.component('formulario_anadir_requerimiento', require('./components/ots/formulario_anadir_requerimiento.vue'));
 Vue.component('listar_ots', require('./components/ots/listar_ots.vue'));
+// Compras Asociadas
+Vue.component('compras_asociadas_crear', require('./components/compras/formulario.vue'));
+
 //Fin Componentes Dsalazar
 //Componentes Bcaldas
 Vue.component('form_usuarios', require('./components/usuarios/crear_usuario.vue'));

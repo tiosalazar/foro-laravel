@@ -237,6 +237,21 @@
       return view('admin.roles.permisos');
     });
 
+// Compras Asociadas a la OT
+       Route::get('/compra/listar',function ($value=''){
+          if (!Auth::user()->can('ver_compras_asociadas')) {
+             return Redirect::to('home');
+           }
+         return view('admin.compras_asociadas.listado_compras');
+       });
+       Route::get('/compra/crear',function ($value=''){
+          if (!Auth::user()->can('crear_compras_asociadas')) {
+             return Redirect::to('home');
+           }
+         return view('admin.compras_asociadas.formulario_compras');
+       });
+
+       Route::get('/compra/editar/{id}',['middleware' => ['permission:editar_compras_asociadas'], 'uses' => 'Compras_OtController@edit']);
 
    // Tipos de compra
   Route::get('/tiposcompra', function(){
