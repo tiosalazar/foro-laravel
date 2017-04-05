@@ -773,13 +773,33 @@ class OtController extends Controller
    {
       // Si empieza con valor numerico buscar por referencia
       // de lo contrario por nombre
+      
+      //Función que consulta las ot recibe dos valores el primero referencia o nombre el segundo el query que se envia desde el componente select
+      function consulta_ot($value,$consulta)
+      {
+        $ot = Ot::
+            select('ots.clientes_id','ots.created_at','ots.estado','ots.estados_id',
+            'ots.fecha_final','ots.fecha_inicio','ots.fee','ots.nombre','ots.referencia',
+            'ots.usuarios_id','clientes.nombre as cliente','users.nombre as usuario_nombre',
+            'users.apellido as usuario_apellido')
+            ->join('clientes','clientes.id','=','ots.clientes_id')
+            ->join('users','users.id','=','ots.usuarios_id')
+            ->where('ots.estados_id','8')
+            ->Where($value, 'like', '%'.$consulta.'%')
+            ->orWhere('clientes.nombre', 'like', '%'.$consulta.'%')
+            ->get();
+
+            return $ot;
+      }
       if (is_numeric($query)) {
-         $ot = Ot::with(['cliente','usuario'])->where('estados_id', 8)->where('referencia', 'like', '%'.$query.'%')->get();
+        //  $ot = Ot::with(['cliente','usuario'])->where('estados_id', 8)->where('referencia', 'like', '%'.$query.'%')->get();
+        $ot=consulta_ot('referencia',$query);
       } else {
-         $ot = Ot::with(['cliente'=> function ($subquery) use ($query)
-         {
-           $subquery->orWhere('nombre','like','%'.$query.'%');
-         },'usuario'])->where('estados_id', 8)->orWhere('nombre', 'like', '%'.$query.'%')->get();
+       $ot= consulta_ot('ots.nombre',$query);
+        //  $ot = Ot::with(['cliente'=> function ($subquery) use ($query)
+        //  {
+        //    $subquery->orWhere('nombre','like','%'.$query.'%');
+        //  },'usuario'])->where('estados_id', 8)->orWhere('nombre', 'like', '%'.$query.'%')->get();
       }
       return response()->json($ot);
    }

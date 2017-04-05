@@ -9,14 +9,14 @@
 				<div class="col-sm-6 border-right">
 					<ul>
 						<li><strong>Numero de OT:</strong><span> #{{ot.referencia}}</span></li>
-						<li><strong>Ejecutiva:</strong><span> {{ot.usuario.nombre}}</span></li>
+						<li><strong>Ejecutiva:</strong><span> {{ot.usuario_nombre}} - {{ot.usuario_apellido}}  </span></li>
 						<li><strong>Fecha de Solicitud:</strong><span> {{current_date}}</span></li>
 					</ul>
 				</div>
 				<div class="col-sm-6">
 					<ul>
 						<li><strong>Proyecto:</strong><span> {{ot.nombre}}</span></li>
-						<li><strong>Cliente:</strong><span> {{ot.cliente.nombre}}</span></li>
+						<li><strong>Cliente:</strong><span> {{ot.cliente}}</span></li>
 					</ul>
 				</div>
 				<!-- /.col -->
@@ -122,12 +122,8 @@
 				estado:'',
 				fase:'',
 				ot:{
-					usuario:{
-						nombre:''
-					},
-					cliente:{
-						nombre:''
-					}
+					usuario:'',
+					cliente:''
 				},
 				area:{},
 				current_date:'',
@@ -222,7 +218,7 @@
 			            toastr.success(respuesta.body.msg,'',this.option_toast);
 			            this.tarea= {};
 			            this.select_ot='';
-			            this.ot={usuario:{nombre:''}, cliente:{nombre:''} };
+			            this.ot={usuario:{}, cliente:{} };
 			            this.current_date=moment().format('DD-MMM-YYYY HH:mm:ss');
 			            this.prioridad='';
 			            this.fase='';

@@ -34,7 +34,7 @@
 
     module.exports= {
       components: {Multiselect},
-    props: ['tipo_estado','select','cambiar_estado'], //en la propiedad select se va a meter la opción por defecto
+    props: ['tipo_estado','select','cambiar_estado','index'], //en la propiedad select se va a meter la opción por defecto
     data () {
       return {
         estados:[],
@@ -92,8 +92,14 @@
         if (newSelected != null && newSelected != undefined) {
           this.id_estado = newSelected.id;
           this.value=newSelected;
-          console.log(newSelected)
-          this.$parent.$emit('select_estado',newSelected);
+          console.log(newSelected);
+          if(this.index != null ){
+            var respuesta = {index: this.index, estado: newSelected }//Devuelvo el Index en el que se encuentra junto con el arreglo de datos, para saber en que posición
+            this.$parent.$emit('select_estado',respuesta);
+          }else{
+              this.$parent.$emit('select_estado',newSelected);
+          }
+
           if (this.cambiar_estado != '' && this.cambiar_estado != null ) {
             this.$http.put(window._apiURL+'actualizar_estado_ot/'+this.cambiar_estado, newSelected.id)
             .then(function(respuesta){

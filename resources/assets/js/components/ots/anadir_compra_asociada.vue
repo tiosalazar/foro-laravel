@@ -8,11 +8,26 @@
     <div class="row">
       <section class="form_section" v-for="(ed,index) in compra_asociada">
        <div class="row">
-         <div class="col-md-6">
-          <div class="form-group  col-xs-12">
+         <div :class="{'col-md-4': campos_extra =='1'}" class="col-md-6">
+          <div class="form-group col-xs-12">
             <label class="sr-only" for="nombre_requerimiento">Item</label>
             <select_tipo_compra  :index="index" :select="ed.tipo_compra"></select_tipo_compra>
           </div>
+        </div>
+        <div v-show="campos_extra =='1' ">
+          <div class="col-md-5">
+           <div class="form-group  col-xs-12">
+             <label class="sr-only" for="nombre_requerimiento"><sup>*</sup> Estado</label>
+             <select_estados tipo_estado="5" :index="index" :select="ed.estado" ></select_estados>
+           </div>
+         </div>
+         <div class="col-md-3">
+ 					<div class="form-group">
+ 						<label class="sr-only" for="transaccion"><sup>*</sup> No Transacción</label>
+ 						<input type="text" name="transaccion" id="transaccion"  class="form-control" placeholder="No. Transacción">
+ 					</div>
+ 				</div>
+
         </div>
       </div>
       <div class="form-group  col-md-12 col-xs-12" v-bind:class="{ 'has-error': errors.has('descipcion_compra'+index) }">
@@ -61,12 +76,17 @@
 <script>
 
   module.exports={
-    props: ['area','id_area','realizar_validado','limpiar_datos'],
+    props: ['area','id_area','realizar_validado','limpiar_datos','campos_extra'],
     data () {
       return {
         compra_asociada: [
-        { tipo_compra:{id:'',nombre:'' }, model_desc:'', model_provedor:'',model_valor:'', divisa:{id:'',nombre:''}}
-        ]
+        { tipo_compra:{id:'',nombre:'' }, model_desc:'', model_provedor:'',model_valor:'', divisa:{id:'',nombre:''}, estado:{id:'', nombre:''}}
+      ],
+      option_toast:{
+        timeOut: 5000,
+        "positionClass": "toast-top-center",
+        "closeButton": true,
+      }
       }
     },
     watch: {
@@ -83,7 +103,7 @@
       limpiar_datos: function(){
         if(this.limpiar_datos == true){
           this.compra_asociada=[
-          { tipo_compra:{id:'',nombre:'' }, model_desc:'', model_provedor:'',model_valor:'', divisa:{id:'',nombre:''}}
+          { tipo_compra:{id:'',nombre:'' }, model_desc:'', model_provedor:'',model_valor:'', divisa:{id:'',nombre:''}, estado:{id:'',nombre:''}}
           ];
         }
       },
@@ -112,6 +132,12 @@
         this.compra_asociada[v.index].divisa=v.divisa;
       }
     });
+    this.$on('select_estado', function(v) {
+      console.log(v);
+      if( v != ""){
+        this.compra_asociada[v.index].estado=v.estado;
+      }
+    });
    },
    methods: {
     /*
@@ -127,9 +153,33 @@
     addRequerimiento: function(e) {
       e.preventDefault();
       this.$validator.validateAll();
-      if (!this.errors.any()) {
+      if (!this.errors.any() && this.comprobarDatos()==true ) {
         this.compra_asociada.push(Vue.util.extend({}, this.compra_asociada));
       }
+    },
+    /*
+      Función la cual comprueba los datos
+    */
+    comprobarDatos:function(){
+      var arreglo_compras=this.compra_asociada;
+      for (let f in arreglo_compras) {
+       let idx = Number(f)
+      if (  this.compra_asociada[idx].divisa.nombre=="") {
+        toastr.error('No ha seleccionado ninguna divisa','Error en los Datos',this.option_toast);
+        return false;
+      }else if ( this.campos_extra=="1" && this.compra_asociada[idx].estado.nombre=="") {
+        toastr.error('No ha seleccionado ningún estado','Error en los Datos',this.option_toast);
+        return false;
+      }else if (  this.compra_asociada[idx].tipo_compra.nombre=="") {
+        toastr.error('No ha seleccionado ningún tipo de compra','Error en los Datos',this.option_toast);
+        return false;
+      }else{
+        return true;
+      }
+
+
+    }
+
     },
     /*
       Función la cual se llama si esta en la vista de editar, esta función organiza los datos de la BD a la vista.

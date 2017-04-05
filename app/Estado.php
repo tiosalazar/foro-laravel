@@ -65,5 +65,12 @@ class Estado extends Model
   {
     return $this->belongsToMany('App\Role', 'estados_x_roles', 'estados_id', 'roles_id');
   }
+  /**
+  * Obtiene las Compras que posee un Estado
+  */
+  public function Compras_ot()
+  {
+    return $this->hasMany('App\Compras_ot','estados_id','id');
+  }
 
 }
