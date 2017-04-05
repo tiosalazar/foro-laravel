@@ -50,4 +50,11 @@ class Area extends Model
   {
     return $this->hasMany('App\Historico_equipo','entidad_id','id');
   }
+  /**
+  * Obtiene los Tipos de Fase que posee el Area
+  */
+  public function Tipos_fase()
+  {
+    return $this->hasMany('App\Planeacion_tipo','areas_id','id');
+  }
 }

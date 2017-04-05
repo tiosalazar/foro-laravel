@@ -8,6 +8,10 @@
         <span  class="help-block" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
       </div>
       <div class="form-group">
+        <label for="area">&Aacute;rea</label>
+        <select_area  :refresha="refresh"></select_area>
+      </div>
+      <div class="form-group">
         <label>Descripción</label>
         <textarea class="form-control" rows="2" placeholder="Descripcion del tipo de fase" name="descripcion" v-model="fase.descripcion"></textarea>
       </div>
@@ -39,6 +43,7 @@
           isActive:true,
           fase: {},
           message :'',
+          refresh:'',
           option_toast:{
             timeOut: 5000,
             "positionClass": "toast-top-center",
@@ -56,6 +61,10 @@
         if (this.fase_url) {
           this.fase = this.fase_url;
         }
+        this.$on('area_option', function(obj) {
+          console.log(obj);
+  				this.fase.areas_id =  obj.id;
+  			});
       },
       methods: {
         setErrors:function(object) {
@@ -75,6 +84,7 @@
             return false
           }
           var that = this;
+
           this.$http.post(window._apiURL+'tipos_fase', this.fase)
           .then(function(respuesta){
             console.log(respuesta)
@@ -87,6 +97,7 @@
             } else {
               toastr.success(respuesta.body.msg,'',this.option_toast);
               that.fase = {};
+              this.refresh=0;
               setTimeout(function(){ that.errors.clear(); }, 50);
             }
           }, (err) => {
@@ -142,4 +153,5 @@
         },
       }
     }
+    Vue.component('select_area',require('../herramientas/select_area.vue'));
   </script>

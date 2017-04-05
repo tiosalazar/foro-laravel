@@ -94,9 +94,6 @@
 					</div>
 				</div>
 		 <!--Listado de tareas con un componente vuejs-->
-		 <!-- <pre>
-		 	<?php var_dump($tareas); ?>
-		 </pre> -->
 		    <tareas_perfil lista_tareas="{{$tareas}}"></tareas_perfil>
 
 			</div>

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Response;
 use Exception;
 use Validator;
+use App\Area;
 
 class TipoFaseController extends Controller
 {
@@ -18,7 +19,7 @@ class TipoFaseController extends Controller
      */
     public function index()
     {
-        $tipo_fase=Planeacion_tipo::where('estado','!=','1')->get();
+        $tipo_fase=Planeacion_tipo::with('Area_planeacion')->where('estado','!=','1')->get();
         return response()->json($tipo_fase);
     }
 
@@ -61,6 +62,7 @@ class TipoFaseController extends Controller
                 'status' => Response::HTTP_OK,
                 'response_time' => microtime(true) - LARAVEL_START,
                 'obj' => $fase,
+                'area' => $fase->Area_planeacion,
                 'msg' => 'Tipo de Fase del Proyecto creada con éxito',
                 ],Response::HTTP_OK);
          }catch(Exception $e){

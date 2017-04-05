@@ -34,7 +34,7 @@ class FaseController extends Controller
                 'consola' =>$e->getMessage(),
                 ],Response::HTTP_BAD_REQUEST);
         }
-        
+
     }
 
     /**
@@ -195,13 +195,19 @@ class FaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function listFases()
+    public function listFases($id)
     {
 
         try {
-            $fases = Planeacion_tipo::with(['fases_planeacion'=> function ($query) {
-                $query->where('estado', '!=', '1');
-            }])->get();
+            if ($id == 0) {
+              $fases = Planeacion_tipo::with(['fases_planeacion'=> function ($query) {
+                  $query->where('estado', '!=', '1');
+              }])->get();
+            } else {
+              $fases = Planeacion_tipo::with(['fases_planeacion'=> function ($query) {
+                  $query->where('estado', '!=', '1');
+              }])->where('areas_id',$id)->get();
+            }
             $output = array();
             foreach ($fases as $key => $value) {
                 $output[] = array('tipo'=> $value->nombre, 'fases' => $value->fases_planeacion,'tipo_array' => $value);

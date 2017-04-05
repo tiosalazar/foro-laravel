@@ -3,7 +3,7 @@
     <form class="row" name="agregar_fase" id="agregar_cliente">
       <!-- <div class="box-body"> -->
       <div class="col-xs-12 col-sm-12">
-        <select_fase :select="fase_select"></select_fase>
+        <select_fase :select="fase_select" :area="area"></select_fase>
       </div>
       <div class="col-xs-12 col-md-12">
         <div class="form-group" v-bind:class="[errors_return.nombre,{ 'has-error': errors.has('nombre') }]" >
@@ -14,7 +14,7 @@
         <!-- /.form-group -->
         <div class="form-group">
           <label><sup>*</sup> Tipo planeacion</label>
-          <select_tipo_fase :tipos="tipo_fase"></select_tipo_fase>
+          <select_tipo_fase :tipos="tipo_fase" ></select_tipo_fase>
         </div>
         <!-- /.form-group -->
       </div>
@@ -71,6 +71,7 @@
         message :'',
         tipo_fase:0,
         fase_a_borrar:{},
+        area:{},
         option_toast:{
           timeOut: 5000,
           "positionClass": "toast-top-center",

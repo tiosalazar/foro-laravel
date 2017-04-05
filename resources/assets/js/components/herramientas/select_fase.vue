@@ -28,7 +28,7 @@
   import Multiselect from 'vue-multiselect'
   module.exports= {
    components: { Multiselect},
-   props: ['select'],
+   props: ['select','area'],
    data () {
     return {
       estados:[],
@@ -54,7 +54,10 @@
       },
       methods:{
         fetchTips: function(){
-         this.$http.get(window._baseURL+'/list_fases')
+          if (typeof this.area.id == 'undefined') {
+            this.area.id = 0;
+          }
+         this.$http.get(window._baseURL+'/list_fases/'+this.area.id)
          .then(function(respuesta){
           this.estados=respuesta.body;
         }.bind(this));

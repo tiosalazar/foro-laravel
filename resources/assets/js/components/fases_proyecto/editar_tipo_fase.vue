@@ -11,6 +11,10 @@
           <span  class="help-block" v-show="errors.has('nombre')">{{ errors.first('nombre') }}</span>
         </div>
         <div class="form-group">
+          <label for="area">&Aacute;rea</label>
+          <select_area  :refresha="refresh"></select_area>
+        </div>
+        <div class="form-group">
           <label>Descripción</label>
           <textarea class="form-control" rows="2" placeholder="Descripcion del tipo de fase" name="descripcion" v-model="fase.descripcion"></textarea>
         </div>
@@ -64,6 +68,7 @@
         message :'',
         tipo_fase_a_borrar:{},
         tipo_fase:0,
+        refresh:'',
         option_toast:{
           timeOut: 5000,
           "positionClass": "toast-top-center",
@@ -80,10 +85,20 @@
     created:function() {
       if (this.fase_url) {
         this.fase = this.fase_url;
+        console.log(this.fase_url.area_planeacion)
+        // this.refresh = this.fase_url.area_planeacion.id;
       }
       this.$on('tipo_fase_select', function(v) {
         this.fase=v;
+        this.fase.areas_id=(v.id != null)?v.id:0;
+        this.refresh =this.fase.area_planeacion;
+        console.log(v);
+        console.log(this.fase.area_planeacion)
       });
+      this.$on('area_option', function(obj) {
+				this.area= obj;
+        this.fase.areas_id=(obj.id != null)?obj.id:0;
+			});
     },
     methods: {
       setErrors:function(object) {
@@ -109,6 +124,7 @@
             toastr.success(response.body.msg,'',this.option_toast);
             this.tipo_fase={};
             this.fase={};
+            this.refresh={};
           }
         }, function(err) {
           console.log(err);
@@ -162,4 +178,5 @@
       },
     }
   }
+  Vue.component('select_area',require('../herramientas/select_area.vue'));
 </script>

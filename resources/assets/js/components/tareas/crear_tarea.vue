@@ -29,16 +29,16 @@
 						<select_prioridad :select="prioridad"></select_prioridad>
 					</div>
 				</div>
-				<div class="col-sm-6">
-					<div class="form-group required">
-						<label><sup>*</sup> Fase del Projecto </label>
-						<select_fase :select="fase"></select_fase>
-					</div>
-				</div>
 				<div class="col-sm-4">
 					<div class="form-group required">
 						<label><sup>*</sup> Área </label>
-						<select_area  :refresha="refresh"></select_area>
+						<select_area  :refresha="area"></select_area>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group required">
+						<label><sup>*</sup> Fase del Projecto </label>
+						<select_fase :select="fase" :area="area"></select_fase>
 					</div>
 				</div>
 			</div>
@@ -131,7 +131,7 @@
 				},
 				area:{},
 				current_date:'',
-				refresh:'',
+				// area:'',
 				user:'',
 				fecha_entrega_cliente:'',
 				message:'',
@@ -227,7 +227,7 @@
 			            this.prioridad='';
 			            this.fase='';
 			            this.estado="";
-			            this.refresh=0;
+			            this.area=0;
 			            this.fecha_entrega_cliente = '';
 			            setTimeout(function(){ that.errors.clear(); }, 50);
 			          }

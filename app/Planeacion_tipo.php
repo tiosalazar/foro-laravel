@@ -12,7 +12,7 @@ class Planeacion_tipo extends Model
    * @var array
    */
   protected $fillable = [
-      'nombre', 'descripcion',
+      'nombre', 'descripcion', 'estado','areas_id'
   ];
 
   /**
@@ -21,5 +21,12 @@ class Planeacion_tipo extends Model
   public function Fases_planeacion()
   {
     return $this->hasMany('App\Planeacion_fase','planeacion_tipos_id','id');
+  }
+  /**
+  * Obtiene el Tipo de Planeacion que esta asociado a una Fase de Planeación
+  */
+  public function Area_planeacion()
+  {
+    return $this->belongsTo('App\Area','areas_id','id');
   }
 }
