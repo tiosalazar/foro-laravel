@@ -17,19 +17,33 @@
         <div v-show="campos_extra =='1' ">
           <div class="col-md-5">
            <div class="form-group  col-xs-12">
-             <label class="sr-only" for="nombre_requerimiento"><sup>*</sup> Estado</label>
-             <select_estados tipo_estado="5" :index="index" :select="ed.estado" ></select_estados>
+                <label class="sr-only" for="nombre_requerimiento"><sup>*</sup> Área</label>
+                <select_area  ></select_area>
            </div>
          </div>
          <div class="col-md-3">
  					<div class="form-group">
- 						<label class="sr-only" for="transaccion"><sup>*</sup> No Transacción</label>
- 						<input type="text" name="transaccion" id="transaccion"  class="form-control" placeholder="No. Transacción">
+            <label class="sr-only" for="transaccion"><sup>*</sup>Fecha de Compra</label>
+            <input type="text" name="transaccion" id="transaccion"  class="form-control" placeholder="Fecha de Compra">
  					</div>
  				</div>
 
         </div>
       </div>
+      <div class="row" v-show="campos_extra =='1' ">
+         <div class="col-md-6">
+          <div class="form-group  col-xs-12">
+            <label class="sr-only" for="transaccion"><sup>*</sup> No Transacción</label>
+            <input type="text" name="transaccion" id="transaccion"  class="form-control" placeholder="No. Transacción">
+          </div>
+        </div>
+        <div class="col-md-6">
+         <div class="form-group">
+              <label class="sr-only" for="nombre_requerimiento"><sup>*</sup> Estado</label>
+              <select_estados tipo_estado="5" :index="index" :select="ed.estado" ></select_estados>
+         </div>
+       </div>
+     </div>
       <div class="form-group  col-md-12 col-xs-12" v-bind:class="{ 'has-error': errors.has('descipcion_compra'+index) }">
         <label class="sr-only" for="descipcion_compra">Descripción</label>
         <textarea  :name="'descipcion_compra'+index" rows="3" @input="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Descripción" v-model="ed.model_desc" class="form-control"   placeholder="Descripción">
@@ -236,4 +250,5 @@
 /*Componentes que voy a utilizar */
 Vue.component('select_tipo_compra',require('../herramientas/select_tipo_compra.vue'));
 Vue.component('select_divisa',require('../herramientas/select_divisas.vue'));
+Vue.component('select_area',require('../herramientas/select_area.vue'));
 </script>
