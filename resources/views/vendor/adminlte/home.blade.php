@@ -35,7 +35,6 @@
 			 </div>
 		 </div>
 	  </div>
-
 	<div class="container-fluid spark-screen">
 		<div class="row">
 			<div class="col-md-7 col-md-offset-2">
@@ -95,9 +94,13 @@
 					</div>
 				</div>
 		 <!--Listado de tareas con un componente vuejs-->
+		 <!-- <pre>
+		 	<?php var_dump($tareas); ?>
+		 </pre> -->
 		    <tareas_perfil lista_tareas="{{$tareas}}"></tareas_perfil>
 
 			</div>
 		</div>
 	</div>
+
 @endsection

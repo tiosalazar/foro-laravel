@@ -67,7 +67,7 @@ class HomeController extends Controller
         if (Auth::user()->rol->name=='coordinador') {
           $areaauth = Auth::user()->area->id;
           //Si el estado es 7 pendiente muestro al coordinador las tareas de esa área con ese estado
-          $tareas = Tarea::where('estados_id', 5)->orwhere('estados_id', 7)->where('areas_id',$areaauth)->get();
+          $tareas = Tarea::where([['estados_id', 5],['areas_id',$areaauth]])->orwhere([['estados_id', 7],['areas_id',$areaauth]])->get();
 
           //For each con las relaciones de las tareas con ot, id y cliente para mostrarlo en el listado del perfil
           foreach ($tareas as $key => $value) {
