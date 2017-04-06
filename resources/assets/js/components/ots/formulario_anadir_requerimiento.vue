@@ -417,6 +417,7 @@
 										this.limpiarComprasRequerimientos();
 										this.datos_requerimiento=[];
 										this.datos_compras=[];
+										window.localStorage.clear(); //try this to clear all local storage
 										setTimeout(function () {
 											location.reload(true);
 										}, 500);
