@@ -49,5 +49,8 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
      // Actualizar traficp
      Route::post('save_trafic/{id}', 'TareaController@saveTrafic');
 
+     //usuarios
+     Route::get('index_datatables','UserController@indexDatatables');
+
 
 });
