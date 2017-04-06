@@ -74,8 +74,8 @@
           /*
           * Funcion para organizar la visualización del select
           */
-          nameWithLang ({ nombre, referencia, cliente}) {
-            return `# ${referencia} - ${nombre} - ${cliente}`
+          nameWithLang ({ nombre, referencia, cliente_nombre}) {
+            return `# ${referencia} - ${nombre} - ${cliente_nombre}`
           },
           updateSelected (newSelected) {
             if (newSelected != null && newSelected != undefined) {
@@ -83,6 +83,7 @@
              this.value = newSelected;
              // Creo un evento para enviar el item seleccionado al padre.
              this.$parent.$emit('send-ot', newSelected)
+             
            }else {
              this.id_ot = 0;
            }

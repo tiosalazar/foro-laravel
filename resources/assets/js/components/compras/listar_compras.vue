@@ -4,6 +4,7 @@
 		<table class="table table-striped table-hover datatable-foro table-bordered dataTable no-footer" id="tabla_tareas">
 			<thead>
 				<tr>
+				    <th >Referencía OT</th>
 					<th >Tipo Compra </th>
 					<th >Estado</th>
 					<th >No. transaccion</th>
@@ -88,6 +89,7 @@
 					},
 				},
 				columns: [
+				{ data: 'ot.referencia', name: 'ot.referencia' },
 				{ data: 'tipo_compra.nombre', name: 'tipo_compra.nombre' },
 				{ data: 'estado.nombre', name: 'estado.nombre' },
 				{ data: 'transaccion', name: 'transaccion' },

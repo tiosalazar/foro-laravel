@@ -15,8 +15,9 @@
 				<div class="col-sm-6">
 					<ul>
 						<li><strong>Proyecto:</strong><span> {{ot.nombre}}</span></li>
-						<li><strong>Cliente:</strong><span> {{ot.cliente}}</span></li>
+						<li><strong>Cliente:</strong><span> {{ot.cliente_nombre}}</span></li>
 					</ul>
+					
 				</div>
 				<!-- /.col -->
 			</div>
@@ -76,6 +77,7 @@ module.exports = {
 		this.$on('send-ot', function(obj) {
 			this.ot= obj;
 			this.select_ot= obj;
+			
 		});
 		/*
 		Escucha el arreglo completo de los datos de las compras asociadas, si las tiene
