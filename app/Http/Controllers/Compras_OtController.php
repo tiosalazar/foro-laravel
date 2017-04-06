@@ -147,7 +147,9 @@ public function datatable_index(Request $request)
      */
     public function edit($id)
     {
-        //
+      $Compras_ot=Compras_ot::with('ot','area','tipo_compra','divisa','estado')->findOrFail($id);
+       //return response()->json($Compras_ot);
+       return view('admin.compras_asociadas.formulario_compras_editar')->with('compra', $Compras_ot);
     }
 
     /**
