@@ -241,9 +241,7 @@ module.exports={
     Si encuentra el arreglo guardado en el localStorage llena nos datos con lo que se ha escrito.
     */
     llenarCampos:function () {
-
       if (this.$parent.editar != 'true') {
-          console.log("Datos compras no debi");
         var data_req= JSON.parse(this.$localStorage.get('datos_compra_'+this.id_area));
         if (data_req != null ) {
           var arreglo_requerimientos = data_req[0].compras;

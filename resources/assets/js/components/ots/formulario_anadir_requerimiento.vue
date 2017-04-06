@@ -232,7 +232,8 @@
 					var salir = false;
 					window.onbeforeunload = function (e)
 					{
-						var e = e || window.event,
+						window.localStorage.clear();
+						/*var e = e || window.event,
 						salir=true;
 						// message = 'Seguro que quieres salir sin guardar los cambios ?';
 
@@ -244,7 +245,7 @@
 						if (salir) {
 							window.localStorage.clear(); //try this to clear all local storage
 						}
-						return salir;
+						return salir;*/
 					}
 				}
 			},
@@ -257,8 +258,12 @@
 				this.$on('horas_totales', function(v) {
 					this.horas_totales=parseFloat(v);
 					var resta_anterior=0;
+					console.log("Horas Totales");
+					console.log(this.horas_totales);
 					resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(this.area_temporal);
 					this.h_Disponibles=parseFloat((this.horas_totales- this.h_area)-resta_anterior);
+					console.log("Horas Disponibles");
+					console.log(this.h_Disponibles);
 					//this.h_Disponibles += this.h_extra_total;
 				});
 				/*
@@ -450,6 +455,10 @@
 										toastr.warning(this.message,respuesta.body.msg,this.option_toast);
 									}else{
 										toastr.success(respuesta.body.msg,'',this.option_toast);
+										window.localStorage.clear(); //try this to clear all local storage
+										setTimeout(function () {
+											location.reload(true);
+										}, 500);
 									}
 								},(response) => {
 									console.log(response);
@@ -517,7 +526,7 @@
 						if(p.id != area ){
 							hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
 							if (hora_a !=null && hora_a[0].horas !="") {
-								console.log(hora_a[0].horas);
+								//console.log(hora_a[0].horas);
 								total_a_restar +=parseFloat(hora_a[0].horas);
 							}
 						}
