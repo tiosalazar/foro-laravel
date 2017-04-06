@@ -182,10 +182,12 @@
 				$('#tabla_tareas tbody').on('click', 'td .delete_cliente', function (e) {
 					var id = $(this).attr('id');
 					id = id.split('-');
-					console.log(id[1]);
 					$('#id_cliente').val(id[1]);
 				})
 			});
+			setInterval( function () {
+		    oTable.ajax.reload();
+			}, 300000 );
 			// Enviar los datos del filtro personalizado
 			$('#search-form').on('submit', function(e) {
 				oTable.draw();

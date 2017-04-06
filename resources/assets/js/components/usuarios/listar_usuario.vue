@@ -41,9 +41,9 @@
 		},
 		mounted () {
 			setTimeout(function(){
-				$('#tabla_usuarios').DataTable({
+				var oTable = $('#tabla_usuarios').DataTable({
 					processing: true,
-					serverSide: false,
+					serverSide: true,
 					stateSave: true,
 					'ajax': {
 						'url': window._apiURL+"usuarios",
@@ -61,28 +61,12 @@
 					{ data: 'cargo', name: 'cargo' },
 					{ data: 'telefono', name: 'telefono', orderable: false, searchable: false },
 					{ data: 'horas_disponible', name: 'horas_disponible', searchable: false },
-					{ data: 'roles_id', name: 'roles_id' },
-					{ data: 'areas_id', name: 'areas_id' },
+					{ data: 'rol.display_name', name: 'rol.display_name' },
+					{ data: 'area.nombre', name: 'area.nombre' },
 					{ data: 'estado', name: 'estado',  orderable: false, searchable: false },
+					{ data: 'acciones', name: 'acciones',  orderable: false, searchable: false },
 					],
-					columnDefs: [
-					{
-						"targets": [8],
-						"data": null,
-						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-						       	return (full.estado==1)? 'Activo' : 'Inactivo';
-
-						       }
-						   },
-						   {
-						   	"targets": [9],
-						   	"data": null,
-						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-
-						       	return '<a href="usuarios/editar/'+full.id+'" class="btn btn-warning btn-xs usuario_edit"   aria-label="View">Editar</a>';
-						       }
-						   }
-						   ],
+					columnDefs: [],
 						   autoWidth: true,
 						   responsive: true,
 						   language: {
@@ -111,6 +95,9 @@
 						   },
 						});
 			}, 1);
+			setInterval( function () {
+		    oTable.ajax.reload();
+			}, 300000 );
 		},
 	}
 </script>
