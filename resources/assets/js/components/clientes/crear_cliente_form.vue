@@ -22,10 +22,11 @@
                 <span  class="help-block" v-show="errors.has('nit')">{{ errors.first('nit') }}</span>
               </div>
               <!-- /.form-group -->
-              <div class="form-group" v-bind:class="[errors_return.email,{ 'has-error': errors.has('email') }]">
-                <label>Correo</label>
-                <input type="email" v-model="cliente.email" v-validate data-vv-rules="email" name="email" id="email" class="form-control">
-                <span  class="help-block" v-show="errors.has('email')">{{ errors.first('email') }}</span>
+
+							<div class="form-group" v-bind:class="[errors_return.razon_social,{ 'has-error': errors.has('razon_social') }]">
+                <label>Razón social</label>
+                <input type="text" v-model="cliente.razon_social" data-vv-as="Razon Social" v-validate data-vv-rules="min:3" name="razon_social" id="razon_social" class="form-control" required="required">
+                <span  class="help-block" v-show="errors.has('razon_social')">{{ errors.first('razon_social') }}</span>
               </div>
               <!-- /.form-group -->
             </div>
@@ -39,11 +40,20 @@
               <!-- /.form-group -->
             </div>
             <div class="col-xs-6 col-md-12">
-             <a v-show="!agregar" href="/clientes/listado" class="btn btn-primary  aa">Volver al listado de Clientes</a>
-              <button type="button" v-show="agregar" v-on:click="addCliente" class="btn btn-success aa">Agregar</button>
+							<div class="form-group" v-bind:class="[errors_return.email,{ 'has-error': errors.has('email') }]">
+                <label>Correo</label>
+                <input type="email" v-model="cliente.email" v-validate data-vv-rules="email" name="email" id="email" class="form-control">
+                <span  class="help-block" v-show="errors.has('email')">{{ errors.first('email') }}</span>
+              </div>
+              <!-- /.form-group -->
 
-              <button type="button" v-show="!agregar" v-on:click="editCliente(cliente)" class="btn btn-success pull-right aa">Actualizar</button>
             </div>
+						<div class="col-xs-12 col-md-12">
+							<a v-show="!agregar" href="/clientes/listado" class="btn btn-primary  aa">Volver al listado de Clientes</a>
+               <button type="button" v-show="agregar" v-on:click="addCliente" class="btn btn-success aa">Agregar</button>
+
+               <button type="button" v-show="!agregar" v-on:click="editCliente(cliente)" class="btn btn-success pull-right aa">Actualizar</button>
+						</div>
             </form>
           <!-- /.row -->
 </template>
@@ -51,8 +61,6 @@
 <script>
 	import VeeValidate, { Validator } from 'vee-validate';
 	import messages from '../../es/es';
-
-       //Realizando los Use
 
 		// Merge the locales.
 		Validator.updateDictionary({es: { messages }});
@@ -70,10 +78,8 @@
 					nombre_contacto:'',
 					nit:'',
 					email:'',
-					telefono:''
-
-
-
+					telefono:'',
+					razon_social:'',
 				},
 				message :'',
 				agregar:true,

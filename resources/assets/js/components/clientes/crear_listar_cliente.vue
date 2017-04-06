@@ -14,6 +14,7 @@
             <tr>
               <th>NIT</th>
               <th>Cliente</th>
+              <th>Razón social</th>
               <th>Nombre de Contacto</th>
               <th>Correo</th>
               <th>Teléfono</th>
@@ -97,8 +98,9 @@
       })
       var tableClientes = $('#tabla_clientes').DataTable({
               processing: true,
-              serverSide: false,
+              serverSide: true,
               deferRender: true,
+              stateSave: true,
               'ajax': {
                  'url': window._apiURL+"clientes",
                  'type': 'GET',
@@ -110,6 +112,7 @@
 
                   { data: 'nit', name: 'nit' },
                   { data: 'nombre', name: 'nombre' },
+                  { data: 'razon_social', name: 'razon_social' },
                   { data: 'nombre_contacto', name: 'nombre_contacto' },
                   { data: 'email', name: 'email' },
                   { data: 'telefono', name: 'telefono' },
@@ -148,10 +151,7 @@
       this.table = tableClientes;
 
     },
-    ready: function(){
-      console.log('ready')
-
-    },
+    ready: function(){},
     methods:{
       setErrors:function(object) {
         this.message='';
