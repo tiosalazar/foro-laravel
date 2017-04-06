@@ -779,7 +779,7 @@ class OtController extends Controller
         $ot = Ot::
             select('ots.id','ots.clientes_id','ots.created_at','ots.estado','ots.estados_id',
             'ots.fecha_final','ots.fecha_inicio','ots.fee','ots.nombre','ots.referencia',
-            'ots.usuarios_id','clientes.nombre as cliente','users.nombre as usuario_nombre',
+            'ots.usuarios_id','clientes.nombre as cliente_nombre','users.nombre as usuario_nombre',
             'users.apellido as usuario_apellido')
             ->join('clientes','clientes.id','=','ots.clientes_id')
             ->join('users','users.id','=','ots.usuarios_id')

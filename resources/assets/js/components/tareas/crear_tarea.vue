@@ -16,7 +16,7 @@
 				<div class="col-sm-6">
 					<ul>
 						<li><strong>Proyecto:</strong><span> {{ot.nombre}}</span></li>
-						<li><strong>Cliente:</strong><span> {{ot.cliente}}</span></li>
+						<li><strong>Cliente:</strong><span> {{ot.cliente_nombre}}</span></li>
 					</ul>
 				</div>
 				<!-- /.col -->
