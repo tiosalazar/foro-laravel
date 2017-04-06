@@ -7,6 +7,7 @@ use App\Compras_ot;
 use App\User;
 use App\Ot;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Validator;
 use Illuminate\Http\Response;
 use Exception;
@@ -73,7 +74,57 @@ public function datatable_index(Request $request)
      */
     public function store(Request $request)
     {
-        //
+      $data= $request->all();
+        //Validaciòn de las entradas por el metodo POST
+          $compras=$data['compras'];
+          foreach ($compras as $compra) {
+        $vl=$this->validatorCrearCompra($compra);
+        if ($vl->fails())
+        {
+           return response([
+              'status' => Response::HTTP_BAD_REQUEST,
+              'response_time' => microtime(true) - LARAVEL_START,
+              'msg' => 'Error al crear la Compra',
+              'error' => 'ERR_01',
+               'request' => $request->all(),
+              'obj' =>$vl->errors()
+              ],Response::HTTP_BAD_REQUEST);
+        }else
+        {
+           try
+           {
+              //Inicio una transacción por si falla algún ingreso no quede registro en ninguna tabla
+              DB::beginTransaction();
+              /*El siguiente for recorre el listado de compras y los agrega*/
+                 $model_compras= new Compras_Ot;
+                 $model_compras->fill($compra);
+                 $model_compras->save();
+
+              DB::commit();
+
+              return response([
+                 'status' => Response::HTTP_OK,
+                 'response_time' => microtime(true) - LARAVEL_START,
+                 'msg' => 'Se han creado las compras correctamente !!',//Mensaje a mostrar
+                 'obj' =>  $model_compras
+                 ],Response::HTTP_OK);
+
+           }catch(Exception $e){
+              DB::rollback();
+              return response([
+                 'status' => Response::HTTP_BAD_REQUEST,
+                 'response_time' => microtime(true) - LARAVEL_START,
+                 'error_creacion' => 'fallo_en_la_creacion',
+                 'consola' =>$e->getMessage(),
+                 'request' => $request->all()
+                 ],Response::HTTP_BAD_REQUEST);
+           }
+        }
+
+      }
+
+
+
     }
 
     /**
@@ -108,7 +159,45 @@ public function datatable_index(Request $request)
      */
     public function update(Request $request, $id)
     {
-        //
+      $data= $request->all();
+        //Validaciòn de las entradas por el metodo POST
+          $compras=$data['compras'];
+        $vl=$this->validatorCrearCompra($compras);
+        if ($vl->fails())
+        {
+           return response([
+              'status' => Response::HTTP_BAD_REQUEST,
+              'response_time' => microtime(true) - LARAVEL_START,
+              'msg' => 'Error al Editar la Compra',
+              'error' => 'ERR_01',
+               'request' => $request->all(),
+              'obj' =>$vl->errors()
+              ],Response::HTTP_BAD_REQUEST);
+        }else
+        {
+           try
+           {
+                 $compra =Compras_Ot::findOrFail($id);
+                 $compra->fill($compras);
+                 $compra->save();
+
+              return response([
+                 'status' => Response::HTTP_OK,
+                 'response_time' => microtime(true) - LARAVEL_START,
+                 'msg' => 'Compra Editada Correactamente !!',//Mensaje a mostrar
+                 'obj' =>  $compra
+                 ],Response::HTTP_OK);
+
+           }catch(Exception $e){
+              return response([
+                 'status' => Response::HTTP_BAD_REQUEST,
+                 'response_time' => microtime(true) - LARAVEL_START,
+                 'error_creacion' => 'fallo_en_la_creacion',
+                 'consola' =>$e->getMessage(),
+                 'request' => $request->all()
+                 ],Response::HTTP_BAD_REQUEST);
+           }
+        }
     }
 
     /**
@@ -121,4 +210,22 @@ public function datatable_index(Request $request)
     {
         //
     }
+
+    /*DSO 24-01-2016 Funcion para validar los campos al crear un usuario
+     * entra el arreglo de datos
+     * Sale un arreglo con los errores.
+     */
+     protected function validatorCrearCompra(array $data)
+     {
+        return Validator::make($data, [
+           'provedor' => 'required',
+           'valor' => 'required',
+           'fecha_transaccion' => 'required|date',
+           'descripcion' => 'required',
+           'ots_id' => 'required',
+           'areas_id' => 'required',
+           'divisas_id' => 'required',
+           'estados_id' => 'required',
+           ]);
+     }
 }

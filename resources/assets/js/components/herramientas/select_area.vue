@@ -29,7 +29,7 @@
   import Multiselect from 'vue-multiselect'
     module.exports= {
        components: { Multiselect},
-          props: ['refresha'],
+          props: ['refresha','index'],
       data () {
           return {
             areas:[],
@@ -64,10 +64,15 @@
           },
          updateSelected (newSelected) {
             if (newSelected != null && newSelected != undefined) {
-
-             this.id_area = newSelected.id;
+              this.id_area = newSelected.id;
               this.value = newSelected;
-              this.$parent.$emit('area_option',newSelected);
+              if(this.index != null ){
+                var respuesta = {index: this.index, area: newSelected }//Devuelvo el Index en el que se encuentra junto con el arreglo de datos, para saber en que posición
+              this.$parent.$emit('area_option',respuesta);
+              }else{
+                this.$parent.$emit('area_option',newSelected);
+              }
+
            }else {
              this.id_area = 0;
            }

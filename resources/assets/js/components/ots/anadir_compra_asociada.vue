@@ -9,32 +9,34 @@
       <section class="form_section" v-for="(ed,index) in compra_asociada">
        <div class="row">
          <div :class="{'col-md-4': campos_extra =='1'}" class="col-md-6">
-          <div class="form-group col-xs-12">
+          <div class="form-group">
             <label class="sr-only" for="nombre_requerimiento">Item</label>
             <select_tipo_compra  :index="index" :select="ed.tipo_compra"></select_tipo_compra>
           </div>
         </div>
         <div v-show="campos_extra =='1' ">
           <div class="col-md-5">
-           <div class="form-group  col-xs-12">
+           <div class="form-group ">
                 <label class="sr-only" for="nombre_requerimiento"><sup>*</sup> Área</label>
-                <select_area  ></select_area>
+                <select_area  :refresha="ed.area" :index="index"></select_area>
            </div>
          </div>
-         <div class="col-md-3">
- 					<div class="form-group">
-            <label class="sr-only" for="transaccion"><sup>*</sup>Fecha de Compra</label>
-            <input type="text" name="transaccion" id="transaccion"  class="form-control" placeholder="Fecha de Compra">
- 					</div>
- 				</div>
-
+        <div class="col-md-3" v-bind:class="{ 'has-error': errors.has('fecha_transaccion'+index) }">
+          <div class="input-group date">
+            <div class="input-group-addon">
+              <i class="fa fa-calendar"></i>
+            </div>
+            <datepicker language="es" id="fecha_transaccion" required="required" v-validate data-vv-rules="required"  @input="guardarDatos" data-vv-as="Fecha de Compra" placeholder="Fecha Compra"  :disabled="state.disabled" v-model="ed.fecha_transaccion" :name="'fecha_transaccion'+index" class="form-control"  format="dd-MM-yyyy"></datepicker>
+          </div>
+          <span  class="help-block" v-show="errors.has('fecha_transaccion'+index)">{{ errors.first('fecha_transaccion'+index) }}</span>
+        </div>
         </div>
       </div>
       <div class="row" v-show="campos_extra =='1' ">
          <div class="col-md-6">
-          <div class="form-group  col-xs-12">
+          <div class="form-group ">
             <label class="sr-only" for="transaccion"><sup>*</sup> No Transacción</label>
-            <input type="text" name="transaccion" id="transaccion"  class="form-control" placeholder="No. Transacción">
+            <input type="text" name="transaccion" id="transaccion" v-model="ed.transaccion" class="form-control" placeholder="No. Transacción">
           </div>
         </div>
         <div class="col-md-6">
@@ -44,14 +46,13 @@
          </div>
        </div>
      </div>
-      <div class="form-group  col-md-12 col-xs-12" v-bind:class="{ 'has-error': errors.has('descipcion_compra'+index) }">
+      <div class="form-group" v-bind:class="{ 'has-error': errors.has('descipcion_compra'+index) }">
         <label class="sr-only" for="descipcion_compra">Descripción</label>
         <textarea  :name="'descipcion_compra'+index" rows="3" @input="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Descripción" v-model="ed.model_desc" class="form-control"   placeholder="Descripción">
         </textarea>
         <span  class="help-block" v-show="errors.has('descipcion_compra'+index)">{{ errors.first('descipcion_compra'+index) }}</span>
       </div>
       <div class="row">
-       <div class="col-md-12">
         <div class="form-group  col-md-4 col-xs-12"  v-bind:class="{ 'has-error': errors.has('provedor_compra'+index) }">
           <label class="sr-only" for="no_horas_req">Provedor</label>
           <input type="text"  :name="'provedor_compra'+index"  @input="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Provedor" v-model="ed.model_provedor" class="form-control" :id="'provedor_compra'+index"   placeholder="Provedor">
@@ -63,7 +64,6 @@
           <span  class="help-block" v-show="errors.has('valor_compra'+index)">{{ errors.first('valor_compra'+index) }}</span>
         </div>
         <div class="form-group col-md-4  col-xs-12"><select_divisa :index="index" :select="ed.divisa"></select_divisa> </div>
-      </div>
     </div>
     <div class="col-md-12">
       <div style="height:22px"></div>
@@ -73,7 +73,7 @@
   </section>
 </div>
 
-<div class="row">
+<div class="row" v-show="this.$parent.editar != 'true' ">
   <div class="col-md-12 text-center">
     <div class="col-md-5 col-md-offset-1">
       <button type="button" @click="addRequerimiento" :class="{'disabled' : disabled }" class="btn btn-block boton_foro btn-success succes col-sm-3" :disabled="disabled">Añadir Compra</button>
@@ -88,14 +88,30 @@
 </template>
 
 <script>
+/*DSO 26-01-2017
+Realizo los Required
+*/
+import Datepicker from 'vuejs-datepicker';
+import VeeValidate, { Validator } from 'vee-validate';
+import moment from 'moment';
 
   module.exports={
+    components: {Datepicker,VeeValidate,Validator,moment},
     props: ['area','id_area','realizar_validado','limpiar_datos','campos_extra'],
     data () {
       return {
         compra_asociada: [
-        { tipo_compra:{id:'',nombre:'' }, model_desc:'', model_provedor:'',model_valor:'', divisa:{id:'',nombre:''}, estado:{id:'', nombre:''}}
+        { tipo_compra:{id:'',nombre:'' }, model_desc:'', ots_id:'',model_provedor:'',model_valor:'', divisa:{id:'',nombre:''}, estado:{id:'', nombre:''},transaccion:'',area:{id:'',nombre:''},fecha_transaccion:'' }
       ],
+      fecha_inicio: moment().toDate(),
+      state: {
+				disabled: {
+					to: moment().subtract(1, 'days').toDate(), // Disable all dates up to specific date
+					//  from: new Date(2017,5,2), // Disable all dates after specific date
+					days: [0] // Disable Saturday's and Sunday's
+				}
+			},
+      area2:{},
       option_toast:{
         timeOut: 5000,
         "positionClass": "toast-top-center",
@@ -117,14 +133,14 @@
       limpiar_datos: function(){
         if(this.limpiar_datos == true){
           this.compra_asociada=[
-          { tipo_compra:{id:'',nombre:'' }, model_desc:'', model_provedor:'',model_valor:'', divisa:{id:'',nombre:''}, estado:{id:'',nombre:''}}
+            { tipo_compra:{id:'',nombre:'' }, model_desc:'', ots_id:'', model_provedor:'',model_valor:'', divisa:{id:'',nombre:''}, estado:{id:'', nombre:''},transaccion:'',area:{id:'',nombre:''},fecha_transaccion:'' }
           ];
         }
       },
     },
     computed:{
       disabled: function(){
-        return this.$parent.diabled_compras;
+        return this.$parent.diabled_compras;editar
       }
     },
     created: function(){
@@ -145,6 +161,11 @@
       if( v != ""){
         this.compra_asociada[v.index].divisa=v.divisa;
       }
+    });
+    this.$on('area_option', function(obj) {
+      if( obj != ""){
+          this.compra_asociada[obj.index].area=obj.area;
+       }
     });
     this.$on('select_estado', function(v) {
       console.log(v);
@@ -190,8 +211,6 @@
       }else{
         return true;
       }
-
-
     }
 
     },
@@ -217,15 +236,20 @@
                }
           }
       },
+
     /*
      Si encuentra el arreglo guardado en el localStorage llena nos datos con lo que se ha escrito.
      */
      llenarCampos:function () {
-      var data_req= JSON.parse(this.$localStorage.get('datos_compra_'+this.id_area));
-      if (data_req != null ) {
-        var arreglo_requerimientos = data_req[0].compras;
-        this.compra_asociada= arreglo_requerimientos;
-      }
+       if (this.$parent.editar != 'true') {
+         var data_req= JSON.parse(this.$localStorage.get('datos_compra_'+this.id_area));
+         if (data_req != null ) {
+           var arreglo_requerimientos = data_req[0].compras;
+           this.compra_asociada= arreglo_requerimientos;
+         }
+       }else{
+         this.compra_asociada= this.$parent.datos_compras;
+       }
 
     },
     /*
@@ -251,4 +275,5 @@
 Vue.component('select_tipo_compra',require('../herramientas/select_tipo_compra.vue'));
 Vue.component('select_divisa',require('../herramientas/select_divisas.vue'));
 Vue.component('select_area',require('../herramientas/select_area.vue'));
+Vue.component('select_estados',require('../herramientas/select_estado.vue'));
 </script>

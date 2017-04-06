@@ -103,7 +103,6 @@ class OtController extends Controller
    */
    public function store(Request $request)
    {
-      $respuesta=[];
       //Validaciòn de las entradas por el metodo POST
       $data= $request->all();
 
@@ -773,12 +772,12 @@ class OtController extends Controller
    {
       // Si empieza con valor numerico buscar por referencia
       // de lo contrario por nombre
-      
+
       //Función que consulta las ot recibe dos valores el primero referencia o nombre el segundo el query que se envia desde el componente select
       function consulta_ot($value,$consulta)
       {
         $ot = Ot::
-            select('ots.clientes_id','ots.created_at','ots.estado','ots.estados_id',
+            select('ots.id','ots.clientes_id','ots.created_at','ots.estado','ots.estados_id',
             'ots.fecha_final','ots.fecha_inicio','ots.fee','ots.nombre','ots.referencia',
             'ots.usuarios_id','clientes.nombre as cliente','users.nombre as usuario_nombre',
             'users.apellido as usuario_apellido')
