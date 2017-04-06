@@ -75,7 +75,7 @@
                           <i class="fa fa-calendar"></i>
                         </div>
 
-                          <datepicker  style="height:26px;" language="es"  id="fecha_entrega_area" required="required"   v-validate data-vv-rules="required" data-vv-as="Fecha Entrega Area" placeholder="Fecha Entrega Area"  :disabled="state.disabled" v-model="tarea_info.fecha_entrega_area" class="form-control"  name="fecha_entrega_area" format="dd-MM-yyyy"></datepicker>
+                          <datepicker  style="height:26px;" language="es"  id="fecha_entrega_area" required="required"   v-validate data-vv-rules="required" data-vv-as="Fecha Entrega Área" placeholder="Fecha Entrega Area" @input="guardarDatos"  :disabled="state.disabled" v-model="tarea_info.fecha_entrega_area" class="form-control"  name="fecha_entrega_area" format="dd-MM-yyyy"></datepicker>
 
                        </div>
                     <span  class="help-block" v-show="errors.has('fecha_entrega_area')">{{ errors.first('fecha_entrega_area') }}</span>
@@ -135,7 +135,7 @@
                         <i class="fa fa-calendar"></i>
                       </div>
 
-                      <datepicker   language="es"  id="fecha_entrega_cuentas" required="required"   v-validate data-vv-rules="required" data-vv-as="Fecha Entrega Area" placeholder="Fecha Entrega Cuentas"  :disabled="state.disabled" v-model="tarea_info.fecha_entrega_cuentas" class="form-control"  name="fecha_entrega_cuentas" format="dd-MM-yyyy"></datepicker>
+                      <datepicker   language="es"  id="fecha_entrega_cuentas" required="required"   v-validate data-vv-rules="required" data-vv-as="Fecha Entrega Area" placeholder="Fecha Entrega Cuentas"   :disabled="state.disabled_cuentas" v-model="tarea_info.fecha_entrega_cuentas" class="form-control"  name="fecha_entrega_cuentas" format="dd-MM-yyyy"></datepicker>
 
                   </div>
                     <span  class="help-block" v-show="errors.has('fecha_entrega_cuentas')">{{ errors.first('fecha_entrega_cuentas') }}</span>
@@ -352,14 +352,17 @@
         },
         state: {
           disabled: {
-                to: moment().subtract(1, 'days').toDate(), // Disable all dates up to specific date
-                //  from: new Date(2017,5,2), // Disable all dates after specific date
-                days: [0] // Disable Saturday's and Sunday's
-              }
-            }
+            to: moment().subtract(1, 'days').toDate(), // Disable all dates up to specific date
+            days: [0] // Disable Saturday's and Sunday's
+          },
+          disabled_cuentas: {
+            to: moment().subtract(1, 'days').toDate(), // Disable all dates up to specific date
+            days: [0] // Disable Saturday's and Sunday's
           }
+        }
+      }
 
-        },
+    },
         created: function() {
           this.$on('select_ejecutivo', function(v) {
             this.encargado=v;
@@ -382,7 +385,6 @@
             //Asigno toda la informacion traida del api a la variable tarea_info
             this.tarea_info=obj;
             this.estado = obj.estado;
-            console.log(this.estado);
             //Asignos los comentarios para el v-for
             this.comentarios_array=obj.comentario;
             this.comentarios_array.reverse();
@@ -396,7 +398,6 @@
           }
           if (this.id_usuario_actual == this.tarea_info.encargado_id) {
             this.tarea_info.estado="";
-            console.log('encargado ! ');
           }
         },
       filters: {
@@ -431,6 +432,7 @@
         }
 
           //Datos a enviar al asignar la tarea y comentarios
+
           let fecha_area=(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5|| this.estado_solicitud.id == 7)?null:moment(this.tarea_info.fecha_entrega_area).format('YYYY-MM-DD');
           let fecha_cuentas=(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5|| this.estado_solicitud.id == 7)?null:moment(this.tarea_info.fecha_entrega_cuentas).format('YYYY-MM-DD');
 
@@ -502,6 +504,11 @@
            this.errors.clear();
            console.log(this.errors);
          });
+        },
+        guardarDatos:function () {
+          if (this.tarea_info.fecha_entrega_area != null) {
+            this.state.disabled_cuentas.to = moment(this.tarea_info.fecha_entrega_area).toDate();
+          }
         },
         enviarcomentarios:function(){
           if (this.descripcion=="") {
