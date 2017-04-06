@@ -180,13 +180,29 @@
        @endif
       <!-- .Herramientas -->
 
+   <!-- Ver compras asociadas -->
+       @if( Auth::user()->can('ver_compras_asociadas') )
+           <li class="treeview {{ Request::is('herramientas/*') ? 'active' : '' }}">
+        <a href="#"><i class='fa fa-shopping-bag'></i> <span>{{ trans('texto_menu.compras_asociadas') }}</span> <i class="fa fa-caret-left pull-right fa-lg"></i></a>
+        <ul class="treeview-menu">
+          <!--Listar -->
+          <li><a href="{{ url('compra/crear') }}"><i class='fa fa-cart-plus'></i><span>{{  trans('texto_menu.compras_asociadas_crear') }}</span></a></li>
+
+          <!--Crear -->
+          <li><a href="{{ url('compra/listar') }}"><i class='fa fa-list-ul'></i><span>{{  trans('texto_menu.compras_asociadas_listar') }}</span></a></li>
+
+        </ul>
+      </li>
+       @endif
+     <!--  Ver compras asociadas -->
+
+
+
       <!-- .Permisos por rol -->
        @if( Auth::user()->can('ver_permisos') )
           <li class="treeview"><a href="{{ url('permisos') }}"><i class='fa fa-key '></i><span>{{  trans('texto_menu.permisos') }}</span></a></li>
        @endif
      <!-- Permisos por rol -->
-      
-
 
     </ul><!-- /.sidebar-menu -->
     </section>

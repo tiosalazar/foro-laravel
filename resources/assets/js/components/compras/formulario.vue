@@ -3,7 +3,7 @@
 		<div class="box-body col-sm-12">
 			<div class="form-group required" v-show="editar != 'true'">
 				<label for="ot"><sup>*</sup> Seleccione la OT</label>
-				<select_ot :select="select_ot"></select_ot>
+				<select_ot :select="select_ot" ></select_ot>
 			</div>
 			<div class="row desc-ot with-border">
 				<div class="col-sm-6 border-right">

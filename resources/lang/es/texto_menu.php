@@ -49,5 +49,8 @@ return [
     'informes' => 'Informes',
     'tipos_compra' => 'Tipos de Compra',
     'permisos' => 'Permisos',
+    'compras_asociadas'=>'Compras OT',
+    'compras_asociadas_crear'=>'Crear Compra',
+    'compras_asociadas_listar'=>'Listar Compra',
 
 ];

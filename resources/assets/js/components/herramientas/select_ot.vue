@@ -1,6 +1,8 @@
 <template>
   <div>
   <div :class="{ 'select-error': isInvalid }" class="select_ot">
+
+
       <multiselect
       :custom-label="nameWithLang"
       :options="ots"
@@ -47,6 +49,7 @@
       selectedCountries: [],
       countries: [],
       isLoading: false,
+      
     }
   },
   computed:{
@@ -59,6 +62,7 @@
       },
       created: function(){
         this.fetchTips();
+           
       },
 
       methods:{
