@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Role;
+use App\Area;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
 use App\Http\Requests\StoreUsers;
@@ -25,16 +26,25 @@ class UserController extends Controller
     public function index()
     {
       // $user= User::where('estado',1)->get();
-       $user = User::
-            select('users.id','users.nombre','users.apellido','users.cargo','users.telefono','users.email','users.img_perfil','users.horas_disponible','users.horas_gastadas','users.fecha_nacimiento',
-            'roles.display_name as roles_id',
-            'areas.nombre as areas_id','users.estado','areas.id as id_area','roles.id as id_rol')
-            ->join('roles','roles.id','=','users.roles_id')
-            ->join('areas','areas.id','=','users.areas_id')
-            ->where('users.estado','1')
-            ->get();
+      //  $user = User::
+      //       select('users.id','users.nombre','users.apellido','users.cargo','users.telefono','users.email','users.img_perfil','users.horas_disponible','users.horas_gastadas','users.fecha_nacimiento',
+      //       'roles.display_name as roles_id',
+      //       'areas.nombre as areas_id','users.estado','areas.id as id_area','roles.id as id_rol')
+      //       ->join('roles','roles.id','=','users.roles_id')
+      //       ->join('areas','areas.id','=','users.areas_id')
+      //       ->where('users.estado','1')
+      //       ->get();
+      $user = User::with('area','rol')->where('estado','1')->get();
       // return response()->json($user);
-      return array('recordsTotal'=>count($user),'recordsFiltered'=>count($user),'data'=>$user);
+      // return array('recordsTotal'=>count($user),'recordsFiltered'=>count($user),'data'=>$user);
+      return Datatables::of($user)
+      ->addColumn('estado', function ($tarea) {
+        return ($tarea->estado==1)? 'Activo' : 'Inactivo';
+      })
+      ->addColumn('acciones', function ($tarea) {
+        return '<a href="usuarios/editar/'.$tarea->id.'" class="btn btn-warning btn-xs usuario_edit" title="Editar"  aria-label="View">Editar</a>';
+      })
+      ->make(true);
     }
 
 
