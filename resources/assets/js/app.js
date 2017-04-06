@@ -51,6 +51,7 @@ Vue.component('formulario_anadir_requerimiento', require('./components/ots/formu
 Vue.component('listar_ots', require('./components/ots/listar_ots.vue'));
 // Compras Asociadas
 Vue.component('compras_asociadas_crear', require('./components/compras/formulario.vue'));
+Vue.component('listar_compras', require('./components/compras/listar_compras.vue'));
 
 //Fin Componentes Dsalazar
 //Componentes Bcaldas

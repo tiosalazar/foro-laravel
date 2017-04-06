@@ -17,7 +17,7 @@
 			<!-- box -->
 			<div class="box box-primary">
 				<div class="box-body  table-responsive">
-					<listar_ots></listar_ots>
+					<listar_compras></listar_compras>
 				</div>
 			</div>
 			<!-- ./ box -->
