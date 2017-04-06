@@ -16,7 +16,7 @@
           <h3 class="box-title">Especificación de la compra</h3>
         </div>
         <!-- /.box-header -->
-        <compras_asociadas_crear editar="true"></compras_asociadas_crear>
+        <compras_asociadas_crear editar="true" datos_compras_editar="{{$compra}}"></compras_asociadas_crear>
       </div>
     </div>
   </div>

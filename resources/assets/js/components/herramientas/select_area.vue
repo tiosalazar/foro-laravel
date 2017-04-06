@@ -29,7 +29,7 @@
   import Multiselect from 'vue-multiselect'
     module.exports= {
        components: { Multiselect},
-          props: ['refresha','index'],
+          props: ['refresha','index','compras'],
       data () {
           return {
             areas:[],
@@ -47,7 +47,12 @@
       },
       created: function(){
         this.fetchTips();
-        this.value2={id: this.refresha.id, nombre: this.refresha.id_area};
+        if (this.compras != "true") {
+          this.value2={id: this.refresha.id, nombre: this.refresha.id_area};
+        }else{
+            this.value2=this.refresha;
+        }
+
         this.id_rol=this.refresha.id;
       },
       watch : {

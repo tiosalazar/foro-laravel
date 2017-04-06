@@ -38,7 +38,7 @@ import moment from 'moment';
 Vue.use(VeeValidate);
 module.exports = {
 	components: {Datepicker,VeeValidate,Validator},
-	props:['editar'],
+	props:['editar','datos_compras_editar'],
 	data(){
 		return{
 			select_ot:'',
@@ -72,6 +72,7 @@ module.exports = {
 		}
 	},
 	created: function() {
+		this.llenarCampos();
 		this.$on('send-ot', function(obj) {
 			this.ot= obj;
 			this.select_ot= obj;
@@ -85,6 +86,13 @@ module.exports = {
 		this.user = this.$parent.id_user;
 	},
 	methods:{
+		llenarCampos:function(){
+			if(this.editar =='true'){
+         console.log( JSON.parse(this.datos_compras_editar));
+					 this.datos_compras= JSON.parse(this.datos_compras_editar);
+					 this.ot=this.datos_compras.ot;
+			}
+		},
 		setErrors:function(object) {
 			this.message='';
 			let that = this;

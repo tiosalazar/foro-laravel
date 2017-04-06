@@ -68,7 +68,7 @@ class Estado extends Model
   /**
   * Obtiene las Compras que posee un Estado
   */
-  public function Compras_ot()
+  public function Compras()
   {
     return $this->hasMany('App\Compras_ot','estados_id','id');
   }
