@@ -359,7 +359,7 @@ class TareaController extends Controller
                   ->where('areas_id',$tarea->areas_id)
                   ->first();
 
-                  if (!is_null($tarea->tiempo_real) && $tarea->tiempo_real !=0) {
+                  if (!is_null($tarea->tiempo_real) && $tarea->tiempo_real >=0) {
 
                       if ( $horas_area->tiempo_real + $tarea->tiempo_real > $horas_area->tiempo_estimado_ot) {
                         $area = Area::findOrFail($tarea->areas_id);
