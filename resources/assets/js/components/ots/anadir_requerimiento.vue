@@ -115,7 +115,9 @@ module.exports={
       }
     },
     limpiar_datos_tabs: function(){
-      if(this.limpiar_datos_tabs == true){
+      console.log(this.$parent.area_actual,'Area Temporal');
+      console.log(this.id_area,'Area Actual');
+      if(this.limpiar_datos_tabs == true && this.$parent.area_actual==this.id_area){
         this.requerimiento=[
           {  model_nom:'', model_horas:0}
         ];

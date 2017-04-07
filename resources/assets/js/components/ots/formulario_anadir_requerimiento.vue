@@ -132,7 +132,7 @@
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-flat btn-default pull-left" data-dismiss="modal">Espera, voy a guardar</button>
-									<button type="button" class="btn btn-flat btn-primary" @click="seguir">Ok, quiero continuar</button>
+									<button type="button" class="btn btn-flat btn-primary" @click="seguir">Ok, descartar cambios y continuar</button>
 								</div>
 							</div>
 						</div>
@@ -204,6 +204,7 @@
 					id_tab:'',
 					area_temporal:'',
 					area_actual:'',
+					area_seguir:'',
 					limpiarDatos:false,
 					limpiarDatos_tabs:false,
 					form_requerimiento_validado:false,
@@ -596,7 +597,7 @@
 			*/
 			tabs_areas:function(e,id){
 				var id_pestana=this.area_actual;
-				var id_seguir=id;
+				this.area_seguir=id;
         //this.datos_requerimiento
 			//	console.log(id_pestana,'Pesta Actual');
 				var reqActual=(JSON.parse(this.$localStorage.get('datos_requerimiento_'+id_pestana)))?JSON.parse(this.$localStorage.get('datos_requerimiento_'+id_pestana)):null;
@@ -624,18 +625,16 @@
   				var resta_anterior=0;
   				resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(id);
   				this.h_Disponibles=parseFloat((this.horas_totales- this.h_area)-resta_anterior);
-				}else {
-           if (this.visualizacion != 'true') {
-						this.limpiarDatos_tabs=true;
- 						this.h_area=0;
- 					  this.t_extra=0;
- 						var resta_anterior=0;
- 	  				resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(id);
- 						console.log(resta_anterior,'resta_anterior');
- 	  				this.h_Disponibles=parseFloat((this.horas_totales- this.h_area)-resta_anterior);
- 						this.datos_requerimiento=[];
-           }
-
+				}else if (this.visualizacion != 'true') {
+					this.limpiarDatos_tabs=true;
+					this.h_area=0;
+					this.t_extra=0;
+					this.area_temporal=id;
+					var resta_anterior=0;
+					resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(id);
+					console.log(resta_anterior,'resta_anterior');
+					this.h_Disponibles=parseFloat((this.horas_totales- this.h_area)-resta_anterior);
+					this.datos_requerimiento=[];
 				}
 
 			},
