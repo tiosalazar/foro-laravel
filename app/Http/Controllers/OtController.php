@@ -256,7 +256,7 @@ class OtController extends Controller
          $ingreso=[];
          foreach ($ot->Requerimiento_Ot as  $value) {
             if ($value['areas_id'] ==  $area_actual ) {
-               $array_temporal= array('model_nom'=>$value['nombre'] ,'model_horas'=>(int)$value['horas']);
+               $array_temporal= array('model_nom'=>$value['nombre'] ,'model_horas'=>(float)$value['horas']);
                //$data['requerimientos']['requerimientos']=json_encode($array_temporal);
                array_push($ingreso,$array_temporal);
                $data['requerimientos']['requerimientos']=$ingreso;
@@ -318,13 +318,16 @@ class OtController extends Controller
 
          try
          {
+           //Inicio una transacción por si falla algún ingreso no quede registro en ninguna tabla
+           DB::beginTransaction();
             //Busca la OT en la BD
             $ot=  Ot::findOrFail($id);
             $ot->fill($data['datos_encabezado']);
-            $ot->save();
-           $debug=[];
+            //$ot->save();
+
 
             $requerimientos=$data['requerimientos'];
+            $debug['arreglo']=$requerimientos;
             $compras=$data['compras'];
 
             /*Agregar Tiempos por Area Requerimientos */
@@ -333,17 +336,11 @@ class OtController extends Controller
             $tiempos_x_area= Tiempos_x_Area::where('ots_id',$id_ot)->get();
             $model_descripcion_requerimiento=  Requerimientos_Ot::where('ots_id',$id_ot)->get();
             $j=0;
+            $debug['arreglo']=$model_descripcion_requerimiento;
 
-            $debug["count_tiempos"]=count($tiempos_x_area);
-            $debug["count_req"]=0;
-            $debug["count_req"]=count($requerimientos);
-            $debug["veces_entra"]=0;
-            $debug["count_req2"]=0;
-            $debug["sali_bien"]='';
-             $debug["sali_bien2"]='';
+
             foreach ($requerimientos as $requerimiento) {
                if(  $index >= count($tiempos_x_area)  ){
-                  $debug["sali_bien"]='entre a salir bien';
                    break;
                }
 
@@ -355,12 +352,11 @@ class OtController extends Controller
                /*El siguiente for recorre el listado de requerimientos y los agrega */
                for ($i=0; $i < count($requerimiento['requerimientos']) ; $i++) {
                   $arreglo=$requerimiento['requerimientos'][$i];
-                  $arreglo_ingresar= array('nombre' => $arreglo['model_nom'],'horas'=> $arreglo['model_horas'],'areas_id' =>$requerimiento['area'],'ots_id' =>$id_ot);
+                  $arreglo_ingresar= array('nombre' => $arreglo['model_nom'],'horas'=> floatval($arreglo['model_horas']),'areas_id' =>$requerimiento['area'],'ots_id' =>$id_ot);
                   try {
                      $model_descripcion_requerimiento[$j]->fill( $arreglo_ingresar);
                      $model_descripcion_requerimiento[$j]->save();
                   } catch (Exception $e) {
-                     $debug["veces_entra"]=  $debug["veces_entra"]+1;
                      $model_descripcion_requerimiento= new Requerimientos_Ot;
                      $model_descripcion_requerimiento->fill( $arreglo_ingresar);
                      $model_descripcion_requerimiento->save();
@@ -433,7 +429,7 @@ class OtController extends Controller
             $maker=Auth::user();
             $user= User::findOrFail($ot->usuarios_id);
             $user->notify(new OtTiempoExtraAprobado($maker,$ot));
-
+             DB::commit();
 
             return response([
                'status' => Response::HTTP_OK,
@@ -443,7 +439,7 @@ class OtController extends Controller
                ],Response::HTTP_OK);
 
          }catch(Exception $e){
-            // DB::rollback();
+             DB::rollback();
             return response([
                'status' => Response::HTTP_BAD_REQUEST,
                'response_time' => microtime(true) - LARAVEL_START,

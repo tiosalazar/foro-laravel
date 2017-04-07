@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Compras_ot;
+use App\Compras_Ot;
 use App\User;
 use App\Ot;
 use Illuminate\Support\Facades\Auth;
@@ -167,7 +167,7 @@ public function datatable_index(Request $request)
     {
       $data= $request->all();
         //Validaciòn de las entradas por el metodo POST
-          $compras=$data['compras'];
+          $compras=$data['compras'][0];
         $vl=$this->validatorCrearCompra($compras);
         if ($vl->fails())
         {

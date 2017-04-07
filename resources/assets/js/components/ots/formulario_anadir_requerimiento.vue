@@ -180,6 +180,9 @@
 			localStorage: {
 				listado_areas: {
 					type: Object,
+				},
+				datos_encabezado: {
+					type: Object,
 				}
 			},
 			components: { VueLocalStorage,VeeValidate,Validator},
@@ -346,6 +349,7 @@
 					if (this.visualizacion=='true') {
 						var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
 						var datos_encabezado= arreglo_visualizar.datos_encabezado;
+					this.$localStorage.set('datos_encabezado',datos_encabezado);
 						var datos_compras= arreglo_visualizar.final_com;
 						this.descripcion_ot=datos_encabezado.observaciones;
 						this.diabled_compras =(datos_compras.length > 0)?false:true;
@@ -440,8 +444,11 @@
 									}
 								});
 							}else{
+
 								var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
 								datos_procesados.datos_encabezado.editor_id=arreglo_visualizar.editor_id;
+								console.log(datos_procesados);
+
 								this.$http.put(window._apiURL+'ots/'+arreglo_visualizar.datos_encabezado.id, datos_procesados)
 								.then(function(respuesta){
 									console.log(respuesta);
@@ -471,6 +478,8 @@
 									}
 									toastr.error(this.message,response.body.msg,this.option_toast);
 								});
+
+
 							}
 
 
