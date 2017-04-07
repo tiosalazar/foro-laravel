@@ -36,7 +36,7 @@
           <div class="col-md-6">
             <div class="form-group ">
               <label class="sr-only" for="transaccion"><sup>*</sup> No Transacción</label>
-              <input type="text" name="transaccion" id="transaccion" v-model="ed.transaccion" class="form-control" placeholder="No. Transacción">
+              <input type="text" name="transaccion" id="transaccion" v-model="ed.transaccion" class="form-control" placeholder="No. Transacción" @input="guardarDatos">
             </div>
           </div>
           <div class="col-md-6">
@@ -152,6 +152,7 @@ module.exports={
     this.$on('tipo_compra', function(v) {
       if( v != "" ){
         this.compra_asociada[v.index].tipo_compra=v.tipo_compra;
+        this.guardarDatos();
       }
     });
     /*
@@ -160,17 +161,20 @@ module.exports={
     this.$on('divisa', function(v) {
       if( v != ""){
         this.compra_asociada[v.index].divisa=v.divisa;
+        this.guardarDatos();
       }
     });
     this.$on('area_option', function(obj) {
       if( obj != ""){
         this.compra_asociada[obj.index].area=obj.area;
+        this.guardarDatos();
       }
     });
     this.$on('select_estado', function(v) {
       console.log(v);
       if( v != ""){
         this.compra_asociada[v.index].estado=v.estado;
+        this.guardarDatos();
       }
     });
   },

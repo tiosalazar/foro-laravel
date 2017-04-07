@@ -27,7 +27,11 @@
 
 		<div class="box-footer text-center">
 
-			<button type="button" class="btn btn-primary btn-flat " v-on:click="agregarCompras()">Guardar Compras</button>
+			<button type="button" name="back-btn" class="btn btn-primary btn-flat btn-back" onclick="history.go(-1);">
+				<i class="fa fa-chevron-left" aria-hidden="true"></i>
+				&nbsp;Atrás
+			</button>
+			<button type="button" class="btn btn-primary btn-flat " v-on:click="agregarCompras()" :disabled="!send_edit">Guardar Compras</button>
 		</div>
 	</form>
 </template>
@@ -55,6 +59,7 @@ module.exports = {
 			disabled:{
 				"to": moment().subtract(1, 'days').toDate(),
 			},
+			send_edit:false,
 			errors_return:{
 				'provedor':'',
 				'valor':'',
@@ -84,6 +89,7 @@ module.exports = {
 		*/
 		this.$on('datos_compras', function(v) {
 			this.datos_compras=v;
+			this.send_edit=true;
 		});
 
 	},
@@ -91,8 +97,11 @@ module.exports = {
 		llenarCampos:function(){
 			if(this.editar =='true'){
          console.log( JSON.parse(this.datos_compras_editar));
+						// 	hora_a[0].compras[0].area.id
 					 this.datos_compras= JSON.parse(this.datos_compras_editar);
 					 this.ot=this.datos_compras.ot;
+					 this.datos_compras.estado = (this.datos_compras.estado != null)?this.datos_compras.estado:{};
+					 console.log(this.datos_compras);
 			}
 		},
 		setErrors:function(object) {
@@ -158,9 +167,11 @@ module.exports = {
 					}else{
 						toastr.success(respuesta.body.msg,'',this.option_toast);
 						this.datos_compras=[];
-						setTimeout(function () {
-							location.reload(true);
-						}, 500);
+						if(this.editar =='false'){
+							setTimeout(function () {
+								location.reload(true);
+							}, 500);
+						}
 					}
 				},(response) => {
 					console.log(response);
@@ -185,29 +196,52 @@ module.exports = {
 			var size = Object.keys(hora_a).length;
 			if (hora_a !=null && hora_a !=undefined && hora_a !=[] &&  size > 0 ) {
 				var i=0;
-				hora_a=hora_a[0].compras;
-				for(let f in hora_a ){
-					if (hora_a[i].model_desc !="" && hora_a[i].model_provedor !=""  && hora_a[i].model_valor !="") {
-						console.log(hora_a[i]);
-						var tipo_compra = hora_a[i].tipo_compra;
-						var divisa = hora_a[i].divisa;
-						var estado = hora_a[i].estado;
-						var area = hora_a[i].area;
-						var data={
-							areas_id:area.id,
-							tipos_compras_id: tipo_compra.id,
-							divisas_id: divisa.id,
-							descripcion:hora_a[i].model_desc,
-							provedor:hora_a[i].model_provedor,
-							transaccion:hora_a[i].transaccion,
-							ots_id:id_ot,
-							fecha_transaccion:moment(hora_a[i].fecha_transaccion).format('YYYY-MM-DD'),
-							estados_id:estado.id,
-							valor:numeral(hora_a[i].model_valor).value(),
-						};
-						arreglo_temporal.push(data);
+				console.log('data', hora_a);
+				if(this.editar =='false'){
+					hora_a=hora_a[0].compras;
+				}
+				if(this.editar =='true'){
+					hora_a.model_desc = hora_a[0].compras[0].model_desc;
+					hora_a.model_provedor = hora_a[0].compras[0].model_provedor;
+					hora_a.model_valor = hora_a[0].compras[0].model_valor;
+					var data={
+						areas_id:hora_a[0].compras[0].area.id,
+						tipos_compras_id: hora_a[0].compras[0].tipo_compra.id,
+						divisas_id: hora_a[0].compras[0].divisa.id,
+						descripcion:hora_a.model_desc,
+						provedor:hora_a.model_provedor,
+						transaccion:hora_a[0].compras[0].transaccion,
+						ots_id:id_ot,
+						fecha_transaccion:moment(hora_a[0].compras[0].fecha_transaccion).format('YYYY-MM-DD'),
+						estados_id: (hora_a[0].compras[0].estado != null)?hora_a[0].compras[0].estado.id:null,
+						valor:numeral(hora_a.model_valor).value(),
+					};
+					console.log('data', data);
+					arreglo_temporal.push(data);
+				}else{
+					for(let f in hora_a ){
+						if (hora_a[i].model_desc !="" && hora_a[i].model_provedor !=""  && hora_a[i].model_valor !="") {
+							console.log('in for',hora_a[i]);
+							var tipo_compra = hora_a[i].tipo_compra;
+							var divisa = hora_a[i].divisa;
+							var estado = (hora_a[i].estado != null)?hora_a[i].estado:{};
+							var area = hora_a[i].area;
+							var data={
+								areas_id:area.id,
+								tipos_compras_id: tipo_compra.id,
+								divisas_id: divisa.id,
+								descripcion:hora_a[i].model_desc,
+								provedor:hora_a[i].model_provedor,
+								transaccion:hora_a[i].transaccion,
+								ots_id:id_ot,
+								fecha_transaccion:moment(hora_a[i].fecha_transaccion).format('YYYY-MM-DD'),
+								estados_id:estado.id,
+								valor:numeral(hora_a[i].model_valor).value(),
+							};
+							arreglo_temporal.push(data);
+						}
+						i++;
 					}
-					i++;
 				}
 			}else{
 				toastr.error('Por favor llene el formulario','Error al intentar guardar las compras',this.option_toast);
