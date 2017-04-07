@@ -8,7 +8,7 @@
 @section('main-content')
 <div class="row">
   <section class="titulo">
-    <h3 class="box-title"><span class="span_descripcion1">Crear</span> <span class="span_descripcion2">Compras Asociadas</span></h3>
+    <h3 class="box-title"><span class="span_descripcion1">Editar</span> <span class="span_descripcion2">Compras Asociadas</span></h3>
   </section>
 		<div class="col-md-8 col-md-offset-2">
 			<div class="box box-widget tarea">
