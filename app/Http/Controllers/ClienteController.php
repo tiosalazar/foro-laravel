@@ -40,7 +40,7 @@ class ClienteController extends Controller
     public function select_clientes()
     {
       // $clientes = Cliente::all();
-      $clientes = Cliente::where('estado', 1)->get();
+      $clientes = Cliente::where('estado', 1)->orderBy('nombre', 'ASC')->get();
       return response()->json($clientes);
     }
     /*public function index()
