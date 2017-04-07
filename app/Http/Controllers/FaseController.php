@@ -200,7 +200,7 @@ class FaseController extends Controller
 
         try {
           // No filtrar por areas
-          $id=0;
+        //   $id=0;
             if ($id == 0) {
               $fases = Planeacion_tipo::with(['fases_planeacion'=> function ($query) {
                   $query->where('estado', '!=', '1');
