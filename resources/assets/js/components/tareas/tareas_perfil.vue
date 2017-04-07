@@ -10,7 +10,12 @@
                 <div class="box-header-content">
                   <h4>{{listado_tarea.ot.cliente.nombre }}</h4>
                   <p>{{listado_tarea.nombre_tarea | long_tarea_titulo }}</p>
-                  <span>{{listado_tarea.created_at}}7</span>
+                  <div v-if="listado_tarea.estados_id==5 || listado_tarea.estados_id==7">
+                    <span>{{listado_tarea.created_at}}</span>
+                  </div>
+                  <div v-else>
+                    <span>{{listado_tarea.updated_at}}</span>
+                  </div>
                 </div>
 
               </div>

@@ -399,6 +399,49 @@ class TareaController extends Controller
             $comentario->save();
 
 
+            //Guardar en el historial
+            $tarea_historico = new Historico_Tarea;
+            $data['tiempo_estimado']=$tarea->tiempo_estimado;
+            $data['tiempo_real']=$tarea->tiempo_real;
+            $data['comentarios_id']=$comentario->id;
+            $data['encargado_id']=$tarea->encargado_id;
+            $data['estados_id']=$tarea->estados_id;
+            $data['usuarios_id']=$tarea->usuarios_id;
+            $data['tareas_id']=$tarea->id;
+
+            //Guarda en Historico la fecha entrega area y cuentas si el estado es programado, si no pone null
+            if($tarea->estados_id==3){
+               $data['fecha_entrega_area']=$request->fecha_entrega_area;
+               $data['fecha_entrega_cuentas']=$request->fecha_entrega_cuentas;
+            }else{
+                $data['fecha_entrega_area']=null;
+                $data['fecha_entrega_cuentas']=null;
+            } 
+
+            $data['editor_id']=Auth::user()->id;
+            $tarea_historico->fill($data);
+            $tarea_historico->save();
+
+
+            //Respuesta
+            $respuesta['dato']=$tarea;
+            $respuesta['user_coment']='';
+            $respuesta['historico']=$comentario->id;
+            $respuesta["error"]=0;
+            $respuesta["mensaje"]="OK";
+            $respuesta["msg"]="Asignado con exito";
+            $respuesta["usuario"]=$encargado_area;
+            $respuesta["tarea_historico"]=$tarea_historico;
+
+            // $respuesta["horas"]=$horas_area;
+            foreach ($tarea->comentario as $key => $value) {
+                if ($value->user->id==$request->usuarios_comentario_id) {
+                    $respuesta['user_coment']=$value;
+                    $value->estados;
+                }
+            }
+
+
 
             /**
              *
@@ -477,39 +520,7 @@ class TareaController extends Controller
                 break;
             }
 
-            //Guardar en el historial
-            $tarea_historico = new Historico_Tarea;
-            $data['tiempo_estimado']=$tarea->tiempo_estimado;
-            $data['tiempo_real']=$tarea->tiempo_real;
-            $data['comentarios_id']=$comentario->id;
-            $data['encargado_id']=$tarea->encargado_id;
-            $data['estados_id']=$tarea->estados_id;
-            $data['usuarios_id']=$tarea->usuarios_id;
-            $data['tareas_id']=$tarea->id;
-            $data['fecha_entrega_area']=$tarea->fecha_entrega_area;
-            $data['fecha_entrega_cuentas']=$tarea->fecha_entrega_cuentas;
-            $data['editor_id']=Auth::user()->id;
-            $tarea_historico->fill($data);
-            $tarea_historico->save();
-
-
-            //Respuesta
-            $respuesta['dato']=$tarea;
-            $respuesta['user_coment']='';
-            $respuesta['historico']=$comentario->id;
-            $respuesta["error"]=0;
-            $respuesta["mensaje"]="OK";
-            $respuesta["msg"]="Asignado con exito";
-            $respuesta["usuario"]=$encargado_area;
-            $respuesta["tarea_historico"]=$tarea_historico;
-
-            // $respuesta["horas"]=$horas_area;
-            foreach ($tarea->comentario as $key => $value) {
-                if ($value->user->id==$request->usuarios_comentario_id) {
-                    $respuesta['user_coment']=$value;
-                    $value->estados;
-                }
-            }
+            
         }
 
         catch(Exception $e)
