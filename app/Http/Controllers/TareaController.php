@@ -408,8 +408,16 @@ class TareaController extends Controller
             $data['estados_id']=$tarea->estados_id;
             $data['usuarios_id']=$tarea->usuarios_id;
             $data['tareas_id']=$tarea->id;
-            $data['fecha_entrega_area']=$tarea->fecha_entrega_area;
-            $data['fecha_entrega_cuentas']=$tarea->fecha_entrega_cuentas;
+
+            //Guarda en Historico la fecha entrega area y cuentas si el estado es programado, si no pone null
+            if($tarea->estados_id==3){
+               $data['fecha_entrega_area']=$request->fecha_entrega_area;
+               $data['fecha_entrega_cuentas']=$request->fecha_entrega_cuentas;
+            }else{
+                $data['fecha_entrega_area']=null;
+                $data['fecha_entrega_cuentas']=null;
+            } 
+
             $data['editor_id']=Auth::user()->id;
             $tarea_historico->fill($data);
             $tarea_historico->save();
