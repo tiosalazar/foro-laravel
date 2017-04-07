@@ -5,9 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Date\Date;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tarea extends Model
 {
+  use SoftDeletes;
+  
   /**
   * The attributes that are mass assignable.
   *
@@ -17,6 +20,12 @@ class Tarea extends Model
     'nombre_tarea', 'fecha_entrega_area','fecha_entrega_cuentas','tiempo_mapa_cliente', 'descripcion', 'enlaces_externos', 'tiempo_estimado', 'tiempo_real', 'fecha_entrega_cliente', 'estados_id', 'areas_id',
     'usuarios_id', 'ots_id', 'planeacion_fases_id', 'encargado_id','prioridad_id',
   ];
+  /**
+  * The attributes that should be mutated to dates.
+  *
+  * @var array
+  */
+  protected $dates = ['deleted_at'];
 
   public function getFormatFecha($fecha_ingreso)
  {

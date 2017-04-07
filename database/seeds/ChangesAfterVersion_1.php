@@ -11,18 +11,23 @@ class ChangesAfterVersion_1 extends Seeder
   */
   public function run()
   {
-    $this->call('Agregar_Estado_Pendiente_Coordinador');
-    $this->command->info('Se le ha agregado el Estado pendiente al Rol Cordinador');
-    $this->call('Modificar_Priodidades');
-    $this->command->info('Se ha modificado el estado "bajo" a "Normal" ');
-    $this->call('Crear_Permisos_compras');
-    $this->command->info('Se han añadido los permisos correspondientes para las compras');
-    $this->call('Asignar_Permisos_compras');
-    $this->command->info('Se han Asignado los permisos correspondientes para las compras');
-    $this->call('AgregarTipoDeEstadoTransaccion');
-    $this->command->info('Se han agregado el tipo de estado Transacción');
-    $this->call('AgregarEstadoTransaccion');
-    $this->command->info('Se han Agregado los estados de la Transacción');
+    // $this->call('Agregar_Estado_Pendiente_Coordinador');
+    // $this->command->info('Se le ha agregado el Estado pendiente al Rol Cordinador');
+    // $this->call('Modificar_Priodidades');
+    // $this->command->info('Se ha modificado el estado "bajo" a "Normal" ');
+    // $this->call('Crear_Permisos_compras');
+    // $this->command->info('Se han añadido los permisos correspondientes para las compras');
+    // $this->call('Asignar_Permisos_compras');
+    // $this->command->info('Se han Asignado los permisos correspondientes para las compras');
+    // $this->call('AgregarTipoDeEstadoTransaccion');
+    // $this->command->info('Se han agregado el tipo de estado Transacción');
+    // $this->call('AgregarEstadoTransaccion');
+    // $this->command->info('Se han Agregado los estados de la Transacción');
+
+    $this->call('Crear_Permisos_Borrar_Tarea');
+    $this->command->info('Se ha Creado el permiso borrar tarea');
+    $this->call('Asignar_Permisos_Borrar_Tarea');
+    $this->command->info('Se ha Asignado el permiso de borrar tarea');
 
   }
 }
@@ -111,6 +116,39 @@ class AgregarEstadoTransaccion extends Seeder {
 
    App\Estado::create(array('nombre' => 'Pendiente','tipos_estados_id'=> 5 ));
    App\Estado::create(array('nombre' => 'Ok','tipos_estados_id'=> 5 ));
+  }
+
+}
+
+class Crear_Permisos_Borrar_Tarea extends Seeder {
+
+  public function run()
+  {
+
+    App\Permission::create(array('name' => 'borrar_tarea','display_name'=>'Borrar Tarea','description'=>'Puede Borrar las Tareas ' ));
+
+  }
+
+}
+class Asignar_Permisos_Borrar_Tarea extends Seeder {
+
+  public function run()
+  {
+
+    //Permisos
+    $permisos= App\Permission::where('name','borrar_tarea')->get();
+    //El Rol Desarrollo
+    $rol= App\Role::where('name','desarrollo')->first();
+    $rol->attachPermissions($permisos);
+
+   //El Rol owner
+    $rol= App\Role::where('name','owner')->first();
+    $rol->attachPermissions($permisos);
+
+    //El Rol Coordinador
+    $rol= App\Role::where('name','cuentas')->first();
+    $rol->attachPermissions($permisos);
+
   }
 
 }

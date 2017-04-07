@@ -1,4 +1,5 @@
 <template>
+	<div>
 	<div class="tarea  table-responsive">
         <table class="table  table-striped table-hover table-responsive datatable-foro table-bordered dataTable no-footer" role="grid" id="tabla_tareas" cellspacing="0" width="100%">
 		  <thead>
@@ -46,6 +47,25 @@
             <button type="submit" class="btn btn-info btn-flat">Buscar</button>
         </form>
 	</div>
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Borrar Tarea</h4>
+				</div>
+				<div class="modal-body">
+					¿ Estas seguro que deseas borrar esta Tarea ?
+					<input type="hidden" name="id" id="id_cliente">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Cerrar</button>
+					<button type="button" v-on:click="borrarCliente(0)" class="btn btn-danger btn-flat">Borrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 </template>
 <script>
 	import table from 'datatables.net';
@@ -57,6 +77,11 @@
 				tareas:[],
 				estado:{},
 				boton_hidden:false,
+				option_toast:{
+          timeOut: 5000,
+          "positionClass": "toast-top-center",
+          "closeButton": true,
+        },
 			}
 		},
 		created: function(){
@@ -179,10 +204,36 @@
 				$('#search-form').appendTo('.selects');
 
 			} );
+			$(document).ready(function(e) {
+				$('#tabla_tareas tbody').on('click', 'td .delete_cliente', function (e) {
+					var id = $(this).attr('id');
+					id = id.split('-');
+					$('#id_cliente').val(id[1]);
+				})
+			});
 
 		},
 		methods:{
+			borrarCliente: function() {
+        let index = $('#id_cliente').val()
+        console.log(index);
+        this.$http.delete(window._apiURL+'tareas/'+index)
+        .then(function(response) {
+        	if (response.status != '200') {
+        		$('#myModal').modal('hide')
+        		toastr.error(this.message,response.body.msg,this.option_toast);
+        	} else {
+        		$('#myModal').modal('hide')
+        		toastr.success(response.body.msg,'',this.option_toast);
+        		$('#tabla_tareas').DataTable().ajax.reload();
+            // this.clientes.splice(index,1);
+        }
+    	},function(err) {
+	    	$('#myModal').modal('hide')
+	    	toastr.error(this.message,err.body.msg,this.option_toast);
+	    })
 
+    }
 		},
 
 	}

@@ -539,7 +539,28 @@ return response()->json($respuesta);
      */
     public function destroy($id)
     {
-        //
+      try {
+        $tarea = Tarea::find($id);
+
+        $tarea->delete();
+        return response([
+            'status' => Response::HTTP_OK,
+            'response_time' => microtime(true) - LARAVEL_START,
+            'msg' => 'Tarea eliminada con exito.',
+            'tarea' =>$tarea,
+            ],Response::HTTP_OK);
+      } catch (Exception $e) {
+        return response([
+            'status' => Response::HTTP_BAD_REQUEST,
+            'response_time' => microtime(true) - LARAVEL_START,
+            'msg' => 'Error al eliminar la tarea.',
+            'error' => config('constants.ERR_04'),
+            'consola' =>$e->getMessage(),
+            'tarea' =>$tarea,
+            'request' =>$request,
+            ],Response::HTTP_BAD_REQUEST);
+      }
+
     }
     /**
      * Mostrar todas las tareas de un Área con Datatable.
@@ -611,7 +632,18 @@ return response()->json($respuesta);
           return '<span class="label label-estado estado-'.$tarea->estado->tipos_estados_id.'-'.$tarea->estado->id.' ">'.$tarea->estado->nombre.'</span>';
         })
         ->addColumn('acciones', function ($tarea) {
-          return '<a href="'.url('/').'/ver_tarea/'.$tarea->id.'" title="Ver Tarea" class="btn btn-primary btn-xs btn-flat btn-block" aria-label="View"><i class="fa fa-eye" aria-hidden="true"></i></a>';
+          // $editar_ot=(Auth::user()->can('editar_ots') )?'<a href="editar/'.$tarea->id.'" title="Editar Ot"  class="btn-info btn-flat btn-block" aria-label="View"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>':'';
+          $editar_ot= '';
+          if (
+              (Auth::user()->can('borrar_tarea') && Auth::user()->id  == $tarea->usuarios_id && ($tarea->estados_id ==4 || $tarea->estados_id==5 || $tarea->estados_id==6 || $tarea->estados_id==7 ) )
+              || (Auth::user()->hasRole('owner') && ($tarea->estados_id ==4 || $tarea->estados_id==5 || $tarea->estados_id==6 || $tarea->estados_id==7 ) )
+              || (Auth::user()->hasRole('desarrollo')&& ($tarea->estados_id ==4 || $tarea->estados_id==5 || $tarea->estados_id==6 || $tarea->estados_id==7 ) )
+            )
+          {
+            $editar_ot='<a href="#" id="cli-'.$tarea->id.'" title="Borrar tarea"  class="delete_cliente btn-danger btn-flat btn-block" aria-label="Borrar" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+          }
+          $ver_tarea = '<a href="'.url('/').'/ver_tarea/'.$tarea->id.'" title="Ver Tarea" class="btn btn-primary btn-xs btn-flat btn-block" aria-label="View"><i class="fa fa-eye" aria-hidden="true"></i></a>';
+          return $ver_tarea.$editar_ot;
         })
         ->make(true);
 
