@@ -65,9 +65,12 @@ class HomeController extends Controller
 
         //Condicional si es el coordinador envio todas las tareas del area
         if (Auth::user()->rol->name=='coordinador') {
+         //Id area usuario logueado
           $areaauth = Auth::user()->area->id;
+
           //Si el estado es 7 pendiente muestro al coordinador las tareas de esa área con ese estado
           $tareas = Tarea::where([['estados_id', 5],['areas_id',$areaauth]])->orwhere([['estados_id', 7],['areas_id',$areaauth]])->get();
+         
 
           //For each con las relaciones de las tareas con ot, id y cliente para mostrarlo en el listado del perfil
           foreach ($tareas as $key => $value) {
@@ -81,6 +84,7 @@ class HomeController extends Controller
 
           //Si No es un coordinador muestro las tareas del area si el id del encargado es igual al usuario logeado
            $tareas = Tarea::where('estados_id','!=', 2)->where('estados_id','!=', 1)->where('estados_id','!=', 20)->where('encargado_id', Auth::user()->id)->get();
+           
            foreach ($tareas as $key => $value) {
             $value->ot->cliente;
             $value['url']="/ver_tarea/".$value->id;
