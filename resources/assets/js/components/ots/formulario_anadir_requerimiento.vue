@@ -214,6 +214,7 @@
 					primera_entrada:0,
 					message:'',
 					can_save:false,
+					can_save_req:false,
 					errors_return:{
 						'nombre' : '',
 						'referencia' : '',
@@ -597,17 +598,19 @@
 				var id_pestana=this.area_actual;
 				var id_seguir=id;
         //this.datos_requerimiento
-				//console.log(this.datos_requerimiento,'Requerimiento Actual');
-				if(!this.$localStorage.get('datos_requerimiento_'+id_pestana) || this.$localStorage.get('datos_requerimiento_'+id_pestana) != null  ){
+			//	console.log(id_pestana,'Pesta Actual');
+				var reqActual=(JSON.parse(this.$localStorage.get('datos_requerimiento_'+id_pestana)))?JSON.parse(this.$localStorage.get('datos_requerimiento_'+id_pestana)):null;
+				if(reqActual == null || reqActual[0].guardado != true  ){
 					e.stopPropagation()
 					this.id_tab=id;
 					$('.editarModal').modal('show');
 				}
-				/*DSO Ajuste guardar OT
+				/*DSO Ajuste guardar OT*/
 				else{
-					this.area_temporal='';
+				this.area_actual=id;
+				this.area_temporal=id;
 				}
-				*/
+
 
 
 			},

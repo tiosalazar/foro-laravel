@@ -95,6 +95,7 @@ module.exports={
       model_horas:0,
       horas_extra_area:0,
       v_resta:'',
+      can_save_req:false,
       h_pasadas:false
     }
   },
@@ -172,7 +173,7 @@ module.exports={
         var datos=[{
           requerimientos:this.requerimiento,
           horas:this.nhoras,
-          guardado:false,
+          guardado:this.can_save_req,
           tiempo_extra:  this.nhextra,
           h_pasadas: this.h_pasadas
         }];
@@ -196,7 +197,7 @@ module.exports={
             requerimientos:arreglo_requerimientos[idx].requerimientos,
             horas: parseFloat(arreglo_requerimientos[idx].horas),
             tiempo_extra:  this.nhextra,
-            guardado:false,
+            guardado:this.can_save_req,
             h_pasadas: this.h_pasadas
           }];
           this.$localStorage.set('datos_requerimiento_'+arreglo_requerimientos[idx].area,JSON.stringify(datos));//busca dependiendo del Área
@@ -209,11 +210,12 @@ module.exports={
   */
   guardarDatos: function(){
     this.realizarCalculo();
+    this.can_save_req=true;
     var datos=[{
       requerimientos:this.requerimiento,
       horas:parseFloat(this.nhoras),
       tiempo_extra: parseFloat( this.nhextra),
-      guardado:false,
+      guardado:this.can_save_req,
       h_pasadas: this.h_pasadas
     }];
     this.$parent.$emit('datos_requerimiento',datos);//Emite los datos al padre
