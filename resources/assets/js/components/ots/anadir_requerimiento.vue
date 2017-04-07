@@ -151,8 +151,8 @@ module.exports={
       if (data_req != null) {
         var arreglo_requerimientos = data_req[0].requerimientos;
         this.requerimiento= arreglo_requerimientos;
-        this.nhoras	= data_req[0].horas;
-        this.nhextra	= data_req[0].tiempo_extra;
+        this.nhoras	= parseFloat(data_req[0].horas);
+        this.nhextra	= parseFloat(data_req[0].tiempo_extra);
         this.h_pasadas	= data_req[0].h_pasadas;
         this.emitirData();
         this.realizarCalculo();
@@ -171,6 +171,7 @@ module.exports={
         var arreglo_visualizar =JSON.parse(this.$parent.arreglo_visualizar);
         var arreglo_requerimientos=arreglo_visualizar.final_req;
         var arreglo_temporal=[];
+      //  console.log(arreglo_requerimientos,"arreglo requerimientos");
         for (let f in arreglo_requerimientos) {
           let idx = Number(f)
           if(this.id_area ==arreglo_requerimientos[idx].area ){
@@ -196,8 +197,8 @@ module.exports={
     this.realizarCalculo();
     var datos=[{
       requerimientos:this.requerimiento,
-      horas:this.nhoras,
-      tiempo_extra:  this.nhextra,
+      horas:parseFloat(this.nhoras),
+      tiempo_extra: parseFloat( this.nhextra),
       h_pasadas: this.h_pasadas
     }];
     this.$parent.$emit('datos_requerimiento',datos);//Emite los datos al padre

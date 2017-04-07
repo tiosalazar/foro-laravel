@@ -17,7 +17,7 @@
 						<li><strong>Proyecto:</strong><span> {{ot.nombre}}</span></li>
 						<li><strong>Cliente:</strong><span> {{ot.cliente_nombre}}</span></li>
 					</ul>
-					
+
 				</div>
 				<!-- /.col -->
 			</div>
@@ -77,7 +77,7 @@ module.exports = {
 		this.$on('send-ot', function(obj) {
 			this.ot= obj;
 			this.select_ot= obj;
-			
+
 		});
 		/*
 		Escucha el arreglo completo de los datos de las compras asociadas, si las tiene
@@ -85,7 +85,7 @@ module.exports = {
 		this.$on('datos_compras', function(v) {
 			this.datos_compras=v;
 		});
-		this.user = this.$parent.id_user;
+
 	},
 	methods:{
 		llenarCampos:function(){
@@ -142,7 +142,9 @@ module.exports = {
 					}
 				});
 			}else{
-				this.$http.put(window._apiURL+'compra', datos_procesados)
+
+				var compras_orig=JSON.parse(this.datos_compras_editar);
+				this.$http.put(window._apiURL+'compra/'+compras_orig.id, datos_procesados)
 				.then(function(respuesta){
 					console.log(respuesta);
 					if (respuesta.status == '500') {
