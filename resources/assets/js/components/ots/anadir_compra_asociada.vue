@@ -14,7 +14,7 @@
               <select_tipo_compra  :index="index" :select="ed.tipo_compra"></select_tipo_compra>
             </div>
           </div>
-          <div v-show="campos_extra =='1' ">
+          <div v-if="campos_extra =='1' ">
             <div class="col-md-5">
               <div class="form-group ">
                 <label class="sr-only" for="nombre_requerimiento"><sup>*</sup> Área</label>
@@ -32,7 +32,7 @@
             </div>
           </div>
         </div>
-        <div class="row" v-show="campos_extra =='1' ">
+        <div class="row" v-if="campos_extra =='1' ">
           <div class="col-md-6">
             <div class="form-group ">
               <label class="sr-only" for="transaccion"><sup>*</sup> No Transacción</label>
@@ -241,9 +241,7 @@ module.exports={
     Si encuentra el arreglo guardado en el localStorage llena nos datos con lo que se ha escrito.
     */
     llenarCampos:function () {
-
       if (this.$parent.editar != 'true') {
-          console.log("Datos compras no debi");
         var data_req= JSON.parse(this.$localStorage.get('datos_compra_'+this.id_area));
         if (data_req != null ) {
           var arreglo_requerimientos = data_req[0].compras;

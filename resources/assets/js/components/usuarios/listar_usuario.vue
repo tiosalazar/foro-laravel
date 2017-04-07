@@ -46,7 +46,7 @@
 					serverSide: true,
 					stateSave: true,
 					'ajax': {
-						'url': window._apiURL+"usuarios",
+						'url': window._apiURL+"index_datatables",
 						'type': 'GET',
 						'beforeSend': function (request) {
 							request.setRequestHeader("Authorization", 'Bearer '+Laravel.api_token);

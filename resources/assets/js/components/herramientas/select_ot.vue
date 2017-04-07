@@ -49,7 +49,7 @@
       selectedCountries: [],
       countries: [],
       isLoading: false,
-      
+
     }
   },
   computed:{
@@ -62,7 +62,7 @@
       },
       created: function(){
         this.fetchTips();
-           
+
       },
 
       methods:{
@@ -83,7 +83,7 @@
              this.value = newSelected;
              // Creo un evento para enviar el item seleccionado al padre.
              this.$parent.$emit('send-ot', newSelected)
-             
+
            }else {
              this.id_ot = 0;
            }
@@ -103,7 +103,7 @@
           this.$http.get(window._baseURL+'/show_ots_tareas_query/'+query).then(response => {
             this.ots = response.body;
             this.isLoading = false;
-           
+
           })
         },
       }

@@ -180,6 +180,9 @@
 			localStorage: {
 				listado_areas: {
 					type: Object,
+				},
+				datos_encabezado: {
+					type: Object,
 				}
 			},
 			components: { VueLocalStorage,VeeValidate,Validator},
@@ -232,7 +235,8 @@
 					var salir = false;
 					window.onbeforeunload = function (e)
 					{
-						var e = e || window.event,
+						window.localStorage.clear();
+						/*var e = e || window.event,
 						salir=true;
 						// message = 'Seguro que quieres salir sin guardar los cambios ?';
 
@@ -244,7 +248,7 @@
 						if (salir) {
 							window.localStorage.clear(); //try this to clear all local storage
 						}
-						return salir;
+						return salir;*/
 					}
 				}
 			},
@@ -257,8 +261,12 @@
 				this.$on('horas_totales', function(v) {
 					this.horas_totales=parseFloat(v);
 					var resta_anterior=0;
+					console.log("Horas Totales");
+					console.log(this.horas_totales);
 					resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(this.area_temporal);
 					this.h_Disponibles=parseFloat((this.horas_totales- this.h_area)-resta_anterior);
+					console.log("Horas Disponibles");
+					console.log(this.h_Disponibles);
 					//this.h_Disponibles += this.h_extra_total;
 				});
 				/*
@@ -341,6 +349,7 @@
 					if (this.visualizacion=='true') {
 						var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
 						var datos_encabezado= arreglo_visualizar.datos_encabezado;
+					this.$localStorage.set('datos_encabezado',datos_encabezado);
 						var datos_compras= arreglo_visualizar.final_com;
 						this.descripcion_ot=datos_encabezado.observaciones;
 						this.diabled_compras =(datos_compras.length > 0)?false:true;
@@ -417,6 +426,7 @@
 										this.limpiarComprasRequerimientos();
 										this.datos_requerimiento=[];
 										this.datos_compras=[];
+										window.localStorage.clear(); //try this to clear all local storage
 										setTimeout(function () {
 											location.reload(true);
 										}, 500);
@@ -434,8 +444,11 @@
 									}
 								});
 							}else{
+
 								var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
 								datos_procesados.datos_encabezado.editor_id=arreglo_visualizar.editor_id;
+								console.log(datos_procesados);
+
 								this.$http.put(window._apiURL+'ots/'+arreglo_visualizar.datos_encabezado.id, datos_procesados)
 								.then(function(respuesta){
 									console.log(respuesta);
@@ -449,6 +462,10 @@
 										toastr.warning(this.message,respuesta.body.msg,this.option_toast);
 									}else{
 										toastr.success(respuesta.body.msg,'',this.option_toast);
+										window.localStorage.clear(); //try this to clear all local storage
+										setTimeout(function () {
+											location.reload(true);
+										}, 500);
 									}
 								},(response) => {
 									console.log(response);
@@ -461,6 +478,8 @@
 									}
 									toastr.error(this.message,response.body.msg,this.option_toast);
 								});
+
+
 							}
 
 
@@ -516,7 +535,7 @@
 						if(p.id != area ){
 							hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
 							if (hora_a !=null && hora_a[0].horas !="") {
-								console.log(hora_a[0].horas);
+								//console.log(hora_a[0].horas);
 								total_a_restar +=parseFloat(hora_a[0].horas);
 							}
 						}
