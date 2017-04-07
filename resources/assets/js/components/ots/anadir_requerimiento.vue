@@ -83,7 +83,7 @@
 <script>
 
 module.exports={
-  props: ['htotales','area','id_area','realizar_validado','limpiar_datos'],// Propiedades del componente
+  props: ['htotales','area','id_area','realizar_validado','limpiar_datos','limpiar_datos_tabs'],// Propiedades del componente
   data () {
     return {
       requerimiento: [
@@ -107,7 +107,18 @@ module.exports={
         this.requerimiento=[
           {  model_nom:'', model_horas:0}
         ];
-        this.nhoras='';
+        this.nhoras=0;
+        this.v_resta='';
+        this.nhextra=0;
+        this.h_pasadas=false;
+      }
+    },
+    limpiar_datos_tabs: function(){
+      if(this.limpiar_datos_tabs == true){
+        this.requerimiento=[
+          {  model_nom:'', model_horas:0}
+        ];
+        this.nhoras=0;
         this.v_resta='';
         this.nhextra=0;
         this.h_pasadas=false;
@@ -147,6 +158,7 @@ module.exports={
     Si encuentra el arreglo guardado en el localStorage llena nos datos con lo que se ha escrito.
     */
     llenarCampos:function () {
+
       var data_req= JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.id_area));//busca dependiendo del Área
       if (data_req != null) {
         var arreglo_requerimientos = data_req[0].requerimientos;
@@ -160,6 +172,7 @@ module.exports={
         var datos=[{
           requerimientos:this.requerimiento,
           horas:this.nhoras,
+          guardado:false,
           tiempo_extra:  this.nhextra,
           h_pasadas: this.h_pasadas
         }];
@@ -183,6 +196,7 @@ module.exports={
             requerimientos:arreglo_requerimientos[idx].requerimientos,
             horas: parseFloat(arreglo_requerimientos[idx].horas),
             tiempo_extra:  this.nhextra,
+            guardado:false,
             h_pasadas: this.h_pasadas
           }];
           this.$localStorage.set('datos_requerimiento_'+arreglo_requerimientos[idx].area,JSON.stringify(datos));//busca dependiendo del Área
@@ -199,6 +213,7 @@ module.exports={
       requerimientos:this.requerimiento,
       horas:parseFloat(this.nhoras),
       tiempo_extra: parseFloat( this.nhextra),
+      guardado:false,
       h_pasadas: this.h_pasadas
     }];
     this.$parent.$emit('datos_requerimiento',datos);//Emite los datos al padre

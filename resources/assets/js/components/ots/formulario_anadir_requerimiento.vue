@@ -34,7 +34,7 @@
 						</ul>
 						<div class="tab-content" >
 							<div class="tab-pane"  v-for="area in listado_areas" :class="{'active': area.nombre==listado_areas[0].nombre } "  :id="'tab_'+area.id">
-								<div class="row"> <anadir_requerimiento :area="area.nombre" :limpiar_datos="limpiarDatos" :id_area="area.id" :realizar_validado="validar_requerimientos" :horas_disponibles="h_Disponibles" ></anadir_requerimiento></div>
+								<div class="row"> <anadir_requerimiento :area="area.nombre" :limpiar_datos="limpiarDatos" :limpiar_datos_tabs="limpiarDatos_tabs" :id_area="area.id" :realizar_validado="validar_requerimientos" :horas_disponibles="h_Disponibles" ></anadir_requerimiento></div>
 								<div style="height:42px"></div>
 								<div id="secion_compras">
 									<div class="row">
@@ -203,12 +203,15 @@
 					t_extra:0,
 					id_tab:'',
 					area_temporal:'',
+					area_actual:'',
 					limpiarDatos:false,
+					limpiarDatos_tabs:false,
 					form_requerimiento_validado:false,
 					validar_requerimientos:false,
 					form_compras_validado: false,
 					validar_compras:false,
 					diabled_compras:true,
+					primera_entrada:0,
 					message:'',
 					can_save:false,
 					errors_return:{
@@ -254,19 +257,15 @@
 			},
 			created: function(){
 				this.fetchTips();
-				this.llenarDatosSiesVisualizacion();
+
 				/*
 				Escucha las horas totales emitidas por el encabezado y realiza el calculo
 				*/
 				this.$on('horas_totales', function(v) {
 					this.horas_totales=parseFloat(v);
 					var resta_anterior=0;
-					console.log("Horas Totales");
-					console.log(this.horas_totales);
 					resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(this.area_temporal);
 					this.h_Disponibles=parseFloat((this.horas_totales- this.h_area)-resta_anterior);
-					console.log("Horas Disponibles");
-					console.log(this.h_Disponibles);
 					//this.h_Disponibles += this.h_extra_total;
 				});
 				/*
@@ -328,6 +327,8 @@
 					this.form_compras_validado=v;
 				});
 
+			this.llenarDatosSiesVisualizacion();
+
 			},
 			methods:{
 				fetchTips: function(){
@@ -335,6 +336,11 @@
 						this.$http.get( window._apiURL+'areas')
 						.then(function(respuesta){
 							this.listado_areas=respuesta.body;
+
+							//DSO Ajustes al guardar OT
+							this.area_temporal=this.listado_areas[0].id;
+              this.area_actual=this.listado_areas[0].id;
+
 							this.$localStorage.set('listado_areas',respuesta.body);
 						}.bind(this));
 
@@ -349,10 +355,26 @@
 					if (this.visualizacion=='true') {
 						var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
 						var datos_encabezado= arreglo_visualizar.datos_encabezado;
-					this.$localStorage.set('datos_encabezado',datos_encabezado);
+					  this.$localStorage.set('datos_encabezado',datos_encabezado);
+						this.datos_encabezado=datos_encabezado;
+
 						var datos_compras= arreglo_visualizar.final_com;
 						this.descripcion_ot=datos_encabezado.observaciones;
 						this.diabled_compras =(datos_compras.length > 0)?false:true;
+
+           //DSO Ajustes Editar OT
+						var arreglo_requerimientos=arreglo_visualizar.final_req;
+						var primer_req=arreglo_requerimientos[0];
+						var datos=[{
+							requerimientos:primer_req.requerimientos,
+							horas: parseFloat(primer_req.horas),
+							tiempo_extra:  primer_req.textra,
+							guardado:false,
+							h_pasadas: false
+						}];
+						this.h_area=parseFloat(primer_req.horas);
+						this.t_extra=parseFloat(primer_req.textra);
+						this.datos_requerimiento=datos;
 					}
 
 				},
@@ -572,20 +594,55 @@
 			Al dar click en las tabs llama a un Modal el cual pregunta si quiere salir sin guardar.
 			*/
 			tabs_areas:function(e,id){
-				if( this.area_temporal == '')
-					this.area_temporal=id;
-
-				if(!this.$localStorage.get('datos_requerimiento_'+this.area_temporal) ){
-					console.log("entre");
+				var id_pestana=this.area_actual;
+				var id_seguir=id;
+        //this.datos_requerimiento
+				//console.log(this.datos_requerimiento,'Requerimiento Actual');
+				if(!this.$localStorage.get('datos_requerimiento_'+id_pestana) || this.$localStorage.get('datos_requerimiento_'+id_pestana) != null  ){
 					e.stopPropagation()
 					this.id_tab=id;
 					$('.editarModal').modal('show');
-				}else{
+				}
+				/*DSO Ajuste guardar OT
+				else{
 					this.area_temporal='';
 				}
+				*/
+
+
+			},
+			cambiarDatos:function(id){
+				this.datos_requerimiento=JSON.parse(this.$localStorage.get('datos_requerimiento_'+id));
+				console.log(this.datos_requerimiento,'Req');
+				//var size = Object.keys(this.datos_requerimiento).length;
+			if(this.datos_requerimiento != undefined && this.datos_requerimiento != null  ){
+				  this.h_area=parseFloat(this.datos_requerimiento[0].horas);
+  				this.t_extra=parseFloat(this.datos_requerimiento[0].textra);
+  				var resta_anterior=0;
+  				resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(id);
+  				this.h_Disponibles=parseFloat((this.horas_totales- this.h_area)-resta_anterior);
+				}else {
+           if (this.visualizacion != 'true') {
+						this.limpiarDatos_tabs=true;
+ 						this.h_area=0;
+ 					  this.t_extra=0;
+ 						var resta_anterior=0;
+ 	  				resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(id);
+ 						console.log(resta_anterior,'resta_anterior');
+ 	  				this.h_Disponibles=parseFloat((this.horas_totales- this.h_area)-resta_anterior);
+ 						this.datos_requerimiento=[];
+           }
+
+				}
+
 			},
 			seguir:function(e){
 				$('[data-id~="tab_'+this.id_tab+'"]').trigger('click')
+				/*DSO Ajuste guardar OT*/
+					this.area_temporal=this.id_tab;
+					this.area_actual=this.id_tab;
+					this.cambiarDatos(this.id_tab);
+					this.primera_entrada +=1;
 				$('.editarModal').modal('toggle');
 			},
 			/*
@@ -678,6 +735,11 @@
               función la cual guarda los datos del Area actual.
               */
               guardarDatos: function(id){
+								if(this.primera_entrada ==0 && this.visualizacion=='true'){
+									//this.llenarDatosSiesVisualizacion();
+									this.cambiarDatos(id);
+								}
+								this.primera_entrada +=1;
               	var index = Object.keys(this.datos_requerimiento).length;
               	var requerimientos =this.datos_requerimiento;
 								if (this.h_Disponibles <0){
@@ -688,7 +750,7 @@
 									body.stop().animate({scrollTop:250}, '500', 'swing');
 									return false;
 								}
-              	if(this.comprobarDatosRequerimientos()==true) {
+              	if(this.comprobarDatosRequerimientos(requerimientos)==true) {
               		this.area_temporal=id;
               		if(this.comprobarSiGuardoCompras() == true){
               			if ( this.comprobarCompras(this.datos_compras) == true ) {
@@ -701,12 +763,12 @@
               			toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
               			this.$localStorage.set('datos_requerimiento_'+id,JSON.stringify(requerimientos) );
               			this.can_save=true;
-						  this.can_save_ot=true;
+						        this.can_save_ot=true;
               		}
               	}
               },
-			/*
-             función la cual me valida el requerimiento actual, antes de guardar.
+			      /*
+              función la cual me valida el requerimiento actual, antes de guardar.
              */
              comprobarDatosRequerimientos: function(arreglo){
              	if( arreglo != null && arreglo != undefined ){
