@@ -83,7 +83,7 @@
 <script>
 
 module.exports={
-  props: ['htotales','area','id_area','realizar_validado','limpiar_datos','limpiar_datos_tabs'],// Propiedades del componente
+  props: ['htotales','area','id_area','realizar_validado','limpiar_datos','limpiar_datos_tabs','traer_reque'],// Propiedades del componente
   data () {
     return {
       requerimiento: [
@@ -114,18 +114,37 @@ module.exports={
         this.h_pasadas=false;
       }
     },
+    traer_reque:function(){
+      this.realizarCalculo();
+      this.can_save_req=false;
+      var datos=[{
+        requerimientos:this.requerimiento,
+        horas:parseFloat(this.nhoras),
+        tiempo_extra: parseFloat( this.nhextra),
+        guardado:this.can_save_req,
+        h_pasadas: this.h_pasadas
+      }];
+      this.$parent.$emit('datos_requerimiento',datos,true);//Emite los datos al padre
+    },
     limpiar_datos_tabs: function(){
-      console.log(this.$parent.area_actual,'Area Temporal');
-      console.log(this.id_area,'Area Actual');
-      if(this.limpiar_datos_tabs == true && this.$parent.area_actual==this.id_area){
-        this.requerimiento=[
-          {  model_nom:'', model_horas:0}
-        ];
-        this.nhoras=0;
-        this.v_resta='';
-        this.nhextra=0;
-        this.h_pasadas=false;
+      console.log(this.$parent.area_actual,'Area Actual');
+      console.log(this.$parent.area_temporal,'Area Temporañ');
+      console.log(this.id_area,'Area MODULO');
+      console.log(this.area,'Area');
+      // console.log('Joder entre');
+      if((this.$parent.area_actual==this.id_area) || (this.$parent.visualizacion =="true" && this.$parent.area_actual==this.area_seguir )){
+        console.log('Joder entre');
+          this.requerimiento=[
+            {  model_nom:'', model_horas:0}
+          ];
+          this.nhoras=0;
+          this.v_resta='';
+          this.nhextra=0;
+          this.h_pasadas=false;
+          this.llenarCampos();
       }
+
+
     },
     /*
     Función la cual esta pendiente de la variable realizar_validado cuando le entra un true valida los datos
@@ -146,6 +165,7 @@ module.exports={
     this.llenarDatosSiesVisualizacion();
     this.llenarCampos();
     this.realizarCalculo();
+    $('#boton_guardar_area_'+this.id_area).addClass('disabled');
   },
   methods: {
     /*
@@ -180,6 +200,7 @@ module.exports={
           h_pasadas: this.h_pasadas
         }];
         this.$parent.$emit('datos_requerimiento',datos,true);//Emite los datos al padre
+        //$('#boton_guardar_area_'+this.id_area).removeClass('disabled');
       }
     },
     llenarDatosSiesVisualizacion: function(){
@@ -199,10 +220,11 @@ module.exports={
             requerimientos:arreglo_requerimientos[idx].requerimientos,
             horas: parseFloat(arreglo_requerimientos[idx].horas),
             tiempo_extra:  this.nhextra,
-            guardado:this.can_save_req,
+            guardado:true,//this.can_save_req
             h_pasadas: this.h_pasadas
           }];
           this.$localStorage.set('datos_requerimiento_'+arreglo_requerimientos[idx].area,JSON.stringify(datos));//busca dependiendo del Área
+          //$('#boton_guardar_area_'+this.id_area).removeClass('disabled');
            }
         }
      }
@@ -212,7 +234,7 @@ module.exports={
   */
   guardarDatos: function(){
     this.realizarCalculo();
-    this.can_save_req=true;
+    this.can_save_req=false;
     var datos=[{
       requerimientos:this.requerimiento,
       horas:parseFloat(this.nhoras),
@@ -220,7 +242,8 @@ module.exports={
       guardado:this.can_save_req,
       h_pasadas: this.h_pasadas
     }];
-    this.$parent.$emit('datos_requerimiento',datos);//Emite los datos al padre
+    this.$parent.$emit('datos_requerimiento',datos,true);//Emite los datos al padre
+    $('#boton_guardar_area_'+this.id_area).removeClass('disabled');
   },
   /*
   Al darle click en añadir Requerimiento la función valida la información y añade una nueva posición al
