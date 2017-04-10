@@ -68,7 +68,8 @@
 				estado:{},
 				boton_hidden:false,
 				disabled:{
-					from:moment().toDate(),
+					// from:moment().toDate(),
+					from:'',
 				},
 				fechas:{
 					to:'',
