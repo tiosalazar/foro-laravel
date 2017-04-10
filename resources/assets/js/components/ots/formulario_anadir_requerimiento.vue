@@ -425,7 +425,7 @@
 					requerimientos: this.procesarTodosRequerimientos(),
 					compras: this.procesarTodosCompras()
 				};
-				console.log(datos_procesados);
+				console.log(datos_procesados,'Datos PROCESADOS');
 				if(this.visualizacion != 'true'){
 					this.$http.post(window._apiURL+'ots', datos_procesados)
 					.then(function(respuesta){
@@ -473,11 +473,13 @@
 							return false;
 						}
 					});
+
 				}else{
 
 					var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
 					datos_procesados.datos_encabezado.editor_id=arreglo_visualizar.editor_id;
-					console.log(datos_procesados);
+					console.log(datos_procesados,'Entrada de Datos');
+
 
 					this.$http.put(window._apiURL+'ots/'+arreglo_visualizar.datos_encabezado.id, datos_procesados)
 					.then(function(respuesta){

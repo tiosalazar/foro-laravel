@@ -323,7 +323,7 @@ class OtController extends Controller
             //Busca la OT en la BD
             $ot=  Ot::findOrFail($id);
             $ot->fill($data['datos_encabezado']);
-            //$ot->save();
+            $ot->save();
 
 
             $requerimientos=$data['requerimientos'];
@@ -435,7 +435,7 @@ class OtController extends Controller
                'status' => Response::HTTP_OK,
                'response_time' => microtime(true) - LARAVEL_START,
                'msg' => 'Se han Actualizado los datos de la OT ', //Mensaje a mostrar en el Front
-               'obj' => $debug
+               'obj' => $ot
                ],Response::HTTP_OK);
 
          }catch(Exception $e){
