@@ -32,7 +32,7 @@
 				<div class="col-sm-4">
 					<div class="form-group required">
 						<label><sup>*</sup> Área </label>
-						<select_area  :refresha="area"></select_area>
+						<select_area  :refresha="area" compras="true"></select_area>
 					</div>
 				</div>
 				<div class="col-sm-6">
@@ -127,7 +127,6 @@
 				},
 				area:{},
 				current_date:'',
-				// area:'',
 				user:'',
 				fecha_entrega_cliente:'',
 				message:'',
@@ -155,6 +154,7 @@
 				this.select_ot= obj;
 			});
 			this.$on('area_option', function(obj) {
+				console.log(obj)
 				this.area= obj;
 			});
 			this.$on('select_estado', function(v) {
@@ -168,7 +168,10 @@
 			});
 			this.current_date=this.getCurrentDate();
 			this.user = this.$parent.id_user;
-
+			if (this.$parent.area != 0) {
+				this.area = this.$parent.area;
+			}
+			console.log('area',this.area);
 		},
 		computed:{},
 		watch: {},

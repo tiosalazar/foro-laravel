@@ -112,14 +112,7 @@
 
   // Tareas
 
-  Route::get('/crear_tarea', function()
-  {
-    // check the current user
-    if (!Auth::user()->can('crear_tareas')) {
-      return Redirect::to('home');
-    }
-    return view('admin.tareas.crear_tarea');
-  });
+  Route::get('/crear_tarea/{id?}', 'TareaController@create');
 
   Route::get('/listar_tareas', function () {
     return view('admin.tareas.listar_tareas');

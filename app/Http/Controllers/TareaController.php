@@ -65,9 +65,17 @@ class TareaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id=null)
     {
-        //
+      if (!Auth::user()->can('crear_tareas')) {
+        return Redirect::to('home');
+      }
+      if (!is_null($id) && is_numeric($id)) {
+        $area = Area::findOrFail($id);
+        return view('admin.tareas.crear_tarea')->with('area',$area);
+      }
+      return view('admin.tareas.crear_tarea')->with('area',0);
+
     }
 
     /**
@@ -416,7 +424,7 @@ class TareaController extends Controller
             }else{
                 $data['fecha_entrega_area']=null;
                 $data['fecha_entrega_cuentas']=null;
-            } 
+            }
 
             $data['editor_id']=Auth::user()->id;
             $tarea_historico->fill($data);
@@ -520,7 +528,7 @@ class TareaController extends Controller
                 break;
             }
 
-            
+
         }
 
         catch(Exception $e)
