@@ -103,6 +103,17 @@ class FaseController extends Controller
         $fase= Fase::where('tipos_estados_id',$id)->get();
         return response()->json($fase);
     }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show_by_tipos_fase($id)
+    {
+        $fase= Planeacion_fase::where('planeacion_tipos_id',$id)->get();
+        return response()->json($fase);
+    }
 
     /**
      * Show the form for editing the specified resource.

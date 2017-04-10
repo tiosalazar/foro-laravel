@@ -127,7 +127,7 @@
         </ul>
       </li>
       <!-- .Equipo -->
-     
+
 
       <!-- Informes -->
       @if( Auth::user()->can('ver_informes') )
@@ -137,6 +137,10 @@
           <!--Trafico -->
           @if( Auth::user()->can('ver_trafico') )
           <li class="treeview  {{ Request::is('informes/trafico') ? 'active' : '' }}"><a href="{{ url('informes/trafico') }}"><i class='fa fa-calendar'></i><span>{{  trans('texto_menu.trafico') }}</span></a></li>
+          @endif
+          <!--Trafico -->
+          @if( Auth::user()->can('ver_informe_soporte') )
+          <li class="treeview  {{ Request::is('informes/soporte') ? 'active' : '' }}"><a href="{{ url('informes/soporte') }}"><i class='fa fa-wrench'></i><span>{{  trans('texto_menu.soporte') }}</span></a></li>
           @endif
           <!-- .Trafico -->
           <!--Historico Usuarios -->

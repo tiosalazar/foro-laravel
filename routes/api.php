@@ -37,20 +37,27 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
      Route::post('solicitarHoras', 'OtController@solicitarHoras');
      Route::get('ots_datatable','OtController@datatable_index');
      //Compras OT
-      Route::resource('compra', 'Compras_OtController');
-      Route::get('compras_datatable','Compras_OtController@datatable_index');
+     Route::resource('compra', 'Compras_OtController');
+     Route::get('compras_datatable','Compras_OtController@datatable_index');
 
-    Route::get('select_clientes', 'ClienteController@select_clientes');
+     Route::get('select_clientes', 'ClienteController@select_clientes');
 
     //Permisos Roles
      Route::get('permisos','RolController@showAllPermisions');
      Route::get('permisos_role/{id}','RolController@showPermisionsbyRole');
-     Route::put('permisos_role/{id}','RolController@updatePermisionsbyRole');
-     // Actualizar traficp
+
+     Route::get('fases_x_tipo/{id}','FaseController@show_by_tipos_fase');
+
+     Route::get('show_tareas_by_fase','TareaController@showTareasByFase');
+
+     // Actualizar trafico
      Route::post('save_trafic/{id}', 'TareaController@saveTrafic');
 
      //usuarios
      Route::get('index_datatables','UserController@indexDatatables');
+
+    // Listar todos los Estados de tareas
+    Route::get('estados_x_tareas/{id}', 'EstadoController@listarEstadosTarea');
 
 
 });

@@ -189,6 +189,14 @@
        return view('admin.trafico.trafico');
     })->name('trafico');
 
+    // Trafico
+    Route::get('soporte', function () {
+       if (!Auth::user()->can('ver_informe_soporte')) {
+         return Redirect::to('home');
+       }
+       return view('admin.soporte.informe_soporte');
+    })->name('informe_soporte');
+
       //Historico Equipo
     Route::get('historico_areas', function () {
        if (!Auth::user()->can('ver_historico_areas')) {

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Tarea extends Model
 {
   use SoftDeletes;
-  
+
   /**
   * The attributes that are mass assignable.
   *
@@ -60,7 +60,6 @@ class Tarea extends Model
   {
     return $this->belongsTo('App\User','usuarios_id','id');
   }
-  /**
   /**
   * Obtiene el Usuario encargado
   */

@@ -416,7 +416,7 @@ class TareaController extends Controller
             }else{
                 $data['fecha_entrega_area']=null;
                 $data['fecha_entrega_cuentas']=null;
-            } 
+            }
 
             $data['editor_id']=Auth::user()->id;
             $tarea_historico->fill($data);
@@ -520,7 +520,7 @@ class TareaController extends Controller
                 break;
             }
 
-            
+
         }
 
         catch(Exception $e)
@@ -614,6 +614,94 @@ return response()->json($respuesta);
                 $query->where('id', '=', $id);
             }
         }])
+        ->whereYear('created_at', $year)
+        ->whereMonth('created_at', $month)
+        ->get();
+
+        // selecciona solos los que tiene el area especifico
+        foreach ($tarea as $key => $value) {
+            if ($value->area && $value->ot && $value->ot->cliente && $value->estado ) {
+                array_push($output, $value);
+            }
+        }
+        // Se conviert en collection para que lo reciba el Datatable
+        $output = collect($output);
+        return Datatables::of($output)
+        ->editColumn('created_at', function ($tarea) {
+            return $tarea->created_at->format('d-M-Y');
+        })
+        ->editColumn('fecha_entrega_cuentas', function ($tarea) {
+            return (!is_null($tarea->fecha_entrega_cuentas)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cuentas) : 'No definida' ;
+        })
+        ->addColumn('encargado', function ($tarea) {
+          return $tarea->usuarioencargado->nombre .' '. $tarea->usuarioencargado->apellido;
+        })
+        ->addColumn('prioridad', function ($tarea) {
+          return '<span class="label label-estado estado-'.$tarea->Estado_prioridad->tipos_estados_id.'-'.$tarea->Estado_prioridad->id.' ">'.$tarea->Estado_prioridad->nombre.'</span>';
+        })
+        ->addColumn('estado', function ($tarea) {
+          return '<span class="label label-estado estado-'.$tarea->estado->tipos_estados_id.'-'.$tarea->estado->id.' ">'.$tarea->estado->nombre.'</span>';
+        })
+        ->addColumn('acciones', function ($tarea) {
+          // $editar_ot=(Auth::user()->can('editar_ots') )?'<a href="editar/'.$tarea->id.'" title="Editar Ot"  class="btn-info btn-flat btn-block" aria-label="View"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>':'';
+          $editar_ot= '';
+          if (
+              (Auth::user()->can('borrar_tarea') && Auth::user()->id  == $tarea->usuarios_id && ($tarea->estados_id ==4 || $tarea->estados_id==5 || $tarea->estados_id==6 || $tarea->estados_id==7 ) )
+              || (Auth::user()->hasRole('owner') && ($tarea->estados_id ==4 || $tarea->estados_id==5 || $tarea->estados_id==6 || $tarea->estados_id==7 ) )
+              || (Auth::user()->hasRole('desarrollo')&& ($tarea->estados_id ==4 || $tarea->estados_id==5 || $tarea->estados_id==6 || $tarea->estados_id==7 ) )
+            )
+          {
+            $editar_ot='<a href="#" id="cli-'.$tarea->id.'" title="Borrar tarea"  class="delete_cliente btn-danger btn-flat btn-block" aria-label="Borrar" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+          }
+          $ver_tarea = '<a href="'.url('/').'/ver_tarea/'.$tarea->id.'" title="Ver Tarea" class="btn btn-primary btn-xs btn-flat btn-block" aria-label="View"><i class="fa fa-eye" aria-hidden="true"></i></a>';
+          return $ver_tarea.$editar_ot;
+        })
+        ->make(true);
+
+    }
+    /**
+     * Mostrar todas las tareas de un Área con Datatable.
+     *
+     * @param  int  $id [Área]
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function showTareasByFase(Request $request)
+    {
+        $output= array();
+        /*$tarea= Tarea::all()->where('planeacion_fases_id',19);
+        return response()->json($tarea);*/
+
+        // Si no trae el mes y año en el $request
+        // tomar el mes y el año actual
+        $year = '';
+        $month = '';
+        $now = Carbon::now();
+        if ($request->has('year')) {
+            $year = $request->get('year');
+        }else{
+            $year = $now->year;
+        }
+        if ($request->has('month')) {
+            $month = $request->get('month');
+        }else{
+            $month = $now->month;
+        }
+        $id=-1;
+        $tarea = Tarea::with(['ot' => function ($query) {
+            // Tareas activas
+            $query->where('estado', 1);
+        },'ot.cliente','usuarioencargado','estado' => function ($query) use ($request,$id) {
+           if ($request->has('estados')) {
+                $query->where('id', '=', $request->get('estados'));
+            }
+           if($id == -1){
+               $estado_programado= Estado::where('nombre','Programado')->first();
+               $query->where('id', '=', $estado_programado->id);
+           }
+
+        }])
+        ->where('planeacion_fases_id', $request->get('fases'))
         ->whereYear('created_at', $year)
         ->whereMonth('created_at', $month)
         ->get();
