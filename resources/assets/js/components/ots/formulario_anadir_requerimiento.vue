@@ -344,8 +344,8 @@
 				this.listado_areas=respuesta.body;
 
 				//DSO Ajustes al guardar OT
-				this.area_temporal=this.listado_areas[0].id;
-				this.area_actual=this.listado_areas[0].id;
+				//this.area_temporal=this.listado_areas[0].id;
+				//this.area_actual=this.listado_areas[0].id;
 
 				this.$localStorage.set('listado_areas',respuesta.body);
 			}.bind(this));
@@ -371,7 +371,7 @@
 			//DSO Ajustes Editar OT
 			var arreglo_requerimientos=arreglo_visualizar.final_req;
 			var primer_req=arreglo_requerimientos[0];
-			var datos=[{
+		/*	var datos=[{
 				requerimientos:primer_req.requerimientos,
 				horas: parseFloat(primer_req.horas),
 				tiempo_extra:  primer_req.textra,
@@ -381,7 +381,7 @@
 			this.h_area=parseFloat(primer_req.horas);
 			this.t_extra=parseFloat(primer_req.textra);
 			this.datos_requerimiento=datos;
-			this.cambiarDatos(1);
+			this.cambiarDatos(primer_req.area);*/
 
 		}
 
@@ -603,8 +603,8 @@
 	*/
 	tabs_areas:function(e,id){
 		if(this.primera_entrada ==0 ){//&& this.visualizacion=='true'
-		this.cambiarDatos(1);
-	}
+		this.cambiarDatos(this.area_actual);
+	     }
 	this.primera_entrada +=1;
 	var id_pestana=this.area_actual;
 	this.area_seguir=id;
@@ -648,6 +648,7 @@
 			this.area_actual=id;
 			this.area_temporal=id;
 		}
+
 	}else {
 		var reqActual=(JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.area_seguir)))?JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.area_seguir)):null;
 		var reqSiguiente=(JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.area_temporal)))?JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.area_temporal)):null;
@@ -685,7 +686,7 @@
 
 },
 cambiarDatos:function(id){
-	if(this.primera_entrada ==0 && this.visualizacion=='true'){
+	if(this.primera_entrada ==0 && this.visualizacion=='true' && JSON.parse(this.$localStorage.get('datos_requerimiento_'+id)) !=null ){
 		var data_registro=JSON.parse(this.$localStorage.get('datos_requerimiento_'+id));
 	}else{
 		var data_registro=this.datos_requerimiento;

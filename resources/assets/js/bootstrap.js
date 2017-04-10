@@ -81,9 +81,9 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     authEndpoint: window._baseURL+'/broadcasting/auth',
     // Para Producción DesComentar */
-    // key: '409d9424cbbfd96e6a8c',
+     key: '409d9424cbbfd96e6a8c',
     // Para Local DesComentar
-     key: 'd6a13b3892fbcd4a53a2',
+    // key: 'd6a13b3892fbcd4a53a2',
     // cluster: 'eu',
     // encrypted: true
 });
