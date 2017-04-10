@@ -52,5 +52,8 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
      //usuarios
      Route::get('index_datatables','UserController@indexDatatables');
 
+    // Listar todos los Estados de tareas
+    Route::get('estados_x_tareas/{id}', 'EstadoController@listarEstadosTarea');
+
 
 });

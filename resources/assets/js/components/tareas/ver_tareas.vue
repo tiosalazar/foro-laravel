@@ -166,7 +166,7 @@
 		    $('#tabla_tareas').on( 'draw.dt', function () {
 		    // Llamar estados de las taras
 
-		    $.ajax({ url:window._apiURL+"estados/1",headers: {
+		    $.ajax({ url:window._apiURL+"estados_x_tareas/1",headers: {
 		    	'Authorization':'Bearer '+Laravel.api_token}})
 		    .done(function(response) {
 		    	 	// limpiar el select
