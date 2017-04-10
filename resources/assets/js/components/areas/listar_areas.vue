@@ -121,7 +121,7 @@ import VeeValidate, { Validator } from 'vee-validate';
       },
      methods:{
         list_areas_api: function(){
-            this.$http.get(window._apiURL+'listar_areas')
+            this.$http.get(window._apiURL+'areas')
               .then(function(respuesta){
                 this.list_areas=respuesta.body;
               });

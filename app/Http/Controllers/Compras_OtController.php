@@ -46,8 +46,8 @@ public function datatable_index(Request $request)
    return $compra->getFormatFecha($compra->fecha_transaccion);
 })
   ->addColumn('acciones', function($compra) {
-   $ver_ot='<a href="/ots/visualizar/'.$compra['ot']['id'].'" class="btn_accion estado-2-10 btn-success"  title="Ver Ot" aria-label="View"><i class="fa fa-eye" aria-hidden="true"></i></a>';
-   $editar_compra=(Auth::user()->can('editar_ots') )?'<a href="editar/'.$compra->id.'" title="Editar Compra asociada"  class="btn_accion btn-info" aria-label="View"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>':'';
+   $ver_ot=(Auth::user()->can('ver_ots') )?'<a href="/ots/visualizar/'.$compra['ot']['id'].'" class="btn_accion estado-2-10 btn-success"  title="Ver Ot" aria-label="View"><i class="fa fa-eye" aria-hidden="true"></i></a>':'';
+   $editar_compra=(Auth::user()->can('editar_compras_asociadas') )?'<a href="editar/'.$compra->id.'" title="Editar Compra asociada"  class="btn_accion btn-info" aria-label="View"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>':'';
    return $ver_ot.$editar_compra;
 })
   ->make(true);

@@ -339,7 +339,7 @@
 	methods:{
 		fetchTips: function(){
 			//if (this.visualizacion !='true') {
-			this.$http.get( window._apiURL+'areas')
+			this.$http.get( window._apiURL+'listar_areas')
 			.then(function(respuesta){
 				this.listado_areas=respuesta.body;
 
