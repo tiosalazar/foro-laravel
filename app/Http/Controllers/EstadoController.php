@@ -7,6 +7,7 @@ use App\Estado;
 use App\Rol;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
 
 class EstadoController extends Controller
 {
@@ -52,7 +53,7 @@ class EstadoController extends Controller
         /**
          *  1      = Estados correspondientes al Rol
          *  2      = Todos los estados de Ot menos Terminado (10)
-         *  otro   = Traer todos los estaddos correspondientes al ID 
+         *  otro   = Traer todos los estaddos correspondientes al ID
          */
         switch ($id) {
             case '1':
@@ -62,12 +63,12 @@ class EstadoController extends Controller
             case '2':
                 $estados= Estado::where('tipos_estados_id',$id)->where('id','!=','10')->get();
                 break;
-            
+
             default:
                 $estados= Estado::where('tipos_estados_id',$id)->get();
                 break;
         }
-     
+
       return response()->json($estados);
     }
 
@@ -103,5 +104,33 @@ class EstadoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Listar todos los estados de las tareas.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function listarEstadosTarea($id)
+    {
+      /**
+      *  1      = Estados correspondientes al Rol
+      *  2      = Todos los estados de Ot menos Terminado (10)
+      *  otro   = Traer todos los estaddos correspondientes al ID
+      */
+      try {
+        $estados= Estado::where('tipos_estados_id',$id)->get();
+        return response()->json($estados);
+      } catch (Exception $e) {
+        return response([
+            'status' => Response::HTTP_BAD_REQUEST,
+            'response_time' => microtime(true) - LARAVEL_START,
+            'msg' => 'No se pudo consultar los estados.',
+            'error' => config('constants.ERR_04'),
+            'consola' =>$e->getMessage(),
+            ],Response::HTTP_BAD_REQUEST);
+      }
+
     }
 }
