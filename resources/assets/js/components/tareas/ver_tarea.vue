@@ -195,7 +195,7 @@
 
             <div class="form-group">
               <label><strong >Descripción de la tarea :</strong></label>
-              <p class="descripcion_tarea" >{{tarea_info.descripcion}}</p>
+              <p class="descripcion_tarea" v-html="tarea_info.descripcion"></p>
             </div>
 
             <div class="form-group required" >
@@ -400,6 +400,7 @@
             this.tarea_info.estado="";
           }
         },
+     
       filters: {
         date_format: function (value) {
           if (!value) return ''

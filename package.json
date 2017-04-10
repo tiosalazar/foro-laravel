@@ -41,6 +41,7 @@
     "vee-validate": "^2.0.0-beta.21",
     "vue-hot-reload-api": "^1.2.0",
     "vue-html-loader": "^1.0.0",
+    "vue-html5-editor": "^1.0.4",
     "vue-loader": "^8.3.0",
     "vue-localstorage": "^0.1.3",
     "vue-mugen-scroll": "^0.2.1",

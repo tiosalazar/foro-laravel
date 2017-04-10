@@ -67,7 +67,8 @@
 
 			<div class="form-group required" v-bind:class="[errors_return.descripcion,{ 'has-error': errors.has('descripcion') }]">
 				<label for="descripcion"><sup>*</sup> Descripción </label>
-				<textarea class="form-control" rows="3"  name="descripcion"  id="descripcion" v-model="tarea.descripcion" placeholder="Descripción" required="required" v-validate data-vv-rules="required|min:4"></textarea>
+				<vue-html5-editor :content="tarea.descripcion" :height="200"  :z-index="0" @change="updateData"></vue-html5-editor>
+				<!-- <textarea  v-model="tarea.descripcion"  name="descripcion"  id="descripcion"  placeholder="Descripción" required="required" v-validate data-vv-rules="required|min:4"></textarea>-->
 				<span  class="help-block" v-show="errors.has('descripcion')">{{ errors.first('descripcion') }}</span>
 			</div>
 
@@ -105,7 +106,10 @@
 	import Datepicker from 'vuejs-datepicker';
 	import VeeValidate, { Validator } from 'vee-validate';
 	import moment from 'moment';
-
+	import { VueEditor } from 'vue2-editor';
+	import VueHtml5Editor from 'vue-html5-editor'
+    Vue.use(VueHtml5Editor);
+	
   	Vue.use(VeeValidate);
 	module.exports = {
 		components: {Datepicker,VeeValidate,Validator},
@@ -188,7 +192,12 @@
 				let today = moment().format('DD-MMM-YYYY HH:mm:ss');
 				return today;
 			},
+			updateData: function (data) {
+                // sync content to component
+                this.tarea.descripcion = data;
+            },
 			agregarTarea:function(e) {
+				console.log("Consolaso "+this.tarea.descripcion);
 				// Serializo la fecha del datepicker
 				// y la asigno a la tarea
 				this.tarea.fecha_entrega_cliente =
