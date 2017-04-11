@@ -77,6 +77,9 @@ class HomeController extends Controller
             $value->ot->cliente;
             $value['url']="/ver_tarea/".$value->id;
             $value->ot['cliente_inicial']=substr($value->ot->cliente->nombre, 0,1); // Devuelvo la inicial del cliente
+            $value['descripcion']= strip_tags($value['descripcion']);
+          
+            
           }
 
 
@@ -95,6 +98,7 @@ class HomeController extends Controller
         }
 
         return view('adminlte::home')->with('user_encargado',$user)->with('tareas',$tareas);
+        
     }
 
       public function SubirImagen(Request $request)

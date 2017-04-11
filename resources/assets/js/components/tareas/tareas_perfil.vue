@@ -22,7 +22,7 @@
 
             </div>
             <div class="box-body" >
-              <p >{{listado_tarea.descripcion | long_tarea_descripcion }}</p>
+              <p class="descripcion_tarea_perfil">{{listado_tarea.descripcion | long_tarea_descripcion }}</p>
             </div>
             <div class="box-footer footer_tarea" >
              <a v-bind:href="_baseURL+listado_tarea.url"> <button class="btn btn-primary button_tarea" >Ver tarea</button></a>
@@ -61,6 +61,7 @@
       }
     },
     created: function() {
+     
       datos= JSON.parse(this.lista_tareas);
       this.listado_tareas=datos;
 			console.log(this.listado_tareas);

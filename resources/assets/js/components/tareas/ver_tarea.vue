@@ -205,7 +205,10 @@
             <p class="text_alert">*Escribre que sucedió en el campo de observaciones, recuerda que es obligatorio</p>
             </div>
               <label for="descripcion">Comentario:</label>
-              <textarea class="form-control" rows="3"  name="descripcion"  id="descripcion" v-model="descripcion" placeholder="Descripción" required="required"></textarea>
+
+            <!-- <textarea class="form-control" rows="3"  name="descripcion"  id="descripcion" v-model="descripcion" placeholder="Descripción" required="required"></textarea>-->
+              <vue-html5-editor :content="descripcion" :height="150"  :z-index="0" @change="updateData"></vue-html5-editor>
+
             </div>
 
 
@@ -260,7 +263,7 @@
 
                  </div>
                   <div class="caja_comentarios">
-                    <p>{{comentario.comentarios}}</p>
+                    <p v-html="comentario.comentarios"></p>
                   </div>
 
 
@@ -290,9 +293,11 @@
 </template>
 <script>
   import Datepicker from 'vuejs-datepicker';
-  import VuePaginate from 'vue-paginate'
+  import VuePaginate from 'vue-paginate';
   import VeeValidate, { Validator } from 'vee-validate';
   import moment from 'moment';
+  import VueHtml5Editor from 'vue-html5-editor';
+    Vue.use(VueHtml5Editor);
 
   Vue.component('select_estados',require('../herramientas/select_estado.vue'));
   Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
@@ -420,6 +425,11 @@
   		          that.errors_return[index] = 'has-warning';
   		        });
   		    },
+          updateData: function (data) {
+                // sync content to component
+                this.descripcion = data;
+			    
+            },
        asignar_tarea:function(){
 
         if (!(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5 || this.estado_solicitud.id == 7)) {

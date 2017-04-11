@@ -99,5 +99,6 @@
 			</div>
 		</div>
 	</div>
+	<a href="#"><div class="img-circle-arriba" ><i class="fa fa-chevron-up" aria-hidden="true"></i></div><a>
 
 @endsection

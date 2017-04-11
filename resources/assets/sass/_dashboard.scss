@@ -239,3 +239,26 @@ body{
 		 }
 	}
 }  
+
+ .img-circle-arriba{
+	
+	font-size: 20px;
+	font-style: 25px; 
+	background: #002E60;
+	color: white;
+	-ms-display: flex;
+	display: flex;
+	/* alineacion vertical */
+	align-items: center;
+	/* alineacion horizontal */
+	justify-content: center;
+	height: 60px;
+	min-width: 60px;
+	margin-right: 7px;
+	width: 65px;
+	border-radius: 50%;
+	float: right;
+	margin-top: -50px;
+
+
+}
