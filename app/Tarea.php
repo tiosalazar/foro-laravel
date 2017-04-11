@@ -32,6 +32,17 @@ class Tarea extends Model
       $fecha= new Date($fecha_ingreso);
      return ucwords($fecha->format('d-M-Y'));
  }
+
+ public function getMesActual()
+{
+     $fecha= new Date();
+    return ucwords($fecha->format('M'));
+}
+public function getFormatMes($fecha_ingreso)
+{
+    $fecha= new Date($fecha_ingreso);
+   return ucwords($fecha->format('M'));
+}
   /**
   * Obtiene el Estado que esta asociado a una Tarea
   */

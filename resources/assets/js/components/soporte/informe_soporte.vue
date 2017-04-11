@@ -1,16 +1,36 @@
 <template>
 	<div>
+		<form method="POST" id="exportar" class="form-inline" role="form">
+			<div class="col-md-3 pull-right">
+				 <button type="button" @click="exportar_data" class="btn btn-block boton_foro btn-success succes pull-right" >Exportar Datos</button>
+			</div>
+		</form>
+		<div class="clearfix"></div>
 	<div class="tarea  table-responsive">
+
+		<!--<form method="POST" id="exportar_datos" class="form-inline" role="form">
+				<div class="btn-group">
+		       <button type="button" class="btn btn-info" >Exportar</button>
+					 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+		              <span class="caret"></span>
+									<span class="sr-only">Toggle Dropdown</span>
+					 </button>
+					 <ul class="dropdown-menu" role="menu" id="export-menu">
+		          <li id="export-to-excel"><a href="#">Formato Excell</a>
+					 </ul>
+				</div>
+		</form>-->
         <table class="table  table-striped table-hover table-responsive datatable-foro table-bordered dataTable no-footer" role="grid" id="tabla_tareas" cellspacing="0" width="100%">
 		  <thead>
 		        <tr>
 		          <th >OT</th>
 		          <th >Cliente</th>
 		          <th >Requerimiento</th>
-							<th >Prioridad</th>
+							<th >Fase</th>
 		          <th >Fecha de solicitud</th>
 							<th >Fecha de entrega cuentas</th>
 		          <th >Encargado</th>
+							<th >Tiempo Real</th>
 		          <th >Estado</th>
 		          <th >Acciones</th>
 		        </tr>
@@ -99,10 +119,13 @@
 			});
 		},
 		watch:{},
+		computed:{
+
+		},
 		mounted(){
 			let that = this;
 			var oTable = $('#tabla_tareas').DataTable({
-				dom: "<'row'<'col-xs-12'<'row filtros'<'col-xs-6 col-sm-6 col-lg-4 selects'><'col-xs-6 col-sm-6 col-lg-5'f><'col-xs-4 col-sm-4 col-lg-3'l>>>r>"+
+				dom: "<'row'<'col-xs-12'<'row filtros'<'col-xs-6 col-sm-6 col-lg-4 selects'><'col-xs-6 col-sm-6 col-lg-5'f> <'col-xs-4 col-sm-4 col-lg-3'l>>>r>"+
 				"<'row'<'col-xs-12't>>"+
 				"<'row'<'col-xs-12'<'row'<'col-xs-6'i><'col-xs-6'p>>>>",
 				processing: true,
@@ -126,10 +149,11 @@
 				{ data: 'ot.referencia', name: 'ot.referencia' },
 				{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre' },
 				{ data: 'nombre_tarea', name: 'nombre_tarea' },
-				{ data: 'prioridad', name: 'prioridad' },
+				{ data: 'fases', name: 'fases' },
 				{ data: 'created_at', name: 'created_at' },
 				{ data: 'fecha_entrega_cuentas', name: 'fecha_entrega_cuentas' },
 				{ data: 'encargado', name: 'encargado' },
+				{ data: 'tiempo_real', name: 'tiempo_real' },
 				{ data: 'estado', name: 'estado.nombre' },
 				{ data: 'acciones', name: 'acciones', searchable:false },
 				],
@@ -178,25 +202,29 @@
 		    .done(function(response) {
 					//console.log(response);
 		    	 	// limpiar el select
-		    	 	var option;
-		    	 	$('#estados')
-		    	 	.find('option')
-		    	 	.remove()
-		    	 	.end()
-		    	 	.append('<option value="">Estados</option>')
-				    // llenar select dinamicamente
-				    response.forEach(function(item,index) {
-				    	option = $('<option>');
-				    	option.attr('value', item.id).text(item.nombre);
-				    	$('#estados').append(option);
-				    })
+					if ($('select[name=estados]').val() == "") {
+							var option;
+						$('#estados')
+						.find('option')
+						.remove()
+						.end()
+						.append('<option value="">Estados</option>')
+						// llenar select dinamicamente
+						response.forEach(function(item,index) {
+							option = $('<option>');
+							option.attr('value', item.id).text(item.nombre);
+							$('#estados').append(option);
+						})
+					}
+
+
 				});
 
 				$.ajax({ url:window._apiURL+"fases_x_tipo/"+that.tipo_fase,headers: {
 				 'Authorization':'Bearer '+Laravel.api_token}})
 			 .done(function(response) {
-				 console.log(response,'tipos');
 					 // limpiar el select
+					 if ($('select[name=fases]').val() == "") {
 					 var option;
 					 $('#fases')
 					 .find('option')
@@ -209,11 +237,13 @@
 						 option.attr('value', item.id).text(item.nombre);
 						 $('#fases').append(option);
 					 })
+				 }
 			 })
 
 		    $.ajax( window._baseURL+"/years_tarea" )
 		    .done(function(response) {
 		    	 	// limpiar el select
+						if ($('select[name=year]').val() == "") {
 		    	 	var option;
 		    	 	$('#year')
 		    	 	.find('option')
@@ -226,9 +256,11 @@
 				    	option.attr('value', item).text(item);
 				    	$('#year').append(option);
 				    })
+					}
 				})
 				// Agregar las formulario a datatable
 				$('#search-form').appendTo('.selects');
+				$('#exportar_datos').appendTo('.button_exportar');
 
 			} );
 			$(document).ready(function(e) {
@@ -241,6 +273,31 @@
 
 		},
 		methods:{
+			exportar_data: function() {
+				var arrayData={
+					estado:($('select[name=estados]').val() != "")? $('select[name=estados]').val() :'null',
+					fase : ($('select[name=fases]').val() != "")?$('select[name=fases]').val():'null',
+					year : ($('select[name=year]').val() != "")?$('select[name=year]').val():'null',
+					month :($('select[name=month]').val()!= "")?$('select[name=month]').val():'null'
+				};
+
+				window.location = window._baseURL+'/informes/soporte/exportar/'+arrayData.estado+'/'+
+				arrayData.fase+'/'+arrayData.year+'/'+arrayData.month;
+
+//http://localhost:3000/informes/soporte/exportar/''/''/''/''
+			/*	this.$http.get(window._baseURL+'/informes/soporte/exportar/'+arrayData.estado+'/'+
+				arrayData.fase+'/'+arrayData.year+'/'+arrayData.month)
+				.then( function (response) {
+					 console.log(response);
+				},function (err){
+          console.log(err,'ERROR');
+
+				});
+
+				console.log(arrayData);*/
+
+
+			},
 			borrarCliente: function() {
         let index = $('#id_cliente').val()
         console.log(index);

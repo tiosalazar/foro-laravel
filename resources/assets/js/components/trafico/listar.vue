@@ -189,6 +189,7 @@
         $.ajax( window._baseURL+"/week_of_year" )
 		    .done(function(response) {
 		    	 	// limpiar el select
+						if ($('select[name=week]').val() == "") {
 		    	 	let option;
 		    	 	$('#week')
 		    	 	.find('option')
@@ -202,6 +203,8 @@
 				    	$('#week').append(option);
 				    })
             $('#week option:last-child').attr('selected','selected')
+					}
+
 				})
 				// Agregar las formulario a datatable
 				$('#search-form').appendTo('.selects');

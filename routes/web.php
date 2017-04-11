@@ -189,13 +189,16 @@
        return view('admin.trafico.trafico');
     })->name('trafico');
 
-    // Trafico
+    // Informe Soporte
     Route::get('soporte', function () {
        if (!Auth::user()->can('ver_informe_soporte')) {
          return Redirect::to('home');
        }
        return view('admin.soporte.informe_soporte');
     })->name('informe_soporte');
+
+
+    Route::get('soporte/exportar/{estado}/{fase}/{year}/{month}',['middleware' => ['permission:descargar_informe_soporte'], 'uses' => 'TareaController@exportar_informe_soporte']);
 
       //Historico Equipo
     Route::get('historico_areas', function () {

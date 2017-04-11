@@ -170,6 +170,7 @@
 		    	'Authorization':'Bearer '+Laravel.api_token}})
 		    .done(function(response) {
 		    	 	// limpiar el select
+						if ($('select[name=estados]').val() == "") {
 		    	 	var option;
 		    	 	$('#estados')
 		    	 	.find('option')
@@ -182,11 +183,13 @@
 				    	option.attr('value', item.id).text(item.nombre);
 				    	$('#estados').append(option);
 				    })
+					}
 				})
 
 		    $.ajax( window._baseURL+"/years_tarea" )
 		    .done(function(response) {
 		    	 	// limpiar el select
+						if ($('select[name=year]').val() == "") {
 		    	 	var option;
 		    	 	$('#year')
 		    	 	.find('option')
@@ -199,6 +202,7 @@
 				    	option.attr('value', item).text(item);
 				    	$('#year').append(option);
 				    })
+					}
 				})
 				// Agregar las formulario a datatable
 				$('#search-form').appendTo('.selects');
