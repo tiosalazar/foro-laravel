@@ -117,6 +117,12 @@ $(document).ready(function(){
 
       });
 
+        
+        $(".img-circle-arriba").click(function () {
+            var body = $("html, body");
+            body.stop().animate({scrollTop:0}, '1500', 'swing');
+        });
+
 
 
 });

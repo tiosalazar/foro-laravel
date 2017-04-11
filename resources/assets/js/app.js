@@ -68,5 +68,4 @@ Vue.component('tipos_compra_editar', require('./components/tipos_compras/tipos_c
 
 const app = new Vue({
     el: '#app',
-
 });
