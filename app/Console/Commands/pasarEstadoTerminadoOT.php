@@ -40,16 +40,14 @@ class pasarEstadoTerminadoOT extends Command
      */
     public function handle()
     {
-       $estado=Estado::where('nombre','On Going')->first();
-       //Obtengo las ot donde la fecha fin sea menor que la actual
-       $ots= Ot::where('estados_id',$estado->id)
-                ->where('fecha_final', '<',date('Y-m-d'))->get();
+      $estado=Estado::where('nombre','On Going')->first();
+      //Obtengo las ot donde la fecha fin sea menor que la actual
+      $ots= Ot::where('estados_id',$estado->id)
+      ->where('fecha_final', '<',date('Y-m-d'))->get();
 
-        foreach ($ots as $ot) {
-                    $ot->estados_id=10; //10 ID del estado "Terminado" el cual se encuentra en la tabla estados
-                    $ot->save();
-                 }
-
-
+      foreach ($ots as $ot) {
+        $ot->estados_id=10; //10 ID del estado "Terminado" el cual se encuentra en la tabla estados
+        $ot->save();
+      }  
     }
 }

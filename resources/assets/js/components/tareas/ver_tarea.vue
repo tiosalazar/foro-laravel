@@ -43,9 +43,8 @@
               <div class="col-sm-6">
                 <div class="form-group same-height required">
                  <label><strong>Prioridad:</strong></label>
-                 <button class="btn btn-warning btn-flat prioridad_btn" disabled>{{tarea_info.estado_prioridad.nombre}}</button>
+                 <button class="btn btn-flat prioridad_btn" v-bind:class="'label label-estado estado-'+[tarea_info.estado_prioridad.tipos_estados_id]+'-'+[tarea_info.estado_prioridad.id]" disabled>{{tarea_info.estado_prioridad.nombre}}</button>
                 </div>
-
                  <div class="form-group same-height">
                   <label><strong>Área Encargada:</strong></label>
                   <div>{{tarea_info.area.nombre}}</div>

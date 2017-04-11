@@ -343,11 +343,9 @@
 	.prioridad_btn{
 		display: block;
 		width: 100px;
-		background-color: #fabb00;
 		color: white;
 		border:  none;
 		&:disabled{
-		 background-color: #fabb00;
 		 color: white;
 		 opacity: 1;
 		}

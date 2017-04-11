@@ -9443,13 +9443,11 @@ body {
 .ver_tarea .prioridad_btn {
   display: block;
   width: 100px;
-  background-color: #fabb00;
   color: white;
   border: none;
 }
 
 .ver_tarea .prioridad_btn:disabled {
-  background-color: #fabb00;
   color: white;
   opacity: 1;
 }

@@ -149,6 +149,7 @@ class TareaController extends Controller
                             'status' => Response::HTTP_OK,
                             'response_time' => microtime(true) - LARAVEL_START,
                             'obj' => $tarea,
+                            'request' => $request->all(),
                             'horas_area ' => $horas_area,
                             'error' => null,
                             'msg' => 'Tarea creada con exito',
@@ -728,6 +729,7 @@ return response()->json($respuesta);
      **/
     public function getTrafico(Request $request)
     {
+
       $output= array();
       // Si no trae fecha de inicio y f_final
       // toma la semana actual
