@@ -99,15 +99,11 @@
 			</div>
 		</div>
 	</div>
+	
+	@if(count($tareas)>4)
+		<a href="#"><div class="img-circle-arriba" ><i class="fa fa-chevron-up" aria-hidden="true"></i></div><a>							
+	@endif
 
-		<?php 
-		   $resultado = count($tareas);			
-			if($resultado>4){
-				?>
-					<a href="#"><div class="img-circle-arriba" ><i class="fa fa-chevron-up" aria-hidden="true"></i></div><a>
-				<?php
-			}
-		?>
 	
 	
 
