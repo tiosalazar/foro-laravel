@@ -750,8 +750,7 @@ return response()->json($respuesta);
           // Tareas activas
           $query->where('estado', 1);
       },'ot.cliente','usuarioencargado','estado' => function ($query) {
-          $estado_programado= Estado::where('nombre','Programado')->first();
-          $query->where('id', '=', $estado_programado->id);
+          $query->where('id', '=',3)->orWhere('id', '=', 2)->orWhere('id', '=',1)->orWhere('id', '=',20);
       },'area','usuario'])
       ->whereBetween('created_at',array($f_inicio,$f_final))
       ->get();
@@ -770,6 +769,9 @@ return response()->json($respuesta);
       // })
       ->addColumn('ejecutivo', function ($tarea) {
         return $tarea->usuario->nombre[0].$tarea->usuario->apellido[0];
+      })
+      ->addColumn('encargado', function ($tarea) {
+        return $tarea->usuarioencargado->nombre .' '. $tarea->usuarioencargado->apellido;
       })
       ->addColumn('estado', function ($tarea) {
         return '<span class="label label-estado estado-'.$tarea->estado->tipos_estados_id.'-'.$tarea->estado->id.' ">'.$tarea->estado->nombre.'</span>';
