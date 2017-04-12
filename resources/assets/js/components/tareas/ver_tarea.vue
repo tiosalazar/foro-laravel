@@ -37,7 +37,40 @@
               </div>
               <!-- /.col -->
             </div>
-
+            <!-- /.row -->
+            <div class="row">
+      				<div class="" v-if="tarea_info.recurrente=='1'">
+      					<div class="col-md-6">
+                  <label><strong>Fecha inicio de recurrencia</strong></label>
+      						<div class="" v-if="rol_actual==='owner' || rol_actual==='desarrollo' || id_usuario_actual == tarea_info.usuarios_id">
+        						<div class="input-group date" >
+        							<div class="input-group-addon">
+        								<i class="fa fa-calendar"></i>
+        							</div>
+        							<datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="tarea_info.fecha_inicio_recurrencia" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
+        						</div>
+      						</div>
+                  <div class="" v-else>
+                    <center>{{tarea_info.fecha_inicio_recurrencia| date_format}}</center>
+                  </div>
+                  <br>
+      					</div>
+      					<div class="col-md-6">
+      						<label><strong>Fecha final de recurrencia</strong></label>
+                  <div class="" v-if="rol_actual==='owner' || rol_actual==='desarrollo' || id_usuario_actual == tarea_info.usuarios_id">
+        						<div class="input-group date" >
+        							<div class="input-group-addon">
+        								<i class="fa fa-calendar"></i>
+        							</div>
+        							<datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="tarea_info.fecha_final_recurrencia" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
+        						</div>
+      						</div>
+                  <div class="" v-else>
+                    <center>{{tarea_info.fecha_final_recurrencia| date_format}}</center>
+                  </div>
+      					</div>
+      				</div>
+      			</div>
             <!-- /.row -->
             <div class="row">
               <div class="col-sm-6">
@@ -404,7 +437,7 @@
             this.tarea_info.estado="";
           }
         },
-     
+
       filters: {
         date_format: function (value) {
           if (!value) return ''
@@ -427,7 +460,7 @@
           updateData: function (data) {
                 // sync content to component
                 this.descripcion = data;
-			    
+
             },
        asignar_tarea:function(){
 
@@ -451,7 +484,8 @@
             {
               encargado_id:this.encargado.id,
               estados_id:this.estado_solicitud.id,
-              tiempo_estimado:this.tarea_info.tiempo_estimado,
+              fecha_inicio_recurrencia:moment(this.tarea_info.fecha_inicio_recurrencia).format('YYYY-MM-DD HH:mm:ss'),
+              fecha_final_recurrencia:moment(this.tarea_info.fecha_final_recurrencia).format('YYYY-MM-DD HH:mm:ss'),
               fecha_entrega_area:fecha_area,
               fecha_entrega_cuentas:fecha_cuentas,
               usuarios_comentario_id:this.id_usuario_actual,
@@ -461,7 +495,8 @@
               is_comment:(this.tarea_info.estados_id== 2 && this.rol_usuario_actual !='coordinador')? 1: 0,
               fecha_entrega_cliente:(typeof(this.fecha_entrega_cliente) =='undefined' || this.fecha_entrega_cliente=='' )? this.tarea_info.fecha_entrega_cliente : moment(this.fecha_entrega_cliente).format('YYYY-MM-DD'),
             };
-
+            console.log('tarea info',data);
+            // return false;
             //Método que envia los datos al api rest
             this.$http.put(window._apiURL+'tareas/'+this.tarea_info.id, data)
             .then(function (respuesta) {

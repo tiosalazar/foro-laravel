@@ -35,22 +35,24 @@
 						<span  class="help-block" v-show="errors.has('recurrente')">{{ errors.first('recurrente') }}</span>
 					</div>
 				</div>
-				<div class="col-md-4">
-					<label>Fecha inicio de recurrencia</label>
-					<div class="input-group date" >
-						<div class="input-group-addon">
-							<i class="fa fa-calendar"></i>
+				<div class="" v-if="tarea.recurrente=='1'">
+					<div class="col-md-4">
+						<label>Fecha inicio de recurrencia</label>
+						<div class="input-group date" >
+							<div class="input-group-addon">
+								<i class="fa fa-calendar"></i>
+							</div>
+							<datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="fecha_inicio_recurrencia" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
 						</div>
-						<datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="fecha_inicio_recurrencia" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
 					</div>
-				</div>
-				<div class="col-md-4">
-					<label>Fecha final de recurrencia</label>
-					<div class="input-group date" >
-						<div class="input-group-addon">
-							<i class="fa fa-calendar"></i>
+					<div class="col-md-4">
+						<label>Fecha final de recurrencia</label>
+						<div class="input-group date" >
+							<div class="input-group-addon">
+								<i class="fa fa-calendar"></i>
+							</div>
+							<datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="fecha_final_recurrencia" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
 						</div>
-						<datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="fecha_final_recurrencia" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
 					</div>
 				</div>
 			</div>
@@ -142,7 +144,7 @@
 	import moment from 'moment';
 	import VueHtml5Editor from 'vue-html5-editor';
     Vue.use(VueHtml5Editor);
-	
+
   	Vue.use(VeeValidate);
 	module.exports = {
 		components: {Datepicker,VeeValidate,Validator},
@@ -238,7 +240,7 @@
 				this.errors_return.descripcion=false;
             },
 			agregarTarea:function(e) {
-				
+
 				if(this.tarea.descripcion==""){
 					this.errors.descripcion=true;
 					 return false;
