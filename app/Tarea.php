@@ -18,7 +18,7 @@ class Tarea extends Model
   */
   protected $fillable = [
     'nombre_tarea', 'fecha_entrega_area','fecha_entrega_cuentas','tiempo_mapa_cliente', 'descripcion', 'enlaces_externos', 'tiempo_estimado', 'tiempo_real', 'fecha_entrega_cliente', 'estados_id', 'areas_id',
-    'usuarios_id', 'ots_id', 'planeacion_fases_id', 'encargado_id','prioridad_id',
+    'usuarios_id', 'ots_id', 'planeacion_fases_id', 'encargado_id','prioridad_id','fecha_inicio_recurrencia', 'fecha_final_recurrencia','recurrente',
   ];
   /**
   * The attributes that should be mutated to dates.

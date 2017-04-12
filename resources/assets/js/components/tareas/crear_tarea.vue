@@ -23,6 +23,40 @@
 			</div>
 			<!-- /.row -->
 			<div class="row">
+				<div class="col-md-3 col-xs-4">
+					<label for="valor_total" class="col-sm-12 ">Tarea Recuerrente </label>
+					<div class="row" v-bind:class="{ 'has-error': errors.has('recurrente') }">
+						<div class="col-sm-4 col-xs-6 formulario">
+							<input type="radio" name="recurrente" value="1" id="si" v-model="tarea.recurrente"  required="required" ><label for="si"> Si</label>
+						</div>
+						<div class="col-sm-4 col-xs-6 formulario" >
+							<input type="radio" name="recurrente" value="0" id="no" v-model="tarea.recurrente"   required="required"  > <label for="no"> No</label>
+						</div>
+						<span  class="help-block" v-show="errors.has('recurrente')">{{ errors.first('recurrente') }}</span>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<label>Fecha inicio de recurrencia</label>
+					<div class="input-group date" >
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="fecha_inicio_recurrencia" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<label>Fecha final de recurrencia</label>
+					<div class="input-group date" >
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="fecha_final_recurrencia" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
+					</div>
+				</div>
+			</div>
+			<br>
+			<!-- /.row -->
+			<div class="row">
 				<div class="col-sm-2">
 					<div class="form-group required">
 						<label><sup>*</sup> Prioridad </label>
@@ -32,7 +66,7 @@
 				<div class="col-sm-4">
 					<div class="form-group required">
 						<label><sup>*</sup> Área </label>
-						<select_area  :refresha="area"></select_area>
+						<select_area  :refresha="area" compras="true"></select_area>
 					</div>
 				</div>
 				<div class="col-sm-6">
@@ -118,6 +152,7 @@
 					nombre_tarea:'',
 					descripcion:'',
 					enlaces_externos:'',
+					recurrente:0,
 
 				},
 				select_ot:'',
@@ -130,9 +165,10 @@
 				},
 				area:{},
 				current_date:'',
-				// area:'',
 				user:'',
 				fecha_entrega_cliente:'',
+				fecha_inicio_recurrencia:'',
+				fecha_final_recurrencia:'',
 				message:'',
 				disabled:{
 				  "to": moment().subtract(1, 'days').toDate(),
@@ -159,6 +195,7 @@
 				this.select_ot= obj;
 			});
 			this.$on('area_option', function(obj) {
+				console.log(obj)
 				this.area= obj;
 			});
 			this.$on('select_estado', function(v) {
@@ -172,7 +209,10 @@
 			});
 			this.current_date=this.getCurrentDate();
 			this.user = this.$parent.id_user;
-
+			if (this.$parent.area != 0) {
+				this.area = this.$parent.area;
+			}
+			console.log('area',this.area);
 		},
 		computed:{},
 		watch: {},
@@ -206,13 +246,18 @@
 				// Serializo la fecha del datepicker
 				// y la asigno a la tarea
 				this.tarea.fecha_entrega_cliente =
-					(this.fecha_entrega_cliente)?moment(this.fecha_entrega_cliente).format('YYYY-MM-DD : HH:mm:ss'):null;
+					(this.fecha_entrega_cliente)?moment(this.fecha_entrega_cliente).format('YYYY-MM-DD HH:mm:ss'):null;
+				this.tarea.fecha_inicio_recurrencia =
+					(this.fecha_inicio_recurrencia)?moment(this.fecha_inicio_recurrencia).format('YYYY-MM-DD HH:mm:ss'):null;
+				this.tarea.fecha_final_recurrencia =
+					(this.fecha_final_recurrencia)?moment(this.fecha_final_recurrencia).format('YYYY-MM-DD HH:mm:ss'):null;
 				this.tarea.tiempo_mapa_cliente =
 					(this.tarea.tiempo_mapa_cliente)?this.tarea.tiempo_mapa_cliente:null;
 				this.$validator.validateAll();
 		    if (this.errors.any()) {
 		      return false
 		    }
+				this.tarea.recurrente = parseInt(this.tarea.recurrente);
 				this.tarea.estados_id = this.estado.id;
 				this.tarea.ots_id= this.ot.id;
 				this.tarea.planeacion_fases_id = this.fase.id;

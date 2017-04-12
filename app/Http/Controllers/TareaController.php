@@ -63,15 +63,23 @@ public function index()
     return Datatables::of($output)->make(true);
 }
 
-/**
-* Show the form for creating a new resource.
-*
-* @return \Illuminate\Http\Response
-*/
-public function create()
-{
-    //
-}
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create($id=null)
+    {
+      if (!Auth::user()->can('crear_tareas')) {
+        return Redirect::to('home');
+      }
+      if (!is_null($id) && is_numeric($id)) {
+        $area = Area::findOrFail($id);
+        return view('admin.tareas.crear_tarea')->with('area',$area);
+      }
+      return view('admin.tareas.crear_tarea')->with('area',0);
+
+    }
 
 /**
 * Store a newly created resource in storage.
@@ -131,30 +139,40 @@ public function store(Request $request)
                         'obj' =>[]
                     ],Response::HTTP_BAD_REQUEST);
                 }
+                    // Validar si tiene horas suficientes para hacer la Tarea
+                    if (!is_null($horas_area->tiempo_estimado_ot) &&
+                        $horas_area->tiempo_estimado_ot + $horas_area->tiempo_extra > $horas_area->tiempo_real) {
 
-                // Validar si tiene horas suficientes para hacer la Tarea
-                if (!is_null($horas_area->tiempo_estimado_ot) &&
-                $horas_area->tiempo_estimado_ot + $horas_area->tiempo_extra > $horas_area->tiempo_real) {
+                        $tarea->save();
+                        $maker = User::findOrFail($request->usuarios_id);
+                        User::find($tarea->encargado_id)->notify(new TareaCreada($maker,$tarea));
 
-                    $tarea->save();
-                    $maker = User::findOrFail($request->usuarios_id);
-                    User::find($tarea->encargado_id)->notify(new TareaCreada($maker,$tarea));
-
-                    return response([
-                        'status' => Response::HTTP_OK,
-                        'response_time' => microtime(true) - LARAVEL_START,
-                        'obj' => $tarea,
-                        'horas_area ' => $horas_area,
-                        'error' => null,
-                        'msg' => 'Tarea creada con exito',
-                    ],Response::HTTP_OK);
-                } else {
-                    // Enviar notificacion a los Project Owner
-                    // cuando el tiempo se haya acabado para un Área en la OT
-                    $admins = User::where('roles_id',1)->get();
-                    $maker = User::findOrFail($tarea->usuarios_id);
-                    foreach ($admins as $key => $admin) {
-                        $admin->notify(new OtSinTiempo($maker,$horas_area));
+                        return response([
+                            'status' => Response::HTTP_OK,
+                            'response_time' => microtime(true) - LARAVEL_START,
+                            'obj' => $tarea,
+                            'request' => $request->all(),
+                            'horas_area ' => $horas_area,
+                            'error' => null,
+                            'msg' => 'Tarea creada con exito',
+                            ],Response::HTTP_OK);
+                    } else {
+                        // Enviar notificacion a los Project Owner
+                        // cuando el tiempo se haya acabado para un Área en la OT
+                        $admins = User::where('roles_id',1)->get();
+                        $maker = User::findOrFail($tarea->usuarios_id);
+                        foreach ($admins as $key => $admin) {
+                            $admin->notify(new OtSinTiempo($maker,$horas_area));
+                        }
+                        return response([
+                            'status' => Response::HTTP_BAD_REQUEST,
+                            'response_time' => microtime(true) - LARAVEL_START,
+                            'obj' => [],
+                            'horas_area ' => $horas_area,
+                            // 'error' => 'ERR_04',
+                            'error' => config('constants.ERR_02'),
+                            'msg' => 'No tienes tiempo suficiente para esta tarea.',
+                            ],Response::HTTP_BAD_REQUEST);
                     }
                     return response([
                         'status' => Response::HTTP_BAD_REQUEST,
@@ -420,11 +438,9 @@ public function update(Request $request, $id)
                     $data['fecha_entrega_area']=null;
                     $data['fecha_entrega_cuentas']=null;
                 }
-
                 $data['editor_id']=Auth::user()->id;
                 $tarea_historico->fill($data);
                 $tarea_historico->save();
-
 
                 //Respuesta
                 $respuesta['dato']=$tarea;
@@ -540,6 +556,10 @@ public function update(Request $request, $id)
 
             }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> aborrero
         }
     }
     return response()->json($respuesta);
@@ -920,115 +940,118 @@ public function showAllTareas($id,Request $request)
             // $end = Carbon::now()->endOfWeek();
             // return [$start->format('y-m-d : H-m-s'),$end->format('y-m-d  H-m-s')];
         }
-        /**
-        * Listar tareas del Trafico
-        * @param  \Illuminate\Http\Request  $request
-        * @return Datatable
-        **/
         public function getTrafico(Request $request)
-        {
-            $output= array();
-            // Si no trae fecha de inicio y f_final
-            // toma la semana actual
-            $f_inicio = '';
-            $f_final = '';
-            $now = Carbon::now();
-            if ($request->has('f_inicio')) {
-                $f_inicio = $request->get('f_inicio');
-            }else{
-                $f_inicio = $now->startOfWeek()->format('y-m-d H-m-s');
-            }
-            if ($request->has('f_final')) {
-                $f_final = $request->get('f_final');
-            }else{
-                $f_final = $now->endOfWeek()->format('y-m-d H-m-s');
-            }
-            $tarea = Tarea::with(['ot' => function ($query) {
-                // Tareas activas
-                $query->where('estado', 1);
-            },'ot.cliente','usuarioencargado','estado' => function ($query) {
-                $estado_programado= Estado::where('nombre','Programado')->first();
-                $query->where('id', '=', $estado_programado->id);
-            },'area','usuario'])
-            ->whereBetween('created_at',array($f_inicio,$f_final))
-            ->get();
+            {
 
-            // selecciona solos los que tiene el area especifico
-            foreach ($tarea as $key => $value) {
-                if (!is_null($value->area) && !is_null($value->ot) && !is_null($value->ot->cliente) && !is_null($value->estado) ) {
-                    array_push($output, $value);
-                }
-            }
-            // Se conviert en collection para que lo reciba el Datatable
-            $output = collect($output);
-            return Datatables::of($output)
-            // ->addColumn('encargado', function ($tarea) {
-            //   return $tarea->usuarioencargado->nombre.$tarea->usuarioencargado->apellido;
-            // })
-            ->addColumn('ejecutivo', function ($tarea) {
+              $output= array();
+              // Si no trae fecha de inicio y f_final
+              // toma la semana actual
+              $f_inicio = '';
+              $f_final = '';
+              $now = Carbon::now();
+              if ($request->has('f_inicio')) {
+                  $f_inicio = $request->get('f_inicio');
+              }else{
+                  $f_inicio = $now->startOfWeek()->format('y-m-d H-m-s');
+              }
+              if ($request->has('f_final')) {
+                  $f_final = $request->get('f_final');
+              }else{
+                  $f_final = $now->endOfWeek()->format('y-m-d H-m-s');
+              }
+              $tarea = Tarea::with(['ot' => function ($query) {
+                  // Tareas activas
+                  $query->where('estado', 1);
+              },'ot.cliente','usuarioencargado' => function ($query){
+
+                $query->addselect('*');
+                $query->addselect(DB::raw('CONCAT(nombre," ",apellido) as full_name'));
+
+              },'estado' => function ($query) {
+                  $query->where('id', '=',3)->orWhere('id', '=', 2)->orWhere('id', '=',1)->orWhere('id', '=',20);
+              },'area','usuario'])
+              ->whereBetween('created_at',array($f_inicio,$f_final))
+              ->get();
+
+              // selecciona solos los que tiene el area especifico
+              foreach ($tarea as $key => $value) {
+                  if (!is_null($value->area) && !is_null($value->ot) && !is_null($value->ot->cliente) && !is_null($value->estado) ) {
+                      array_push($output, $value);
+                  }
+              }
+              // Se conviert en collection para que lo reciba el Datatable
+              $output = collect($output);
+              return Datatables::of($output)
+              ->addColumn('ejecutivo', function ($tarea) {
                 return $tarea->usuario->nombre[0].$tarea->usuario->apellido[0];
-            })
-            ->addColumn('estado', function ($tarea) {
+              })
+              ->addColumn('encargado', function ($tarea) {
+                return $tarea->usuarioencargado->full_name;
+              })
+              ->addColumn('estado', function ($tarea) {
                 return '<span class="label label-estado estado-'.$tarea->estado->tipos_estados_id.'-'.$tarea->estado->id.' ">'.$tarea->estado->nombre.'</span>';
-            })
-            ->addColumn('estados_trafico', function ($tarea) {
-                // Llenar select con estados del trafico
-                $options ='';
-                $estados = Estado::where('tipos_estados_id',4)->get();
-                foreach ($estados as $key => $value) {
+              })
+              ->addColumn('estados_trafico', function ($tarea) {
+                  // Llenar select con estados del trafico
+                  $options ='';
+                  $estados = Estado::where('tipos_estados_id',4)->get();
+                  foreach ($estados as $key => $value) {
                     // seleccionar valor de la BD
                     $selected = ($tarea->estado_trafico_id == $value->id) ? "selected" :"";
                     $options .= '<option value="'.$value->id.'" '.$selected.'>'.$value->nombre.'</option>';
-                }
-                $select = '<select name="estados_trafico'.$tarea->id.'" id="estados_trafico'.$tarea->id.'" class="form-control">'.$options.'</select>';
-                return $select;
-            })
-            ->addColumn('comentario', function ($tarea) {
+                  }
+                  $select = '<select name="estados_trafico'.$tarea->id.'" id="estados_trafico'.$tarea->id.'" class="form-control">'.$options.'</select>';
+                  return $select;
+              })
+              ->addColumn('comentario', function ($tarea) {
                 return '<textarea id="comentario'.$tarea->id.'" class="form-control" rows="4" cols="40">'.$tarea->comentario_trafico.'</textarea>';
-            })
-            ->addColumn('actions', function ($tarea) {
+              })
+              ->addColumn('actions', function ($tarea) {
                 // Permisos para acciones de trafico
                 $ver_tarea = (Auth::user()->can('ver_trafico') )?'<a href="'.url('/').'/ver_tarea/'.$tarea->id.'" class="btn btn-primary btn-xs btn-flat btn_accion" aria-label="Ver Tarea" title="Ver Tarea"><i class="fa fa-file-text" aria-hidden="true"></i></a>':'';
                 $ver_ot = (Auth::user()->can('ver_ots') )?'<a href="'.url('/').'/ots/visualizar/'.$tarea->ot->id.'" class="btn btn-primary btn-xs btn-flat btn_accion" aria-label="Ver OT"  title="Ver OT"><i class="fa fa-eye" aria-hidden="true"></i></a>':'';
                 $guardar_tarea = (Auth::user()->can('editar_trafico') )?'<button id="'.$tarea->id.'" class="save_trafic btn btn-success btn-default btn-block btn-flat" aria-label="Guardar"  title="Guardar"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>':'';
                 return $ver_tarea.$ver_ot.$guardar_tarea;
-            })
-            ->editColumn('created_at', function ($tarea) {
-                return $tarea->created_at->format('d-M-Y');
-            })
-            ->editColumn('fecha_entrega_area', function ($tarea) {
-                return (!is_null($tarea->fecha_entrega_area)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_area) : 'No definida' ;
-            })
-            ->editColumn('fecha_entrega_cuentas', function ($tarea) {
-                return (!is_null($tarea->fecha_entrega_cuentas)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cuentas) : 'No definida' ;
-            })
-            ->make(true);
-        }
-        /**
-        * Actualizar campos de Trafico.
-        *
-        * @param  \Illuminate\Http\Request  $request
-        * @param  int  $id
-        * @return \Illuminate\Http\Response
-        */
-        public function saveTrafic(Request $request, $id)
-        {
-            $tarea  = Tarea::findOrFail($id);
-            if ($request->has('comentario')) {
+              })
+              ->editColumn('created_at', function ($tarea) {
+                  return $tarea->created_at->format('d-M-Y');
+              })
+              ->editColumn('fecha_entrega_area', function ($tarea) {
+                  return (!is_null($tarea->fecha_entrega_area)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_area) : 'No definida' ;
+              })
+              ->editColumn('fecha_entrega_cuentas', function ($tarea) {
+                  return (!is_null($tarea->fecha_entrega_cuentas)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cuentas) : 'No definida' ;
+              })
+              // ->filterColumn('usuarioencargado.nombre', function ($query, $keyword) {
+              //   $query->whereRaw("CONCAT(usuarioencargado.nombre,' ',usuarioencargado.apellido) like ?", ["%{$keyword}%"]);
+              // })
+              ->make(true);
+            }
+            /**
+             * Actualizar campos de Trafico.
+             *
+             * @param  \Illuminate\Http\Request  $request
+             * @param  int  $id
+             * @return \Illuminate\Http\Response
+             */
+            public function saveTrafic(Request $request, $id)
+            {
+              $tarea  = Tarea::findOrFail($id);
+              if ($request->has('comentario')) {
                 $tarea->comentario_trafico = $request->input('comentario');
-            }
-            if ($request->has('estado_trafico')) {
+              }
+              if ($request->has('estado_trafico')) {
                 $tarea->estado_trafico_id = $request->input('estado_trafico');
-            }
-            try {
+              }
+              try {
                 $tarea->save();
                 return response([
                     'status' => Response::HTTP_OK,
                     'response_time' => microtime(true) - LARAVEL_START,
                     'msg' => 'Tarea actualizada.',
                     'tarea' =>$tarea,
-                ],Response::HTTP_OK);
-            } catch (Exception $e) {
+                    ],Response::HTTP_OK);
+              } catch (Exception $e) {
                 return response([
                     'status' => Response::HTTP_BAD_REQUEST,
                     'response_time' => microtime(true) - LARAVEL_START,
@@ -1037,10 +1060,10 @@ public function showAllTareas($id,Request $request)
                     'consola' =>$e->getMessage(),
                     'tarea' =>$tarea,
                     'request' =>$request,
-                ],Response::HTTP_BAD_REQUEST);
-            }
+                    ],Response::HTTP_BAD_REQUEST);
+              }
 
-        }
+            }
 
         /**
         * Validar Crear Tarea

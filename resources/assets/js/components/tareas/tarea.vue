@@ -16,7 +16,7 @@
 </template>
 <script>
 	module.exports = {
-    props: ['id_user'],
+    props: ['id_user','area'],
     data(){
       return{
         usuarios:[],
