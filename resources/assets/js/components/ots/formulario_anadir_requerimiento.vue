@@ -456,7 +456,7 @@
 							this.limpiarComprasRequerimientos();
 							this.datos_requerimiento=[];
 							this.datos_compras=[];
-							window.localStorage.clear(); //try this to clear all local storage
+							//window.localStorage.clear(); //try this to clear all local storage
 							setTimeout(function () {
 								location.reload(true);
 							}, 500);
@@ -494,7 +494,7 @@
 							toastr.warning(this.message,respuesta.body.msg,this.option_toast);
 						}else{
 							toastr.success(respuesta.body.msg,'',this.option_toast);
-							window.localStorage.clear(); //try this to clear all local storage
+							//window.localStorage.clear(); //try this to clear all local storage
 							setTimeout(function () {
 								location.reload(true);
 							}, 500);

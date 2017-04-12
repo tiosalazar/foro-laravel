@@ -152,7 +152,7 @@
 				{ data: 'fases', name: 'fases' },
 				{ data: 'created_at', name: 'created_at' },
 				{ data: 'fecha_entrega_cuentas', name: 'fecha_entrega_cuentas' },
-				{ data: 'encargado', name: 'encargado' },
+				{ data: 'encargado', name: 'encargado.full_name' },
 				{ data: 'tiempo_real', name: 'tiempo_real' },
 				{ data: 'estado', name: 'estado.nombre' },
 				{ data: 'acciones', name: 'acciones', searchable:false },

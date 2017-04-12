@@ -631,7 +631,7 @@ public function showAllTareas($id,Request $request)
     $output = collect($output);
     return Datatables::of($output)
     ->editColumn('created_at', function ($tarea) {
-        return $tarea->created_at->format('d-M-Y');
+        return $tarea->getFormatFecha($tarea->created_at);
     })
     ->editColumn('fecha_entrega_cuentas', function ($tarea) {
         return (!is_null($tarea->fecha_entrega_cuentas)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cuentas) : 'No definida' ;
@@ -702,7 +702,12 @@ public function showAllTareas($id,Request $request)
         $tarea = Tarea::with(['ot' => function ($query) {
             // Tareas activas
             $query->where('estado', 1);
-        },'ot.cliente','usuarioencargado','estado' => function ($query) use ($request,$id) {
+        },'ot.cliente','usuarioencargado'=> function ($query){
+
+       $query->addselect('*');
+       $query->addselect(DB::raw('CONCAT(nombre," ",apellido) as full_name'));
+
+     },'estado' => function ($query) use ($request,$id) {
             if ($request->has('estados')) {
                 $query->where('id', '=', $request->get('estados'));
             }/*else
@@ -727,7 +732,7 @@ public function showAllTareas($id,Request $request)
         $output = collect($output);
         return Datatables::of($output)
         ->editColumn('created_at', function ($tarea) {
-            return $tarea->created_at->format('d-M-Y');
+            return  $tarea->getFormatFecha($tarea->created_at);
         })
         ->addColumn('fases', function ($tarea) {
             return $tarea->planeacion_fase->nombre;
@@ -739,7 +744,7 @@ public function showAllTareas($id,Request $request)
             return (!is_null($tarea->tiempo_real)) ? $tarea->tiempo_real : 'No definido' ;
         })
         ->addColumn('encargado', function ($tarea) {
-            return $tarea->usuarioencargado->nombre .' '. $tarea->usuarioencargado->apellido;
+            return $tarea->usuarioencargado->full_name;
         })
         ->addColumn('prioridad', function ($tarea) {
             return '<span class="label label-estado estado-'.$tarea->Estado_prioridad->tipos_estados_id.'-'.$tarea->Estado_prioridad->id.' ">'.$tarea->Estado_prioridad->nombre.'</span>';

@@ -7,6 +7,7 @@ use App\Area;
 use App\User;
 use App\Historico_equipo;
 use App\Role;
+use App\Tarea;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
@@ -14,6 +15,7 @@ use Illuminate\Http\Response;
 use Exception;
 use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AreaController extends Controller
 {
@@ -197,21 +199,27 @@ class AreaController extends Controller
             $month = $now->month;
         }
         if ($id=='1') {
-            $historico_equipo = Historico_equipo::select('users.nombre','historico_equipos.id','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad','historico_equipos.created_at')->join('users','users.id','=','historico_equipos.entidad_id')->where('tipo_de_entidad',$id)
+            $historico_equipo = Historico_equipo::select(DB::raw('CONCAT(users.nombre," ",users.apellido) as full_name'),'users.nombre','users.apellido','historico_equipos.id','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad','historico_equipos.created_at')->join('users','users.id','=','historico_equipos.entidad_id')->where('tipo_de_entidad',$id)
             ->whereYear('historico_equipos.created_at', $year)
             ->whereMonth('historico_equipos.created_at', $month)
             ->get();
              //$historico_equipo=Historico_equipo::with('usuario')->where('tipo_de_entidad',$id)->get();
 
         } else{
-          $historico_equipo = Historico_equipo::select('areas.nombre','historico_equipos.id','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad','historico_equipos.created_at')->join('areas','areas.id','=','historico_equipos.entidad_id')->where('tipo_de_entidad',$id)
+          $historico_equipo = Historico_equipo::select(DB::raw('CONCAT(areas.nombre) as full_name'),'historico_equipos.id','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad','historico_equipos.created_at')->join('areas','areas.id','=','historico_equipos.entidad_id')->where('tipo_de_entidad',$id)
             ->whereYear('historico_equipos.created_at', $year)
             ->whereMonth('historico_equipos.created_at', $month)
             ->get();
         }
 
         // Retorno la informacion para el datatable
-         return Datatables::of($historico_equipo)->make(true);
+        // Se conviert en collection para que lo reciba el Datatable
+          //$output = collect($output);
+          return Datatables::of($historico_equipo)
+          ->editColumn('created_at', function ($historico_equipo) {
+              return  $historico_equipo->getFormatFecha($historico_equipo->created_at);
+          })->make(true);
+        // return Datatables::of($historico_equipo)->make(true);
 
     }
 

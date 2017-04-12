@@ -37,9 +37,9 @@
                 <h3 class="titulo_listar_info">Información</h3>
                  <div class="info_content" v-if="info_user==true">
                   <h3>Usuario</h3>
-                  <p>{{nombre_user}} <span style="padding:0px 5px;"> </span>{{apellido_user}}</p>
+                  <p>{{nombre_user}} <span style="padding:0px 1px;"> </span>{{apellido_user}}</p>
                    <p>{{email_user}}</p>
-                   <p>fecha: {{fecha_nacimiento | date_format}}</p>
+                   <p style="text-transform: capitalize;">Cumpleaños: {{fecha_nacimiento | date_format}}</p>
 
                 </div>
                 <div class="info_content">
@@ -54,7 +54,7 @@
                 <div class="info_content" v-if="switcharea_user == '1'">
                   <h3>Horas</h3>
                   <p>Horas área: <span>{{areas_info.total_horas}}</span></p>
-                  <p>Horas disponible área: <span>{{parseInt(areas_info.total_horas)-parseInt(areas_info.horas_consumidas)}}</span></p>
+                  <p>Horas disponible área: <span>{{parseFloat(areas_info.total_horas)-parseFloat(areas_info.horas_consumidas)}}</span></p>
                 </div>
                 <div class="info_content" v-if="switcharea_user == '2'">
                   <h3>Horas</h3>
@@ -126,8 +126,7 @@ import moment from 'moment';
      filters: {
        date_format: function (value) {
          if (!value) return ''
-
-         return (value)?moment(value).format('DD | MMM '):'';
+         return (value)?moment(value).format('DD | MMMM '):'';
        }
      },
      created: function(){

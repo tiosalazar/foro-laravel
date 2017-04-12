@@ -8668,8 +8668,6 @@ body {
   background-color: #15BAEE;
 }
 
-<<<<<<< HEAD
-=======
 .img-circle-arriba {
   font-size: 20px;
   font-style: 25px;
@@ -8693,7 +8691,6 @@ body {
   margin-top: -50px;
 }
 
->>>>>>> origin/bcaldas
 .listar_areas_modulo {
   width: 90%;
   /* mixin centrado, fuente y alto titulo de las columnas */
@@ -9501,8 +9498,6 @@ body {
   width: 90px;
 }
 
-<<<<<<< HEAD
-=======
 #enlaces_externos {
   line-height: 30px;
 }
@@ -9511,7 +9506,6 @@ body {
   margin-bottom: 30px;
 }
 
->>>>>>> origin/bcaldas
 .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a > p {
   white-space: normal;
 }

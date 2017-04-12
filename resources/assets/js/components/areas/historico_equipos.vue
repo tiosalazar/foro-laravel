@@ -45,15 +45,15 @@
 		props: ['area'],
 		data(){
 			return{
-				
+
 			}
 		},
 		created: function(){
-			
+
 			if ( (typeof(this.area) == 'undefined') || this.area=="" ) {
 				this.area = -1;
 			}
-			
+
 		},
 		watch:{},
 		mounted(){
@@ -69,7 +69,7 @@
 				ajax: {
 					url: window._baseURL+"/historico_equipos/"+that.area,
 					data: function (d) {
-		               
+
 		                d.year = $('select[name=year]').val();
 		                d.month = $('select[name=month]').val();
 		            },
@@ -77,7 +77,7 @@
 				},
 				columns: [
 					{ data: 'id', name: 'id' },
-					{ data: 'nombre', name: 'nombre' },
+					{ data: 'full_name', name: 'full_name' },
 					{ data: 'horas_disponibles', name: 'horas_disponibles' },
 					{ data: 'horas_gastadas', name: 'horas_gastadas' },
 					{ data: 'tipo_de_entidad', name: 'tipo_de_entidad' },
@@ -93,7 +93,7 @@
 						     }
 
 					},
-					
+
 				],
 				autoWidth: false,
 				responsive: true,
@@ -154,7 +154,7 @@
 
 		},
 		methods:{
-			
+
 		},
 
 	}

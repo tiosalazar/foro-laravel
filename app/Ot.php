@@ -18,23 +18,23 @@ class Ot extends Model
   protected $fillable = [
     'nombre','referencia','fee','horas_totales','horas_disponibles','total_horas_extra','valor', 'observaciones', 'fecha_inicio', 'fecha_final','estado','clientes_id', 'usuarios_id','estados_id',
   ];
-   
+
    public function getFormatFecha($fecha_ingreso)
   {
        $fecha= new Date($fecha_ingreso);
-      return ucwords($fecha->format('d-M-Y'));
+      return ucwords($fecha->format('d-M-Y'), "-");
   }
   public function getFormatFechaShow($fecha_ingreso)
   {
        $fecha= new Date($fecha_ingreso);
-      return $fecha->format('d | M | Y ');
+      return ucwords($fecha->format('d | M | Y '));
   }
   public function getFormatFechaShowInfo($fecha_ingreso)
   {
        $fecha= new Date($fecha_ingreso);
       return $fecha->format('d-M-Y ');
   }
- 
+
 
   /**
   * Obtiene el Cliente que esta asociado a una OT
