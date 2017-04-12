@@ -210,7 +210,7 @@
 
           </div>
           <!-- /.box-body -->
-          <div v-if=" (rol_actual =='owner')" >
+          <div v-if=" (rol_actual =='owner') || (rol_actual =='desarrollo')" >
                 <div class="box-footer text-center">
                   <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Actualizar</button>
                   <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Comentar</button>
