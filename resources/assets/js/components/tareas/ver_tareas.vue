@@ -121,7 +121,7 @@
 				{ data: 'prioridad', name: 'prioridad' },
 				{ data: 'created_at', name: 'created_at' },
 				{ data: 'fecha_entrega_cuentas', name: 'fecha_entrega_cuentas' },
-				{ data: 'encargado', name: 'usuarioencargado.nombre', searchable:true  },
+				{ data: 'encargado', name: 'usuarioencargado.full_name', searchable:true  },
 				{ data: 'estado', name: 'estado.nombre' },
 				{ data: 'acciones', name: 'acciones', searchable:false },
 				],

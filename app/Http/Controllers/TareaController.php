@@ -610,7 +610,12 @@ return response()->json($respuesta);
         $tarea = Tarea::with(['ot' => function ($query) {
             // Tareas activas
             $query->where('estado', 1);
-        },'ot.cliente','usuarioencargado','estado' => function ($query) use ($request,$id) {
+        },'ot.cliente','usuarioencargado'=> function ($query){
+
+          $query->addselect('*');
+          $query->addselect(DB::raw('CONCAT(nombre," ",apellido) as full_name'));
+
+        },'estado' => function ($query) use ($request,$id) {
             if ($request->has('estados')) {
                 $query->where('id', '=', $request->get('estados'));
             }
@@ -749,7 +754,12 @@ return response()->json($respuesta);
       $tarea = Tarea::with(['ot' => function ($query) {
           // Tareas activas
           $query->where('estado', 1);
-      },'ot.cliente','usuarioencargado','estado' => function ($query) {
+      },'ot.cliente','usuarioencargado' => function ($query){
+
+        $query->addselect('*');
+        $query->addselect(DB::raw('CONCAT(nombre," ",apellido) as full_name'));
+
+      },'estado' => function ($query) {
           $query->where('id', '=',3)->orWhere('id', '=', 2)->orWhere('id', '=',1)->orWhere('id', '=',20);
       },'area','usuario'])
       ->whereBetween('created_at',array($f_inicio,$f_final))
@@ -764,14 +774,11 @@ return response()->json($respuesta);
       // Se conviert en collection para que lo reciba el Datatable
       $output = collect($output);
       return Datatables::of($output)
-      // ->addColumn('encargado', function ($tarea) {
-      //   return $tarea->usuarioencargado->nombre.$tarea->usuarioencargado->apellido;
-      // })
       ->addColumn('ejecutivo', function ($tarea) {
         return $tarea->usuario->nombre[0].$tarea->usuario->apellido[0];
       })
       ->addColumn('encargado', function ($tarea) {
-        return $tarea->usuarioencargado->nombre .' '. $tarea->usuarioencargado->apellido;
+        return $tarea->usuarioencargado->full_name;
       })
       ->addColumn('estado', function ($tarea) {
         return '<span class="label label-estado estado-'.$tarea->estado->tipos_estados_id.'-'.$tarea->estado->id.' ">'.$tarea->estado->nombre.'</span>';
@@ -807,6 +814,9 @@ return response()->json($respuesta);
       ->editColumn('fecha_entrega_cuentas', function ($tarea) {
           return (!is_null($tarea->fecha_entrega_cuentas)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cuentas) : 'No definida' ;
       })
+      // ->filterColumn('usuarioencargado.nombre', function ($query, $keyword) {
+      //   $query->whereRaw("CONCAT(usuarioencargado.nombre,' ',usuarioencargado.apellido) like ?", ["%{$keyword}%"]);
+      // })
       ->make(true);
     }
     /**
