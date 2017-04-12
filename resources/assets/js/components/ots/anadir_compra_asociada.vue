@@ -58,12 +58,12 @@
             <input type="text"  :name="'provedor_compra'+index"  @input="guardarDatos" v-validate data-vv-rules="required|min:4" data-vv-as="Provedor" v-model="ed.model_provedor" class="form-control" :id="'provedor_compra'+index"   placeholder="Provedor">
             <span  class="help-block" v-show="errors.has('provedor_compra'+index)">{{ errors.first('provedor_compra'+index) }}</span>
           </div>
+          <div class="form-group col-md-4  col-xs-12"><select_divisa :index="index" :select="ed.divisa"></select_divisa> </div>
           <div class="form-group  col-md-4 col-xs-12"  v-bind:class="{ 'has-error': errors.has('valor_compra'+index) }">
             <label class="sr-only" for="no_horas_req">Valor</label>
             <input type="text" :name="'valor_compra'+index"  @input="guardarDatos(),processValue(index)" v-validate data-vv-rules="required" data-vv-as="Valor" v-model="ed.model_valor" class="form-control" :id="'valor_compra'+index"  placeholder="Valor">
             <span  class="help-block" v-show="errors.has('valor_compra'+index)">{{ errors.first('valor_compra'+index) }}</span>
           </div>
-          <div class="form-group col-md-4  col-xs-12"><select_divisa :index="index" :select="ed.divisa"></select_divisa> </div>
         </div>
         <div class="col-md-12">
           <div style="height:22px"></div>
@@ -161,6 +161,7 @@ module.exports={
     this.$on('divisa', function(v) {
       if( v != ""){
         this.compra_asociada[v.index].divisa=v.divisa;
+        this.compra_asociada[v.index].model_valor=0;
         this.guardarDatos();
       }
     });
@@ -184,7 +185,10 @@ module.exports={
     arreglo de requerimientos
     */
     processValue:function(index) {
-      this.compra_asociada[index].model_valor =  numeral(this.compra_asociada[index].model_valor).format('0,0')
+      console.log(this.compra_asociada[index].divisa.id)
+      if (this.compra_asociada[index].divisa.id==1) {
+        this.compra_asociada[index].model_valor =  numeral(this.compra_asociada[index].model_valor).format('0,0')
+      }
     },
     /*
     arregla al arreglo de requerimientos una nueva posición con los datos en blanco
