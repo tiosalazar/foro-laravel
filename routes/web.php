@@ -86,6 +86,8 @@
       });
 
   Route::get('ots/exportar/{id}',['middleware' => ['permission:editar_ots'], 'uses' =>'OtController@exportarTodoslosDatos']);
+ //Exportar Datatable OTs.
+  Route::get('/ots/listado/exportar/{fee}/{f_inicio}/{f_final}','OtController@exportar_listado_ots');
 
   Route::get('/show_ots_tareas','OtController@showOtEnTareas');
   Route::get('/show_ots_tareas_query/{query}','OtController@showOtEnTareasByQuery');
@@ -190,7 +192,9 @@
        return view('admin.soporte.informe_soporte');
     })->name('informe_soporte');
 
+   //Exportar Datatables.
 
+   //Exportar Informe Soporte.
     Route::get('soporte/exportar/{estado}/{fase}/{year}/{month}',['middleware' => ['permission:descargar_informe_soporte'], 'uses' => 'TareaController@exportar_informe_soporte']);
 
       //Historico Equipo

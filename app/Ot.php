@@ -57,7 +57,13 @@ class Ot extends Model
   {
     return $this->belongsTo('App\Estado','estados_id','id');
   }
-
+  /**
+  * Obtiene el Estado que esta asociada a una OT
+  */
+  public function Estados()
+  {
+    return $this->belongsTo('App\Estado','estados_id','id');
+  }
 
   /**
   * Obtiene los Comentarios que posee el usuario

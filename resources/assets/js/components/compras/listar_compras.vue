@@ -4,14 +4,16 @@
 		<table class="table table-striped table-hover datatable-foro table-bordered dataTable no-footer" id="tabla_tareas">
 			<thead>
 				<tr>
-				    <th >Referencía OT</th>
+				  <th >Referencía OT</th>
 					<th >Tipo Compra </th>
 					<th >Estado</th>
-					<th >No. transaccion</th>
+					<th >No. transacción</th>
+					<th >Fecha de transacción</th>
 					<th >Provedor</th>
 					<th >Valor</th>
 					<th >Moneda</th>
 					<th >Descripción</th>
+					<th >Fecha de Creación</th>
 					<th >Acciones</th>
 				</tr>
 			</thead>
@@ -19,13 +21,29 @@
 		</table>
 
 		 <form method="POST" id="search-form" class="form-inline" role="form">
-	        <div class="drop">
-	         	<select name="fee" id="fee"  class="form-control  multiselect">
-	        	  <option value="all">Todos</option>
-		        	<option value="1">Fee</option>
-		        	<option value="0">Puntual</option>
-		        </select>
-	        </div>
+			 <div class="drop">
+				 <select name="month" id="month"  class="form-control multiselect">
+					 <option value="">Mes</option>
+					 <option value="01">Enero</option>
+					 <option value="02">Febrero</option>
+					 <option value="03">Marzo</option>
+					 <option value="04">Abril</option>
+					 <option value="05">Mayo</option>
+					 <option value="06">Junio</option>
+					 <option value="07">Julio</option>
+					 <option value="08">Agosto</option>
+					 <option value="09">Septiembre</option>
+					 <option value="10">Octubre</option>
+					 <option value="11">Noviembre</option>
+					 <option value="12">Diciembre</option>
+				 </select>
+			 </div>
+			 <div class="drop">
+				 <select name="year" id="year"  class="form-control multiselect">
+					 <option value="">Año</option>
+				 </select>
+			 </div>
+
 	        <button type="submit" class="btn btn-info btn-flat">Buscar</button>
          </form>
 
@@ -85,7 +103,8 @@
 						request.setRequestHeader("Authorization", 'Bearer '+Laravel.api_token);
 					},
 					data: function (d) {
-						d.fee = $('select[name=fee]').val();
+						d.year = $('select[name=year]').val();
+						d.month = $('select[name=month]').val();
 					},
 				},
 				columns: [
@@ -93,10 +112,12 @@
 				{ data: 'tipo_compra.nombre', name: 'tipo_compra.nombre' },
 				{ data: 'estado.nombre', name: 'estado.nombre' },
 				{ data: 'transaccion', name: 'transaccion' },
+				{ data: 'fecha_creacion', name: 'fecha_creacion' },
 				{ data: 'provedor', name: 'provedor' },
 				{ data: 'valor', name: 'valor' },
 				{ data: 'divisa.nombre', name: 'divisa.nombre' },
 				{ data: 'descripcion', name: 'descripcion' },
+				{ data: 'fecha_transaccion', name: 'fecha_transaccion' },
 				{ data: 'acciones', name: 'acciones' }
 				],
 				columnDefs: [
@@ -104,7 +125,7 @@
 						   	"targets": [1],
 						   	"data": null,
 						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-							  
+
 						       	var checked=(data==null)?'No asignado':data;
 						       	 return  checked;
 
@@ -114,13 +135,13 @@
 						   	"targets": [2],
 						   	"data": null,
 						       "render": function(data, type, full) { // Devuelve el contenido personalizado
-							 
+
 						       	var checked=(data==null)?'No asignado':data;
 						       	 return  checked;
 
 						       }
 						   },
-		
+
 							{ className: "listar_ot_descripcion", "targets": [ 6 ] }
 
 							],
@@ -169,6 +190,25 @@
 
 			 // Agregar Selects al dibujar la tabla
 		    $('#tabla_tareas').on( 'draw.dt', function () {
+
+					$.ajax( window._baseURL+"/years_tarea" )
+					.done(function(response) {
+							// limpiar el select
+							if ($('select[name=year]').val() == "") {
+							var option;
+							$('#year')
+							.find('option')
+							.remove()
+							.end()
+							.append('<option value="">Año</option>')
+							// llenar select dinamicamente
+							response.forEach(function(item,index) {
+								option = $('<option>');
+								option.attr('value', item).text(item);
+								$('#year').append(option);
+							})
+						}
+					})
 
 				// Agregar las formulario a datatable
 				$('#search-form').appendTo('.selects');

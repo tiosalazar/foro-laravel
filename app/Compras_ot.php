@@ -21,7 +21,7 @@ class Compras_Ot extends Model
   public function getFormatFecha($fecha_ingreso)
  {
       $fecha= new Date($fecha_ingreso);
-     return ucwords($fecha->format('d-M-Y'));
+     return ucwords($fecha->format('d-M-Y'),'-');
  }
 
   /**

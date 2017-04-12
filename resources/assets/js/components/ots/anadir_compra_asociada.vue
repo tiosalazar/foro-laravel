@@ -106,7 +106,7 @@ module.exports={
       fecha_inicio: moment().toDate(),
       state: {
         disabled: {
-          to: moment().subtract(1, 'days').toDate(), // Disable all dates up to specific date
+        //  to: moment().subtract(1, 'days').toDate(), // Disable all dates up to specific date
           //  from: new Date(2017,5,2), // Disable all dates after specific date
           days: [0] // Disable Saturday's and Sunday's
         }

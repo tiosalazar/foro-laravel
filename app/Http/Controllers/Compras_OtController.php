@@ -13,6 +13,7 @@ use Illuminate\Http\Response;
 use Exception;
 use Yajra\Datatables\Datatables;
 use Excel;
+use Carbon\Carbon;
 
 class Compras_OtController extends Controller
 {
@@ -34,11 +35,31 @@ class Compras_OtController extends Controller
 public function datatable_index(Request $request)
 {
   $output= array();
+    $year = '';
+    $month = '';
+    $fase ='';
+    $now = Carbon::now();
+    if ($request->has('year')) {
+        $year = $request->get('year');
+    }else{
+        $year = $now->year;
+    }
+    if ($request->has('month')) {
+        $month = $request->get('month');
+    }else{
+        $month = $now->month;
+    }
 
-  $compra= Compras_ot::with('ot','area','tipo_compra','divisa','estado')->get();
+  $compra= Compras_ot::with('ot','area','tipo_compra','divisa','estado')
+      ->whereYear('created_at', $year)
+      ->whereMonth('created_at', $month)
+      ->get();
 
   $output = collect($compra);
   return Datatables::of($output)
+  ->editColumn('transaccion', function($compra) {
+    return  ($compra->transaccion != "")?$compra->transaccion:'No definida';
+ })
   ->addColumn('fecha_creacion', function($compra) {
     return  $compra->getFormatFecha($compra->created_at);
  })

@@ -152,7 +152,7 @@
 				{ data: 'fases', name: 'fases' },
 				{ data: 'created_at', name: 'created_at' },
 				{ data: 'fecha_entrega_cuentas', name: 'fecha_entrega_cuentas' },
-				{ data: 'encargado', name: 'encargado.full_name' },
+				{ data: 'encargado', name: 'usuarioencargado.full_name' },
 				{ data: 'tiempo_real', name: 'tiempo_real' },
 				{ data: 'estado', name: 'estado.nombre' },
 				{ data: 'acciones', name: 'acciones', searchable:false },
@@ -260,7 +260,7 @@
 				})
 				// Agregar las formulario a datatable
 				$('#search-form').appendTo('.selects');
-				$('#exportar_datos').appendTo('.button_exportar');
+				//$('#exportar_datos').appendTo('.button_exportar');
 
 			} );
 			$(document).ready(function(e) {
@@ -283,19 +283,6 @@
 
 				window.location = window._baseURL+'/informes/soporte/exportar/'+arrayData.estado+'/'+
 				arrayData.fase+'/'+arrayData.year+'/'+arrayData.month;
-
-//http://localhost:3000/informes/soporte/exportar/''/''/''/''
-			/*	this.$http.get(window._baseURL+'/informes/soporte/exportar/'+arrayData.estado+'/'+
-				arrayData.fase+'/'+arrayData.year+'/'+arrayData.month)
-				.then( function (response) {
-					 console.log(response);
-				},function (err){
-          console.log(err,'ERROR');
-
-				});
-
-				console.log(arrayData);*/
-
 
 			},
 			borrarCliente: function() {

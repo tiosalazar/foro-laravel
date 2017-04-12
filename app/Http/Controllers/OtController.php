@@ -25,6 +25,7 @@ use Illuminate\Http\Response;
 use Exception;
 use Yajra\Datatables\Datatables;
 use Excel;
+use Carbon\Carbon;
 
 
 class OtController extends Controller
@@ -48,7 +49,7 @@ class OtController extends Controller
 
    }
 
-      /**
+   /**
    * Display a listing of the resource.
    *
    * @return \Illuminate\Http\Response
@@ -59,28 +60,108 @@ class OtController extends Controller
 
       $ots= Ot::orderBy('created_at', 'ASC')->get();
       $fee= $request->fee;
-      if ($request->has('fee') && $fee !='all' ) {
-          $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->where('fee', $fee )->get();
-        }else{
+      $f_inicio = '';
+      $f_final = '';
+      if ($request->has('f_inicio')) {
+         $f_inicio = $request->get('f_inicio');
+      }else{
+         $f_inicio = null;
+      }
+      if ($request->has('f_final')) {
+         $f_final = $request->get('f_final');
+      }else{
+         $f_final = null;
+      }
+      if ($request->has('fee') && $fee !='all' && $f_inicio != null && $f_final != null ) {
+         $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->where('fecha_inicio', '>=', $f_inicio)->where('fecha_inicio', '<=', $f_final)->where('fee', $fee )->get();
+      }else if ($f_inicio != null && $f_final != null){
+         $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->where('fecha_inicio', '>=', $f_inicio)->where('fecha_inicio', '<=', $f_final)->get();
+      }else if ($request->has('fee') && $fee !='all' ){
+         $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->where('fee', $fee )->get();
+      }else{
          $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->get();
-        }
+      }
 
       $output = collect($ots);
       return Datatables::of($output)
       ->addColumn('fecha_inicio', function($ots) {
-        return  $ots->getFormatFecha($ots->fecha_inicio);
-     })
+         return  $ots->getFormatFecha($ots->fecha_inicio);
+      })
       ->addColumn('fecha_final', function($ots) {
-       return $ots->getFormatFecha($ots->fecha_final);
-    })
+         return $ots->getFormatFecha($ots->fecha_final);
+      })
       ->addColumn('acciones', function($ots) {
-       $ver_ot='<a href="visualizar/'.$ots->id.'" class="btn_accion estado-2-10 btn-success"  title="Ver Ot" aria-label="View"><i class="fa fa-eye" aria-hidden="true"></i></a>';
-       $editar_ot=(Auth::user()->can('editar_ots') )?'<a href="editar/'.$ots->id.'" title="Editar Ot"  class="btn_accion btn-info" aria-label="View"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>':'';
-       $exportar_ot=(Auth::user()->can('editar_ots') )?'<a href="exportar/'.$ots->id.'" title="Exportar Ot"  class="btn_accion estado-2-10" aria-label="View"><i class="fa fa-file-excel-o" aria-hidden="true"></i></a>':'';
-       $eliminar_ot=(Auth::user()->can('editar_ots') )?'<a href="#" id="cli-'.$ots->id.'" title="Eliminar Ot"  class="btn_accion delete_cliente btn-danger"  data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></a>':'';
-       return $ver_ot.$editar_ot.$exportar_ot.$eliminar_ot;
-    })
+         $ver_ot='<a href="visualizar/'.$ots->id.'" class="btn_accion estado-2-10 btn-success"  title="Ver Ot" aria-label="View"><i class="fa fa-eye" aria-hidden="true"></i></a>';
+         $editar_ot=(Auth::user()->can('editar_ots') )?'<a href="editar/'.$ots->id.'" title="Editar Ot"  class="btn_accion btn-info" aria-label="View"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>':'';
+         $exportar_ot=(Auth::user()->can('editar_ots') )?'<a href="exportar/'.$ots->id.'" title="Exportar Ot"  class="btn_accion estado-2-10" aria-label="View"><i class="fa fa-file-excel-o" aria-hidden="true"></i></a>':'';
+         $eliminar_ot=(Auth::user()->can('editar_ots') )?'<a href="#" id="cli-'.$ots->id.'" title="Eliminar Ot"  class="btn_accion delete_cliente btn-danger"  data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></a>':'';
+         return $ver_ot.$editar_ot.$exportar_ot.$eliminar_ot;
+      })
       ->make(true);
+
+   }
+   public function exportar_listado_ots($fee,$f_inicio,$f_final){
+
+      $output= array();
+      // Si no trae el mes y año en el $request
+      // tomar el mes y el año actual
+
+
+      $ots= Ot::orderBy('created_at', 'ASC')->get();
+      if ($fee != 'null' && $fee !='all' && $f_inicio != 'null' && $f_final != 'null') {
+         $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->where('fecha_inicio', '>=', $f_inicio)->where('fecha_inicio', '<=', $f_final)->where('fee', $fee )->get();
+      }else if ($f_inicio != 'null' && $f_final != 'null'){
+         $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->where('fecha_inicio', '>=', $f_inicio)->where('fecha_inicio', '<=', $f_final)->get();
+      }else if ($fee !='null'  && $fee !='all') {
+         $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->where('fee', $fee )->get();
+      }else{
+         $ots = Ot::with('cliente','usuario','estado')->where('estado',1)->get();
+      }
+
+      //return response()->json($ots);
+
+      $otsDescripcion = [];
+      foreach($ots as $ot){
+         array_push( $otsDescripcion, array($ot['referencia'],$ot['usuario']['nombre'].' '.$ot['usuario']['apellido'],$ot['cliente']['nombre'],
+         $ot['nombre'],($ot['fee']==1)?'Fee':'Puntual',$ot->getFormatFecha($ot['fecha_inicio']),
+         $ot['estados']['nombre'], number_format( $ot['horas_totales'],2,",","."),
+         number_format($ot['horas_disponibles'],2,",","."),number_format( $ot['total_horas_extra'],2,",","."),
+         $this->formatMoney($ot['valor'],false),$ot->getFormatFecha($ot['fecha_final'])
+         ) );
+      }
+
+      // Se conviert en collection para que lo reciba el Datatable
+      //$output = collect($output);
+
+      //return response()->json($otsDescripcion);
+      Excel::create( 'Listado de OTs ', function($excel) use($otsDescripcion)  {
+
+         $excel->setTitle('Listado de OTs');
+         $excel->setCreator('Gestor de proccesos')->setCompany('Himalaya');
+         $excel->setDescription('Listado de OTs');
+         $excel->sheet('Listado', function($sheet) use($otsDescripcion)  {
+
+            $headings = array('#OT','Ejecutivo','Cliente','Nombre','Fee','Fecha Inicio','Estado','Horas Totales','Horas Disponibles','Horas Extra','Valor','Fecha final');
+            $sheet->prependRow(1, $headings);
+            $sheet->fromArray($otsDescripcion, null, 'A2', false, false);
+            $sheet->setBorder('A2:L345', 'thin');
+
+
+            $sheet->cells('A1:L1', function($cells) {
+               $cells->setAlignment('center');
+               $cells->setFont(array(
+                  'family'     => 'Ubuntu',
+                  'size'       => '12',
+                  'bold'       =>  true
+               ));
+               $cells->setBackground('#002e60');
+               $cells->setFontColor('#ffffff');
+            });
+            $sheet->setBorder('A1:L1', 'thin');
+
+         });
+
+      })->download('xls');
 
    }
 
@@ -115,7 +196,7 @@ class OtController extends Controller
             'msg' => 'Error al crear la OT',
             'error' => 'ERR_01',
             'obj' =>$vl->errors()
-            ],Response::HTTP_BAD_REQUEST);
+         ],Response::HTTP_BAD_REQUEST);
       }else
       {
          try
@@ -169,7 +250,7 @@ class OtController extends Controller
                'response_time' => microtime(true) - LARAVEL_START,
                'msg' => 'La OT ha sido creada con exito !! ',//Mensaje a mostrar
                'obj' => $ot
-               ],Response::HTTP_OK);
+            ],Response::HTTP_OK);
 
          }catch(Exception $e){
             DB::rollback();
@@ -179,7 +260,7 @@ class OtController extends Controller
                'error_creacion' => 'fallo_en_la_creacion',
                'consola' =>$e->getMessage(),
                'request' => $request->all()
-               ],Response::HTTP_BAD_REQUEST);
+            ],Response::HTTP_BAD_REQUEST);
          }
       }
 
@@ -215,7 +296,7 @@ class OtController extends Controller
          $compra->Tipo_Compra;
          $compra->Divisa;
          $array_temporal= array('areas_id'=>$value['areas_id'],'tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'descripcion' => $value['descripcion'],
-            'provedor'=> $value['provedor'] , 'valor'=>  $this->formatMoney($value['valor'],false), 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
+         'provedor'=> $value['provedor'] , 'valor'=>  $this->formatMoney($value['valor'],false), 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
          array_push($ingreso,$array_temporal);
       }
 
@@ -276,7 +357,7 @@ class OtController extends Controller
 
                // $array_temporal['area']=$value['areas_id'];
                $array_temporal= array('tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'model_desc' => $value['descripcion'],
-                  'model_provedor'=> $value['provedor'] , 'model_valor'=>  $value['valor'], 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
+               'model_provedor'=> $value['provedor'] , 'model_valor'=>  $value['valor'], 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
                array_push($ingreso,$array_temporal);
                $data['compras']['compras']=$ingreso;
                //array_push($data['compras'],  $array_temporal);
@@ -312,14 +393,14 @@ class OtController extends Controller
             'msg' => 'Error al actualizar la OT',
             'error' => 'ERR_01',
             'obj' =>$vl->errors()
-            ],Response::HTTP_BAD_REQUEST);
+         ],Response::HTTP_BAD_REQUEST);
       }else
       {
 
          try
          {
-           //Inicio una transacción por si falla algún ingreso no quede registro en ninguna tabla
-           DB::beginTransaction();
+            //Inicio una transacción por si falla algún ingreso no quede registro en ninguna tabla
+            DB::beginTransaction();
             //Busca la OT en la BD
             $ot=  Ot::findOrFail($id);
             $ot->fill($data['datos_encabezado']);
@@ -341,7 +422,7 @@ class OtController extends Controller
 
             foreach ($requerimientos as $requerimiento) {
                if(  $index >= count($tiempos_x_area)  ){
-                   break;
+                  break;
                }
 
                /*Agrego el tiempo por Area */
@@ -374,7 +455,7 @@ class OtController extends Controller
             foreach ($compras as $compra) {
                if(  $index >= count($model_compras)  ){
                   $debug["sali_bien2"]='entre a salir bien Compras';
-                   break;
+                  break;
                }
                $model_compras[$index]->fill($compra);
                $model_compras[$index]->save();
@@ -385,29 +466,29 @@ class OtController extends Controller
 
             $debug["count_req2"]=count($requerimientos);
             /*Si el numero no concuerda es porque hay un nuevo requerimiento*/
-           if( count($requerimientos) > 0 ){
+            if( count($requerimientos) > 0 ){
 
-             foreach ($requerimientos as $requerimiento) {
-                 $tiempos_x_area= new Tiempos_x_Area;
-                 /*Agrego el tiempo por Area */
-                 $tiempos_x_area->tiempo_estimado_ot=$requerimiento['horas'];
-                 $tiempos_x_area->tiempo_extra=$requerimiento['tiempo_extra'];
-                 $tiempos_x_area->ots_id=$id_ot;
-                 $tiempos_x_area->areas_id=$requerimiento['area'];
-                 $tiempos_x_area->save();
-                 /*El siguiente for recorre el listado de requerimientos y los agrega */
-            for ($i=0; $i < count($requerimiento['requerimientos']) ; $i++) {
-                    $model_descripcion_requerimiento= new Requerimientos_Ot;
-                    $arreglo=$requerimiento['requerimientos'][$i];
-                    $arreglo_ingresar= array('nombre' => $arreglo['model_nom'],'horas'=> $arreglo['model_horas'],'areas_id'=>$requerimiento['area'],'ots_id'=>$id_ot);
-                    $model_descripcion_requerimiento->fill( $arreglo_ingresar);
-                    $model_descripcion_requerimiento->save();
-                 }
-              }
+               foreach ($requerimientos as $requerimiento) {
+                  $tiempos_x_area= new Tiempos_x_Area;
+                  /*Agrego el tiempo por Area */
+                  $tiempos_x_area->tiempo_estimado_ot=$requerimiento['horas'];
+                  $tiempos_x_area->tiempo_extra=$requerimiento['tiempo_extra'];
+                  $tiempos_x_area->ots_id=$id_ot;
+                  $tiempos_x_area->areas_id=$requerimiento['area'];
+                  $tiempos_x_area->save();
+                  /*El siguiente for recorre el listado de requerimientos y los agrega */
+                  for ($i=0; $i < count($requerimiento['requerimientos']) ; $i++) {
+                     $model_descripcion_requerimiento= new Requerimientos_Ot;
+                     $arreglo=$requerimiento['requerimientos'][$i];
+                     $arreglo_ingresar= array('nombre' => $arreglo['model_nom'],'horas'=> $arreglo['model_horas'],'areas_id'=>$requerimiento['area'],'ots_id'=>$id_ot);
+                     $model_descripcion_requerimiento->fill( $arreglo_ingresar);
+                     $model_descripcion_requerimiento->save();
+                  }
+               }
 
-           }
+            }
 
-         /*El siguiente for recorre el listado de compras y los agrega*/
+            /*El siguiente for recorre el listado de compras y los agrega*/
             foreach ($compras as $compra) {
                $model_compras= new Compras_Ot;
                $model_compras->fill($compra);
@@ -429,17 +510,17 @@ class OtController extends Controller
             $maker=Auth::user();
             $user= User::findOrFail($ot->usuarios_id);
             $user->notify(new OtTiempoExtraAprobado($maker,$ot));
-             DB::commit();
+            DB::commit();
 
             return response([
                'status' => Response::HTTP_OK,
                'response_time' => microtime(true) - LARAVEL_START,
                'msg' => 'Se han Actualizado los datos de la OT ', //Mensaje a mostrar en el Front
                'obj' => $ot
-               ],Response::HTTP_OK);
+            ],Response::HTTP_OK);
 
          }catch(Exception $e){
-             DB::rollback();
+            DB::rollback();
             return response([
                'status' => Response::HTTP_BAD_REQUEST,
                'response_time' => microtime(true) - LARAVEL_START,
@@ -447,7 +528,7 @@ class OtController extends Controller
                'consola' =>$e->getMessage(),
                'debug'=> $debug,
                'request' =>$request->all()
-               ],Response::HTTP_BAD_REQUEST);
+            ],Response::HTTP_BAD_REQUEST);
          }
 
       }
@@ -463,27 +544,27 @@ class OtController extends Controller
    */
    public function destroy($id)
    {
-     $ot=  Ot::findOrFail($id);
-     $ot->Tarea;
-     if ( !isset($ot->Tarea) || empty($ot->Tarea) || $ot->Tarea == [] || count($ot->Tarea) <=0 ) {
-      $ot->estado=0;
-      $ot->save();
-       return response([
-               'status' => Response::HTTP_OK,
-               'response_time' => microtime(true) - LARAVEL_START,
-               'msg' => 'Se ha eliminado la OT correctamente', //Mensaje a mostrar en el Front
-               'obj' => $ot
-               ],Response::HTTP_OK);
-     }else{
-       return response([
-               'status' => Response::HTTP_BAD_REQUEST,
-               'response_time' => microtime(true) - LARAVEL_START,
-               'error' => 'fallo_al_eliminar',
-               'consola' => $ot->Tarea,
-               'msg' => 'Esta OT ya tiene tareas Asignadas, por lo tanto no se puede eliminar', //Mensaje a mostrar en el Front
-               ],Response::HTTP_BAD_REQUEST);
+      $ot=  Ot::findOrFail($id);
+      $ot->Tarea;
+      if ( !isset($ot->Tarea) || empty($ot->Tarea) || $ot->Tarea == [] || count($ot->Tarea) <=0 ) {
+         $ot->estado=0;
+         $ot->save();
+         return response([
+            'status' => Response::HTTP_OK,
+            'response_time' => microtime(true) - LARAVEL_START,
+            'msg' => 'Se ha eliminado la OT correctamente', //Mensaje a mostrar en el Front
+            'obj' => $ot
+         ],Response::HTTP_OK);
+      }else{
+         return response([
+            'status' => Response::HTTP_BAD_REQUEST,
+            'response_time' => microtime(true) - LARAVEL_START,
+            'error' => 'fallo_al_eliminar',
+            'consola' => $ot->Tarea,
+            'msg' => 'Esta OT ya tiene tareas Asignadas, por lo tanto no se puede eliminar', //Mensaje a mostrar en el Front
+         ],Response::HTTP_BAD_REQUEST);
 
-     }
+      }
 
    }
 
@@ -552,7 +633,7 @@ class OtController extends Controller
 
                   // $array_temporal['area']=$value['areas_id'];
                   $array_temporal= array('tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'model_desc' => $value['descripcion'],
-                     'model_provedor'=> $value['provedor'] , 'model_valor'=>  $value['valor'], 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
+                  'model_provedor'=> $value['provedor'] , 'model_valor'=>  $value['valor'], 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
                   array_push($ingreso,$array_temporal);
                   $data['compras']['compras']=$ingreso;
                   //array_push($data['compras'],  $array_temporal);
@@ -577,7 +658,7 @@ class OtController extends Controller
             'response_time' => microtime(true) - LARAVEL_START,
             'msg' => 'Se ha Actualizado el estado de la ot con Exito',//Mensaje a mostrar en el Front
             'obj' =>$ot
-            ],Response::HTTP_OK);
+         ],Response::HTTP_OK);
 
       }catch(Exception $e){
          return response([
@@ -586,7 +667,7 @@ class OtController extends Controller
             'error' => 'fallo_en_la_actualizacion',
             'consola' =>$e->getMessage(),
             'request' => $request->all()
-            ],Response::HTTP_BAD_REQUEST);
+         ],Response::HTTP_BAD_REQUEST);
       }
 
    }
@@ -611,7 +692,7 @@ class OtController extends Controller
       // y usuario que la creó
       try {
          $ot= OT::findOrFail($request->id);
-          //Notificar al usuario owner cuando solicitan horas extra para una OT
+         //Notificar al usuario owner cuando solicitan horas extra para una OT
          $maker=Auth::user();
          $Rol=Role::where('name','owner')->first();
          $owner=User::where('roles_id',$Rol->id)->first();
@@ -622,7 +703,7 @@ class OtController extends Controller
             'response_time' => microtime(true) - LARAVEL_START,
             'msg' => 'Se ha Notificado correctamente',
             'obj' =>$ot
-            ],Response::HTTP_OK);
+         ],Response::HTTP_OK);
       } catch (Exception $e) {
          return response([
             'status' => Response::HTTP_BAD_REQUEST,
@@ -630,12 +711,12 @@ class OtController extends Controller
             'error' => 'fallo_en_la_notificacion',
             'consola' =>$e->getMessage(),
             'request' => $request->all()
-            ],Response::HTTP_BAD_REQUEST);
+         ],Response::HTTP_BAD_REQUEST);
       }
 
    }
 
-     /**
+   /**
    * Función la cual se encarga de Exportar las tareas de una OT
    * Guarda el cambio en el historial de modificaciones
    * Notifica al usuario owner cuando se cambia el estado.
@@ -646,120 +727,120 @@ class OtController extends Controller
    */
    public function exportarTodoslosDatos(Request $request, $id){
 
-    $ot = OT::findOrFail($id);
-    $ot->tiempos_x_area;
-    $ot->Cliente;
-    $ot->Usuario;
-    $ot->tareas=Tarea::with('area','usuario','estado','usuarioencargado')->where('estados_id', 1)->where('ots_id',$ot->id)->get();
-     // return response()->json($ot->tareas);
+      $ot = OT::findOrFail($id);
+      $ot->tiempos_x_area;
+      $ot->Cliente;
+      $ot->Usuario;
+      $ot->tareas=Tarea::with('area','usuario','estado','usuarioencargado')->where('estados_id', 1)->where('ots_id',$ot->id)->get();
+      // return response()->json($ot->tareas);
 
-    // Initialize the array which will be passed into the Excel
-    $otsArray = [];
-    $areasArray =[];
+      // Initialize the array which will be passed into the Excel
+      $otsArray = [];
+      $areasArray =[];
 
-    // Define the Excel spreadsheet headers
-    $otsEncabezado[] = ['OT',$ot->referencia ,'Fecha Inicio',$ot->getFormatFechaShowInfo($ot->fecha_inicio),'Horas Totales',$ot->horas_totales];
-    $otsEncabezado2[] = ['Cliente',$ot->cliente['nombre'],'Fecha Final',$ot->getFormatFechaShowInfo($ot->fecha_final),'Horas Disponibles',$ot->horas_disponibles,'Horas Extra',$ot->total_horas_extra];
-    $otsDescripcion = [];
+      // Define the Excel spreadsheet headers
+      $otsEncabezado[] = ['OT',$ot->referencia ,'Fecha Inicio',$ot->getFormatFechaShowInfo($ot->fecha_inicio),'Horas Totales',$ot->horas_totales];
+      $otsEncabezado2[] = ['Cliente',$ot->cliente['nombre'],'Fecha Final',$ot->getFormatFechaShowInfo($ot->fecha_final),'Horas Disponibles',$ot->horas_disponibles,'Horas Extra',$ot->total_horas_extra];
+      $otsDescripcion = [];
 
-    $areasEncabezado=[];
-    $areasEncabezado2=[];
-    $areasEncabezado3=[];
-    $total_contra=0;
-    $total_real=0;
+      $areasEncabezado=[];
+      $areasEncabezado2=[];
+      $areasEncabezado3=[];
+      $total_contra=0;
+      $total_real=0;
 
-    foreach ($ot->tiempos_x_area as  $tiempo_area) {
+      foreach ($ot->tiempos_x_area as  $tiempo_area) {
          array_push( $areasEncabezado,Area::findOrFail($tiempo_area['areas_id'])->nombre );
          array_push( $areasEncabezado2,number_format($tiempo_area['tiempo_estimado_ot'],2,",",".") );
          array_push( $areasEncabezado3,number_format($tiempo_area['tiempo_real'],2,",",".") );
          $total_contra += $tiempo_area['tiempo_estimado_ot'];
          $total_real += $tiempo_area['tiempo_real'];
-    }
-     array_push( $areasEncabezado,'TOTAL' );
-     array_push( $areasEncabezado2, number_format($total_contra,2,",","."));
-     array_push( $areasEncabezado3,number_format($total_real,2,",",".") );
-//return response()->json( $ot->tareas);
-    foreach($ot->tareas as $tarea){
-     array_push( $otsDescripcion, array($tarea['area']['nombre'],$tarea['nombre_tarea'],$ot->getFormatFechaShowInfo($tarea['created_at']),$ot->getFormatFechaShowInfo($tarea['fecha_entrega_cuentas']), number_format( $tarea['tiempo_estimado'],2,",","."), number_format($tarea['tiempo_real'],2,",","."), number_format( $tarea['tiempo_mapa_cliente'],2,",","."),$tarea['usuarioencargado']['nombre'].' '.$tarea['usuarioencargado']['apellido']) );
-  }
-  array_push($otsArray, $otsEncabezado);
-  array_push($otsArray, $otsEncabezado2);
-  array_push($otsArray, $otsDescripcion);
-  array_push($areasArray, $areasEncabezado);
-  array_push($areasArray, $areasEncabezado2);
-  array_push($areasArray,  $areasEncabezado3);
-//     return response()->json( $ot->tareas);
-  Excel::create( $ot->Cliente['nombre'].'_'.$ot->nombre.'_'.'OT_#'.$ot->referencia.'', function($excel) use($otsArray,$areasArray)  {
+      }
+      array_push( $areasEncabezado,'TOTAL' );
+      array_push( $areasEncabezado2, number_format($total_contra,2,",","."));
+      array_push( $areasEncabezado3,number_format($total_real,2,",",".") );
+      //return response()->json( $ot->tareas);
+      foreach($ot->tareas as $tarea){
+         array_push( $otsDescripcion, array($tarea['area']['nombre'],$tarea['nombre_tarea'],$ot->getFormatFechaShowInfo($tarea['created_at']),$ot->getFormatFechaShowInfo($tarea['fecha_entrega_cuentas']), number_format( $tarea['tiempo_estimado'],2,",","."), number_format($tarea['tiempo_real'],2,",","."), number_format( $tarea['tiempo_mapa_cliente'],2,",","."),$tarea['usuarioencargado']['nombre'].' '.$tarea['usuarioencargado']['apellido']) );
+      }
+      array_push($otsArray, $otsEncabezado);
+      array_push($otsArray, $otsEncabezado2);
+      array_push($otsArray, $otsDescripcion);
+      array_push($areasArray, $areasEncabezado);
+      array_push($areasArray, $areasEncabezado2);
+      array_push($areasArray,  $areasEncabezado3);
+      //     return response()->json( $ot->tareas);
+      Excel::create( $ot->Cliente['nombre'].'_'.$ot->nombre.'_'.'OT_#'.$ot->referencia.'', function($excel) use($otsArray,$areasArray)  {
          // Set the spreadsheet title, creator, and description
-     $excel->setTitle('Resumen de la OT ');
-     $excel->setCreator('Gestor de proccesos')->setCompany('Himalaya');
-     $excel->setDescription('Resumen de la OT');
+         $excel->setTitle('Resumen de la OT ');
+         $excel->setCreator('Gestor de proccesos')->setCompany('Himalaya');
+         $excel->setDescription('Resumen de la OT');
 
-     $excel->sheet('resumen', function($sheet) use($otsArray,$areasArray)  {
-       $headings = array('Datos Generales de la OT');
-       $sheet->prependRow(1, $headings);
-       $sheet->row(2, $otsArray[0][0]);
-       $sheet->row(3, $otsArray[1][0]);
-       $headings = array('Resumen de Areas de la OT ');
-       $sheet->prependRow(5, $headings);
-       $sheet->row(6, $areasArray[0]);
-       $sheet->row(7, $areasArray[1]);
-       $sheet->row(8, $areasArray[2]);
-       $headings = array('Resumen de tareas de la OT ');
-       $sheet->prependRow(9, $headings);
-       $headings = array('ÁREA','REQUERIMIENTOS','FECHA SOLICITUD','FECHA DE ENTREGA','TIEMPO REAL','TIEMPO ESTIMADO JEFE','TIEMPO ESTIMADO MAPA DE CLIENTE','ENCARGADO');
-       $sheet->prependRow(11, $headings);
-       $sheet->fromArray($otsArray[2], null, 'A12', false, false);
+         $excel->sheet('resumen', function($sheet) use($otsArray,$areasArray)  {
+            $headings = array('Datos Generales de la OT');
+            $sheet->prependRow(1, $headings);
+            $sheet->row(2, $otsArray[0][0]);
+            $sheet->row(3, $otsArray[1][0]);
+            $headings = array('Resumen de Areas de la OT ');
+            $sheet->prependRow(5, $headings);
+            $sheet->row(6, $areasArray[0]);
+            $sheet->row(7, $areasArray[1]);
+            $sheet->row(8, $areasArray[2]);
+            $headings = array('Resumen de tareas de la OT ');
+            $sheet->prependRow(9, $headings);
+            $headings = array('ÁREA','REQUERIMIENTOS','FECHA SOLICITUD','FECHA DE ENTREGA','TIEMPO REAL','TIEMPO ESTIMADO JEFE','TIEMPO ESTIMADO MAPA DE CLIENTE','ENCARGADO');
+            $sheet->prependRow(11, $headings);
+            $sheet->fromArray($otsArray[2], null, 'A12', false, false);
 
-       $sheet->cell('A1', function($cell) {
-            // Set font
-         $cell->setFont(array(
-          'family'     => 'Calibri',
-          'size'       => '14',
-          'bold'       =>  true
-          ));
-      });
+            $sheet->cell('A1', function($cell) {
+               // Set font
+               $cell->setFont(array(
+                  'family'     => 'Calibri',
+                  'size'       => '14',
+                  'bold'       =>  true
+               ));
+            });
 
-       $sheet->cell('A5', function($cell) {
-            // Set font
-         $cell->setFont(array(
-          'family'     => 'Calibri',
-          'size'       => '14',
-          'bold'       =>  true
-          ));
+            $sheet->cell('A5', function($cell) {
+               // Set font
+               $cell->setFont(array(
+                  'family'     => 'Calibri',
+                  'size'       => '14',
+                  'bold'       =>  true
+               ));
 
-      });
-        $sheet->cell('A9', function($cell) {
-            // Set font
-         $cell->setFont(array(
-          'family'     => 'Calibri',
-          'size'       => '14',
-          'bold'       =>  true
-          ));
+            });
+            $sheet->cell('A9', function($cell) {
+               // Set font
+               $cell->setFont(array(
+                  'family'     => 'Calibri',
+                  'size'       => '14',
+                  'bold'       =>  true
+               ));
 
-      });
+            });
 
-       $sheet->cells('A2:A3', function($cells) {$cells->setFontWeight('bold');});
-       $sheet->cells('B2:B3', function($cells) {$cells->setAlignment('left');});
-       $sheet->cells('C2:C3', function($cells) {$cells->setFontWeight('bold');});
-       $sheet->cells('D2:D3', function($cells) {$cells->setAlignment('right');});
-       $sheet->cells('E2:E3', function($cells) {$cells->setFontWeight('bold');});
-       $sheet->cells('F2:G3', function($cells) {$cells->setAlignment('center');});
-       $sheet->cells('G2:G3', function($cells) {$cells->setFontWeight('bold');});
-       $sheet->cells('H2:H3', function($cells) {$cells->setAlignment('center');});
-       $sheet->cells('A11:H11', function($cells) {$cells->setFontWeight('bold');});
+            $sheet->cells('A2:A3', function($cells) {$cells->setFontWeight('bold');});
+            $sheet->cells('B2:B3', function($cells) {$cells->setAlignment('left');});
+            $sheet->cells('C2:C3', function($cells) {$cells->setFontWeight('bold');});
+            $sheet->cells('D2:D3', function($cells) {$cells->setAlignment('right');});
+            $sheet->cells('E2:E3', function($cells) {$cells->setFontWeight('bold');});
+            $sheet->cells('F2:G3', function($cells) {$cells->setAlignment('center');});
+            $sheet->cells('G2:G3', function($cells) {$cells->setFontWeight('bold');});
+            $sheet->cells('H2:H3', function($cells) {$cells->setAlignment('center');});
+            $sheet->cells('A11:H11', function($cells) {$cells->setFontWeight('bold');});
 
-       $sheet->cells('A2:E8', function($cells) {$cells->setAlignment('center');});
-       // Set border for range
-       $sheet->setBorder('A11:H40', 'thin');
+            $sheet->cells('A2:E8', function($cells) {$cells->setAlignment('center');});
+            // Set border for range
+            $sheet->setBorder('A11:H40', 'thin');
 
-    });
+         });
 
-  })->export('xls');
+      })->export('xls');
 
 
 
-}
+   }
 
    /**
    *
@@ -772,29 +853,29 @@ class OtController extends Controller
       //Función que consulta las ot recibe dos valores el primero referencia o nombre el segundo el query que se envia desde el componente select
       function consulta_ot($value,$consulta)
       {
-        $ot = Ot::
-            select('ots.id','ots.clientes_id','ots.created_at','ots.estado','ots.estados_id',
-            'ots.fecha_final','ots.fecha_inicio','ots.fee','ots.nombre','ots.referencia',
-            'ots.usuarios_id','clientes.nombre as cliente_nombre','users.nombre as usuario_nombre',
-            'users.apellido as usuario_apellido')
-            ->join('clientes','clientes.id','=','ots.clientes_id')
-            ->join('users','users.id','=','ots.usuarios_id')
-            ->where('ots.estados_id','8')
-            ->Where($value, 'like', '%'.$consulta.'%')
-            ->orWhere('clientes.nombre', 'like', '%'.$consulta.'%')
-            ->get();
+         $ot = Ot::
+         select('ots.id','ots.clientes_id','ots.created_at','ots.estado','ots.estados_id',
+         'ots.fecha_final','ots.fecha_inicio','ots.fee','ots.nombre','ots.referencia',
+         'ots.usuarios_id','clientes.nombre as cliente_nombre','users.nombre as usuario_nombre',
+         'users.apellido as usuario_apellido')
+         ->join('clientes','clientes.id','=','ots.clientes_id')
+         ->join('users','users.id','=','ots.usuarios_id')
+         ->where('ots.estados_id','8')
+         ->Where($value, 'like', '%'.$consulta.'%')
+         ->orWhere('clientes.nombre', 'like', '%'.$consulta.'%')
+         ->get();
 
-            return $ot;
+         return $ot;
       }
       if (is_numeric($query)) {
-        //  $ot = Ot::with(['cliente','usuario'])->where('estados_id', 8)->where('referencia', 'like', '%'.$query.'%')->get();
-        $ot=consulta_ot('referencia',$query);
+         //  $ot = Ot::with(['cliente','usuario'])->where('estados_id', 8)->where('referencia', 'like', '%'.$query.'%')->get();
+         $ot=consulta_ot('referencia',$query);
       } else {
-       $ot= consulta_ot('ots.nombre',$query);
-        //  $ot = Ot::with(['cliente'=> function ($subquery) use ($query)
-        //  {
-        //    $subquery->orWhere('nombre','like','%'.$query.'%');
-        //  },'usuario'])->where('estados_id', 8)->orWhere('nombre', 'like', '%'.$query.'%')->get();
+         $ot= consulta_ot('ots.nombre',$query);
+         //  $ot = Ot::with(['cliente'=> function ($subquery) use ($query)
+         //  {
+         //    $subquery->orWhere('nombre','like','%'.$query.'%');
+         //  },'usuario'])->where('estados_id', 8)->orWhere('nombre', 'like', '%'.$query.'%')->get();
       }
       return response()->json($ot);
    }
@@ -814,7 +895,7 @@ class OtController extends Controller
          'clientes_id' => 'required',
          'usuarios_id' => 'required',
          'estados_id' => 'required',
-         ]);
+      ]);
    }
    /*DSO 24-01-2016 Funcion para validar los campos al crear un usuario
    * entra el arreglo de datos
@@ -830,7 +911,7 @@ class OtController extends Controller
          'clientes_id' => 'required',
          'usuarios_id' => 'required',
          'estados_id' => 'required',
-         ]);
+      ]);
    }
 
    public function formatMoney($number, $fractional=false) {
