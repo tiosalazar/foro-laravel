@@ -8668,6 +8668,32 @@ body {
   background-color: #15BAEE;
 }
 
+<<<<<<< HEAD
+=======
+.img-circle-arriba {
+  font-size: 20px;
+  font-style: 25px;
+  background: #002E60;
+  color: white;
+  -ms-display: flex;
+  display: -webkit-box;
+  display: flex;
+  /* alineacion vertical */
+  -webkit-box-align: center;
+  align-items: center;
+  /* alineacion horizontal */
+  -webkit-box-pack: center;
+  justify-content: center;
+  height: 60px;
+  min-width: 60px;
+  margin-right: 7px;
+  width: 65px;
+  border-radius: 50%;
+  float: right;
+  margin-top: -50px;
+}
+
+>>>>>>> origin/bcaldas
 .listar_areas_modulo {
   width: 90%;
   /* mixin centrado, fuente y alto titulo de las columnas */
@@ -9475,6 +9501,17 @@ body {
   width: 90px;
 }
 
+<<<<<<< HEAD
+=======
+#enlaces_externos {
+  line-height: 30px;
+}
+
+.descripcion_tarea_perfil {
+  margin-bottom: 30px;
+}
+
+>>>>>>> origin/bcaldas
 .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a > p {
   white-space: normal;
 }

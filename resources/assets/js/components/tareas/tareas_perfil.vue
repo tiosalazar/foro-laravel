@@ -2,7 +2,7 @@
 	 <div>
         <div class="row tarea_perfil">
 
-          <div v-for="(listado_tarea, key, index) in listado_tareas" class="box tarea_perfil_box" v-if="key<=variable">
+          <div v-for="(listado_tarea, key, index) in listado_tareas"  class="box tarea_perfil_box" v-if="key<=variable">
 
             <div class="box-header">
               <div class="box-header-tittle" >
@@ -14,7 +14,7 @@
                     <span>{{listado_tarea.created_at}}</span>
                   </div>
                   <div v-else>
-                    <span>{{listado_tarea.updated_at}}</span>
+                    <span>Entrega área: {{listado_tarea.fecha_entrega_area | date_format}}</span>
                   </div>
                 </div>
 
@@ -22,7 +22,7 @@
 
             </div>
             <div class="box-body" >
-              <p >{{listado_tarea.descripcion | long_tarea_descripcion }}</p>
+              <p class="descripcion_tarea_perfil">{{listado_tarea.descripcion | long_tarea_descripcion }}</p>
             </div>
             <div class="box-footer footer_tarea" >
              <a v-bind:href="_baseURL+listado_tarea.url"> <button class="btn btn-primary button_tarea" >Ver tarea</button></a>
@@ -35,6 +35,8 @@
       </div>
 </template>
 <script>
+
+ import moment from 'moment';
 	module.exports = {
     props: ['lista_tareas'],
     data(){
@@ -58,22 +60,27 @@
       //Filtro personalizado para mostrar un número determinado de caracteres de una variable de vue js
       long_tarea_titulo: function(string) {
         return string.substring(0, 42);
+      },
+      date_format: function (value) {
+        if (!value) return ''
+
+        return (value)?moment(value).format('DD | MMM | YYYY'):'';
       }
     },
     created: function() {
-      datos= JSON.parse(this.lista_tareas);
+     
+      let datos= JSON.parse(this.lista_tareas);
       this.listado_tareas=datos;
-			console.log(this.listado_tareas);
+		
       //Si el listado de tareas es mayor que 4 muestro el ver mas
       if (this.listado_tareas.length>3) {
         this.cargar_ok=true;
       }
     },
-
     methods:{
       //Con esta funcion muestro otros cuatro elementos al dar clic sobre el boton ver mas
       cargar_mas: function(){
-        numero_datos_array=this.listado_tareas.length;
+       var  numero_datos_array=this.listado_tareas.length;
         if (numero_datos_array<=this.variable) {
            toastr.warning('No hay mas tareas por cargar',this.option_toast);
         }else{
