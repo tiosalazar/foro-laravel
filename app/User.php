@@ -96,5 +96,12 @@ class User extends Authenticatable
   {
     return $this->hasMany('App\Historico_equipo','entidad_id','id');
   }
+  /**
+  * Obtiene el cliente que posee el usuario
+  */
+  public function cliente()
+  {
+    return $this->hasOne('App\Cliente','user_id','id');
+  }
 
 }

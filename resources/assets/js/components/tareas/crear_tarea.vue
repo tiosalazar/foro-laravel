@@ -24,7 +24,7 @@
 			<!-- /.row -->
 			<div class="row">
 				<div class="col-md-3 col-xs-4">
-					<label for="valor_total" class="col-sm-12 ">Tarea Recuerrente </label>
+					<label for="valor_total" class="col-sm-12 ">Tarea Recurrente </label>
 					<div class="row" v-bind:class="{ 'has-error': errors.has('recurrente') }">
 						<div class="col-sm-4 col-xs-6 formulario">
 							<input type="radio" name="recurrente" value="1" id="si" v-model="tarea.recurrente"  required="required" ><label for="si"> Si</label>

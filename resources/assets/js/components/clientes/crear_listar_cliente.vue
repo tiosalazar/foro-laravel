@@ -15,10 +15,10 @@
               <th>NIT</th>
               <th>Cliente</th>
               <th>Razón social</th>
+              <th>Ejecutivo</th>
               <th>Nombre de Contacto</th>
               <th>Correo</th>
               <th>Teléfono</th>
-              <!-- <th>Acciones</th> -->
               <th>Acciones</th>
             </tr>
         </thead>
@@ -113,6 +113,7 @@
                   { data: 'nit', name: 'nit' },
                   { data: 'nombre', name: 'nombre' },
                   { data: 'razon_social', name: 'razon_social' },
+                  { data: 'ejecutivo', name: 'ejecutivo' },
                   { data: 'nombre_contacto', name: 'nombre_contacto' },
                   { data: 'email', name: 'email' },
                   { data: 'telefono', name: 'telefono' },

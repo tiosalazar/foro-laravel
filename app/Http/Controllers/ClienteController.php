@@ -8,6 +8,7 @@ use Validator;
 use Illuminate\Http\Response;
 use Exception;
 use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 class ClienteController extends Controller
 {
@@ -19,17 +20,21 @@ class ClienteController extends Controller
     public function index()
     {
       // $clientes = Cliente::all();
-      $clientes = Cliente::where('estado', 1)->get();
+      $clientes = Cliente::with(['usuario' => function ($query){
+
+     $query->addselect('*');
+     $query->addselect(DB::raw('CONCAT(nombre," ",apellido) as full_name'));
+
+   }])->where('estado', 1)->get();
       // return response()->json($clientes);
       return Datatables::of($clientes)
       ->addColumn('action', function($cliente) {
-            // return url('/editar_cliente/' . $cliente->id);
-            return (Auth::user()->hasRole('owner') || Auth::user()->hasRole('desarrollo'))?'<a href="editar/'.$cliente->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Editar</a><button type="button" id="cli-'.$cliente->id.'" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente" data-toggle="modal" data-target="#myModal">Borrar</button>':'';
-             // return '<a href="/clientes/editar/'.$cliente->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Editar</a><button type="button" id="cli-'.$cliente->id.'" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente" data-toggle="modal" data-target="#myModal">Borrar</button>';
-
-        })
-
-        ->make(true);
+        return (Auth::user()->hasRole('owner') || Auth::user()->hasRole('desarrollo'))?'<a href="editar/'.$cliente->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Editar</a><button type="button" id="cli-'.$cliente->id.'" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente" data-toggle="modal" data-target="#myModal">Borrar</button>':'';
+      })
+      ->addColumn('ejecutivo', function($cliente) {
+        return ($cliente->usuario != null)?$cliente->usuario->full_name:'No definido';
+      })
+      ->make(true);
 
     }
     /**

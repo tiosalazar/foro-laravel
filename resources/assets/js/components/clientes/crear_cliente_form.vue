@@ -40,6 +40,13 @@
               <!-- /.form-group -->
             </div>
             <div class="col-xs-6 col-md-12">
+              <div class="form-group">
+								<label for="rol_usuario"> Ejecutivo </label>
+								<select_usuarios area="cuentas" :select="ejecutivo"></select_usuarios>
+              </div>
+              <!-- /.form-group -->
+            </div>
+            <div class="col-xs-6 col-md-12">
 							<div class="form-group" v-bind:class="[errors_return.email,{ 'has-error': errors.has('email') }]">
                 <label>Correo</label>
                 <input type="email" v-model="cliente.email" v-validate data-vv-rules="email" name="email" id="email" class="form-control">
@@ -80,7 +87,9 @@
 					email:'',
 					telefono:'',
 					razon_social:'',
+					user_id:'',
 				},
+				ejecutivo:'',
 				message :'',
 				agregar:true,
 				option_toast:{
@@ -99,11 +108,44 @@
 		},
 		created:function() {
 			if (this.cliente_url) {
-		        console.log(this.cliente_url)
-		        this.cliente = this.cliente_url;
-		        this.agregar = false;
-		      }
-		  },
+		   	console.log(this.cliente_url)
+		    this.cliente = this.cliente_url;
+		    this.agregar = false;
+		  }
+			if (this.cliente.user_id != '') {
+				let that = this;
+				this.$http.get(window._apiURL+'usuarios/'+this.cliente.user_id)
+				.then(function(respuesta){
+					that.message ='';
+					if (respuesta.status != '200') {
+						if (Object.keys(respuesta.body.obj).length>0) {
+							this.setErrors(respuesta.body.obj);
+						}
+						toastr.warning(that.message,respuesta.body.msg,this.option_toast);
+					} else {
+						this.ejecutivo=respuesta.body;
+					}
+				}, (err) => {
+					that.message = '';
+					if (err.status == 404) {
+						toastr.error('No se encontraron resultados, verfique la informacion','Error',this.option_toast);
+					} else {
+						if (Object.keys(err.body.obj).length>0) {
+							this.setErrors(err.body.obj);
+						}else{
+							that.message = err.body.error;
+						}
+						toastr.error(this.message,err.body.msg,this.option_toast);
+					}
+				});
+			}
+			/*
+			Datos del formulario de Usuarios
+			*/
+			this.$on('select_ejecutivo', function(v) {
+				this.ejecutivo=v;
+			});
+		},
 		methods: {
 			setErrors:function(object) {
 		        this.message='';
@@ -122,6 +164,7 @@
 						return false
 					}
 					let that = this;
+					this.cliente.user_id = this.ejecutivo.id;
 					this.$http.post(window._apiURL+'clientes', this.cliente)
 					.then(function(respuesta){
 						that.message ='';
@@ -151,6 +194,7 @@
 				},
 			editCliente: function(client) {
 				let that = this;
+						client.user_id = this.ejecutivo.id;
 		        this.$http.put(window._apiURL+'clientes/'+client.id, client)
 		        .then(function(response) {
 		          if (response.status != '200') {
@@ -192,4 +236,5 @@
 			      },
 		}
 	}
+	Vue.component('select_usuarios',require('../herramientas/select_usuarios.vue'));
 </script>
