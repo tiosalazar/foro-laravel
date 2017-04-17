@@ -70,7 +70,7 @@ class HomeController extends Controller
 
           //Si el estado es 7 pendiente, 5 Atencion area,2 Realizado muestro al coordinador las tareas de esa área con ese estado
           $tareas = Tarea::where([['estados_id', 5],['areas_id',$areaauth]])->orwhere([['estados_id', 7],['areas_id',$areaauth]])->orwhere([['estados_id', 2],['areas_id',$areaauth]])->get();
-         
+
 
           //For each con las relaciones de las tareas con ot, id y cliente para mostrarlo en el listado del perfil
           foreach ($tareas as $key => $value) {
@@ -78,8 +78,8 @@ class HomeController extends Controller
             $value['url']="/ver_tarea/".$value->id;
             $value->ot['cliente_inicial']=substr($value->ot->cliente->nombre, 0,1); // Devuelvo la inicial del cliente
             $value['descripcion']= strip_tags($value['descripcion']);
-          
-            
+
+
           }
 
 
@@ -87,18 +87,20 @@ class HomeController extends Controller
 
           //Si No es un coordinador muestro las tareas del area si el id del encargado es igual al usuario logeado
            $tareas = Tarea::where('estados_id','!=', 2)->where('estados_id','!=', 1)->where('estados_id','!=', 20)->where('encargado_id', Auth::user()->id)->orderBy('fecha_entrega_area', 'asc')->get();
-           
+
            foreach ($tareas as $key => $value) {
             $value->ot->cliente;
             $value['url']="/ver_tarea/".$value->id;
             $value->ot['cliente_inicial']=substr($value->ot->cliente->nombre, 0,1); // Devuelvo la inicial del cliente
+            $value['descripcion']= strip_tags($value['descripcion']);
           }
+
 
 
         }
 
         return view('adminlte::home')->with('user_encargado',$user)->with('tareas',$tareas);
-        
+
     }
 
       public function SubirImagen(Request $request)

@@ -474,21 +474,24 @@
           return false
         }
 
-          //Datos a enviar al asignar la tarea y comentarios
+
+            //Datos a enviar al asignar la tarea y comentarios
 
           let fecha_area=(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5|| this.estado_solicitud.id == 7)?null:moment(this.tarea_info.fecha_entrega_area).format('YYYY-MM-DD');
           let fecha_cuentas=(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5|| this.estado_solicitud.id == 7)?null:moment(this.tarea_info.fecha_entrega_cuentas).format('YYYY-MM-DD');
-
+          let recurrencia_init = (moment(this.tarea_info.fecha_inicio_recurrencia).isValid())?moment(this.tarea_info.fecha_inicio_recurrencia).format('YYYY-MM-DD HH:mm:ss'):null;
+          let recurrencia_final = (moment(this.tarea_info.fecha_inicio_recurrencia).isValid())?moment(this.tarea_info.fecha_final_recurrencia).format('YYYY-MM-DD HH:mm:ss'):null;
             //Datos a enviar
             let data =
             {
               encargado_id:this.encargado.id,
               estados_id:this.estado_solicitud.id,
-              fecha_inicio_recurrencia:moment(this.tarea_info.fecha_inicio_recurrencia).format('YYYY-MM-DD HH:mm:ss'),
-              fecha_final_recurrencia:moment(this.tarea_info.fecha_final_recurrencia).format('YYYY-MM-DD HH:mm:ss'),
+              fecha_inicio_recurrencia:recurrencia_init,
+              fecha_final_recurrencia:recurrencia_final,
               fecha_entrega_area:fecha_area,
               fecha_entrega_cuentas:fecha_cuentas,
               usuarios_comentario_id:this.id_usuario_actual,
+              tiempo_estimado:this.tarea_info.tiempo_estimado,
               tareas_id:this.tarea_info.id,
               comentarios:this.descripcion,
               tiempo_real:this.tarea_info.tiempo_real,
