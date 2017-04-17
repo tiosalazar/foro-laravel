@@ -103,7 +103,7 @@
 
 			<div class="form-group required" v-bind:class="[errors_return.descripcion,{ 'has-error': errors.has('descripcion') }]">
 				<label for="descripcion"><sup>*</sup> Descripción </label>
-				<vue-html5-editor :content="tarea.descripcion" :height="200"  :z-index="0" @change="updateData"></vue-html5-editor>
+				<vue-html5-editor :height="200"  :z-index="0" @change="updateData"></vue-html5-editor>
 				<!-- <textarea  v-model="tarea.descripcion"  name="descripcion"  id="descripcion"  placeholder="Descripción" required="required" v-validate data-vv-rules="required|min:4"></textarea>-->
 				<span  class="has-error" style="color:#DD4B39;" v-show="errors_return.descripcion"> Campo Descripcion Obligatorio </span>
 			</div>
