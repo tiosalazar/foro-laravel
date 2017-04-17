@@ -176,6 +176,7 @@
 						} else {
 							toastr.success(respuesta.body.msg,'',this.option_toast);
 							this.cliente={};
+							this.ejecutivo='';
 							setTimeout(function(){ that.errors.clear(); }, 50);
 						}
 					}, (err) => {
