@@ -7,7 +7,7 @@
 @section('main-content')
 <div class="container-fluid spark-screen">
 	<div class="col-md-8 col-md-offset-1 titulo_seccion_ot">
-		<span  class="span_titulo1">Resúmen</span><span  class="span_titulo2" >de la  OT</span>
+		<span  class="span_titulo1">Resúmen </span> <span  class="span_titulo2" > de la  OT</span>
 	</div>
 
 	<div class="row Formulario_OT" id="formulario_ot_actualizacion">

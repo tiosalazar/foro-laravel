@@ -610,7 +610,12 @@ public function showAllTareas($id,Request $request)
     $tarea = Tarea::with(['ot' => function ($query) {
         // Tareas activas
         $query->where('estado', 1);
-    },'ot.cliente','usuarioencargado','estado' => function ($query) use ($request,$id) {
+    },'ot.cliente','usuarioencargado'=> function ($query){
+
+   $query->addselect('*');
+   $query->addselect(DB::raw('CONCAT(nombre," ",apellido) as full_name'));
+
+ },'estado' => function ($query) use ($request,$id) {
         if ($request->has('estados')) {
             $query->where('id', '=', $request->get('estados'));
         }
@@ -643,7 +648,7 @@ public function showAllTareas($id,Request $request)
         return (!is_null($tarea->fecha_entrega_cuentas)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cuentas) : 'No definida' ;
     })
     ->addColumn('encargado', function ($tarea) {
-        return $tarea->usuarioencargado->nombre .' '. $tarea->usuarioencargado->apellido;
+          return $tarea->usuarioencargado->full_name;
     })
     ->addColumn('prioridad', function ($tarea) {
         return '<span class="label label-estado estado-'.$tarea->Estado_prioridad->tipos_estados_id.'-'.$tarea->Estado_prioridad->id.' ">'.$tarea->Estado_prioridad->nombre.'</span>';
