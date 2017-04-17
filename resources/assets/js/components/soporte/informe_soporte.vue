@@ -28,7 +28,8 @@
 		          <th >Requerimiento</th>
 							<th >Fase</th>
 		          <th >Fecha de solicitud</th>
-							<th >Fecha de entrega cuentas</th>
+							<th >Fecha de entrega a cuentas</th>
+							<th >Fecha de entrega al cliente</th>
 		          <th >Encargado</th>
 							<th >Tiempo Real</th>
 		          <th >Estado</th>
@@ -152,6 +153,7 @@
 				{ data: 'fases', name: 'fases' },
 				{ data: 'created_at', name: 'created_at' },
 				{ data: 'fecha_entrega_cuentas', name: 'fecha_entrega_cuentas' },
+				{ data: 'fecha_entrega_cliente', name: 'fecha_entrega_cliente' },
 				{ data: 'encargado', name: 'usuarioencargado.full_name' },
 				{ data: 'tiempo_real', name: 'tiempo_real' },
 				{ data: 'estado', name: 'estado.nombre' },

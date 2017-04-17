@@ -647,6 +647,9 @@ public function showAllTareas($id,Request $request)
     ->editColumn('fecha_entrega_cuentas', function ($tarea) {
         return (!is_null($tarea->fecha_entrega_cuentas)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cuentas) : 'No definida' ;
     })
+    ->editColumn('fecha_entrega_cliente', function ($tarea) {
+        return (!is_null($tarea->fecha_entrega_cliente)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cliente) : 'No definida' ;
+    })
     ->addColumn('encargado', function ($tarea) {
           return $tarea->usuarioencargado->full_name;
     })
@@ -750,6 +753,9 @@ public function showAllTareas($id,Request $request)
         })
         ->editColumn('fecha_entrega_cuentas', function ($tarea) {
             return (!is_null($tarea->fecha_entrega_cuentas)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cuentas) : 'No definida' ;
+        })
+        ->editColumn('fecha_entrega_cliente', function ($tarea) {
+            return (!is_null($tarea->fecha_entrega_cliente)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cliente) : 'No definida' ;
         })
         ->editColumn('tiempo_real', function ($tarea) {
             return (!is_null($tarea->tiempo_real)) ? $tarea->tiempo_real : 'No definido' ;

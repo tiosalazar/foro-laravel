@@ -96,5 +96,12 @@ class User extends Authenticatable
   {
     return $this->hasMany('App\Historico_equipo','entidad_id','id');
   }
+  /**
+  * Obtiene las Compras que posee el usuario
+  */
+  public function Compras()
+  {
+    return $this->hasMany('App\Compras_Ot','creador_id','id');
+  }
 
 }

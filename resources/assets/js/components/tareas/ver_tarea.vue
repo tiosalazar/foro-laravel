@@ -150,6 +150,7 @@
                   <div class="" v-if="(rol_actual =='owner' && tarea_info.estados_id != '1' )
                                       || (rol_actual =='desarrollo' && tarea_info.estados_id != '1')
                                       || (rol_actual =='cuentas' && tarea_info.estados_id==6)
+                                      || (rol_actual =='cuentas' && tarea_info.estados_id==20)
                                       || (id_usuario_actual == tarea_info.encargado_id && tarea_info.estados_id != '1' && tarea_info.estados_id != '2' && tarea_info.estados_id != '20' )
                                       || (rol_actual =='coordinador' && tarea_info.estados_id == '2')
                                       || (rol_actual =='coordinador' && tarea_info.estados_id == '20')">
@@ -244,20 +245,20 @@
               <label for="descripcion">Comentario:</label>
 
             <!-- <textarea class="form-control" rows="3"  name="descripcion"  id="descripcion" v-model="descripcion" placeholder="Descripción" required="required"></textarea>-->
-              <vue-html5-editor :content="descripcion" :height="150"  :z-index="0" @change="updateData"></vue-html5-editor>
+              <vue-html5-editor  :height="150"  :z-index="0" @change="updateData"></vue-html5-editor>
 
             </div>
 
 
           </div>
           <!-- /.box-body -->
-          <div v-if=" (rol_actual =='owner') || (rol_actual =='desarrollo')" >
+          <div v-if=" (rol_actual =='owner') || (rol_actual =='desarrollo') || (rol_actual =='cuentas' && tarea_info.estados_id==20)" >
                 <div class="box-footer text-center">
                   <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Actualizar</button>
                   <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Comentar</button>
                 </div>
            </div>
-           <div v-else-if=" ((estado_solicitud.id==1 || estado_solicitud.id==2 || estado_solicitud.id==3 || estado_solicitud.id==20 || tarea_info.estados_id==20) && rol_actual =='coordinador' )|| (rol_actual =='cuentas' && tarea_info.estados_id==6)" >
+           <div v-else-if=" ((estado_solicitud.id==1 || estado_solicitud.id==2 || estado_solicitud.id==3 || estado_solicitud.id==20 || tarea_info.estados_id==20) && rol_actual =='coordinador' )|| (rol_actual =='cuentas' && tarea_info.estados_id==6)"  >
                 <div class="box-footer text-center">
                   <button type="button" class="btn btn-primary" v-on:click="asignar_tarea()">Actualizar</button>
                 </div>

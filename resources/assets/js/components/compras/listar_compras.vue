@@ -8,6 +8,7 @@
 					<th >Tipo Compra </th>
 					<th >Estado</th>
 					<th >No. transacción</th>
+					<th >Responsable</th>
 					<th >Fecha de transacción</th>
 					<th >Provedor</th>
 					<th >Valor</th>
@@ -112,12 +113,13 @@
 				{ data: 'tipo_compra.nombre', name: 'tipo_compra.nombre' },
 				{ data: 'estado.nombre', name: 'estado.nombre' },
 				{ data: 'transaccion', name: 'transaccion' },
-				{ data: 'fecha_creacion', name: 'fecha_creacion' },
+				{ data: 'creador', name: 'usuario.full_name' },
+				{ data: 'fecha_transaccion', name: 'fecha_transaccion' },
 				{ data: 'provedor', name: 'provedor' },
 				{ data: 'valor', name: 'valor' },
 				{ data: 'divisa.nombre', name: 'divisa.nombre' },
 				{ data: 'descripcion', name: 'descripcion' },
-				{ data: 'fecha_transaccion', name: 'fecha_transaccion' },
+				{ data: 'fecha_creacion', name: 'fecha_creacion' },
 				{ data: 'acciones', name: 'acciones' }
 				],
 				columnDefs: [

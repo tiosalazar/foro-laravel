@@ -50,7 +50,12 @@ public function datatable_index(Request $request)
         $month = $now->month;
     }
 
-  $compra= Compras_ot::with('ot','area','tipo_compra','divisa','estado')
+  $compra= Compras_ot::with(['ot','area','tipo_compra','divisa','estado','usuario' => function ($query){
+       $query->addselect('*');
+       $query->addselect(DB::raw('CONCAT(nombre," ",apellido) as full_name'));
+
+     }])
+      ->where('compra_externa',1)
       ->whereYear('created_at', $year)
       ->whereMonth('created_at', $month)
       ->get();
@@ -60,9 +65,15 @@ public function datatable_index(Request $request)
   ->editColumn('transaccion', function($compra) {
     return  ($compra->transaccion != "")?$compra->transaccion:'No definida';
  })
+ ->editColumn('valor', function($compra) {
+   return  $this->formatMoney($compra->valor);
+})
   ->addColumn('fecha_creacion', function($compra) {
     return  $compra->getFormatFecha($compra->created_at);
  })
+ ->addColumn('creador', function($compra) {
+   return  $compra->usuario->full_name;
+})
   ->addColumn('fecha_transaccion', function($compra) {
    return $compra->getFormatFecha($compra->fecha_transaccion);
 })
@@ -119,6 +130,8 @@ public function datatable_index(Request $request)
               /*El siguiente for recorre el listado de compras y los agrega*/
                  $model_compras= new Compras_Ot;
                  $model_compras->fill($compra);
+                 $model_compras->creador_id=  Auth::guard('api')->user()->id;
+                 $model_compras->compra_externa= 1;
                  $model_compras->save();
 
               DB::commit();
@@ -254,5 +267,19 @@ public function datatable_index(Request $request)
            'divisas_id' => 'required',
            'estados_id' => 'required',
            ]);
+     }
+     public function formatMoney($number, $fractional=false) {
+        if ($fractional) {
+           $number = sprintf('%.2f', $number);
+        }
+        while (true) {
+           $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+           if ($replaced != $number) {
+              $number = $replaced;
+           } else {
+              break;
+           }
+        }
+        return $number;
      }
 }

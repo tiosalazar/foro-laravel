@@ -76,10 +76,10 @@
     <div class="row" v-show="this.$parent.editar != 'true' ">
       <div class="col-md-12 text-center">
         <div class="col-md-5 col-md-offset-1">
-          <button type="button" @click="addRequerimiento" :class="{'disabled' : disabled }" class="btn btn-block boton_foro btn-success succes col-sm-3" :disabled="disabled">Añadir Compra</button>
+          <button type="button" @click="addRequerimiento" :class="{'disabled' : disabled }" class="btn btn-block boton_foro btn-success succes col-sm-3" :disabled="disabled">Añadir otra Compra</button>
         </div>
         <div class="form-group  col-md-5 col-xs-12" v-show="$parent.visualizacion != 'true'">
-          <button type="button" style="width:100%" @click="deleteRequerimiento" :class="{'disabled' : disabled }" class="btn btn-danger boton_foro error " :disabled="disabled">Eliminar</button>
+          <button type="button" style="width:100%" @click="deleteRequerimiento" :class="{'disabled' : disabled }" class="btn btn-danger boton_foro error " :disabled="disabled">Eliminar Compra</button>
         </div>
       </div>
     </div>

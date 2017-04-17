@@ -9,7 +9,8 @@
 		          <th >Requerimiento</th>
 							<th >Prioridad</th>
 		          <th >Fecha de solicitud</th>
-							<th >Fecha de entrega cuentas</th>
+							<th >Fecha de entrega a cuentas</th>
+							<th >Fecha de entrega al cliente</th>
 		          <th >Encargado</th>
 		          <th >Estado</th>
 		          <th >Acciones</th>
@@ -121,6 +122,7 @@
 				{ data: 'prioridad', name: 'prioridad' },
 				{ data: 'created_at', name: 'created_at' },
 				{ data: 'fecha_entrega_cuentas', name: 'fecha_entrega_cuentas' },
+				{ data: 'fecha_entrega_cliente', name: 'fecha_entrega_cliente' },
 				{ data: 'encargado', name: 'usuarioencargado.full_name', searchable:true  },
 				{ data: 'estado', name: 'estado.nombre' },
 				{ data: 'acciones', name: 'acciones', searchable:false },

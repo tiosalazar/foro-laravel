@@ -75,9 +75,25 @@ class Ot extends Model
   /**
   * Obtiene los compras que posee la OT
  */
-public function Compras_Ot()
+public function Compras_Ot_Externas()
+  {
+      return $this->Compras_Ot_Internas()->where('compra_externa',1);
+  }
+  /**
+  * Obtiene los compras que posee la OT
+ */
+public function Compras_Ot_Internas()
   {
       return $this->hasMany('App\Compras_Ot','ots_id','id');
+      //return $this->videos()->where('compra_externa','=', 1);
+  }
+  /**
+  * Obtiene los compras que posee la OT
+ */
+public function Compras_Ot()
+  {
+      //return $this->hasMany('App\Compras_Ot','ots_id','id');
+      return $this->Compras_Ot_Internas()->where('compra_externa', 0);
   }
   /**
   * Obtiene los Tiempos_x_Area que posee la OT

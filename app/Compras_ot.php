@@ -15,7 +15,7 @@ class Compras_Ot extends Model
   * @var array
   */
   protected $fillable = [
-    'descripcion', 'provedor', 'valor', 'ots_id', 'areas_id', 'tipos_compras_id','divisas_id','transaccion','fecha_transaccion','estados_id'
+    'descripcion', 'provedor', 'valor', 'ots_id', 'areas_id', 'tipos_compras_id','compra_externa','divisas_id','creador_id','transaccion','fecha_transaccion','estados_id'
   ];
 
   public function getFormatFecha($fecha_ingreso)
@@ -58,6 +58,13 @@ class Compras_Ot extends Model
   public function Estado()
   {
     return $this->belongsTo('App\Estado','estados_id','id');
+  }
+  /**
+  * Obtiene el Usuario de la compra
+  */
+  public function Usuario()
+  {
+    return $this->belongsTo('App\User','creador_id','id');
   }
 
 }

@@ -114,16 +114,20 @@
 														</div>
 														<div class="row  ">
 															<div class="col-md-12">
+																<?php $No_Req= 1; ?>
 																@foreach ($ot['requerimiento_ot'] as $requerimiento)
 																@if( $area['area']['id']==$requerimiento['areas_id'] )
 																<div class="listado_requerimientos_resumen">
 																	<ul>
-																		<li><strong>Requerimiento No 1:</strong></li>
+																		<li><strong>Requerimiento No {{ $No_Req}}:</strong></li>
 																		<li><span> {{$requerimiento['nombre'] }}</span></li>
-																		<li><strong>Hora Requerimiento No 1:</strong></li>
+																		<li><strong>Hora Requerimiento No {{ $No_Req}} :</strong></li>
 																		<li><span> {{$requerimiento['horas'] }} Horas</span></li>
 																	</ul>
+																	<?php $No_Req++; ?>
 																</div>
+																@else
+																<?php $No_Req= 1; ?>
 																@endif
 																@endforeach
 															</div>
