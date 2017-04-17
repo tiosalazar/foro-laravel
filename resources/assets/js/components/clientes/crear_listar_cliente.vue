@@ -197,7 +197,8 @@
       },
       borrarCliente: function() {
         // this.$http.delete('api/v1/clientes/'+client.id)
-        let index = $('#id_cliente').val()
+        let index = $('#id_cliente').val();
+        var that = this;
         this.$http.delete(window._apiURL+'clientes/'+index)
         .then(function(response) {
           if (response.status != '200') {
@@ -216,13 +217,14 @@
             $('#myModal').modal('hide')
             toastr.error('No se encontraron resultados, verfique la informacion','Error',this.option_toast);
           } else {
+            console.log(err);
             if (Object.keys(err.body.obj).length>0) {
               this.setErrors(err.body.obj);
             }else{
               that.message = err.body.error;
             }
+            toastr.error(err.body.msg,this.message,this.option_toast);
             $('#myModal').modal('hide')
-            toastr.error(this.message,err.body.msg,this.option_toast);
           }
         })
       }

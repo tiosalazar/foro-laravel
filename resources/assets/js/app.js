@@ -16,6 +16,7 @@ require('./bootstrap');
 
 Vue.component('crear_cliente_form', require('./components/clientes/crear_cliente_form.vue'));
 Vue.component('crear_listar_cliente', require('./components/clientes/crear_listar_cliente.vue'));
+Vue.component('historico_clientes', require('./components/clientes/historico_clientes.vue'));
 
 // Tarea
 Vue.component('tarea', require('./components/tareas/tarea.vue'));

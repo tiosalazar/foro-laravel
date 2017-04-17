@@ -112,7 +112,7 @@
 		    this.cliente = this.cliente_url;
 		    this.agregar = false;
 		  }
-			if (this.cliente.user_id != '') {
+			if (this.cliente.user_id) {
 				let that = this;
 				this.$http.get(window._apiURL+'usuarios/'+this.cliente.user_id)
 				.then(function(respuesta){
