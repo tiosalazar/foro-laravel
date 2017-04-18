@@ -10,6 +10,7 @@ window._ = require('lodash');
 window.$ = window.jQuery = require('jquery');
 require('bootstrap-less');
 
+import select2 from 'select2';
 
 var AdminLTEOptions = {
     //Enable sidebar expand on hover effect for sidebar mini
@@ -76,7 +77,7 @@ window._apiURL = Laravel.baseUrl+'/api/v1/';
  */
 
 import Echo from "laravel-echo"
-
+import Pusher from 'pusher-js'
 window.Echo = new Echo({
     broadcaster: 'pusher',
     authEndpoint: window._baseURL+'/broadcasting/auth',

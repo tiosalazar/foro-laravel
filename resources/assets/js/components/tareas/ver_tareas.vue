@@ -18,34 +18,38 @@
 		    </thead>
         </table>
         <form method="POST" id="search-form" class="form-inline" role="form">
-	        <div class="drop" v-show="this.area !='' ">
-	        	<select name="estados" id="estados"  class="form-control multiselect">
-		        	<option value="">Estados</option>
-		        </select>
-	        </div>
-					<div class="drop">
-						<select name="month" id="month"  class="form-control multiselect">
-							<option value="">Mes</option>
-							<option value="01">Enero</option>
-							<option value="02">Febrero</option>
-							<option value="03">Marzo</option>
-							<option value="04">Abril</option>
-							<option value="05">Mayo</option>
-							<option value="06">Junio</option>
-							<option value="07">Julio</option>
-							<option value="08">Agosto</option>
-							<option value="09">Septiembre</option>
-							<option value="10">Octubre</option>
-							<option value="11">Noviembre</option>
-							<option value="12">Diciembre</option>
-						</select>
-					</div>
-	        <div class="drop">
-	        	<select name="year" id="year"  class="form-control multiselect">
-		        	<option value="">Año</option>
-		        </select>
-	        </div>
-            <button type="submit" class="btn btn-info btn-flat">Buscar</button>
+						<div class="drop" v-show="this.area !='' && false ">
+		        	<select name="estados" id="estados"  class="form-control multiselect">
+			        	<option value="">Estados</option>
+			        </select>
+		        </div>
+						<div class="drop-full">
+							<select name="estados2" class="js-example-basic-multiple" multiple="multiple" id="estados2">
+							</select>
+						</div>
+						<div class="drop">
+							<select name="month" id="month"  class="form-control multiselect">
+								<option value="">Mes</option>
+								<option value="01">Enero</option>
+								<option value="02">Febrero</option>
+								<option value="03">Marzo</option>
+								<option value="04">Abril</option>
+								<option value="05">Mayo</option>
+								<option value="06">Junio</option>
+								<option value="07">Julio</option>
+								<option value="08">Agosto</option>
+								<option value="09">Septiembre</option>
+								<option value="10">Octubre</option>
+								<option value="11">Noviembre</option>
+								<option value="12">Diciembre</option>
+							</select>
+						</div>
+		        <div class="drop">
+		        	<select name="year" id="year"  class="form-control multiselect">
+			        	<option value="">Año</option>
+			        </select>
+		        </div>
+	            <button type="submit" class="btn btn-info btn-flat">Buscar</button>
         </form>
 	</div>
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -70,6 +74,7 @@
 </template>
 <script>
 	import table from 'datatables.net';
+	import select2 from 'select2';
 	module.exports={
 		props: ['area'],
 		data(){
@@ -96,6 +101,7 @@
 		},
 		watch:{},
 		mounted(){
+			$(".js-example-basic-multiple").select2({ width: '100%',placeholder: 'Estados' });
 			let that = this;
 			var oTable = $('#tabla_tareas').DataTable({
 				dom: "<'row'<'col-xs-12'<'row filtros'<'col-xs-6 col-sm-6 col-lg-4 selects'><'col-xs-6 col-sm-6 col-lg-5'f><'col-xs-4 col-sm-4 col-lg-3'l>>>r>"+
@@ -109,7 +115,7 @@
 				ajax: {
 					url: window._baseURL+"/all_tareas/"+that.area,
 					data: function (d) {
-						d.estados = $('select[name=estados]').val();
+						d.estados = $('select[name=estados2]').val();
 						d.year = $('select[name=year]').val();
 						d.month = $('select[name=month]').val();
 					},
@@ -171,19 +177,18 @@
 		    $.ajax({ url:window._apiURL+"estados_x_tareas/1",headers: {
 		    	'Authorization':'Bearer '+Laravel.api_token}})
 		    .done(function(response) {
-		    	 	// limpiar el select
-						if ($('select[name=estados]').val() == "") {
+		    	 // limpiar el select
+					if ($('select[name=estados]').val() == "" && $('select[name=estados2]').val() == "") {
 		    	 	var option;
-		    	 	$('#estados')
+		    	 	$('#estados,#estados2')
 		    	 	.find('option')
 		    	 	.remove()
 		    	 	.end()
-		    	 	.append('<option value="">Estados</option>')
 				    // llenar select dinamicamente
 				    response.forEach(function(item,index) {
 				    	option = $('<option>');
 				    	option.attr('value', item.id).text(item.nombre);
-				    	$('#estados').append(option);
+				    	$('#estados,#estados2').append(option);
 				    })
 					}
 				})

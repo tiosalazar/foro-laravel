@@ -166,7 +166,7 @@
     Route::get('/years_historico_clientes', 'ClienteController@getYearHistorico');
 
     Route::get('/historico_equipos/{id}',['middleware' => ['permission:ver_historico_areas'], 'uses' => 'AreaController@historico_de_equipos']);
-    Route::get('/historico_clientes/{id}',['middleware' => ['permission:ver_historico_areas'], 'uses' => 'ClienteController@historico_de_clientes']);
+    Route::get('/historico_clientes/{id}',['middleware' => ['permission:ver_historico_clientes'], 'uses' => 'ClienteController@historico_de_clientes']);
 
 
   // Notificaciones
@@ -219,9 +219,9 @@
       }
       return view('admin.equipo.historico_equipo_usuario');
     });
-    // historico Usuarios
+    // historico Clientes
     Route::get('historico_clientes', function () {
-       if (!Auth::user()->can('ver_historico_usuarios')) {
+       if (!Auth::user()->can('ver_historico_clientes')) {
         return Redirect::to('home');
       }
       return view('admin.clientes.historico_clientes');

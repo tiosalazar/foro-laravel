@@ -307,7 +307,7 @@ public function update(Request $request, $id)
         }
         // Es una actualziacion de la tarea
     }else{
-        if (!($request->estados_id == 4 || $request->estados_id == 5|| $request->estados_id == 7)) {
+        if (!($request->estados_id == 4 || $request->estados_id == 5|| $request->estados_id == 6 || $request->estados_id == 7)) {
             $vl=$this->validatorAsignarTarea($request->all());
         }else{
             $vl=$this->validatorAtenciones($request->all());
@@ -499,6 +499,9 @@ public function update(Request $request, $id)
                     User::findOrFail($tarea->encargado_id)
                     ->notify(new TareaAtencionArea($sender,$tarea));
                     break;
+                    case '6':
+                      // En Espera
+                    break;
                     case '7':
                     // Creador de la solicitud - Ejecutiva
                     $maker = User::findOrFail($tarea->usuarios_id);
@@ -617,7 +620,7 @@ public function showAllTareas($id,Request $request)
 
  },'estado' => function ($query) use ($request,$id) {
         if ($request->has('estados')) {
-            $query->where('id', '=', $request->get('estados'));
+            $query->whereIn('id',$request->get('estados'));
         }
         if($id == -1){
             $estado_programado= Estado::where('nombre','Programado')->first();
@@ -723,7 +726,7 @@ public function showAllTareas($id,Request $request)
 
      },'estado' => function ($query) use ($request,$id) {
             if ($request->has('estados')) {
-                $query->where('id', '=', $request->get('estados'));
+                $query->whereIn('id', $request->get('estados'));
             }/*else
             if($id == -1){
                 $estado_programado= Estado::where('nombre','Pendiente')->first();
@@ -815,7 +818,8 @@ public function showAllTareas($id,Request $request)
                 $query->where('estado', 1);
             },'ot.cliente','usuarioencargado','estado' => function ($query) use ($estado,$id) {
                 if ($estado !='null') {
-                    $query->where('id', '=', $estado);
+                  $estado = explode(',',$estado);
+                    $query->whereIn('id',$estado);
                 }/*else if($id == -1)
                 {
                     $estado_programado= Estado::where('nombre','Pendiente')->first();
