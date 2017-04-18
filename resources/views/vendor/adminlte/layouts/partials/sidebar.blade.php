@@ -191,7 +191,7 @@
 
    <!-- Ver compras asociadas -->
        @if( Auth::user()->can('ver_compras_asociadas') )
-           <li class="treeview {{ Request::is('herramientas/*') ? 'active' : '' }}">
+           <li class="treeview {{ Request::is('compra/*') ? 'active' : '' }}">
         <a href="#"><i class='fa fa-shopping-bag'></i> <span>{{ trans('texto_menu.compras_asociadas') }}</span> <i class="fa fa-caret-left pull-right fa-lg"></i></a>
         <ul class="treeview-menu">
           <!--Listar -->
