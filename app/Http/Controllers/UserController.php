@@ -130,8 +130,13 @@ class UserController extends Controller
      */
     public function show($nombre_rol)
     {
-        $ejecutivos= Role::where('name',$nombre_rol)->first();
-        $user= User::where('roles_id', $ejecutivos->id)->where('estado',1)->get();
+        if (is_numeric($nombre_rol)) {
+          $user= User::findOrFail($nombre_rol);
+        } else {
+          $ejecutivos= Role::where('name',$nombre_rol)->first();
+          $user= User::where('roles_id', $ejecutivos->id)->where('estado',1)->get();
+        }
+
         return response()->json($user);
     }
 

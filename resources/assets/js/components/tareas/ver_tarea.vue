@@ -244,8 +244,7 @@
             </div>
               <label for="descripcion">Comentario:</label>
 
-            <!-- <textarea class="form-control" rows="3"  name="descripcion"  id="descripcion" v-model="descripcion" placeholder="Descripción" required="required"></textarea>-->
-              <vue-html5-editor  :height="150"  :z-index="0" @change="updateData"></vue-html5-editor>
+              <vue-html5-editor :height="150"  :z-index="0" @change="updateData"></vue-html5-editor>
 
             </div>
 

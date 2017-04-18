@@ -103,5 +103,12 @@ class User extends Authenticatable
   {
     return $this->hasMany('App\Compras_Ot','creador_id','id');
   }
+  /*
+  * Obtiene el cliente que posee el usuario
+  */
+  public function cliente()
+  {
+    return $this->hasOne('App\Cliente','user_id','id');
+  }
 
 }

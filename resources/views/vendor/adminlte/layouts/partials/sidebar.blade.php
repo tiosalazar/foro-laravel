@@ -153,6 +153,11 @@
           <li class="treeview " ><a href="{{ url('informes/historico_areas') }}"><i class='fa fa-line-chart'></i><span>{{  trans('texto_menu.historico_areas') }}</span></a></li>
           @endif
           <!-- .Historico Áreas -->
+          <!--Historico Clientes -->
+          @if( Auth::user()->can('ver_historico_areas') )
+          <li class="treeview " ><a href="{{ url('informes/historico_clientes') }}"><i class='fa fa-line-chart'></i><span>{{  trans('texto_menu.historico_clientes') }}</span></a></li>
+          @endif
+          <!-- .Historico Clientes -->
         </ul>
       </li>
        @endif

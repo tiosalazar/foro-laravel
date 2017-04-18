@@ -15,10 +15,10 @@
               <th>NIT</th>
               <th>Cliente</th>
               <th>Razón social</th>
+              <th>Ejecutivo</th>
               <th>Nombre de Contacto</th>
               <th>Correo</th>
               <th>Teléfono</th>
-              <!-- <th>Acciones</th> -->
               <th>Acciones</th>
             </tr>
         </thead>
@@ -113,6 +113,7 @@
                   { data: 'nit', name: 'nit' },
                   { data: 'nombre', name: 'nombre' },
                   { data: 'razon_social', name: 'razon_social' },
+                  { data: 'ejecutivo', name: 'ejecutivo' },
                   { data: 'nombre_contacto', name: 'nombre_contacto' },
                   { data: 'email', name: 'email' },
                   { data: 'telefono', name: 'telefono' },
@@ -196,7 +197,8 @@
       },
       borrarCliente: function() {
         // this.$http.delete('api/v1/clientes/'+client.id)
-        let index = $('#id_cliente').val()
+        let index = $('#id_cliente').val();
+        var that = this;
         this.$http.delete(window._apiURL+'clientes/'+index)
         .then(function(response) {
           if (response.status != '200') {
@@ -215,13 +217,14 @@
             $('#myModal').modal('hide')
             toastr.error('No se encontraron resultados, verfique la informacion','Error',this.option_toast);
           } else {
+            console.log(err);
             if (Object.keys(err.body.obj).length>0) {
               this.setErrors(err.body.obj);
             }else{
               that.message = err.body.error;
             }
+            toastr.error(err.body.msg,this.message,this.option_toast);
             $('#myModal').modal('hide')
-            toastr.error(this.message,err.body.msg,this.option_toast);
           }
         })
       }
