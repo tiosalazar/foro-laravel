@@ -9385,6 +9385,10 @@ body {
   padding: 70px;
 }
 
+.ver_tarea img {
+  max-width: 100%;
+}
+
 .ver_tarea .contenedor_fecha {
   display: -webkit-box;
   display: flex;

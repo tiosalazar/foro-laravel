@@ -281,6 +281,9 @@
 }
 .ver_tarea{
 	padding: 70px;
+	img{
+		max-width: 100%;
+	}
 	.contenedor_fecha{
 		display: flex;
 		.input-group-addon{
