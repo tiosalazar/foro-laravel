@@ -14,6 +14,10 @@
 
   Auth::routes();
   Route::get('/console/{id}','RolController@updatePermisionsbyRole');
+
+  Route::resource('gcalendar', 'gCalendarController');
+  Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
+  
   //Imprimir Hora
   Route::get('/hora_actual', function () {
     echo date("d-m-Y H:m:s");

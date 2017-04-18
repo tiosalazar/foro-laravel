@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::resource('cal', 'gCalendarController');
+Route::get('oauth', 'gCalendarController@oauth')->name('oauthCallback');
 
 Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
 
