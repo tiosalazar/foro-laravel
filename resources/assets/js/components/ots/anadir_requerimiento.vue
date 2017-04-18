@@ -15,7 +15,7 @@
             <div class="row">
                <label for="horas_area" class="col-sm-6 "><h5>Horas de {{ area }}</h5> </label>
                 <div class="col-sm-6">
-                  <input type="text" @input="emitirData(),guardarDatos()"   :name="'horas_area'+id_area"  v-validate data-vv-rules="required|decimal:2" data-vv-as="Horas Area" class="form-control text-center" :id="'horas_area'+id_area" v-model="nhoras" placeholder="No. Horas">
+                  <input type="text" @input="realizarCalculo(),emitirData(),guardarDatos()"   :name="'horas_area'+id_area"  v-validate data-vv-rules="required|decimal:2" data-vv-as="Horas Area" class="form-control text-center" :id="'horas_area'+id_area" v-model="nhoras" placeholder="No. Horas">
                   <span  class="help-block" v-show="errors.has('horas_area'+id_area)">{{ errors.first('horas_area'+id_area) }}</span>
                 </div>
             </div>
@@ -41,7 +41,7 @@
         <div class="form-group col-md-6 col-sm-6" v-bind:class="{ 'has-error': errors.has('horas_extra_area'+id_area) }">
           <label :for="'horas_extra_area'+id_area" class="col-sm-6 nopadding"><h5>Horas Extra {{ area }}</h5> </label>
           <div class="col-sm-6">
-            <input type="text" @input="emitirData(),guardarDatos()"  style="margin-top: 12px;" :name="'horas_extra_area'+id_area"  v-validate data-vv-rules="decimal:2" data-vv-as="Horas Extra Area" class="form-control text-center" :id="'horas_extra_area'+id_area" v-model="nhextra" :placeholder="'Horas Extra '+area">
+            <input type="text" @input="realizarCalculo(),emitirData(),guardarDatos()"  style="margin-top: 12px;" :name="'horas_extra_area'+id_area"  v-validate data-vv-rules="decimal:2" data-vv-as="Horas Extra Area" class="form-control text-center" :id="'horas_extra_area'+id_area" v-model="nhextra" :placeholder="'Horas Extra '+area">
             <span  class="help-block" v-show="errors.has('horas_extra_area'+id_area)">{{ errors.first('horas_extra_area'+id_area) }}</span>
           </div>
         </div>
@@ -63,7 +63,7 @@
         </div>
         <div class="form-group  col-md-6 col-lg-3"  v-bind:class="{ 'has-error': errors.has('no_horas_req'+index) }">
           <label class="sr-only" for="no_horas_req">N° Horas</label>
-          <input type="text" @input="realizarCalculo(),guardarDatos()" :name="'no_horas_req'+index" v-validate data-vv-rules="required|decimal:2" data-vv-as="No horas"  v-model="ed.model_horas" class="form-control" :id="'no_horas_req'+index" placeholder="No. Horas">
+          <input type="text" @input="realizarCalculo(),emitirData(),guardarDatos()" :name="'no_horas_req'+index" v-validate data-vv-rules="required|decimal:2" data-vv-as="No horas"  v-model="ed.model_horas" class="form-control" :id="'no_horas_req'+index" placeholder="No. Horas">
           <span  class="help-block" style="position:relative;" v-show="errors.has('no_horas_req'+index)">{{ errors.first('no_horas_req'+index) }}</span>
         </div>
         <div class="form-group  col-md-6 col-lg-3"  v-show="$parent.visualizacion != 'true'  || $parent.duplicar =='true' " >
@@ -87,14 +87,14 @@ module.exports={
   data () {
     return {
       requerimiento: [
-        {  model_nom:'', model_horas:''}
+        {  model_nom:'', model_horas:0}
       ],
-      nhoras:'',
+      nhoras:0,
       model_nom:'',
       nhextra:0,
       model_horas:0,
       horas_extra_area:0,
-      v_resta:'',
+      v_resta:0,
       can_save_req:false,
       h_pasadas:false
     }
@@ -278,6 +278,8 @@ module.exports={
     for (let f in this.requerimiento) {
       let idx = Number(f)
       let p = this.requerimiento[idx]
+
+
       if (idx === this.requerimiento.length - 1){
         if(p.model_horas){
           sumatoria += parseFloat(p.model_horas)
@@ -288,6 +290,8 @@ module.exports={
           sumatoria += parseFloat(p["model_horas"])
         }
       }
+
+
     }
      var horas =parseFloat(this.nhoras)+parseFloat(this.nhextra);
     if ( horas < sumatoria ) {

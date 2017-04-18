@@ -51,9 +51,7 @@
     },
     computed:{
       isInvalid () {
-        console.log(this.isTouched, this.value)
         let algo = (this.isTouched &&  this.value=="" )?true:false//Compruebo de que haya selecionado algo
-        console.log(algo)
         return algo
       },
       value: function () {
@@ -92,7 +90,6 @@
         if (newSelected != null && newSelected != undefined) {
           this.id_estado = newSelected.id;
           this.value=newSelected;
-          console.log(newSelected);
           if(this.index != null ){
             var respuesta = {index: this.index, estado: newSelected }//Devuelvo el Index en el que se encuentra junto con el arreglo de datos, para saber en que posición
             this.$parent.$emit('select_estado',respuesta);

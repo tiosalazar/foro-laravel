@@ -318,6 +318,11 @@
 		*/
 		this.$on('datos_compras', function(v) {
 			this.diabled_compras = !this.comprobarSiGuardoCompras();
+			//console.log(this.comprobarSiGuardoCompras(),'Comprobación');
+			//console.log(v,'ID AREA com');
+			if (!this.comprobarSiGuardoCompras()) {
+				$('#boton_guardar_area_'+v[0].id_area).removeClass('disabled');
+			}
 			this.datos_compras=v;
 		});
 		/*
@@ -670,7 +675,7 @@
 		//console.log(this.datos_requerimiento[0].guardado,'Req ANT');
 		var size = Object.keys(this.datos_requerimiento).length;
 		if (  size == 0 || reqSiguiente == null ) {
-			console.log("Entre 1");
+
 			e.stopPropagation()
 			this.id_tab=id;
 			$('.editarModal').modal('show');
@@ -702,12 +707,9 @@ cambiarDatos:function(id){
 	}
 
 	this.datos_requerimiento=JSON.parse(this.$localStorage.get('datos_requerimiento_'+id));
-	console.log(this.datos_requerimiento,'Req Cambiar');
-	console.log(data_registro,'Registro');
 
 	var size = Object.keys(data_registro).length;
 	if( (this.datos_requerimiento != undefined && this.datos_requerimiento != null) && (this.datos_requerimiento[0].guardado !=false && size > 0  && data_registro[0].guardado !=false)  ){// && this.datos_requerimiento[0].guardado !=true
-		console.log("mda entree");
 		this.h_area=parseFloat(this.datos_requerimiento[0].horas);
 		this.t_extra=parseFloat(this.datos_requerimiento[0].textra);
 		var resta_anterior=0;
@@ -737,7 +739,7 @@ seguir:function(e){
 		this.traer_reque=false;
 		this.limpiarDatos_tabs=false;
 	}, 2000);
-
+  $('#boton_guardar_area_'+this.id_tab).addClass('disabled');
 	$('.editarModal').modal('toggle');
 },
 /*
