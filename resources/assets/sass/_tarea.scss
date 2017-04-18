@@ -172,6 +172,9 @@
 				border-right: 1px solid $borde-gris;
 			}
 		}
+		#estados2{
+			width: 100%;
+		}
 		.drop{
 			display: inline-block;
 			position: relative;
@@ -196,6 +199,7 @@
 				display: block;
 			}
 		}
+
 		select{
 			padding: 0px 10px;
 			-webkit-appearance: none;
@@ -204,6 +208,18 @@
 
 		}
 	}
+	.row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+  flex-wrap: wrap;
+}
+.row > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
+	justify-content: center;
+}
 }
 
 .footer_tarea{

@@ -617,7 +617,7 @@ public function showAllTareas($id,Request $request)
 
  },'estado' => function ($query) use ($request,$id) {
         if ($request->has('estados')) {
-            $query->where('id', '=', $request->get('estados'));
+            $query->whereIn('id',$request->get('estados'));
         }
         if($id == -1){
             $estado_programado= Estado::where('nombre','Programado')->first();

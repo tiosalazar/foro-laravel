@@ -9257,6 +9257,10 @@ body {
   border-right: 1px solid #d8d8d8;
 }
 
+#tabla_tareas_wrapper .filtros #estados2 {
+  width: 100%;
+}
+
 #tabla_tareas_wrapper .filtros .drop {
   display: inline-block;
   position: relative;
@@ -9292,6 +9296,22 @@ body {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+}
+
+#tabla_tareas_wrapper .row {
+  display: -webkit-box;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#tabla_tareas_wrapper .row > [class*='col-'] {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  justify-content: center;
 }
 
 .footer_tarea {

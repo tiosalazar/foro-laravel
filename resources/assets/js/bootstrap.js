@@ -10,6 +10,7 @@ window._ = require('lodash');
 window.$ = window.jQuery = require('jquery');
 require('bootstrap-less');
 
+import select2 from 'select2';
 
 var AdminLTEOptions = {
     //Enable sidebar expand on hover effect for sidebar mini
