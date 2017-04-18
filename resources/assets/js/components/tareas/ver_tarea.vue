@@ -244,7 +244,8 @@
             </div>
               <label for="descripcion">Comentario:</label>
 
-              <vue-html5-editor :height="150"  :z-index="0" @change="updateData"></vue-html5-editor>
+// Variable vacia para el textarea, ya que es requerido un valor inicial
+              <vue-html5-editor :content="descripcion_fake" :height="150"  :z-index="0" @change="updateData"></vue-html5-editor>
 
             </div>
 
@@ -354,6 +355,8 @@
         comentarios_array:[],
         paginate: ['comentarios_array'],
         descripcion:'',
+        // Variable vacia para el textarea, ya que es requerido un valor inicial
+        descripcion_fake:'',
         fecha_entrega_area:'',
         select_ot:this.arraytarea.ot,
         prioridad:'',
@@ -483,7 +486,9 @@
             //Datos a enviar al asignar la tarea y comentarios
 
           let fecha_area=(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5|| this.estado_solicitud.id == 7)?null:moment(this.tarea_info.fecha_entrega_area).format('YYYY-MM-DD');
+          fecha_area=(moment(fecha_area).isValid())?moment(this.tarea_info.fecha_entrega_area).format('YYYY-MM-DD'):null;
           let fecha_cuentas=(this.estado_solicitud.id == 4 || this.estado_solicitud.id == 5|| this.estado_solicitud.id == 7)?null:moment(this.tarea_info.fecha_entrega_cuentas).format('YYYY-MM-DD');
+          fecha_cuentas=(moment(fecha_cuentas).isValid())?moment(this.tarea_info.fecha_entrega_cuentas).format('YYYY-MM-DD'):null;
           let recurrencia_init = (moment(this.tarea_info.fecha_inicio_recurrencia).isValid())?moment(this.tarea_info.fecha_inicio_recurrencia).format('YYYY-MM-DD HH:mm:ss'):null;
           let recurrencia_final = (moment(this.tarea_info.fecha_inicio_recurrencia).isValid())?moment(this.tarea_info.fecha_final_recurrencia).format('YYYY-MM-DD HH:mm:ss'):null;
             //Datos a enviar

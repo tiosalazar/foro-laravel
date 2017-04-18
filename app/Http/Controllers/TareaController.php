@@ -307,7 +307,7 @@ public function update(Request $request, $id)
         }
         // Es una actualziacion de la tarea
     }else{
-        if (!($request->estados_id == 4 || $request->estados_id == 5|| $request->estados_id == 7)) {
+        if (!($request->estados_id == 4 || $request->estados_id == 5|| $request->estados_id == 6 || $request->estados_id == 7)) {
             $vl=$this->validatorAsignarTarea($request->all());
         }else{
             $vl=$this->validatorAtenciones($request->all());
@@ -498,6 +498,9 @@ public function update(Request $request, $id)
                     $sender = User::findOrFail(Auth::user()->id);
                     User::findOrFail($tarea->encargado_id)
                     ->notify(new TareaAtencionArea($sender,$tarea));
+                    break;
+                    case '6':
+                      // En Espera
                     break;
                     case '7':
                     // Creador de la solicitud - Ejecutiva
