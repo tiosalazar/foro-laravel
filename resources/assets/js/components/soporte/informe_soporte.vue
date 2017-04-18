@@ -38,11 +38,15 @@
 		    </thead>
         </table>
         <form method="POST" id="search-form" class="form-inline" role="form">
-	        <div class="drop" >
+	        <div class="drop" v-show="false" >
 	        	<select name="estados" id="estados"  class="form-control multiselect">
 		        	<option value="">Estados</option>
 		        </select>
 	        </div>
+					<div class="drop-full">
+						<select name="estados2" class="js-example-basic-multiple" multiple="multiple" id="estados2">
+						</select>
+					</div>
 					<div class="drop" >
 					 <select name="fases" id="fases"  class="form-control multiselect">
 						 <option value="">Fases</option>
@@ -95,6 +99,7 @@
 </template>
 <script>
 	import table from 'datatables.net';
+	import select2 from 'select2';
 	module.exports={
 		props: ['area','tipo_fase'],
 		data(){
@@ -125,6 +130,7 @@
 		},
 		mounted(){
 			let that = this;
+			$(".js-example-basic-multiple").select2({ width: '100%',placeholder: 'Estados' });
 			var oTable = $('#tabla_tareas').DataTable({
 				dom: "<'row'<'col-xs-12'<'row filtros'<'col-xs-6 col-sm-6 col-lg-4 selects'><'col-xs-6 col-sm-6 col-lg-5'f> <'col-xs-4 col-sm-4 col-lg-3'l>>>r>"+
 				"<'row'<'col-xs-12't>>"+
@@ -140,7 +146,7 @@
 					request.setRequestHeader("Authorization", 'Bearer '+Laravel.api_token);
 				},
 				data: function (d) {
-					d.estados = $('select[name=estados]').val();
+					d.estados = $('select[name=estados2]').val();
 					d.fases = $('select[name=fases]').val();
 					d.year = $('select[name=year]').val();
 					d.month = $('select[name=month]').val();
@@ -204,20 +210,19 @@
 		    .done(function(response) {
 					//console.log(response);
 		    	 	// limpiar el select
-					if ($('select[name=estados]').val() == "") {
-							var option;
-						$('#estados')
-						.find('option')
-						.remove()
-						.end()
-						.append('<option value="">Estados</option>')
-						// llenar select dinamicamente
-						response.forEach(function(item,index) {
-							option = $('<option>');
-							option.attr('value', item.id).text(item.nombre);
-							$('#estados').append(option);
-						})
-					}
+						if ($('select[name=estados]').val() == "" && $('select[name=estados2]').val() == "") {
+			    	 	var option;
+			    	 	$('#estados,#estados2')
+			    	 	.find('option')
+			    	 	.remove()
+			    	 	.end()
+					    // llenar select dinamicamente
+					    response.forEach(function(item,index) {
+					    	option = $('<option>');
+					    	option.attr('value', item.id).text(item.nombre);
+					    	$('#estados,#estados2').append(option);
+					    })
+						}
 
 
 				});
@@ -277,13 +282,13 @@
 		methods:{
 			exportar_data: function() {
 				var arrayData={
-					estado:($('select[name=estados]').val() != "")? $('select[name=estados]').val() :'null',
+					estado:($('select[name=estados2]').val() != "")? $('select[name=estados2]').val() :'null',
 					fase : ($('select[name=fases]').val() != "")?$('select[name=fases]').val():'null',
 					year : ($('select[name=year]').val() != "")?$('select[name=year]').val():'null',
 					month :($('select[name=month]').val()!= "")?$('select[name=month]').val():'null'
 				};
 
-				window.location = window._baseURL+'/informes/soporte/exportar/'+arrayData.estado+'/'+
+				window.location = window._baseURL+'/informes/soporte/exportar/'+encodeURI(arrayData.estado)+'/'+
 				arrayData.fase+'/'+arrayData.year+'/'+arrayData.month;
 
 			},

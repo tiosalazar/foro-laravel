@@ -726,7 +726,7 @@ public function showAllTareas($id,Request $request)
 
      },'estado' => function ($query) use ($request,$id) {
             if ($request->has('estados')) {
-                $query->where('id', '=', $request->get('estados'));
+                $query->whereIn('id', $request->get('estados'));
             }/*else
             if($id == -1){
                 $estado_programado= Estado::where('nombre','Pendiente')->first();
@@ -818,7 +818,8 @@ public function showAllTareas($id,Request $request)
                 $query->where('estado', 1);
             },'ot.cliente','usuarioencargado','estado' => function ($query) use ($estado,$id) {
                 if ($estado !='null') {
-                    $query->where('id', '=', $estado);
+                  $estado = explode(',',$estado);
+                    $query->whereIn('id',$estado);
                 }/*else if($id == -1)
                 {
                     $estado_programado= Estado::where('nombre','Pendiente')->first();
