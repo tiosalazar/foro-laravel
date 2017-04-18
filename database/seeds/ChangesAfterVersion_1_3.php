@@ -11,11 +11,11 @@ class ChangesAfterVersion_1_3 extends Seeder
      */
     public function run()
     {
-      // $this->call('Crear_Permisos_Historico_Clientes');
-      // $this->command->info('Se ha Creado el permiso Historico de clientes');
+      $this->call('Crear_Permisos_Historico_Clientes');
+      $this->command->info('Se ha Creado el permiso Historico de clientes');
       //
-      // $this->call('Asignar_Permisos_Historico_Clientes');
-      // $this->command->info('Se ha Asignado  el permiso Historico de clientes');
+      $this->call('Asignar_Permisos_Historico_Clientes');
+      $this->command->info('Se ha Asignado  el permiso Historico de clientes');
 
       $this->call('Crear_Permisos_Borrar_Cliente');
       $this->command->info('Se ha Creado el permiso Borrar cliente');

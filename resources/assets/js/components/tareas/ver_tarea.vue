@@ -582,10 +582,30 @@
 
           this.$http.put(window._apiURL+'tareas/'+this.tarea_info.id, data)
           .then(function(respuesta){
-           this.descripcion="";
-           this.descripcion_requerida=true;
-           this.comentarios_array.unshift(respuesta.body.user_coment);
-           toastr.success(respuesta.body.msg,'',this.option_toast);
+            if (respuesta.status != '200') {
+              if (Object.keys(respuesta.body.obj).length>0) {
+                 this.setErrors(respuesta.body.obj);
+              }
+              toastr.warning(this.message,respuesta.body.msg,this.option_toast);
+            }else{
+              this.descripcion=" ";
+              this.descripcion_fake=" ";
+              this.descripcion_requerida=true;
+              this.comentarios_array.unshift(respuesta.body.user_coment);
+              toastr.success(respuesta.body.msg,'',this.option_toast);
+            }
+         }, (err) => {
+            if (err.status == 404) {
+              toastr.error('No se encontraron resultados, verfique la informacion','Error',this.option_toast);
+            } else {
+              if (Object.keys(err.body.obj).length>0) {
+                this.setErrors(err.body.obj);
+              }else{
+                that.message = err.body.error;
+              }
+              console.log(err)
+              toastr.error(this.message,err.body.msg,this.option_toast);
+            }
          });
         },
         updateResource(data){

@@ -305,6 +305,18 @@ public function update(Request $request, $id)
 
 
         }
+        return response([
+            'status' => Response::HTTP_OK,
+            'response_time' => microtime(true) - LARAVEL_START,
+            'msg' => 'Comentario agregado con exito',
+            'mensaje' => "OK",
+            'error' => 0,
+            'tarea' =>$tarea,
+            'dato' =>$tarea,
+            'user_coment' =>$respuesta['user_coment'],
+        ],Response::HTTP_OK);
+
+
         // Es una actualziacion de la tarea
     }else{
         if (!($request->estados_id == 4 || $request->estados_id == 5|| $request->estados_id == 6 || $request->estados_id == 7)) {
