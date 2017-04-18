@@ -95,6 +95,8 @@ class OtController extends Controller
          $editar_ot=(Auth::user()->can('editar_ots') )?'<a href="editar/'.$ots->id.'" title="Editar Ot"  class="btn_accion btn-info" aria-label="View"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>':'';
          $exportar_ot=(Auth::user()->can('editar_ots') )?'<a href="exportar/'.$ots->id.'" title="Exportar Ot"  class="btn_accion estado-2-10" aria-label="View"><i class="fa fa-file-excel-o" aria-hidden="true"></i></a>':'';
          $eliminar_ot=(Auth::user()->can('editar_ots') )?'<a href="#" id="cli-'.$ots->id.'" title="Eliminar Ot"  class="btn_accion delete_cliente btn-danger"  data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></a>':'';
+         $editar_ot=(Auth::user()->can('crear_ots') )?'<a href="duplicar/'.$ots->id.'" title="Duplicar Ot"  class="btn_accion btn-warning" aria-label="Duplicar"><i class="fa fa-files-o" aria-hidden="true"></i></a>':'';
+
          return $ver_ot.$editar_ot.$exportar_ot.$eliminar_ot;
       })
       ->make(true);
@@ -305,6 +307,71 @@ class OtController extends Controller
       //return response()->json( $ot);
       return view('admin.ots.visualizar_ot')->with('ot', $ot)->with('listado_areas', $listado_areas);
    }
+   /**
+   * Show the form for editing the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+   public function duplicar($id)
+   {
+      $ot=OT::findOrFail($id);
+      $data=[];
+      $data['datos_encabezado']=$ot;
+      $data['datos_encabezado']['cliente']=$ot->cliente;
+      $data['datos_encabezado']['ejecutivo']=$ot->Usuario;
+      $data['datos_encabezado']['estado']=$ot->Estado;
+      $data['editor_id']=Auth::user()->id;
+      $data['compras']=[];
+      $data['final_req']=[];
+      $data['final_com']=[];
+      $array_temporal=[];
+      $data['listado_areas']=[];
+      $data['requerimientos']['requerimientos']=[];
+      // $requerimientos= $ot->Requerimiento_Ot;
+      foreach ($ot->Tiempos_x_Area as  $value) {
+         $area_actual=$value['areas_id'];
+         array_push($data['listado_areas'], $value->Area);
+         $data['requerimientos']['area']=$value['areas_id'];
+         $data['requerimientos']['textra']=$value['tiempo_extra'];
+         $data['requerimientos']['horas']=$value['tiempo_estimado_ot'];
+         $array_temporal=[];
+         $ingreso=[];
+         foreach ($ot->Requerimiento_Ot as  $value) {
+            if ($value['areas_id'] ==  $area_actual ) {
+               $array_temporal= array('model_nom'=>$value['nombre'] ,'model_horas'=>(float)$value['horas']);
+               //$data['requerimientos']['requerimientos']=json_encode($array_temporal);
+               array_push($ingreso,$array_temporal);
+               $data['requerimientos']['requerimientos']=$ingreso;
+               /// array_push($data['requerimientos']['requerimientos'], json_encode($array_temporal));
+            }
+
+         }
+         array_push($data['final_req'], $data['requerimientos']);
+         $array_temporal=[];
+         $ingreso=[];
+         foreach ($ot->Compras_Ot as  $value) {
+            if ($value['areas_id'] ==  $area_actual ) {
+               $data['compras']['area']=$value['areas_id'];
+               $compra =Compras_Ot::findOrFail($value['id']);
+               $compra->Tipo_Compra;
+               $compra->Divisa;
+
+               // $array_temporal['area']=$value['areas_id'];
+               $array_temporal= array('tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'model_desc' => $value['descripcion'],
+               'model_provedor'=> $value['provedor'] , 'model_valor'=>  $value['valor'], 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
+               array_push($ingreso,$array_temporal);
+               $data['compras']['compras']=$ingreso;
+               //array_push($data['compras'],  $array_temporal);
+            }
+         }
+
+
+      }
+      array_push($data['final_com'], $data['compras']);
+      return view('admin.ots.duplicar_ot')->with('arregloOT', json_encode($data));
+   }
+
    /**
    * Show the form for editing the specified resource.
    *

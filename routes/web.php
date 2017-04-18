@@ -72,6 +72,8 @@
   //OTS
     Route::get('ots/editar/{id}', ['middleware' => ['permission:editar_ots'], 'uses' => 'OtController@edit']);
     Route::get('ots/visualizar/{id}', ['middleware' => ['permission:ver_ots'], 'uses' => 'OtController@show']);
+    Route::get('ots/duplicar/{id}', ['middleware' => ['permission:crear_ots'], 'uses' => 'OtController@duplicar']);
+
     Route::get('ots/listado', function()
     {
       if (!Auth::user()->can('ver_ots')) {return Redirect::to('home');}
