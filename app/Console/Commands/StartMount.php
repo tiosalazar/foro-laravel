@@ -85,7 +85,7 @@ class StartMount extends Command
 
           //id Rol coordinador
           $role=Role::where('name','coordinador')->first();
-          log::info("rol",[$role->id,$tarea['areas_id']]);
+          // log::info("rol",[$role->id,$tarea['areas_id']]);
           //Coordinador con con el area enviada en el request
           $coorArea= User::where('roles_id',$role->id)->where('areas_id', $tarea['areas_id'])->first();
 
@@ -96,7 +96,7 @@ class StartMount extends Command
           $fecha_create= new Date($new_tarea->create_at);
           $dia = $fecha_create->day;
 
-          $asignar_fecha = $now->addDays($dia);
+          $asignar_fecha = $now->addDays(abs($dia-1));
 
           $new_tarea->nombre_tarea = $new_tarea->nombre_tarea . ' | Rec - '.$fecha_create->format('M') . ' - '. $now->year;
           $new_tarea->recurrente = 0;
