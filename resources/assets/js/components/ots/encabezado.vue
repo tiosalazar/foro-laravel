@@ -454,14 +454,14 @@ module.exports= {
 	},
 	/*Función la cual me comprueba que los selects esten llenos*/
 	validarSelects: function(){
-		if(this.cliente == ""){
+		if(this.datos_encabezado.cliente == "" || this.datos_encabezado.cliente ==null){
 			toastr.error('No se olvide de elegir un cliente',"Error al guardar los datos",this.option_toast);
 			return false;
-		}else if(	this.ejecutivo == ""){
-			toastr.error('No se olvide elegir el estado de la OT',"Error al guardar los datos",this.option_toast);
+		}else if(	this.datos_encabezado.ejecutivo == "" || this.datos_encabezado.ejecutivo ==null){
+			toastr.error(' No se olvide de elegir a quien va a estar asignada la OT',"Error al guardar los datos",this.option_toast);
 			return false;
-		}else if(this.estado == ""){
-			toastr.error('No se Olvide de elegir a quien va a estar asignada la OT',"Error al guardar los datos",this.option_toast);
+		}else if(this.datos_encabezado.estado == "" || this.datos_encabezado.estado ==null){
+			toastr.error('No se olvide elegir el estado de la OT',"Error al guardar los datos",this.option_toast);
 			return false;
 		}else{
 			return true;

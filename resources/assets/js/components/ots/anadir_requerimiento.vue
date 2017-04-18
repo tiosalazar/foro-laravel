@@ -35,7 +35,7 @@
         </div>
       </div>
     </div>
-    <div class="row" v-show="$parent.visualizacion == 'true'">
+    <div class="row" v-show="$parent.visualizacion == 'true'  && $parent.duplicar !='true'">
       <div class="col-md-12 nopadding">
         <div style="height:22px;"></div>
         <div class="form-group col-md-6 col-sm-6" v-bind:class="{ 'has-error': errors.has('horas_extra_area'+id_area) }">
@@ -66,7 +66,7 @@
           <input type="text" @input="realizarCalculo(),guardarDatos()" :name="'no_horas_req'+index" v-validate data-vv-rules="required|decimal:2" data-vv-as="No horas"  v-model="ed.model_horas" class="form-control" :id="'no_horas_req'+index" placeholder="No. Horas">
           <span  class="help-block" style="position:relative;" v-show="errors.has('no_horas_req'+index)">{{ errors.first('no_horas_req'+index) }}</span>
         </div>
-        <div class="form-group  col-md-6 col-lg-3"  v-show="$parent.visualizacion != 'true'" >
+        <div class="form-group  col-md-6 col-lg-3"  v-show="$parent.visualizacion != 'true'  || $parent.duplicar =='true' " >
           <button type="button" @click="deleteRequerimiento" class="btn btn-danger boton_foro error">Eliminar</button>
         </div>
         </div>

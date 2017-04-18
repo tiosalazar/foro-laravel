@@ -17,7 +17,7 @@
 				<div class="panel panel-default">
 				<div class="padding_ots">
 					<div class="panel-body"  >
-						<formulario_anadir_requerimiento></formulario_anadir_requerimiento>
+						<formulario_anadir_requerimiento  visualizacion="true" arreglo_visualizar="{{ $arregloOT }}" duplicar="true"></formulario_anadir_requerimiento>
 					</div>
 				</div>
               </div>

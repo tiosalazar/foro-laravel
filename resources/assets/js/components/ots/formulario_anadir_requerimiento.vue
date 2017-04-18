@@ -186,7 +186,7 @@
 				}
 			},
 			components: { VueLocalStorage,VeeValidate,Validator},
-			props: ['visualizacion','arreglo_visualizar'],
+			props: ['visualizacion','arreglo_visualizar','duplicar'],
 			data () {
 				return {
 					can_save_ot:false,
@@ -426,7 +426,7 @@
 					compras: this.procesarTodosCompras()
 				};
 				console.log(datos_procesados,'Datos PROCESADOS');
-				if(this.visualizacion != 'true'){
+				if(this.visualizacion != 'true' || this.duplicar=='true'){
 					this.$http.post(window._apiURL+'ots', datos_procesados)
 					.then(function(respuesta){
 						console.log(respuesta);
@@ -457,9 +457,16 @@
 							this.datos_requerimiento=[];
 							this.datos_compras=[];
 							//window.localStorage.clear(); //try this to clear all local storage
-							setTimeout(function () {
-								location.reload(true);
-							}, 500);
+							if ( this.duplicar=='true') {
+								window.localStorage.clear(); //try this to clear all local storage
+								location.href=""+window._baseURL+"/ots/crear";
+							}else {
+								setTimeout(function () {
+										//window.localStorage.clear(); //try this to clear all local storage
+										location.reload(true);
+								}, 500);
+
+							}
 						}
 					},(response) => {
 						console.log(response);

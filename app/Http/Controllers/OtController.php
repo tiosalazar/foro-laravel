@@ -95,9 +95,9 @@ class OtController extends Controller
          $editar_ot=(Auth::user()->can('editar_ots') )?'<a href="editar/'.$ots->id.'" title="Editar Ot"  class="btn_accion btn-info" aria-label="View"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>':'';
          $exportar_ot=(Auth::user()->can('editar_ots') )?'<a href="exportar/'.$ots->id.'" title="Exportar Ot"  class="btn_accion estado-2-10" aria-label="View"><i class="fa fa-file-excel-o" aria-hidden="true"></i></a>':'';
          $eliminar_ot=(Auth::user()->can('editar_ots') )?'<a href="#" id="cli-'.$ots->id.'" title="Eliminar Ot"  class="btn_accion delete_cliente btn-danger"  data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></a>':'';
-         $editar_ot=(Auth::user()->can('crear_ots') )?'<a href="duplicar/'.$ots->id.'" title="Duplicar Ot"  class="btn_accion btn-warning" aria-label="Duplicar"><i class="fa fa-files-o" aria-hidden="true"></i></a>':'';
+         $duplicar_ot=(Auth::user()->can('crear_ots') && $ots->fee == 1 )?'<a href="duplicar/'.$ots->id.'" title="Duplicar Ot"  class="btn_accion btn-warning" aria-label="Duplicar"><i class="fa fa-files-o" aria-hidden="true"></i></a>':'';
 
-         return $ver_ot.$editar_ot.$exportar_ot.$eliminar_ot;
+         return $ver_ot.$editar_ot.$exportar_ot.$eliminar_ot.$duplicar_ot;
       })
       ->make(true);
 
@@ -317,7 +317,13 @@ class OtController extends Controller
    {
       $ot=OT::findOrFail($id);
       $data=[];
+      $ot->referencia='';
+      $ot->fecha_final='';
+      $ot->fecha_inicio='';
+      $ot->estados_id='';
       $data['datos_encabezado']=$ot;
+
+      //return response()->json($data);
       $data['datos_encabezado']['cliente']=$ot->cliente;
       $data['datos_encabezado']['ejecutivo']=$ot->Usuario;
       $data['datos_encabezado']['estado']=$ot->Estado;
