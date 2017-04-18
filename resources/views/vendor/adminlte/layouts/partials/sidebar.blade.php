@@ -154,8 +154,8 @@
           @endif
           <!-- .Historico Áreas -->
           <!--Historico Clientes -->
-          @if( Auth::user()->can('ver_historico_areas') )
-          <li class="treeview " ><a href="{{ url('informes/historico_clientes') }}"><i class='fa fa-line-chart'></i><span>{{  trans('texto_menu.historico_clientes') }}</span></a></li>
+          @if( Auth::user()->can('ver_historico_clientes') )
+          <li class="treeview " ><a href="{{ url('informes/historico_clientes') }}"><i class='fa fa-th-list'></i><span>{{  trans('texto_menu.historico_clientes') }}</span></a></li>
           @endif
           <!-- .Historico Clientes -->
         </ul>
