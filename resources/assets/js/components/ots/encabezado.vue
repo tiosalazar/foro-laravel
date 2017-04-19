@@ -303,7 +303,9 @@ module.exports= {
      				arreglo_Datos[''+k+''] = arreglo[k];
      			}
      		}
-     		this.datos_encabezado=arreglo_Datos;
+        // console.log(arreglo_Datos,'arreglo_Datos');
+				arreglo_Datos.valor_total=numeral(arreglo_Datos.valor_total).format('0,0') ;
+				this.datos_encabezado=arreglo_Datos;
 				this.$parent.$emit('horas_totales',this.datos_encabezado.horas_totales);//Envio de total de Horas
 				this.$parent.$emit('datos_encabezado',arreglo);//Emite los datos al padre
 			}

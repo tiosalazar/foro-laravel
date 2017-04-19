@@ -127,13 +127,7 @@ module.exports={
       this.$parent.$emit('datos_requerimiento',datos,true);//Emite los datos al padre
     },
     limpiar_datos_tabs: function(){
-      console.log(this.$parent.area_actual,'Area Actual');
-      console.log(this.$parent.area_temporal,'Area Temporañ');
-      console.log(this.id_area,'Area MODULO');
-      console.log(this.area,'Area');
-      // console.log('Joder entre');
       if((this.$parent.area_actual==this.id_area) || (this.$parent.visualizacion =="true" && this.$parent.area_actual==this.area_seguir )){
-        console.log('Joder entre');
           this.requerimiento=[
             {  model_nom:'', model_horas:0}
           ];
@@ -143,8 +137,6 @@ module.exports={
           this.h_pasadas=false;
           this.llenarCampos();
       }
-
-
     },
     /*
     Función la cual esta pendiente de la variable realizar_validado cuando le entra un true valida los datos

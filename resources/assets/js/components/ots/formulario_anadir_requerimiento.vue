@@ -58,7 +58,7 @@
 										</div>
 										<div class="row">
 											<div style="height:22px"></div>
-											<anadir_compra  :area="area.nombre" :id_area="area.id" :limpiar_datos="limpiarDatos"  :realizar_validado="validar_compras" ></anadir_compra>
+											<anadir_compra  :area="area.nombre" :id_area="area.id" :limpiar_datos="limpiarDatos"  :realizar_validado="validar_compras" :limpiar_datos_tabs="limpiarDatos_tabs" ></anadir_compra>
 										</div>
 									</div>
 									<div style="height:30px"></div>
@@ -316,10 +316,12 @@
 		/*
 		Escucha el arreglo completo de los datos de las compras asociadas, si las tiene
 		*/
-		this.$on('datos_compras', function(v) {
+		this.$on('datos_compras', function(v,save) {
 			this.diabled_compras = !this.comprobarSiGuardoCompras();
 			//console.log(this.comprobarSiGuardoCompras(),'Comprobación');
 			//console.log(v,'ID AREA com');
+			this.can_save=save;
+			this.can_save_req=save;
 			if (!this.comprobarSiGuardoCompras()) {
 				$('#boton_guardar_area_'+v[0].id_area).removeClass('disabled');
 			}
@@ -348,11 +350,25 @@
 			.then(function(respuesta){
 				this.listado_areas=respuesta.body;
 
-				//DSO Ajustes al guardar OT
-				//this.area_temporal=this.listado_areas[0].id;
-				//this.area_actual=this.listado_areas[0].id;
-
 				this.$localStorage.set('listado_areas',respuesta.body);
+			//DSO Ajustes al guardar OT
+				var total_areas  =this.listado_areas;
+				var retorno=false;
+				if (total_areas != null || total_areas != undefined ) {
+					var size = Object.keys(total_areas).length;
+					var hora_a=0;
+					for (let f in total_areas) {
+						let idx = Number(f)
+						let p = total_areas[idx]
+						hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
+						if( hora_a != null && hora_a != undefined &&  Object.keys(hora_a).length > 0 ){
+								this.area_temporal=p.id;
+								this.area_actual=p.id;
+								return true;
+						}
+					}
+				}
+
 			}.bind(this));
 
 			/*}else{
