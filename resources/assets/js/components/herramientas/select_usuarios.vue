@@ -45,7 +45,8 @@
           return {
             usuarios:[],
             id_ejecutivo:0,
-            isTouched: false
+            isTouched: false,
+            seleccionado:'',
           }
       },
       computed:{
@@ -53,7 +54,7 @@
           return this.select;
         },
         isInvalid () {
-          return (this.isTouched &&  this.value=="" )?true:false //Compruebo de que haya selecionado algo
+          return (this.isTouched &&  this.seleccionado=="" )?true:false //Compruebo de que haya selecionado algo
         }
       },
       created: function(){
@@ -66,7 +67,7 @@
 
         //Valido que la propiedad encargado que traigo de la tarea tenga datos
         if (typeof this.select != 'undefined' || this.select != null) {
-          // this.value=this.select;
+          // this.seleccionado=this.select;
           this.updateSelected(this.select);
           this.id_ejecutivo=this.select.id;
         }
@@ -103,11 +104,12 @@
          updateSelected (newSelected) {
             if (newSelected != null && newSelected != undefined) {
              this.id_ejecutivo = newSelected.id;
-             this.value=newSelected;
+             this.seleccionado=newSelected;
 
             this.$parent.$emit('select_ejecutivo',newSelected);
            }else {
              this.id_ejecutivo = 0;
+             this.seleccionado='';
              this.$parent.$emit('select_clientes','');//emito la variable vasia para comprobar en el padre
            }
         },
@@ -116,13 +118,14 @@
         */
         removeSelected () {
            this.id_ejecutivo = 0;
+           this.seleccionado='';
            this.$parent.$emit('select_clientes','');//emito la variable vasia para comprobar en el padre
        },
        /*
          esta función se ejecuta cuando se da click fuera del cuadro de Dialogo
        */
        onTouch () {
-        this.isTouched = (this.value=="" )?true:false ;
+        this.isTouched = (this.seleccionado=="" )?true:false ;
       }
     }
   }

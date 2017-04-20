@@ -9234,7 +9234,7 @@ body {
 }
 
 .trafico #tabla_tareas_wrapper .datepicker {
-  width: 150px;
+  width: 100%;
 }
 
 .trafico #tabla_tareas_wrapper .datepicker input {

@@ -31,8 +31,8 @@ class ClienteController extends Controller
       // return response()->json($clientes);
       return Datatables::of($clientes)
       ->addColumn('action', function($cliente) {
-        $editar_cliente=(Auth::user()->hasRole('owner') || Auth::user()->hasRole('desarrollo')|| Auth::user()->can('editar_clientes'))?'<a href="editar/'.$cliente->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Editar</a>':'';
-        $borrar_cliente=(Auth::user()->hasRole('owner') || Auth::user()->hasRole('desarrollo')|| Auth::user()->can('borrar_clientes'))?'<button type="button" id="cli-'.$cliente->id.'" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente" data-toggle="modal" data-target="#myModal">Borrar</button>':'';
+        $editar_cliente=(Auth::user()->can('editar_clientes'))?'<a href="editar/'.$cliente->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Editar</a>':'';
+        $borrar_cliente=(Auth::user()->can('borrar_clientes'))?'<button type="button" id="cli-'.$cliente->id.'" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente" data-toggle="modal" data-target="#myModal">Borrar</button>':'';
         return $editar_cliente.$borrar_cliente;
       })
       ->addColumn('ejecutivo', function($cliente) {
