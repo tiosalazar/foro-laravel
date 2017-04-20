@@ -244,7 +244,6 @@
             </div>
               <label for="descripcion">Comentario:</label>
 
-// Variable vacia para el textarea, ya que es requerido un valor inicial
               <vue-html5-editor :content="descripcion_fake" :height="150"  :z-index="0" @change="updateData"></vue-html5-editor>
 
             </div>
