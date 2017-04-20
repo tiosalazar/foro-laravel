@@ -103,7 +103,7 @@
 
 			<div class="form-group required" v-bind:class="[errors_return.descripcion,{ 'has-error': errors.has('descripcion') }]">
 				<label for="descripcion"><sup>*</sup> Descripción </label>
-				<vue-html5-editor :height="200"  :z-index="0" @change="updateData"></vue-html5-editor>
+				<vue-html5-editor :content="descripcion_fake" :height="200"  :z-index="0" @change="updateData"></vue-html5-editor>
 				<!-- <textarea  v-model="tarea.descripcion"  name="descripcion"  id="descripcion"  placeholder="Descripción" required="required" v-validate data-vv-rules="required|min:4"></textarea>-->
 				<span  class="has-error" style="color:#DD4B39;" v-show="errors_return.descripcion"> Campo Descripcion Obligatorio </span>
 			</div>
@@ -168,6 +168,7 @@
 				area:{},
 				current_date:'',
 				user:'',
+				descripcion_fake:'',
 				fecha_entrega_cliente:'',
 				fecha_inicio_recurrencia:'',
 				fecha_final_recurrencia:'',
@@ -240,9 +241,9 @@
 				this.errors_return.descripcion=false;
             },
 			agregarTarea:function(e) {
-
+				console.log('enviar',this.tarea);
 				if(this.tarea.descripcion==""){
-					this.errors.descripcion=true;
+					this.errors_return.descripcion=true;
 					 return false;
 				}
 				// Serializo la fecha del datepicker
@@ -286,6 +287,7 @@
 			            this.estado="";
 			            this.area=0;
 			            this.fecha_entrega_cliente = '';
+									this.descripcion_fake=" ";
 			            setTimeout(function(){ that.errors.clear(); location.reload(true); }, 50);
 			          }
 		           console.log(respuesta);
