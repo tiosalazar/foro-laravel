@@ -185,6 +185,7 @@
             this.validacioncontrasena='';
             var obj = JSON.parse(this.edituserdata);
             this.usuarios=obj;
+            this.usuarios.fecha_nacimiento=moment(obj.fecha_nacimiento).toDate();
             this.rol=obj;
             this.area=obj;
           }
