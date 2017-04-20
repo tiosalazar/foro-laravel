@@ -118,7 +118,7 @@ public function datatable_index(Request $request)
               'response_time' => microtime(true) - LARAVEL_START,
               'msg' => 'Error al crear la Compra',
               'error' => 'ERR_01',
-               'request' => $request->all(),
+              'request' => $request->all(),
               'obj' =>$vl->errors()
               ],Response::HTTP_BAD_REQUEST);
         }else
@@ -149,6 +149,8 @@ public function datatable_index(Request $request)
                  'status' => Response::HTTP_BAD_REQUEST,
                  'response_time' => microtime(true) - LARAVEL_START,
                  'error_creacion' => 'fallo_en_la_creacion',
+                 'msg' => 'Error al actualizar la tarea. No se envio la notificación',
+                 'error' => config('constants.ERR_04'),
                  'consola' =>$e->getMessage(),
                  'request' => $request->all()
                  ],Response::HTTP_BAD_REQUEST);

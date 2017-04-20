@@ -908,7 +908,11 @@ public function showAllTareas($id,Request $request)
                 $query->orderBy('created_at', 'desc');
             },'comentario.estados'])->where('id',$id)->first();
 
-            return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea);
+            $descripcion=$tarea->descripcion;
+
+            $tarea->descripcion="";
+//return response()->json($tarea);
+            return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea)->with('desctarea',$descripcion);
         }
 
         /**
@@ -983,7 +987,7 @@ public function showAllTareas($id,Request $request)
       },'estado' => function ($query) {
           $query->where('id', '=',3)->orWhere('id', '=', 2)->orWhere('id', '=',1)->orWhere('id', '=',20);
       },'area','usuario'])
-      ->whereBetween('created_at',array($f_inicio,$f_final))
+      ->whereBetween('fecha_entrega_cuentas',array($f_inicio,$f_final))
       ->get();
 
       // selecciona solos los que tiene el area especifico
