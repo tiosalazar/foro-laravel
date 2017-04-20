@@ -266,7 +266,10 @@ module.exports={
     this.$validator.validateAll();
     if (!this.errors.any()) {
       this.requerimiento.push(Vue.util.extend({}, this.requerimiento));
-      console.log(this.requerimiento);
+      //Realizar el Calculo de las horas.
+      this.realizarCalculo();
+      this.emitirData();
+      this.guardarDatos();
     }
   },
   /*
@@ -280,6 +283,8 @@ module.exports={
     this.requerimiento.splice(index, 1);
     //Realizar el Calculo de las horas.
     this.realizarCalculo();
+    this.emitirData();
+    this.guardarDatos();
   },
   /*
   función la cual realiza el calculo de hroas.

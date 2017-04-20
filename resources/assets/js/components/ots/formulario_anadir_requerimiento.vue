@@ -236,7 +236,7 @@
 			},
 			mounted: function () {
 
-				if (this.visualizacion=='true') {
+				if (this.visualizacion=='true' || this.duplicar=='true') {
 					var bPreguntar = true;
 					var salir = false;
 					window.onbeforeunload = function (e)
