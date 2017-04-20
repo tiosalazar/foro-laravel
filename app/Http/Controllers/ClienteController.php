@@ -302,6 +302,9 @@ class ClienteController extends Controller
         ->addColumn('ejecutivo', function($cliente) {
           return ($cliente->usuario != null)?$cliente->usuario->full_name:'No definido';
         })
+        ->addColumn('estado', function($cliente) {
+          return ($cliente->estado == 1)?'Editado':'Eliminado';
+        })
         ->make(true);
 
         }

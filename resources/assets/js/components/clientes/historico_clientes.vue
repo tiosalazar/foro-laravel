@@ -11,6 +11,7 @@
               <th>Correo</th>
               <th>Teléfono</th>
               <th>Fecha</th>
+              <th>Estado</th>
 		        </tr>
 		    </thead>
         </table>
@@ -86,8 +87,10 @@
           { data: 'email', name: 'email' },
           { data: 'telefono', name: 'telefono' },
           { data: 'created_at', name: 'created_at' },
+          { data: 'estado', name: 'estado', searchable: false },
           // {data: 'action', name: 'action', orderable: false, searchable: false}
 				],
+				order: [[ 7, 'desc' ]],
 				columnDefs: [],
 				autoWidth: false,
 				responsive: true,
