@@ -286,7 +286,7 @@
 			            this.estado="";
 			            this.area=0;
 			            this.fecha_entrega_cliente = '';
-			            setTimeout(function(){ that.errors.clear(); }, 50);
+			            setTimeout(function(){ that.errors.clear(); location.reload(true); }, 50);
 			          }
 		           console.log(respuesta);
 		         }, (err) => {

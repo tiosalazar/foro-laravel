@@ -103,6 +103,9 @@ module.exports={
     nhoras: function (val) {
       this.realizarCalculo(); //Realiza la resta de las horas
     },
+    nhextra: function (val) {
+      this.realizarCalculo(); //Realiza la resta de las horas
+    },
     limpiar_datos: function(){
       if(this.limpiar_datos == true){
         this.requerimiento=[
@@ -127,13 +130,11 @@ module.exports={
       this.$parent.$emit('datos_requerimiento',datos,true);//Emite los datos al padre
     },
     limpiar_datos_tabs: function(){
-      console.log(this.$parent.area_actual,'Area Actual');
-      console.log(this.$parent.area_temporal,'Area Temporañ');
-      console.log(this.id_area,'Area MODULO');
-      console.log(this.area,'Area');
-      // console.log('Joder entre');
-      if((this.$parent.area_actual==this.id_area) || (this.$parent.visualizacion =="true" && this.$parent.area_actual==this.area_seguir )){
-        console.log('Joder entre');
+
+      /*console.log(this.$parent.id_tab,'TAB Actual');
+      console.log(this.$parent.area_seguir,'ID Pestaña Seguir');
+      console.log(this.$parent.area_temporal,'Area Temporal');*/
+      if((this.$parent.area_actual==this.id_area)){// || (this.$parent.visualizacion =="true" && this.$parent.area_actual==this.$parent.area_seguir )
           this.requerimiento=[
             {  model_nom:'', model_horas:0}
           ];
@@ -143,20 +144,17 @@ module.exports={
           this.h_pasadas=false;
           this.llenarCampos();
       }
-
-
     },
     /*
     Función la cual esta pendiente de la variable realizar_validado cuando le entra un true valida los datos
     y manda a el padre si todo esta correcto o no
     */
     realizar_validado:function(){
-      if (this.realizar_validado==true) {
+      if ((this.$parent.area_actual==this.id_area)) {//  || (this.$parent.visualizacion =="true" && this.$parent.area_actual==this.$parent.area_seguir )
         this.$validator.validateAll();
         if (!this.errors.any()) {
-          this.$parent.$emit('form_requerimiento_validado',true);
-        }else{
-          this.$parent.$emit('form_requerimiento_validado',false);
+          this.can_save_req=true;
+          this.$parent.$emit('form_requerimiento_validado',this.can_save_req);
         }
       }
     }
@@ -233,7 +231,10 @@ module.exports={
   Guarda los datos con cada entrada del Tecla en el input
   */
   guardarDatos: function(){
+    //  console.log('enviando mal');
     this.realizarCalculo();
+    this.$validator.validateAll();
+    if (!this.errors.any()) {
     this.can_save_req=false;
     var datos=[{
       requerimientos:this.requerimiento,
@@ -242,8 +243,19 @@ module.exports={
       guardado:this.can_save_req,
       h_pasadas: this.h_pasadas
     }];
-    this.$parent.$emit('datos_requerimiento',datos,true);//Emite los datos al padre
+    this.$parent.$emit('datos_requerimiento',datos,true,true);//Emite los datos al padre
     $('#boton_guardar_area_'+this.id_area).removeClass('disabled');
+  }else{
+    var datos=[{
+      requerimientos:'',
+      horas:'',
+      tiempo_extra: '',
+      guardado:false,
+      h_pasadas: ''
+    }];
+    this.$parent.$emit('datos_requerimiento',datos,false,false);//Emite los datos al padre
+    $('#boton_guardar_area_'+this.id_area).addClass('disabled');
+  }
   },
   /*
   Al darle click en añadir Requerimiento la función valida la información y añade una nueva posición al

@@ -8,7 +8,8 @@
          &nbsp;Atrás
        </button>
        <span class="span_descripcion1">
-       Detalle de la</span> <span class="span_descripcion2">Tarea</span>
+
+                Detalle de la</span> <span class="span_descripcion2">Tarea</span>
      </h3>
   </section>
     <div class="col-md-8 col-md-offset-2">
@@ -341,7 +342,7 @@
 
   Vue.use(VeeValidate);
   module.exports = {
-    props: ['arraytarea','id_usuario_actual','rol_usuario_actual'],
+    props: ['arraytarea','id_usuario_actual','rol_usuario_actual','destarea'],
     components: {Datepicker,VeeValidate,Validator},
     data(){
       return{
@@ -428,6 +429,9 @@
             this.ot=obj.ot;
             //Asigno toda la informacion traida del api a la variable tarea_info
             this.tarea_info=obj;
+
+            this.tarea_info.descripcion=this.destarea;
+
             this.estado = obj.estado;
             //Asignos los comentarios para el v-for
             this.comentarios_array=obj.comentario;

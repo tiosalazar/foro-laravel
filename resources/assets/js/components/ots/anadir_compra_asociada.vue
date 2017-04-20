@@ -97,7 +97,7 @@ import moment from 'moment';
 
 module.exports={
   components: {Datepicker,VeeValidate,Validator,moment},
-  props: ['area','id_area','realizar_validado','limpiar_datos','campos_extra'],
+  props: ['area','id_area','realizar_validado','limpiar_datos','campos_extra','limpiar_datos_tabs'],
   data () {
     return {
       compra_asociada: [
@@ -121,7 +121,7 @@ module.exports={
   },
   watch: {
     realizar_validado:function(){
-      if (this.realizar_validado==true) {
+      if ((this.$parent.area_actual==this.id_area) || (this.$parent.visualizacion =="true" && this.$parent.area_actual==this.$parent.area_seguir ) ) {
         this.$validator.validateAll();
         if (!this.errors.any()) {
           this.$parent.$emit('form_compras_validado',true);
@@ -135,6 +135,14 @@ module.exports={
         this.compra_asociada=[
           { tipo_compra:{id:'',nombre:'' }, model_desc:'', ots_id:'', model_provedor:'',model_valor:'', divisa:{id:'',nombre:''}, estado:{id:'', nombre:''},transaccion:'',area:{id:'',nombre:''},fecha_transaccion:'' }
         ];
+      }
+    },
+    limpiar_datos_tabs: function(){
+      if((this.$parent.area_actual==this.id_area) || (this.$parent.visualizacion =="true" && this.$parent.area_actual==this.area_seguir )){
+        this.compra_asociada=[
+          { tipo_compra:{id:'',nombre:'' }, model_desc:'', ots_id:'', model_provedor:'',model_valor:'', divisa:{id:'',nombre:''}, estado:{id:'', nombre:''},transaccion:'',area:{id:'',nombre:''},fecha_transaccion:'' }
+        ];
+          this.llenarCampos();
       }
     },
   },
@@ -290,8 +298,17 @@ module.exports={
   Guarda los datos con cada entrada del Tecla en el input
   */
   guardarDatos: function(){
-    var datos=[{compras:this.compra_asociada,id_area:this.id_area}];
-    this.$parent.$emit('datos_compras',datos); //Emite los datos al padre
+    this.$validator.validateAll();
+  //  if (!this.errors.any()) {
+    var datos=[{compras:this.compra_asociada,id_area:this.id_area,guardado:false}];
+    $('#boton_guardar_area_'+this.id_area).removeClass('disabled');
+    this.$parent.$emit('datos_compras',datos,true); //Emite los datos al padre
+  /*}else{
+    console.log('entrando');
+    var datos=[{compras:'',id_area:this.id_area,guardado:false}];
+    $('#boton_guardar_area_'+this.id_area).addClass('disabled');
+    this.$parent.$emit('datos_compras',datos,false); //Emite los datos al padre
+  }*/
   },
 }
 }

@@ -58,7 +58,7 @@
 										</div>
 										<div class="row">
 											<div style="height:22px"></div>
-											<anadir_compra  :area="area.nombre" :id_area="area.id" :limpiar_datos="limpiarDatos"  :realizar_validado="validar_compras" ></anadir_compra>
+											<anadir_compra  :area="area.nombre" :id_area="area.id" :limpiar_datos="limpiarDatos"  :realizar_validado="validar_compras" :limpiar_datos_tabs="limpiarDatos_tabs" ></anadir_compra>
 										</div>
 									</div>
 									<div style="height:30px"></div>
@@ -294,10 +294,10 @@
 		/*
 		Escucha el arreglo completo de los datos de los requerimientos
 		*/
-		this.$on('datos_requerimiento', function(v,save) {
+		this.$on('datos_requerimiento', function(v,save,save_req) {
 			this.datos_requerimiento=v;
 			this.can_save=save;
-			this.can_save_req=save;
+			this.can_save_req=save_req;
 		});
 		/*
 		Escucha las horas extra del Area a Editar
@@ -316,11 +316,13 @@
 		/*
 		Escucha el arreglo completo de los datos de las compras asociadas, si las tiene
 		*/
-		this.$on('datos_compras', function(v) {
+		this.$on('datos_compras', function(v,save) {
 			this.diabled_compras = !this.comprobarSiGuardoCompras();
 			//console.log(this.comprobarSiGuardoCompras(),'Comprobación');
 			//console.log(v,'ID AREA com');
-			if (!this.comprobarSiGuardoCompras()) {
+			this.can_save=save;
+			//this.can_save_req=save;
+			if (this.comprobarSiGuardoCompras() ==true) {
 				$('#boton_guardar_area_'+v[0].id_area).removeClass('disabled');
 			}
 			this.datos_compras=v;
@@ -348,11 +350,27 @@
 			.then(function(respuesta){
 				this.listado_areas=respuesta.body;
 
-				//DSO Ajustes al guardar OT
-				//this.area_temporal=this.listado_areas[0].id;
-				//this.area_actual=this.listado_areas[0].id;
-
 				this.$localStorage.set('listado_areas',respuesta.body);
+			//DSO Ajustes al guardar OT
+				var total_areas  =this.listado_areas;
+				var retorno=false;
+				if (total_areas != null || total_areas != undefined ) {
+					var size = Object.keys(total_areas).length;
+					var hora_a=0;
+					for (let f in total_areas) {
+						let idx = Number(f)
+						let p = total_areas[idx]
+						hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
+						if( hora_a != null && hora_a != undefined &&  Object.keys(hora_a).length > 0 ){
+								this.area_temporal=p.id;
+								this.area_actual=p.id;
+								return true;
+						}
+					}
+					this.area_temporal=total_areas[0].id;
+					this.area_actual=total_areas[0].id;
+				}
+
 			}.bind(this));
 
 			/*}else{
@@ -616,9 +634,9 @@
 	Al dar click en las tabs llama a un Modal el cual pregunta si quiere salir sin guardar.
 	*/
 	tabs_areas:function(e,id){
-		if(this.primera_entrada ==0 ){//&& this.visualizacion=='true'
+		/*if(this.primera_entrada ==0 && this.visualizacion=='true' ){//&& this.visualizacion=='true'
 		this.cambiarDatos(this.area_actual);
-	     }
+	}*/
 	this.primera_entrada +=1;
 	var id_pestana=this.area_actual;
 	this.area_seguir=id;
@@ -629,7 +647,7 @@
 	this.traer_reque=!this.traer_reque;
 	//this.datos_requerimiento
 	//	console.log(id_pestana,'Pesta Actual');
-	if(this.visualizacion != 'true'){
+	//if(this.visualizacion != 'true'){
 		var reqActual=(JSON.parse(this.$localStorage.get('datos_requerimiento_'+id_pestana)))?JSON.parse(this.$localStorage.get('datos_requerimiento_'+id_pestana)):null;
 		//  reqActual=(reqActual!= null)?reqActual:JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.area_seguir));
 		var reqSiguiente=(JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.area_temporal)))?JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.area_temporal)):null;
@@ -649,7 +667,7 @@
 			this.id_tab=id;
 			$('.editarModal').modal('show');
 			return true;
-		}/*else if ( this.datos_requerimiento[0].guardado !=true) {
+		}else if (this.can_save_req == true ) {
 			console.log("Entre 3");
 			e.stopPropagation()
 			this.id_tab=id;
@@ -661,9 +679,11 @@
 			this.id_tab=id;
 			this.area_actual=id;
 			this.area_temporal=id;
+			this.cambiarDatos(this.id_tab);
 		}
 
-	}else {
+	//}
+	/*else {
 		var reqActual=(JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.area_seguir)))?JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.area_seguir)):null;
 		var reqSiguiente=(JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.area_temporal)))?JSON.parse(this.$localStorage.get('datos_requerimiento_'+this.area_temporal)):null;
 		//this.datos_requerimiento=reqSiguiente;
@@ -686,14 +706,21 @@
 			this.id_tab=id;
 			$('.editarModal').modal('show');
 			return true;
+		}else if (this.can_save_req == true ) {
+			console.log("Entre 3");
+			e.stopPropagation()
+			this.id_tab=id;
+			$('.editarModal').modal('show');
+			return true;
 		}else{
 			this.id_tab=id;
 			this.area_actual=id;
 			this.area_temporal=id;
+			this.cambiarDatos(this.id_tab);
 			return true;
 		}
 
-	}
+	}*/
 
 
 
@@ -716,6 +743,7 @@ cambiarDatos:function(id){
 		resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(id);
 		this.h_Disponibles=parseFloat((this.horas_totales- this.h_area)-resta_anterior);
 	}else {
+		console.log('Entre a cambiarDatos');
 		this.h_area=0;
 		this.t_extra=0;
 		this.limpiarDatos_tabs=!this.limpiarDatos_tabs;
@@ -724,13 +752,14 @@ cambiarDatos:function(id){
 		resta_anterior=(!this.realizarCalculoHoras())?0:this.realizarCalculoHoras(id);
 		this.h_Disponibles=parseFloat((this.horas_totales- this.h_area)-resta_anterior);
 		this.datos_requerimiento=(JSON.parse(this.$localStorage.get('datos_requerimiento_'+id) != null))?JSON.parse(this.$localStorage.get('datos_requerimiento_'+id)):[];
+		this.datos_compras=(JSON.parse(this.$localStorage.get('datos_compra_'+id) != null))?JSON.parse(this.$localStorage.get('datos_compra_'+id)):[];
 	}
 
 },
 seguir:function(e){
 	$('[data-id~="tab_'+this.id_tab+'"]').trigger('click')
 	/*DSO Ajuste guardar OT*/
-
+  console.log(this.id_tab,'Tab enviado');
 	this.cambiarDatos(this.id_tab);
 	//this.area_temporal=this.id_tab;
 	this.area_actual=this.id_tab;
@@ -832,10 +861,12 @@ limpiarComprasRequerimientos(){
 función la cual guarda los datos del Area actual.
 */
 guardarDatos: function(id){
-	if(this.primera_entrada ==0 && this.visualizacion=='true'){
+		this.validar_requerimientos=!this.validar_requerimientos;
+	/*if(this.primera_entrada ==0 && this.visualizacion=='true'){
 		this.cambiarDatos(id);
-	}
+	}*/
 	this.primera_entrada +=1;
+	//this.cambiarDatos(id);
 	var index = Object.keys(this.datos_requerimiento).length;
 	var requerimientos =this.datos_requerimiento;
 	if (this.h_Disponibles <0){
@@ -846,6 +877,7 @@ guardarDatos: function(id){
 		body.stop().animate({scrollTop:250}, '500', 'swing');
 		return false;
 	}
+
 	if(this.comprobarDatosRequerimientos(requerimientos)==true) {
 		this.area_temporal=id;
 		requerimientos[0].guardado=true;
@@ -855,13 +887,23 @@ guardarDatos: function(id){
 				toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
 				this.$localStorage.set('datos_requerimiento_'+id,JSON.stringify(requerimientos) );
 				this.can_save=true;
+				this.can_save_req=false;
 				this.$localStorage.set('datos_compra_'+id,JSON.stringify(this.datos_compras) );
+			}else {
+				toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Compras Asociadas",this.option_toast);
+				this.can_save=false;
+				this.can_save_ot=false;
+				return false;
 			}
 		}else{
 			toastr.success('Se han guardado los datos del Area seleccionada',"Datos Guadados Correctamente",this.option_toast);
 			this.$localStorage.set('datos_requerimiento_'+id,JSON.stringify(requerimientos) );
 			this.can_save=true;
 			this.can_save_ot=true;
+			this.validar_requerimientos=false;
+			this.can_save_req=false;
+			this.form_requerimiento_validado=false;
+
 		}
 		//  this.datos_requerimiento=[];
 		//this.datos_requerimiento[0].guardado=false;
@@ -894,7 +936,10 @@ comprobarDatosRequerimientos: function(arreglo){
 	}else if(requerimientos[0].h_pasadas){
 		toastr.error("El Resúmen de horas no puede dar negativo","Error en Requerimientos",this.option_toast);
 		return false;
-	}else{
+	}/*else if(this.form_requerimiento_validado==false){
+		toastr.error("Error en los datos ingresados, por favor verifique","Error en Requerimientos",this.option_toast);
+		return false;
+	}*/else{
 		return true;
 	}
 
@@ -951,7 +996,7 @@ comprobarSiGuardoCompras: function () {
 	for (let f in compras) {
 		let idx = Number(f)
 		let p = compras[idx]
-		if ( (p.model_desc !="" || p.model_desc.length  >= 4 ) || (p.model_provedor != "" || p.model_desc.model_provedor  >= 4 ) || (p.model_valor != ""  || p.model_desc.model_valor  >= 4 )  ) {
+		if ( (p.model_desc !="" || p.model_desc.length  >= 4 ) || (p.model_provedor != "" || p.model_provedor  >= 4 ) || (p.model_valor != ""  || p.model_valor  >= 4 )  ) {
 			return true;
 			break;
 		}
@@ -972,7 +1017,7 @@ comprobarCompras: function (arreglo) {
 		}else if(p.tipo_compra.nombre == ""){
 			toastr.error("Por favor, seleccione un tipo de compra ","Error al Guardar Compras Asociadas",this.option_toast);
 			return false;
-		}else if ( (p.model_desc =="" || p.model_desc.length  <= 4 ) && (p.model_provedor == "" || p.model_desc.model_provedor  <= 4 ) && (p.model_valor == "" || p.model_desc.model_valor  <= 4 )  ) {
+		}else if ( (p.model_desc =="" || p.model_desc.length  <= 4 ) && (p.model_provedor == "" || p.model_provedor  <= 4 ) && (p.model_valor == "" || p.model_valor  <= 4 )  ) {
 			toastr.error("Todos los campos son obligatorios, recuerde que no pueden haber campos en blanco, y deben de tener más de 4 caracteres","Error al Guardar Compras Asociadas",this.option_toast);
 			return false;
 			break;

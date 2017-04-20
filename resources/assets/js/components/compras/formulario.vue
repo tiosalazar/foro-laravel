@@ -87,9 +87,9 @@ module.exports = {
 		/*
 		Escucha el arreglo completo de los datos de las compras asociadas, si las tiene
 		*/
-		this.$on('datos_compras', function(v) {
+		this.$on('datos_compras', function(v,save) {
 			this.datos_compras=v;
-			this.send_edit=true;
+			this.send_edit=save;
 		});
 
 	},
@@ -119,6 +119,9 @@ module.exports = {
 			var datos_procesados={
 				compras: this.procesarCompras()
 			};
+			console.log(datos_procesados);
+			if ( this.comprobarCompras(datos_procesados.compras) == true ) {
+
 			if (this.editar != 'true') {
 				this.$http.post(window._apiURL+'compra', datos_procesados)
 				.then(function(respuesta){
@@ -188,6 +191,31 @@ module.exports = {
 
 			}
 
+		}
+
+		},
+		/*
+		función la cual valida los selects de las compras asociadas.
+		*/
+		comprobarCompras: function (arreglo) {
+			var compras =arreglo[0].compras;
+			for (let f in compras) {
+				let idx = Number(f)
+				let p = compras[idx]
+				if (p.divisa.nombre == "" ) {
+					toastr.error("Por favor, seleccione una Divisa","Error al Guardar Compras Asociadas",this.option_toast);
+					return false;
+				}else if(p.tipo_compra.nombre == ""){
+					toastr.error("Por favor, seleccione un tipo de compra ","Error al Guardar Compras Asociadas",this.option_toast);
+					return false;
+				}else if ( (p.model_desc =="" || p.model_desc.length  <= 4 ) && (p.model_provedor == "" || p.model_provedor  <= 4 ) && (p.model_valor == "" || p.model_valor  <= 4 )  ) {
+					toastr.error("Todos los campos son obligatorios, recuerde que no pueden haber campos en blanco, y deben de tener más de 4 caracteres","Error al Guardar Compras Asociadas",this.option_toast);
+					return false;
+					break;
+				}
+
+			}
+			return true;
 		},
 		procesarCompras(){
 			var arreglo_temporal=[];
@@ -239,6 +267,9 @@ module.exports = {
 								valor:numeral(hora_a[i].model_valor).value(),
 							};
 							arreglo_temporal.push(data);
+						}else{
+							toastr.error("Todos los campos son obligatorios, recuerde que no pueden haber campos en blanco, y deben de tener más de 4 caracteres","Error al Guardar Compras Asociadas",this.option_toast);
+							return false;
 						}
 						i++;
 					}
