@@ -293,6 +293,8 @@ module.exports={
     e.preventDefault();
     var index = this.compra_asociada.indexOf(Vue.util.extend({}, this.compra_asociada));
     this.compra_asociada.splice(index, 1);
+    this.guardarDatos();
+    $('#boton_guardar_area_'+this.id_area).removeClass('disabled');
   },
   /*
   Guarda los datos con cada entrada del Tecla en el input

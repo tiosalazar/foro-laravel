@@ -433,13 +433,17 @@ class OtController extends Controller
                'model_provedor'=> $value['provedor'] , 'model_valor'=>  $value['valor'], 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
                array_push($ingreso,$array_temporal);
                $data['compras']['compras']=$ingreso;
+
                //array_push($data['compras'],  $array_temporal);
             }
          }
+         //var_dump($ingreso);
 
-
+         array_push($data['final_com'], $data['compras']);
       }
-      array_push($data['final_com'], $data['compras']);
+
+
+      //return response()->json($data['final_com']);
       return view('admin.ots.editar_ot')->with('arregloOT', json_encode($data));
    }
 
@@ -559,15 +563,17 @@ class OtController extends Controller
                   }
                }
 
+               /*El siguiente for recorre el listado de compras y los agrega*/
+               foreach ($compras as $compra) {
+                  $model_compras= new Compras_Ot;
+                  $model_compras->fill($compra);
+                  $model_compras->ots_id=$id_ot;
+                  $model_compras->save();
+               }
+
             }
 
-            /*El siguiente for recorre el listado de compras y los agrega*/
-            foreach ($compras as $compra) {
-               $model_compras= new Compras_Ot;
-               $model_compras->fill($compra);
-               $model_compras->ots_id=$id_ot;
-               $model_compras->save();
-            }
+
 
             //Guardar el Historico
             $historico= new Historico_Ot;
