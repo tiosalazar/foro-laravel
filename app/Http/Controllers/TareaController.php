@@ -36,6 +36,8 @@ use Validator;
 use Exception;
 use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
+use Jenssegers\Date\Date;
+use Illuminate\Support\Facades\Log;
 use Excel;
 
 class TareaController extends Controller
@@ -365,6 +367,15 @@ public function update(Request $request, $id)
                 // Tarea OK
                 if($tarea->estados_id == 1){
                     try {
+                      // Validar la fecha de la Tarea
+                      // para restar tiempo del mes correspondiente
+                      $now = Carbon::now();
+                      // DB::enableQueryLog();
+                      $fecha_tarea = new Date($tarea->updated_at);
+
+                      if ($fecha_tarea->month == $now->month ) {
+                        // Restar horas normalmente
+
                         // Tarea OK, guardar horas en usuario->horas gastadas
                         // y en Area->horas gastadas
 
@@ -376,7 +387,33 @@ public function update(Request $request, $id)
 
                         $colaborador->update();
                         $area->update();
+                      } else {
+                        // Restar horas al mes correspondiente
+                        $colaborador = User::findOrFail($tarea->encargado_id);
+                        $Historico_equipo = Historico_equipo::where('entidad_id',$tarea->encargado_id)
+                        ->where('tipo_de_entidad',1)
+                        ->whereYear('created_at', $fecha_tarea->year)
+                        ->whereMonth('created_at', $fecha_tarea->month+1)
+                        ->first();
+                        // Usuario en el historico
+                        $Historico_equipo += $tarea->tiempo_real;
+                        $Historico_equipo->update();
 
+                        // Área en el historico
+                        $Historico_equipo = Historico_equipo::where('entidad_id',$tarea->areas_id)
+                        ->where('tipo_de_entidad',2)
+                        ->whereYear('created_at', $fecha_tarea->year)
+                        ->whereMonth('created_at', $fecha_tarea->month+1)
+                        ->first();
+
+                        $Historico_equipo += $tarea->tiempo_real;
+                        $Historico_equipo->update();
+                        // $queries = DB::getQueryLog();
+                        // log::info("-- query",[ $queries]);
+
+                      }
+
+                      /*
                         // sume Horas Reales en Tiempos_x_area
                         $horas_area = Tiempos_x_Area::where('ots_id',$tarea->ots_id)
                         ->where('areas_id',$tarea->areas_id)
@@ -400,6 +437,7 @@ public function update(Request $request, $id)
                                 'tarea' =>$tarea,
                             ],Response::HTTP_BAD_REQUEST);
                         }
+                      */
                     } catch (Exception $e) {
                         return response([
                             'status' => Response::HTTP_BAD_REQUEST,
@@ -412,7 +450,7 @@ public function update(Request $request, $id)
                     }
 
                 }
-
+                /*
                 //Guardamos la tarea
                 $tarea->update();
 
@@ -460,7 +498,7 @@ public function update(Request $request, $id)
                         $respuesta['user_coment']=$value;
                         $value->estados;
                     }
-                }
+                }*/
 
 
 

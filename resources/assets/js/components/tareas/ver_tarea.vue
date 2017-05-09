@@ -508,6 +508,7 @@
               tareas_id:this.tarea_info.id,
               comentarios:this.descripcion,
               tiempo_real:this.tarea_info.tiempo_real,
+              // is_comment:(this.tarea_info.estados_id== 2 && this.rol_usuario_actual !='coordinador')? 1: 0,
               is_comment:(this.tarea_info.estados_id== 2 && this.rol_usuario_actual !='coordinador')? 1: 0,
               fecha_entrega_cliente:(typeof(this.fecha_entrega_cliente) =='undefined' || this.fecha_entrega_cliente=='' )? this.tarea_info.fecha_entrega_cliente : moment(this.fecha_entrega_cliente).format('YYYY-MM-DD'),
             };
