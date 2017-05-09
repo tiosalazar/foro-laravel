@@ -941,16 +941,20 @@ public function showAllTareas($id,Request $request)
 
         public function showOneTarea($id)
         {
-            $tarea = Tarea::with(['ot.cliente','ot.usuario', 'estado', 'estado_prioridad','planeacion_fase','area','usuario','usuarioencargado','comentario.user'=>function ($query)
-            {
-                $query->orderBy('created_at', 'desc');
-            },'comentario.estados'])->where('id',$id)->first();
+            $tarea = Tarea::with(['ot.cliente','ot.usuario', 'estado', 'estado_prioridad','planeacion_fase','area','usuario','usuarioencargado'])->where('id',$id)->first();
 
             $descripcion=$tarea->descripcion;
+            $comentario=$tarea->comentario;
 
             $tarea->descripcion="";
-//return response()->json($tarea);
+            $tarea->comentario="";
             return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea)->with('desctarea',$descripcion);
+        }
+
+        public function getComments($id)
+        {
+          $comentarios = Comentario::with(['user','estados'])->where('tareas_id',$id)->get();
+          return ($comentarios);
         }
 
         /**

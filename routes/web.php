@@ -17,7 +17,7 @@
 
   Route::resource('gcalendar', 'gCalendarController');
   Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
-  
+
   //Imprimir Hora
   Route::get('/hora_actual', function () {
     echo date("d-m-Y H:m:s");
@@ -131,6 +131,7 @@
   Route::get('/all_tareas/{id}','TareaController@showAllTareas');
   Route::get('/trafico','TareaController@getTrafico');
   Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
+  Route::get('/comentarios/{id}','TareaController@getComments');
 
   // Listar Fases de  Planeación
   Route::get('/list_fases/{id}','FaseController@listFases');
