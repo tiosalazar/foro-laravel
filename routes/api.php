@@ -38,6 +38,7 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
      Route::put('actualizar_estado_ot/{id}', 'OtController@updateEstadoOT');
      Route::post('solicitarHoras', 'OtController@solicitarHoras');
      Route::get('ots_datatable','OtController@datatable_index');
+     Route::delete('eliminar/ot/area/{id_ot}/{id_area}', 'OtController@destroyAreaOT');
      //Compras OT
      Route::resource('compra', 'Compras_OtController');
      Route::get('compras_datatable','Compras_OtController@datatable_index');

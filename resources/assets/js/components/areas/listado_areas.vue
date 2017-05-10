@@ -56,14 +56,14 @@
                   <p>Horas área: <span>{{areas_info.total_horas}}</span></p>
                   <p>Horas disponible área: <span>{{parseFloat(areas_info.total_horas)-parseFloat(areas_info.horas_consumidas)}}</span></p>
                 </div>
-                <div class="info_content" v-if="switcharea_user == '2'">
+                <div class="info_content" v-if="switcharea_user == '2'" v-show="this.administrador !='5' || this.administrador !='6'">
                   <h3>Horas</h3>
                   <p>Horas usuario mes: <span >{{horas_user}}</span></p>
-                  <p>Horas disponibles usuario: <span>{{horas_disponible_user}}</span></p>
+                  <p >Horas disponibles usuario: <span>{{horas_disponible_user}}</span></p>
                 </div>
                 <div class="info_content" v-if="switcharea_user == '2'" v-show="this.administrador=='1'" >
                   <a v-bind:href="id_user" ><button class="btn btn-primary btn-flat editar_usuarios_area" >Editar usuario</button></a>
-                  <button class="btn btn-danger btn-flat eliminar_usuario_area" v-bind:value="id_user_eliminar" data-target="#confirm_delete_user" data-toggle="modal"  >Eliminar suario</button>
+                  <button class="btn btn-danger btn-flat eliminar_usuario_area" v-bind:value="id_user_eliminar" data-target="#confirm_delete_user" data-toggle="modal"  >Eliminar Usuario</button>
                 </div>
               </div>
               <!-- Fin información -->

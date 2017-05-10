@@ -3,10 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tiempos_x_Area extends Model
 {
-
+  use SoftDeletes;
   public $table = "tiempos_x_area";
 
   /**
@@ -17,7 +18,12 @@ class Tiempos_x_Area extends Model
   protected $fillable = [
       'tiempo_estimado', 'tiempo_real', 'tiempo_extra', 'ots_id', 'areas_id',
   ];
-
+  /**
+  * The attributes that should be mutated to dates.
+  *
+  * @var array
+  */
+  protected $dates = ['deleted_at'];
   /**
   * Obtiene la ot que esta asociado a un Tiempo por Area
   */

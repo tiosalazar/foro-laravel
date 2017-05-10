@@ -53,6 +53,13 @@ public function getFormatMes($fecha_ingreso)
   /**
   * Obtiene el Estado que esta asociado a una Tarea
   */
+  public function Estado_trafico()
+  {
+    return $this->belongsTo('App\Estado','estado_trafico_id','id');
+  }
+  /**
+  * Obtiene el Estado que esta asociado a una Tarea
+  */
   public function Estado_prioridad()
   {
     return $this->belongsTo('App\Estado','prioridad_id','id');

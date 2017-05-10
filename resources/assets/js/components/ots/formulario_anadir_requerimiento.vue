@@ -65,6 +65,8 @@
 									<div class="row">
 										<div class="col-md-6 col-md-offset-3">
 											<button type="button" @click="guardarDatos(area.id)" :id="'boton_guardar_area_'+area.id"  class="btn btn-block btn-success  boton_foro succes col-sm-3 disabled">Guardar Requerimiento</button>
+											<button type="button" @click="borrarDatos(area.id)" :id="'boton_guardar_area_'+area.id"  class="btn btn-block btn-danger  boton_foro   error col-sm-3 ">Eliminar Área</button>
+
 										</div>
 									</div>
 								</div>
@@ -153,6 +155,25 @@
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 										<button type="button" v-on:click="BorrarOt" class="btn btn-danger">Borrar</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!--Modal Borrar Área  de la OT-->
+						<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										<h4 class="modal-title" id="myModalLabel">Borrar Área de la OT</h4>
+									</div>
+									<div class="modal-body">
+										¿ Estas seguro que deseas borrar esta área, Recuerda que esta acción no se puede deshacer ?
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+										<button type="button" v-on:click="BorrarArea" class="btn btn-danger">Borrar</button>
 									</div>
 								</div>
 							</div>
@@ -449,6 +470,7 @@
 					compras: this.procesarTodosCompras()
 				};
 				console.log(datos_procesados,'Datos PROCESADOS');
+				return false;
 				if(this.visualizacion != 'true' || this.duplicar=='true'){
 					this.$http.post(window._apiURL+'ots', datos_procesados)
 					.then(function(respuesta){
@@ -911,6 +933,31 @@ guardarDatos: function(id){
 	}
 },
 /*
+función la cual borra los datos del Area actual.
+*/
+borrarDatos: function(id){
+	$('#myModal2').modal('show');
+	 this.area_temporal=id;
+},
+BorrarArea: function () {
+		var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);
+	this.$http.delete(window._apiURL+'eliminar/ot/area/'+arreglo_visualizar.datos_encabezado.id+'/'+this.area_temporal)
+	.then(function(respuesta){
+		if (respuesta.status != '200') {
+			if (Object.keys(respuesta.obj).length>0) {
+				toastr.error("Ocurrio un error al eliminar el área consulte con soporte",respuesta.body.msg,this.option_toast);
+				return false;
+			}
+		}else{
+			toastr.success(respuesta.body.msg,'',this.option_toast);
+			setTimeout(function () {
+				location.reload(true);
+			}, 500);
+		}
+		console.log(respuesta);
+	}.bind(this));
+},
+/*
 función la cual me valida el requerimiento actual, antes de guardar.
 */
 comprobarDatosRequerimientos: function(arreglo){
@@ -957,6 +1004,7 @@ comprobarDatosTodosRequerimientos: function(){
 			let idx = Number(f)
 			let p = total_areas[idx]
 			hora_a=JSON.parse(this.$localStorage.get('datos_requerimiento_'+p.id));
+			console.log(hora_a);
 			retorno=this.comprobarDatosRequerimientos(hora_a);
 		}
 		return retorno;

@@ -5,9 +5,10 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Date\Date;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Compras_Ot extends Model
 {
-
+  use SoftDeletes;
   public $table = "compras_ots";
   /**
   * The attributes that are mass assignable.
@@ -17,6 +18,13 @@ class Compras_Ot extends Model
   protected $fillable = [
     'descripcion', 'provedor', 'valor', 'ots_id', 'areas_id', 'tipos_compras_id','compra_externa','divisas_id','creador_id','transaccion','fecha_transaccion','estados_id'
   ];
+
+  /**
+  * The attributes that should be mutated to dates.
+  *
+  * @var array
+  */
+  protected $dates = ['deleted_at'];
 
   public function getFormatFecha($fecha_ingreso)
  {

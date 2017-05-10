@@ -987,6 +987,7 @@ public function showAllTareas($id,Request $request)
       },'estado' => function ($query) {
           $query->where('id', '=',3)->orWhere('id', '=', 2)->orWhere('id', '=',1)->orWhere('id', '=',20);
       },'area','usuario'])
+      ->where('estado_trafico_id',$request->get('estados'))
       ->whereBetween('fecha_entrega_cuentas',array($f_inicio,$f_final))
       ->get();
 

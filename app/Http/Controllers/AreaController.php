@@ -36,7 +36,7 @@ class AreaController extends Controller
 
     public function index_areas()
     {
-          $area=Area::all()->where('estado','1');;
+          $area=Area::all()->where('estado','1');
       return response()->json($area);
     }
 

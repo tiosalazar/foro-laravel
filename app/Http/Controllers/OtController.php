@@ -563,14 +563,14 @@ class OtController extends Controller
                   }
                }
 
-               /*El siguiente for recorre el listado de compras y los agrega*/
-               foreach ($compras as $compra) {
-                  $model_compras= new Compras_Ot;
-                  $model_compras->fill($compra);
-                  $model_compras->ots_id=$id_ot;
-                  $model_compras->save();
-               }
+            }
 
+            /*El siguiente for recorre el listado de compras y los agrega*/
+            foreach ($compras as $compra) {
+               $model_compras= new Compras_Ot;
+               $model_compras->fill($compra);
+               $model_compras->ots_id=$id_ot;
+               $model_compras->save();
             }
 
 
@@ -643,6 +643,44 @@ class OtController extends Controller
             'msg' => 'Esta OT ya tiene tareas Asignadas, por lo tanto no se puede eliminar', //Mensaje a mostrar en el Front
          ],Response::HTTP_BAD_REQUEST);
 
+      }
+
+   }
+
+   /**
+   * Remove the specified resource from storage.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+   public function destroyAreaOT($id,$id_area)
+   {
+      $area=  Tiempos_x_Area::where('ots_id',$id)->where('areas_id',$id_area)->first();
+      $requerimientos=  Requerimientos_Ot::where('ots_id',$id)->where('areas_id',$id_area);
+      $compras=  Compras_Ot::where('ots_id',$id)->where('areas_id',$id_area)->where('compra_externa',0);
+      try {
+
+         foreach ($requerimientos as $requerimiento ) {
+            $requerimiento->delete();
+         }
+         foreach ($compras as $compra ) {
+            $compra->delete();
+         }
+         $area->delete();
+         return response([
+            'status' => Response::HTTP_OK,
+            'response_time' => microtime(true) - LARAVEL_START,
+            'msg' => 'Se ha eliminado el Área correctamente', //Mensaje a mostrar en el Front
+            'obj' => $area
+         ],Response::HTTP_OK);
+      } catch (Exception $e) {
+         return response([
+            'status' => Response::HTTP_BAD_REQUEST,
+            'response_time' => microtime(true) - LARAVEL_START,
+            'error' => 'Fallo al eliminar',
+            'consola' =>$e->getMessage(),
+            'msg' => 'No se puede eliminar el Área seleccionada', //Mensaje a mostrar en el Front
+         ],Response::HTTP_BAD_REQUEST);
       }
 
    }
