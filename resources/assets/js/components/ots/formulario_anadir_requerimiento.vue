@@ -65,7 +65,7 @@
 									<div class="row">
 										<div class="col-md-6 col-md-offset-3">
 											<button type="button" @click="guardarDatos(area.id)" :id="'boton_guardar_area_'+area.id"  class="btn btn-block btn-success  boton_foro succes col-sm-3 disabled">Guardar Requerimiento</button>
-											<button type="button" @click="borrarDatos(area.id)" :id="'boton_guardar_area_'+area.id"  class="btn btn-block btn-danger  boton_foro   error col-sm-3 ">Eliminar Área</button>
+											<button v-if="visualizacion=='true'" type="button" @click="borrarDatos(area.id)" :id="'boton_guardar_area_'+area.id"  class="btn btn-block btn-danger  boton_foro   error col-sm-3 ">Eliminar Área</button>
 
 										</div>
 									</div>
@@ -936,8 +936,17 @@ guardarDatos: function(id){
 función la cual borra los datos del Area actual.
 */
 borrarDatos: function(id){
-	$('#myModal2').modal('show');
+	var requerimientos =JSON.parse(this.$localStorage.get('datos_requerimiento_'+id));
+	if ( requerimientos == null || requerimientos == undefined) {
+		toastr.error("No hay nada que borrar","Error al Borrar",this.option_toast);
+		return false;
+	}else if( !this.comprobarRequerimientos(requerimientos[0].requerimientos) ){
+    toastr.error("No hay nada que borrar","Error al Borrar",this.option_toast);
+ 		return false;
+	}else {
+	 $('#myModal2').modal('show');
 	 this.area_temporal=id;
+   }
 },
 BorrarArea: function () {
 		var arreglo_visualizar = JSON.parse(this.arreglo_visualizar);

@@ -656,8 +656,9 @@ class OtController extends Controller
    public function destroyAreaOT($id,$id_area)
    {
       $area=  Tiempos_x_Area::where('ots_id',$id)->where('areas_id',$id_area)->first();
-      $requerimientos=  Requerimientos_Ot::where('ots_id',$id)->where('areas_id',$id_area);
-      $compras=  Compras_Ot::where('ots_id',$id)->where('areas_id',$id_area)->where('compra_externa',0);
+      $requerimientos=  Requerimientos_Ot::where('ots_id',$id)->where('areas_id',$id_area)->get();
+      $compras=  Compras_Ot::where('ots_id',$id)->where('areas_id',$id_area)->where('compra_externa',0)->get();
+      //return response()->json($requerimientos);
       try {
 
          foreach ($requerimientos as $requerimiento ) {
@@ -860,23 +861,28 @@ class OtController extends Controller
       $otsEncabezado2[] = ['Cliente',$ot->cliente['nombre'],'Fecha Final',$ot->getFormatFechaShowInfo($ot->fecha_final),'Horas Disponibles',$ot->horas_disponibles,'Horas Extra',$ot->total_horas_extra];
       $otsDescripcion = [];
 
-      $areasEncabezado=[];
-      $areasEncabezado2=[];
-      $areasEncabezado3=[];
+      $areasEncabezado=['Áreas / Tiempos'];
+      $areasEncabezado2=['Tiempo Estimado'];
+      $areasEncabezado3=['Tiempo Real'];
+      $areasEncabezado4=['Tiempo Extra'];
       $total_contra=0;
       $total_real=0;
+      $total_extra=0;
 
       foreach ($ot->tiempos_x_area as  $tiempo_area) {
          array_push( $areasEncabezado,Area::findOrFail($tiempo_area['areas_id'])->nombre );
          array_push( $areasEncabezado2,number_format($tiempo_area['tiempo_estimado_ot'],2,",",".") );
          array_push( $areasEncabezado3,number_format($tiempo_area['tiempo_real'],2,",",".") );
+         array_push( $areasEncabezado4,number_format($tiempo_area['tiempo_extra'],2,",",".") );
          $total_contra += $tiempo_area['tiempo_estimado_ot'];
          $total_real += $tiempo_area['tiempo_real'];
+         $total_extra += $tiempo_area['tiempo_extra'];
       }
       array_push( $areasEncabezado,'TOTAL' );
       array_push( $areasEncabezado2, number_format($total_contra,2,",","."));
       array_push( $areasEncabezado3,number_format($total_real,2,",",".") );
-      //return response()->json( $ot->tareas);
+      array_push( $areasEncabezado4,number_format($total_extra,2,",",".") );
+      //return response()->json( $areasEncabezado2);
       foreach($ot->tareas as $tarea){
          array_push( $otsDescripcion, array($tarea['area']['nombre'],$tarea['nombre_tarea'],$ot->getFormatFechaShowInfo($tarea['created_at']),$ot->getFormatFechaShowInfo($tarea['fecha_entrega_cuentas']), number_format( $tarea['tiempo_estimado'],2,",","."), number_format($tarea['tiempo_real'],2,",","."), number_format( $tarea['tiempo_mapa_cliente'],2,",","."),$tarea['usuarioencargado']['nombre'].' '.$tarea['usuarioencargado']['apellido']) );
       }
@@ -886,6 +892,7 @@ class OtController extends Controller
       array_push($areasArray, $areasEncabezado);
       array_push($areasArray, $areasEncabezado2);
       array_push($areasArray,  $areasEncabezado3);
+      array_push($areasArray,  $areasEncabezado4);
       //     return response()->json( $ot->tareas);
       Excel::create( $ot->Cliente['nombre'].'_'.$ot->nombre.'_'.'OT_#'.$ot->referencia.'', function($excel) use($otsArray,$areasArray)  {
          // Set the spreadsheet title, creator, and description
@@ -898,16 +905,17 @@ class OtController extends Controller
             $sheet->prependRow(1, $headings);
             $sheet->row(2, $otsArray[0][0]);
             $sheet->row(3, $otsArray[1][0]);
-            $headings = array('Resumen de Areas de la OT ');
+            $headings = array('Resumen de Áreas de la OT ');
             $sheet->prependRow(5, $headings);
-            $sheet->row(6, $areasArray[0]);
-            $sheet->row(7, $areasArray[1]);
-            $sheet->row(8, $areasArray[2]);
+            $sheet->row(7, $areasArray[0]);
+            $sheet->row(8, $areasArray[1]);
+            $sheet->row(9, $areasArray[2]);
+            $sheet->row(10, $areasArray[3]);
             $headings = array('Resumen de tareas de la OT ');
-            $sheet->prependRow(9, $headings);
+            $sheet->prependRow(12, $headings);
             $headings = array('ÁREA','REQUERIMIENTOS','FECHA SOLICITUD','FECHA DE ENTREGA','TIEMPO REAL','TIEMPO ESTIMADO JEFE','TIEMPO ESTIMADO MAPA DE CLIENTE','ENCARGADO');
-            $sheet->prependRow(11, $headings);
-            $sheet->fromArray($otsArray[2], null, 'A12', false, false);
+            $sheet->prependRow(14, $headings);
+            $sheet->fromArray($otsArray[2], null, 'A15', false, false);
 
             $sheet->cell('A1', function($cell) {
                // Set font
@@ -927,7 +935,16 @@ class OtController extends Controller
                ));
 
             });
-            $sheet->cell('A9', function($cell) {
+            $sheet->cell('A7', function($cell) {
+               // Set font
+               $cell->setFont(array(
+                  'family'     => 'Calibri',
+                  'size'       => '14',
+                  'bold'       =>  true
+               ));
+            });
+
+            $sheet->cell('A12', function($cell) {
                // Set font
                $cell->setFont(array(
                   'family'     => 'Calibri',
@@ -945,11 +962,13 @@ class OtController extends Controller
             $sheet->cells('F2:G3', function($cells) {$cells->setAlignment('center');});
             $sheet->cells('G2:G3', function($cells) {$cells->setFontWeight('bold');});
             $sheet->cells('H2:H3', function($cells) {$cells->setAlignment('center');});
-            $sheet->cells('A11:H11', function($cells) {$cells->setFontWeight('bold');});
+            $sheet->cells('A14:H14', function($cells) {$cells->setFontWeight('bold');});
+            $sheet->cells('A7:H7', function($cells) {$cells->setFontWeight('bold');});
+            $sheet->cells('A7:A10', function($cells) {$cells->setFontWeight('bold');});
 
-            $sheet->cells('A2:E8', function($cells) {$cells->setAlignment('center');});
+            $sheet->cells('A2:E10', function($cells) {$cells->setAlignment('center');});
             // Set border for range
-            $sheet->setBorder('A11:H40', 'thin');
+            $sheet->setBorder('A14:H40', 'thin');
 
          });
 
