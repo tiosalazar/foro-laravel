@@ -7,6 +7,11 @@ use Google_Service_Calendar;
 use Google_Service_Calendar_Event;
 use Google_Service_Calendar_EventDateTime;
 use Illuminate\Http\Request;
+use App\User;
+use Illuminate\Http\Response;
+use Exception;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Validator;
 
 class gCalendarController extends Controller
 {
@@ -50,7 +55,7 @@ class gCalendarController extends Controller
         } else {
             $this->client->authenticate($_GET['code']);
             $_SESSION['access_token'] = $this->client->getAccessToken();
-            return redirect()->route('cal.index');
+            return redirect()->route('homeview');
         }
     }
     /**
@@ -185,4 +190,40 @@ class gCalendarController extends Controller
             return redirect()->route('oauthCallback');
         }
     }
+
+    public function pedir()
+    {
+        session_start();
+        $startDateTime = '2017-05-11T10:54:00';
+        $endDateTime = '2017-05-11T14:00:00';
+        if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+            $this->client->setAccessToken($_SESSION['access_token']);
+            $service = new Google_Service_Calendar($this->client);
+            $calendarId = 'primary';
+            $event = new Google_Service_Calendar_Event([
+                'summary' => 'Evento Prueba',
+                'location'=>'Himalaya Digital Agency, Santa Teresita, Cali - Valle del Cauca, Colombia',
+                'description' => 'Evento creado desde laravel',
+                'start' => ['dateTime' => $startDateTime, 'timeZone' => 'America/Bogota'],
+                'end' => ['dateTime' => $endDateTime, 'timeZone' => 'America/Bogota'],
+                'reminders' => ['useDefault' => true],
+                /*'attendees' => array(
+                   array('email' => 'bcaldas@himalayada.com'),
+                   array('email' => 'aborrero@himalayada.com'),
+               ),*/
+            ]);
+            // return var_dump($event);
+            $results = $service->events->insert($calendarId, $event);
+            if (!$results) {
+                return response()->json(['status' => 'error', 'message' => 'Something went wrong']);
+            }
+            return response()->json(['status' => 'success', 'message' => 'Event Created']);
+        } else {
+            return redirect()->route('oauthCallback');
+        }
+
+    }
+
+
+
 }

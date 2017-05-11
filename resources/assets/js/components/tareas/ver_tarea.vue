@@ -19,7 +19,7 @@
         </div>
         <!-- /.box-header -->
         <form role="form" name="crear_tarea" class="crear_tarea">
-          <div class="box-body col-sm-12">
+          <div class="box-body col-md-12" >
             <div class="row desc-ot with-border">
               <div class="col-sm-6 border-right">
                 <ul>
@@ -145,6 +145,7 @@
                   <!-- <div>{{tarea_info.fecha_entrega_cliente | date_format}}</div> -->
                 </div>
 
+
                  <div class="form-group same-height">
                   <label><strong>Estado de solicitud: </strong></label>
                   <!-- <div class="" v-if=" rol_actual !='coordinador' &&  rol_actual!='owner' && (id_usuario_actual != tarea_info.encargado_id && tarea_info.estados_id == '1')"> -->
@@ -162,6 +163,8 @@
 
                   </div>
                 </div>
+
+
 
 
                 <label for=""><strong>Fecha entrega cuentas:</strong></label>
@@ -237,6 +240,40 @@
               <p class="descripcion_tarea" v-html="tarea_info.descripcion"></p>
             </div>
 
+            <div class="clearfix"></div>
+            <div class="box box-info">
+              <div class="box-header box-primary">
+                <h3 class="box-title">  <label for="ot">Programar en Calendar</label></h3>
+                <div class="box-tools">
+                  <button type="button" class="btn btn-box-tool btn-info" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                </div>
+              </div>
+            <div class="box-body">
+            <div class="same-height col-md-6 col-sm-6 col-xs-12">
+                <label for=""><strong>Fecha Inicio:</strong></label>
+                <div class="form group input-group date">
+                  <div class="contenedor_fecha">
+                      <div class="input-group-addon" >
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <date-picker :option="timeoption"  @input="guardarDatos"  :date="inicio_programada" ></date-picker>
+                  </div>
+                </div>
+              </div>
+             <div class="same-height  col-md-6  col-sm-6 col-xs-12">
+                <label for=""><strong>Fecha Final:</strong></label>
+                <div class="form group input-group date" >
+                  <div class="contenedor_fecha">
+                      <div class="input-group-addon" >
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                     <date-picker :option="timeoption"  @input="guardarDatos"  :date="fin_programada" ></date-picker>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
             <div class="form-group required" >
 
             <div v-bind:class="{ 'hidden': descripcion_requerida }">
@@ -249,8 +286,8 @@
 
             </div>
 
-
           </div>
+
           <!-- /.box-body -->
           <div v-if=" (rol_actual =='owner') || (rol_actual =='desarrollo') || (rol_actual =='cuentas' && tarea_info.estados_id==20)" >
                 <div class="box-footer text-center">
@@ -329,12 +366,34 @@
     </div>
   </div>
 </template>
+<style>
+ .cov-date-caption{
+   padding: 7px 0!important;
+ }
+ .cov-date-caption[_v-d2b48680]{
+      padding: 7px 0!important;
+      margin: -35px 0px !important;
+ }
+ .cov-date-monthly  div[_v-d2b48680] {
+    height: 100px !important;
+}
+.cov-date-monthly{
+   height: 100px !important;
+}
+.checked,.active {
+    background: rgb(0, 46, 96) !important;
+}
+.cov-date-caption span[_v-d2b48680]:hover {
+    color: rgb(21, 172, 202)  !important;
+}
+</style>
 <script>
   import Datepicker from 'vuejs-datepicker';
   import VuePaginate from 'vue-paginate';
   import VeeValidate, { Validator } from 'vee-validate';
   import moment from 'moment';
   import VueHtml5Editor from 'vue-html5-editor';
+  import myDatepicker from 'vue-datepicker'
     Vue.use(VueHtml5Editor);
 
   Vue.component('select_estados',require('../herramientas/select_estado.vue'));
@@ -343,7 +402,7 @@
   Vue.use(VeeValidate);
   module.exports = {
     props: ['arraytarea','id_usuario_actual','rol_usuario_actual','destarea'],
-    components: {Datepicker,VeeValidate,Validator},
+    components: {Datepicker,VeeValidate,Validator,'date-picker': myDatepicker},
     data(){
       return{
         rol_actual:'',
@@ -373,7 +432,37 @@
             nombre:''
           }
         },
-        tarea_info:{},
+        inicio_programada: {
+          time: ''
+        },
+        fin_programada: {
+          time: ''
+        },
+        tarea_info:{
+        },
+        timeoption: {
+      type: 'min',
+      inputStyle: {
+         'display': 'inline-block',
+         'padding': '6px',
+         'line-height': '22px',
+         'font-size': '16px',
+         'color': '#000',
+       },
+       color: {
+         checked: '#002E60',
+         header: '#002E60',
+         headerText: '#fff'
+       },
+       placeholder:'Elija fecha y hora para continuar',
+       buttons: {
+         ok: 'Ok',
+         cancel: 'Cancel'
+       },
+      week: ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do'],
+      month: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'DIciembre'],
+      format: 'YYYY-MM-DD HH:mm'
+    },
         usuario_actual_comentar:'',
         area:{},
         message:'',
@@ -494,6 +583,11 @@
           fecha_cuentas=(moment(fecha_cuentas).isValid())?moment(this.tarea_info.fecha_entrega_cuentas).format('YYYY-MM-DD'):null;
           let recurrencia_init = (moment(this.tarea_info.fecha_inicio_recurrencia).isValid())?moment(this.tarea_info.fecha_inicio_recurrencia).format('YYYY-MM-DD HH:mm:ss'):null;
           let recurrencia_final = (moment(this.tarea_info.fecha_inicio_recurrencia).isValid())?moment(this.tarea_info.fecha_final_recurrencia).format('YYYY-MM-DD HH:mm:ss'):null;
+
+        //Datos Google calendar
+        let fecha_inicio_programar = (moment(this.inicio_programada.time).isValid())?moment(this.inicio_programada.time).format('YYYY-MM-DDTHH:mm'):null;
+        let fecha_fin_programar = (moment(this.fin_programada.time).isValid())?moment(this.fin_programada.time).format('YYYY-MM-DDTHH:mm'):null;
+
             //Datos a enviar
             let data =
             {
@@ -505,6 +599,8 @@
               fecha_entrega_cuentas:fecha_cuentas,
               usuarios_comentario_id:this.id_usuario_actual,
               tiempo_estimado:this.tarea_info.tiempo_estimado,
+              fecha_inicio_programar:fecha_inicio_programar,
+              fecha_fin_programar:fecha_fin_programar,
               tareas_id:this.tarea_info.id,
               comentarios:this.descripcion,
               tiempo_real:this.tarea_info.tiempo_real,

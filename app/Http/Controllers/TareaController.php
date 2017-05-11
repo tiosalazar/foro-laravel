@@ -357,6 +357,8 @@ public function update(Request $request, $id)
                     ->where('areas_id', $tarea->areas_id)
                     ->first();
                     $tarea->encargado_id = $encargado_area->id;
+
+
                 }else
                 // Atención Cuentas (4)
                 if($tarea->estados_id == 4){
@@ -374,8 +376,8 @@ public function update(Request $request, $id)
                         $area = Area::findOrFail($tarea->areas_id);
                         $area->horas_consumidas +=$tarea->tiempo_real;
 
-                        $colaborador->update();
-                        $area->update();
+                    //    $colaborador->update();
+                    //    $area->update();
 
                         // sume Horas Reales en Tiempos_x_area
                         $horas_area = Tiempos_x_Area::where('ots_id',$tarea->ots_id)
@@ -390,7 +392,7 @@ public function update(Request $request, $id)
                                 ->notify(new OtExcedeTiempo($makerBefore,$horas_area->ots,$area));
                             }
                             $horas_area->tiempo_real +=$tarea->tiempo_real;
-                            $horas_area->save();
+                            //$horas_area->save();
                         }else{
                             return response([
                                 'status' => Response::HTTP_BAD_REQUEST,
@@ -414,12 +416,12 @@ public function update(Request $request, $id)
                 }
 
                 //Guardamos la tarea
-                $tarea->update();
+            //    $tarea->update();
 
                 //Guardamos el comentario
                 $comentario = new Comentario;
                 $comentario->fill($request->all());
-                $comentario->save();
+                //$comentario->save();
 
 
                 //Guardar en el historial
@@ -442,7 +444,7 @@ public function update(Request $request, $id)
                 }
                 $data['editor_id']=Auth::user()->id;
                 $tarea_historico->fill($data);
-                $tarea_historico->save();
+            //    $tarea_historico->save();
 
                 //Respuesta
                 $respuesta['dato']=$tarea;
@@ -497,9 +499,28 @@ public function update(Request $request, $id)
                     break;
                     case '3':
                     // Enviar notificacion al nuevo encargado
-                    User::findOrFail($tarea->encargado_id)
+                /*    User::findOrFail($tarea->encargado_id)
                     ->notify(new TareaProgramada($makerBefore,$tarea));
-                    break;
+                    break;*/
+                    $email=  User::findOrFail($tarea->encargado_id);
+                    //Programar en Calendar
+                    $calendar= array( );
+                    try {
+                        $calendar =$this->programarCalendar($tarea['nombre_tarea'],$tarea['descripcion'],$request->fecha_inicio_programar,$request->fecha_fin_programar,$email->email);
+                // return  $calendar;
+;
+                    } catch (Exception $e) {
+                        return response([
+                            'status' => Response::HTTP_BAD_REQUEST,
+                            'response_time' => microtime(true) - LARAVEL_START,
+                            'msg' => 'Error al actualizar la tarea. No se pudo programar',
+                            'error' => config('constants.ERR_04'),
+                            'tarea' =>$tarea,
+                            'consola' =>$e->getMessage(),
+                            'request' =>$calendar,
+                        ],Response::HTTP_BAD_REQUEST);
+                    }
+
                     case '4':
                     // Enviar notificacion al nuevo encargado
                     User::findOrFail($tarea->usuarios_id)
@@ -554,7 +575,7 @@ public function update(Request $request, $id)
                 $respuesta["mensaje"]="Error con la tarea";
                 $respuesta['error'] = config('constants.ERR_04');
                 // $respuesta["tarea_historico"]=$tarea_historico;
-                $respuesta["consola"]=$e;
+                $respuesta["consola"]=$e->getMessage();
                 $respuesta["msg"]="Error  datos incorrectos";
                 $respuesta["request"]=$request->all();
                 $respuesta["ids"]=Auth::user()->id;
@@ -1141,4 +1162,45 @@ public function showAllTareas($id,Request $request)
                 'numeric' => 'El campo <b> :attribute </b> debe ser numerico.',
             ];
         }
+
+        public function programarCalendar($summary,$description,$startDateTime,$endDateTime,$email)
+          {
+              //session_start();
+              //$startDateTime = '2017-05-11T10:54:00';
+            //  $endDateTime = '2017-05-11T14:00:00';
+              if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+                  $this->client->setAccessToken($_SESSION['access_token']);
+                  $service = new Google_Service_Calendar($this->client);
+                  $calendarId = 'primary';
+                  $event = new Google_Service_Calendar_Event([
+                      'summary' => $summary,
+                      'description' => $description,
+                      'start' => ['dateTime' => $startDateTime, 'timeZone' => 'America/Bogota'],
+                      'end' => ['dateTime' => $endDateTime, 'timeZone' => 'America/Bogota'],
+                      'reminders' => ['useDefault' => true],
+                      'attendees' => array(
+                         array('email' => $email),
+                        /*   array('email' => 'aborrero@himalayada.com'),*/
+                     ),
+                  ]);
+                  // return var_dump($event);
+                  $results = $service->events->insert($calendarId, $event);
+                  if (!$results) {
+                    return false;
+                     //return 'No se pudo crear el evento, por favor intente de nuevo';
+                    //  return response()->json(['status' => 'error', 'message' => 'Something went wrong']);
+                  }
+                  return true;
+                  //return 'Se ha creado el evento correctamente';
+                //  return response()->json(['status' => 'success', 'message' => 'Event Created']);
+              } else {
+                return false;
+                //return 'No posee el api de google';
+                //  return redirect()->route('oauthCallback');
+              }
+
+          }
+
+
+
     }

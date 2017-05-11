@@ -16,15 +16,16 @@
   Route::get('/console/{id}','RolController@updatePermisionsbyRole');
 
   Route::resource('gcalendar', 'gCalendarController');
+  Route::get('pedir', 'gCalendarController@pedir');
   Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
-  
+
   //Imprimir Hora
   Route::get('/hora_actual', function () {
     echo date("d-m-Y H:m:s");
   });
   Route::group(['middleware' => ['auth','login_estado']], function () {
 
-    Route::get('/home', 'HomeController@index');
+    Route::get('/home', ['as' => 'homeview', 'uses' => 'HomeController@index']);
     Route::get('/','HomeController@index');
 
    //Ruta para cargar imagen de perfil
