@@ -585,8 +585,8 @@
           let recurrencia_final = (moment(this.tarea_info.fecha_inicio_recurrencia).isValid())?moment(this.tarea_info.fecha_final_recurrencia).format('YYYY-MM-DD HH:mm:ss'):null;
 
         //Datos Google calendar
-        let fecha_inicio_programar = (moment(this.inicio_programada.time).isValid())?moment(this.inicio_programada.time).format('YYYY-MM-DDTHH:mm'):null;
-        let fecha_fin_programar = (moment(this.fin_programada.time).isValid())?moment(this.fin_programada.time).format('YYYY-MM-DDTHH:mm'):null;
+        let fecha_inicio_programar = (moment(this.inicio_programada.time).isValid())?moment(this.inicio_programada.time).format('YYYY-MM-DDTHH:mm:ss'):null;
+        let fecha_fin_programar = (moment(this.fin_programada.time).isValid())?moment(this.fin_programada.time).format('YYYY-MM-DDTHH:mm:ss'):null;
 
             //Datos a enviar
             let data =

@@ -37,9 +37,14 @@ use Exception;
 use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
 use Excel;
+use Google_Client;
+use Google_Service_Calendar;
+use Google_Service_Calendar_Event;
+use Google_Service_Calendar_EventDateTime;
 
 class TareaController extends Controller
 {
+    protected $client;
     /*public function __construct()
     {
     $this->middleware('auth');
@@ -1165,9 +1170,14 @@ public function showAllTareas($id,Request $request)
 
         public function programarCalendar($summary,$description,$startDateTime,$endDateTime,$email)
           {
-              //session_start();
-              //$startDateTime = '2017-05-11T10:54:00';
-            //  $endDateTime = '2017-05-11T14:00:00';
+              $client = new Google_Client();
+              $client->setAuthConfig('client_secret.json');
+              $client->addScope(Google_Service_Calendar::CALENDAR);
+              $guzzleClient = new \GuzzleHttp\Client(array('curl' => array(CURLOPT_SSL_VERIFYPEER => false)));
+              $client->setHttpClient($guzzleClient);
+              $this->client = $client;
+
+              session_start();
               if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
                   $this->client->setAccessToken($_SESSION['access_token']);
                   $service = new Google_Service_Calendar($this->client);

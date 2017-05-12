@@ -55,7 +55,7 @@ class gCalendarController extends Controller
         } else {
             $this->client->authenticate($_GET['code']);
             $_SESSION['access_token'] = $this->client->getAccessToken();
-            return redirect()->route('homeview');
+        return redirect()->action('HomeController@index');
         }
     }
     /**
@@ -215,9 +215,9 @@ class gCalendarController extends Controller
             // return var_dump($event);
             $results = $service->events->insert($calendarId, $event);
             if (!$results) {
-                return response()->json(['status' => 'error', 'message' => 'Something went wrong']);
+                return response()->json(['status' => 'error', 'message' => 'Something went wrong','evento'=>$results]);
             }
-            return response()->json(['status' => 'success', 'message' => 'Event Created']);
+            return response()->json(['status' => 'success', 'message' => 'Event Created','evento'=>$results]);
         } else {
             return redirect()->route('oauthCallback');
         }
