@@ -11,6 +11,7 @@ use App\Historico_equipo;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Jenssegers\Date\Date;
+use Illuminate\Support\Facades\DB;
 class StartMount extends Command
 {
     /**
@@ -52,10 +53,10 @@ class StartMount extends Command
             $Historico_equipo->horas_disponibles=$user->horas_disponible;
             $Historico_equipo->horas_gastadas=$user->horas_gastadas;
             $Historico_equipo->tipo_de_entidad=1;//Referencia a que la entidad va a ser Usuarios
-            // $Historico_equipo->save();
+            $Historico_equipo->save();
        //log::info("Historico usuarios Guargado");
             $user->horas_gastadas=0;
-            // $user->save();
+            $user->save();
         }
         log::info("Se han restablecido las horas gastadas de todos los usuarios");
         $areas=Area::all();
@@ -66,16 +67,17 @@ class StartMount extends Command
             $Historico_equipo->horas_disponibles= $horas_totales;
             $Historico_equipo->horas_gastadas=$area->horas_consumidas;
             $Historico_equipo->tipo_de_entidad=2;//Referencia a que la entidad va a ser Usuarios
-            // $Historico_equipo->save();
+            $Historico_equipo->save();
 
             $area->horas_consumidas=0;
-            // $area->save();
+            $area->save();
         }
         log::info("Se han restablecido las horas gastadas de todas las areas");
 
         // Crear tareas recurrentes
         $now = Carbon::now();
-        $tareas_recurrentes = Tarea::where('recurrente',1)->where('fecha_final_recurrencia', '>=', $now->toDateTimeString())->get();
+        // DB::enableQueryLog();
+        $tareas_recurrentes = Tarea::where('recurrente',1)->where('fecha_inicio_recurrencia', '>=', $now->toDateTimeString())->where('fecha_final_recurrencia', '>=', $now->toDateTimeString())->get();
         $tareas_recurrentes = $tareas_recurrentes->toArray();
         foreach ($tareas_recurrentes as $tarea) {
           $now = Carbon::now();
@@ -114,6 +116,7 @@ class StartMount extends Command
           $new_tarea->save();
           $asignar_fecha->subDays($dia);
         }
-        log::info("Se han creado las tareas recurrentes",[$now,$asignar_fecha,$fecha_create ]);
+        // $queries = DB::getQueryLog();
+        log::info("Se han creado las tareas recurrentes");
     }
 }

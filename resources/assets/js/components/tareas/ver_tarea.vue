@@ -434,8 +434,10 @@
 
             this.estado = obj.estado;
             //Asignos los comentarios para el v-for
-            this.comentarios_array=obj.comentario;
-            this.comentarios_array.reverse();
+            // this.comentarios_array=obj.comentario;
+            // this.comentarios_array=this.comentarios;
+            // console.log(this.comentarios);
+            // this.comentarios_array.reverse();
           }
           //Asigno el rol actual
           this.usuario_actual_comentar= this.id_usuario_actual;
@@ -447,6 +449,7 @@
           if (this.id_usuario_actual == this.tarea_info.encargado_id) {
             this.tarea_info.estado="";
           }
+          this.setComments();
         },
 
       filters: {
@@ -457,6 +460,14 @@
         }
       },
       methods:{
+        setComments:function () {
+          this.$http.get(window._baseURL+'/comentarios/'+this.tarea_info.id)
+          .then(function(respuesta){
+            this.comentarios_array=respuesta.body;
+            console.log('comentarios',this.comentarios_array);
+            this.comentarios_array.reverse();
+          });
+        },
         setErrors:function(object) {
   		        this.message='';
   		        let that = this;
@@ -508,6 +519,7 @@
               tareas_id:this.tarea_info.id,
               comentarios:this.descripcion,
               tiempo_real:this.tarea_info.tiempo_real,
+              // is_comment:(this.tarea_info.estados_id== 2 && this.rol_usuario_actual !='coordinador')? 1: 0,
               is_comment:(this.tarea_info.estados_id== 2 && this.rol_usuario_actual !='coordinador')? 1: 0,
               fecha_entrega_cliente:(typeof(this.fecha_entrega_cliente) =='undefined' || this.fecha_entrega_cliente=='' )? this.tarea_info.fecha_entrega_cliente : moment(this.fecha_entrega_cliente).format('YYYY-MM-DD'),
             };
