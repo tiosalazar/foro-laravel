@@ -12,6 +12,7 @@ use Illuminate\Http\Response;
 use Exception;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
+use Illuminate\Support\Facades\Auth;
 
 class gCalendarController extends Controller
 {
@@ -45,6 +46,11 @@ class gCalendarController extends Controller
     }
     public function oauth()
     {
+      //Id del area del usuario conectado
+       $userauth = Auth::user()->rol->name;
+        /*if ( $userauth !='coordinador') {
+          return redirect()->action('HomeController@index');
+      }*/
         session_start();
         $rurl = action('gCalendarController@oauth');
         $this->client->setRedirectUri($rurl);
@@ -57,6 +63,8 @@ class gCalendarController extends Controller
             $_SESSION['access_token'] = $this->client->getAccessToken();
         return redirect()->action('HomeController@index');
         }
+
+
     }
     /**
      * Show the form for creating a new resource.
@@ -199,7 +207,7 @@ class gCalendarController extends Controller
         if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
             $this->client->setAccessToken($_SESSION['access_token']);
             $service = new Google_Service_Calendar($this->client);
-            $calendarId = 'primary';
+            $calendarId = 'aborrero@himalayada.com';
             $event = new Google_Service_Calendar_Event([
                 'summary' => 'Evento Prueba',
                 'location'=>'Himalaya Digital Agency, Santa Teresita, Cali - Valle del Cauca, Colombia',

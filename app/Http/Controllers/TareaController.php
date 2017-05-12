@@ -511,9 +511,13 @@ public function update(Request $request, $id)
                     //Programar en Calendar
                     $calendar= array( );
                     try {
-                        $calendar =$this->programarCalendar($tarea['nombre_tarea'],$tarea['descripcion'],$request->fecha_inicio_programar,$request->fecha_fin_programar,$email->email);
+                        $calendar =$this->programarCalendar($tarea['nombre_tarea'],strip_tags($tarea['descripcion']),$request->fecha_inicio_programar,$request->fecha_fin_programar,$email->email);
                 // return  $calendar;
-;
+                        $tarea->id_evento=$calendar['id'];
+                        $tarea->fecha_inicio_programar=$request->fecha_inicio_programar;
+                        $tarea->fecha_fin_programar=$request->fecha_fin_programar;
+                        //$tarea->save();
+
                     } catch (Exception $e) {
                         return response([
                             'status' => Response::HTTP_BAD_REQUEST,
@@ -1200,7 +1204,7 @@ public function showAllTareas($id,Request $request)
                      //return 'No se pudo crear el evento, por favor intente de nuevo';
                     //  return response()->json(['status' => 'error', 'message' => 'Something went wrong']);
                   }
-                  return true;
+                  return $results;
                   //return 'Se ha creado el evento correctamente';
                 //  return response()->json(['status' => 'success', 'message' => 'Event Created']);
               } else {

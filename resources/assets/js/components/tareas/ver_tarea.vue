@@ -249,6 +249,7 @@
                 </div>
               </div>
             <div class="box-body">
+          <section  v-for="(ed,index) in eventos">
             <div class="same-height col-md-6 col-sm-6 col-xs-12">
                 <label for=""><strong>Fecha Inicio:</strong></label>
                 <div class="form group input-group date">
@@ -256,7 +257,7 @@
                       <div class="input-group-addon" >
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <date-picker :option="timeoption"  @input="guardarDatos"  :date="inicio_programada" ></date-picker>
+                    <date-picker :option="timeoption"  v-model="ed.inicio_programada"  @input="guardarDatos"  :date="inicio_programada" :id="'inicio_programada'+index" ></date-picker>
                   </div>
                 </div>
               </div>
@@ -267,11 +268,21 @@
                       <div class="input-group-addon" >
                         <i class="fa fa-calendar"></i>
                     </div>
-                     <date-picker :option="timeoption"  @input="guardarDatos"  :date="fin_programada" ></date-picker>
+                     <date-picker :option="timeoption"  v-model="ed.fin_programada"  @input="guardarDatos"  :date="fin_programada" :id="'fin_programada'+index" ></date-picker>
                   </div>
                 </div>
               </div>
+              <div class="same-height  col-md-6  col-sm-6 col-xs-12" ><!--v-show="$parent.visualizacion != 'true'" -->
+                  <button type="button" @click="addEvento" class="btn btn-block btn-success boton_foro add_req">Añadir nuevo</button>
+              </div>
+              <div class="same-height  col-md-6  col-sm-6 col-xs-12" ><!--v-show="$parent.visualizacion != 'true'" -->
+                  <button type="button" @click="deleteEvento" class="btn btn-danger boton_foro error">Eliminar</button>
+              </div>
+
+
+              </section>
             </div>
+
           </div>
 
             <div class="form-group required" >
@@ -405,6 +416,9 @@
     components: {Datepicker,VeeValidate,Validator,'date-picker': myDatepicker},
     data(){
       return{
+        eventos: [
+          {  model_nom:'', fin_programada:''}
+        ],
         rol_actual:'',
         tarea:{
           nombre_tarea:this.arraytarea.nombre_tarea,
@@ -546,6 +560,26 @@
         }
       },
       methods:{
+        /*
+        Al darle click en añadir Requerimiento la función valida la información y añade una nueva posición al
+        arreglo de requerimientos
+        */
+        addEvento: function(e) {
+          e.preventDefault();
+            this.eventos.push(Vue.util.extend({}, this.eventos));
+
+        },
+        /*
+        Función la cual se encarga de borrar un requerimiento, lo que hace es que
+        busca el indece el cual se toco y se procede a eliminar del arreglo de
+        requerimientos
+        */
+        deleteEvento: function(e) {
+          e.preventDefault();
+          var index = this.eventos.indexOf(Vue.util.extend({}, this.eventos));
+          this.eventos.splice(index, 1);
+          //Realizar el Calculo de las horas.
+        },
         setErrors:function(object) {
   		        this.message='';
   		        let that = this;
