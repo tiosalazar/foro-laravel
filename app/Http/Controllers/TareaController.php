@@ -371,8 +371,12 @@ public function update(Request $request, $id)
                       // para restar tiempo del mes correspondiente
                       $now = Carbon::now();
                       // DB::enableQueryLog();
-                      $fecha_tarea = new Date($tarea->updated_at);
 
+                      // Obtener la fecha de la tarea cuando fue realizada realizada
+                      // Se busca en los Historicos de Tarea el ultimo estado realizado
+                      $tarea_realizada = Historico_Tarea::where('tareas_id',$tarea->id)->where('estados_id',2)->orderBy('created_at', 'desc')->first();
+                      // Se formatea la fecha
+                      $fecha_tarea = new Date($tarea_realizada->created_at);
                       if ($fecha_tarea->month == $now->month ) {
                         // Restar horas normalmente
 
@@ -395,10 +399,12 @@ public function update(Request $request, $id)
                         ->whereYear('created_at', $fecha_tarea->year)
                         ->whereMonth('created_at', $fecha_tarea->month+1)
                         ->first();
+
                         // Usuario en el historico
-                        $Historico_equipo += $tarea->tiempo_real;
+                        $Historico_equipo->horas_gastadas += $tarea->tiempo_real;
                         $Historico_equipo->update();
 
+                        // Restar horas al Área correspondiente
                         // Área en el historico
                         $Historico_equipo = Historico_equipo::where('entidad_id',$tarea->areas_id)
                         ->where('tipo_de_entidad',2)
@@ -406,15 +412,13 @@ public function update(Request $request, $id)
                         ->whereMonth('created_at', $fecha_tarea->month+1)
                         ->first();
 
-                        $Historico_equipo += $tarea->tiempo_real;
+                        $Historico_equipo->horas_gastadas += $tarea->tiempo_real;
                         $Historico_equipo->update();
                         // $queries = DB::getQueryLog();
                         // log::info("-- query",[ $queries]);
 
                       }
-
-                      /*
-                        // sume Horas Reales en Tiempos_x_area
+                        // Sume Horas Reales en Tiempos_x_area
                         $horas_area = Tiempos_x_Area::where('ots_id',$tarea->ots_id)
                         ->where('areas_id',$tarea->areas_id)
                         ->first();
@@ -437,7 +441,7 @@ public function update(Request $request, $id)
                                 'tarea' =>$tarea,
                             ],Response::HTTP_BAD_REQUEST);
                         }
-                      */
+
                     } catch (Exception $e) {
                         return response([
                             'status' => Response::HTTP_BAD_REQUEST,
@@ -450,7 +454,7 @@ public function update(Request $request, $id)
                     }
 
                 }
-                /*
+
                 //Guardamos la tarea
                 $tarea->update();
 
@@ -498,7 +502,7 @@ public function update(Request $request, $id)
                         $respuesta['user_coment']=$value;
                         $value->estados;
                     }
-                }*/
+                }
 
 
 
@@ -592,7 +596,7 @@ public function update(Request $request, $id)
                 $respuesta["mensaje"]="Error con la tarea";
                 $respuesta['error'] = config('constants.ERR_04');
                 // $respuesta["tarea_historico"]=$tarea_historico;
-                $respuesta["consola"]=$e;
+                $respuesta["consola"]=$e->getMessage();
                 $respuesta["msg"]="Error  datos incorrectos";
                 $respuesta["request"]=$request->all();
                 $respuesta["ids"]=Auth::user()->id;
