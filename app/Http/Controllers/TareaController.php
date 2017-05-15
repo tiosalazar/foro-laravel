@@ -504,12 +504,12 @@ public function update(Request $request, $id)
                     break;
                     case '3':
                     // Enviar notificacion al nuevo encargado
-                /*    User::findOrFail($tarea->encargado_id)
+                    User::findOrFail($tarea->encargado_id)
                     ->notify(new TareaProgramada($makerBefore,$tarea));
-                    break;*/
+                    break;
                     $email=  User::findOrFail($tarea->encargado_id);
                     //Programar en Calendar
-                    $calendar= array( );
+                  /*  $calendar= array( );
                     try {
                         $calendar =$this->programarCalendar($tarea['nombre_tarea'],strip_tags($tarea['descripcion']),$request->fecha_inicio_programar,$request->fecha_fin_programar,$email->email);
                 // return  $calendar;
@@ -528,8 +528,7 @@ public function update(Request $request, $id)
                             'consola' =>$e->getMessage(),
                             'request' =>$calendar,
                         ],Response::HTTP_BAD_REQUEST);
-                    }
-
+                    }*/
                     case '4':
                     // Enviar notificacion al nuevo encargado
                     User::findOrFail($tarea->usuarios_id)

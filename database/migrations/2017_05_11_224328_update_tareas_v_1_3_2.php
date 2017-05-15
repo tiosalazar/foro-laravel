@@ -14,9 +14,9 @@ class UpdateTareasV132 extends Migration
     public function up()
     {
       Schema::table('tareas', function (Blueprint $table) {
-        $table->string('id_evento')->nullable();
-        $table->dateTime('fecha_inicio_programar')->nullable();
-        $table->dateTime('fecha_fin_programar')->nullable();
+        $table->integer('id_evento')->unsigned()->nullable();
+        $table->string('fecha_inicio_programar')->nullable();
+        $table->string('fecha_fin_programar')->nullable();
       });
     }
 

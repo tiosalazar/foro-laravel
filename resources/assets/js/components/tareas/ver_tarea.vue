@@ -250,6 +250,7 @@
               </div>
             <div class="box-body">
           <section  v-for="(ed,index) in eventos">
+              <pre>{{ed}}</pre>
             <div class="same-height col-md-6 col-sm-6 col-xs-12">
                 <label for=""><strong>Fecha Inicio:</strong></label>
                 <div class="form group input-group date">
@@ -257,7 +258,8 @@
                       <div class="input-group-addon" >
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <date-picker :option="timeoption"  v-model="ed.inicio_programada"  @input="guardarDatos"  :date="inicio_programada" :id="'inicio_programada'+index" ></date-picker>
+
+                    <date-picker :option="timeoption"  v-model="ed.inicio_programada"  @input="guardarDatos"  :date="ed.inicio_programada" :id="'inicio_programada'+index" ></date-picker>
                   </div>
                 </div>
               </div>
@@ -417,7 +419,7 @@
     data(){
       return{
         eventos: [
-          {  model_nom:'', fin_programada:''}
+          {  inicio_programada:{ time:'' }, fin_programada:''}
         ],
         rol_actual:'',
         tarea:{
