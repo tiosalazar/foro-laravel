@@ -504,20 +504,20 @@ public function update(Request $request, $id)
                     break;
                     case '3':
                     // Enviar notificacion al nuevo encargado
-                    User::findOrFail($tarea->encargado_id)
+                    /*User::findOrFail($tarea->encargado_id)
                     ->notify(new TareaProgramada($makerBefore,$tarea));
-                    break;
+                    break;*/
                     $email=  User::findOrFail($tarea->encargado_id);
                     //Programar en Calendar
-                  /*  $calendar= array( );
+                    $calendar= array();
                     try {
-                        $calendar =$this->programarCalendar($tarea['nombre_tarea'],strip_tags($tarea['descripcion']),$request->fecha_inicio_programar,$request->fecha_fin_programar,$email->email);
-                // return  $calendar;
-                        $tarea->id_evento=$calendar['id'];
-                        $tarea->fecha_inicio_programar=$request->fecha_inicio_programar;
-                        $tarea->fecha_fin_programar=$request->fecha_fin_programar;
-                        //$tarea->save();
+                        $calendar =$this->programarCalendar($tarea['nombre_tarea'],strip_tags($tarea['descripcion']),$request->datos_fechas,$email->email);
+                        $tarea->id_evento=json_encode($calendar[0]);
+                        $tarea->fecha_inicio_programar=json_encode($calendar[1]);
+                        $tarea->fecha_fin_programar=json_encode($calendar[2]);
 
+                        return $tarea;
+                        //$tarea->save();
                     } catch (Exception $e) {
                         return response([
                             'status' => Response::HTTP_BAD_REQUEST,
@@ -528,7 +528,7 @@ public function update(Request $request, $id)
                             'consola' =>$e->getMessage(),
                             'request' =>$calendar,
                         ],Response::HTTP_BAD_REQUEST);
-                    }*/
+                    }
                     case '4':
                     // Enviar notificacion al nuevo encargado
                     User::findOrFail($tarea->usuarios_id)
@@ -940,6 +940,8 @@ public function showAllTareas($id,Request $request)
             $descripcion=$tarea->descripcion;
 
             $tarea->descripcion="";
+            $tarea->fecha_inicio_programar=json_decode($tarea->fecha_inicio_programar);
+            $tarea->fecha_fin_programar=json_decode($tarea->fecha_fin_programar);
 //return response()->json($tarea);
             return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea)->with('desctarea',$descripcion);
         }
@@ -1171,7 +1173,7 @@ public function showAllTareas($id,Request $request)
             ];
         }
 
-        public function programarCalendar($summary,$description,$startDateTime,$endDateTime,$email)
+        public function programarCalendar($summary,$description,$fechas,$email)
           {
               $client = new Google_Client();
               $client->setAuthConfig('client_secret.json');
@@ -1180,30 +1182,45 @@ public function showAllTareas($id,Request $request)
               $client->setHttpClient($guzzleClient);
               $this->client = $client;
 
+              $retorno_ids =array();
+              $retorno_fechas_inicio =array();
+              $retorno_fechas_final =array();
+              $retorno_final= array();
+
               session_start();
               if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
                   $this->client->setAccessToken($_SESSION['access_token']);
                   $service = new Google_Service_Calendar($this->client);
-                  $calendarId = 'primary';
-                  $event = new Google_Service_Calendar_Event([
-                      'summary' => $summary,
-                      'description' => $description,
-                      'start' => ['dateTime' => $startDateTime, 'timeZone' => 'America/Bogota'],
-                      'end' => ['dateTime' => $endDateTime, 'timeZone' => 'America/Bogota'],
-                      'reminders' => ['useDefault' => true],
-                      'attendees' => array(
-                         array('email' => $email),
-                        /*   array('email' => 'aborrero@himalayada.com'),*/
-                     ),
-                  ]);
-                  // return var_dump($event);
-                  $results = $service->events->insert($calendarId, $event);
-                  if (!$results) {
-                    return false;
-                     //return 'No se pudo crear el evento, por favor intente de nuevo';
-                    //  return response()->json(['status' => 'error', 'message' => 'Something went wrong']);
+                //  $calendarId = 'primary';
+                  $calendarId = $email;
+                  foreach ($fechas as $fecha) {
+                    $event = new Google_Service_Calendar_Event([
+                        'summary' => $summary,
+                        'description' => $description,
+                        'start' => ['dateTime' => $fecha['inicio_programada']['time'], 'timeZone' => 'America/Bogota'],
+                        'end' => ['dateTime' =>  $fecha['fin_programada']['time'], 'timeZone' => 'America/Bogota'],
+                        'reminders' => ['useDefault' => true],
+                        /* 'attendees' => array(
+                           array('email' => $email),
+                            array('email' => 'aborrero@himalayada.com'),
+                       ),*/
+                    ]);
+                    $results = $service->events->insert($calendarId, $event);
+                    if (!$results) {
+                      return false;
+                       //return 'No se pudo crear el evento, por favor intente de nuevo';
+                      //  return response()->json(['status' => 'error', 'message' => 'Something went wrong']);
+                    }else{
+                       array_push($retorno_ids,$results['id']);
+                       array_push($retorno_fechas_inicio,$fecha['inicio_programada']['time']);
+                       array_push($retorno_fechas_final,$fecha['fin_programada']['time']);
+                    }
                   }
-                  return $results;
+                  array_push($retorno_final,$retorno_ids);
+                  array_push($retorno_final,$retorno_fechas_inicio);
+                  array_push($retorno_final,$retorno_fechas_final);
+
+                   return $retorno_final;
                   //return 'Se ha creado el evento correctamente';
                 //  return response()->json(['status' => 'success', 'message' => 'Event Created']);
               } else {
