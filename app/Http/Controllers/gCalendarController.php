@@ -19,6 +19,10 @@ class gCalendarController extends Controller
     protected $client;
     public function __construct()
     {
+        $userauth = Auth::user()->rol->name;
+        if ( $userauth !='coordinador') {
+          return redirect()->action('HomeController@index');
+        }
         $client = new Google_Client();
         $client->setAuthConfig('client_secret.json');
         $client->addScope(Google_Service_Calendar::CALENDAR);
