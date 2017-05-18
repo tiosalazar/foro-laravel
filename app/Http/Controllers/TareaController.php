@@ -548,7 +548,7 @@ public function update(Request $request, $id)
                     // Enviar notificacion al nuevo encargado
                     User::findOrFail($tarea->encargado_id)
                     ->notify(new TareaProgramada($makerBefore,$tarea));
-                    break;
+                    
                     $email=  User::findOrFail($tarea->encargado_id);
                     //Programar en Calendar
                     $calendar= array();
@@ -571,6 +571,7 @@ public function update(Request $request, $id)
                             'request' =>$calendar,
                         ],Response::HTTP_BAD_REQUEST);
                     }
+                    break;
                     case '4':
                     // Enviar notificacion al nuevo encargado
                     User::findOrFail($tarea->usuarios_id)

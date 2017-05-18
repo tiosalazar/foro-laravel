@@ -653,6 +653,7 @@
             console.log('comentarios',this.comentarios_array);
             this.comentarios_array.reverse();
           });
+          },
 
         CalcularDatos:function (index) {
           let fecha_inicio = moment(this.datos_fechas[index].inicio_programada.time, "YYYY-MM-DD HH:mm:ss");

@@ -25,7 +25,7 @@
   });
   Route::group(['middleware' => ['auth','login_estado']], function () {
 
-    Route::get('/home', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth'])->name('homeview');
+    Route::get('/home', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
     Route::get('/', [ 'uses' => 'gCalendarController@oauth']);
 
    //Ruta para cargar imagen de perfil

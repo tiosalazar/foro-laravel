@@ -19,16 +19,20 @@ class gCalendarController extends Controller
     protected $client;
     public function __construct()
     {
-        $userauth = Auth::user()->rol->name;
-        if ( $userauth !='coordinador') {
-          return redirect()->action('HomeController@index');
-        }
-        $client = new Google_Client();
-        $client->setAuthConfig('client_secret.json');
-        $client->addScope(Google_Service_Calendar::CALENDAR);
-        $guzzleClient = new \GuzzleHttp\Client(array('curl' => array(CURLOPT_SSL_VERIFYPEER => false)));
-        $client->setHttpClient($guzzleClient);
-        $this->client = $client;
+        
+
+          // $userauth = Auth::user()->rol->name;
+             
+          // if ( $userauth !='coordinador') {
+          //   return redirect()->action('HomeController@index');
+          // }
+          $client = new Google_Client();
+          $client->setAuthConfig('client_secret.json');
+          $client->addScope(Google_Service_Calendar::CALENDAR);
+          $guzzleClient = new \GuzzleHttp\Client(array('curl' => array(CURLOPT_SSL_VERIFYPEER => false)));
+          $client->setHttpClient($guzzleClient);
+          $this->client = $client;
+        
     }
     /**
      * Display a listing of the resource.
@@ -52,21 +56,30 @@ class gCalendarController extends Controller
     {
       //Id del area del usuario conectado
        $userauth = Auth::user()->rol->name;
-        /*if ( $userauth !='coordinador') {
-          return redirect()->action('HomeController@index');
-      }*/
-        session_start();
-        $rurl = action('gCalendarController@oauth');
-        $this->client->setRedirectUri($rurl);
-        if (!isset($_GET['code'])) {
-            $auth_url = $this->client->createAuthUrl();
-            $filtered_url = filter_var($auth_url, FILTER_SANITIZE_URL);
-            return redirect($filtered_url);
-        } else {
-            $this->client->authenticate($_GET['code']);
-            $_SESSION['access_token'] = $this->client->getAccessToken();
-        return redirect()->action('HomeController@index');
+        if ( $userauth !='coordinador') {
+            return redirect()->action('HomeController@index');
         }
+        session_start();
+
+        if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+          return redirect("/home");
+        } else {
+            
+        
+         $rurl = action('gCalendarController@oauth');
+         $this->client->setRedirectUri($rurl);
+
+          if (!isset($_GET['code'])) {
+              $auth_url = $this->client->createAuthUrl();
+              $filtered_url = filter_var($auth_url, FILTER_SANITIZE_URL);
+              return redirect($filtered_url);
+          } else {
+              $this->client->authenticate($_GET['code']);
+              $_SESSION['access_token'] = $this->client->getAccessToken();
+          return redirect()->action('HomeController@index');
+          }
+
+       }
 
 
     }
@@ -206,12 +219,12 @@ class gCalendarController extends Controller
     public function pedir()
     {
         session_start();
-        $startDateTime = '2017-05-11T10:54:00';
-        $endDateTime = '2017-05-11T14:00:00';
+        $startDateTime = '2017-05-18T10:54:00';
+        $endDateTime = '2017-05-18T14:00:00';
         if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
             $this->client->setAccessToken($_SESSION['access_token']);
             $service = new Google_Service_Calendar($this->client);
-            $calendarId = 'aborrero@himalayada.com';
+            $calendarId = 'bcaldas@himalayada.com';
             $event = new Google_Service_Calendar_Event([
                 'summary' => 'Evento Prueba',
                 'location'=>'Himalaya Digital Agency, Santa Teresita, Cali - Valle del Cauca, Colombia',
