@@ -19,7 +19,7 @@
         </div>
         <!-- /.box-header -->
         <form role="form" name="crear_tarea" class="crear_tarea">
-          <div class="box-body col-sm-12">
+          <div class="box-body col-md-12" >
             <div class="row desc-ot with-border">
               <div class="col-sm-6 border-right">
                 <ul>
@@ -145,6 +145,7 @@
                   <!-- <div>{{tarea_info.fecha_entrega_cliente | date_format}}</div> -->
                 </div>
 
+
                  <div class="form-group same-height">
                   <label><strong>Estado de solicitud: </strong></label>
                   <!-- <div class="" v-if=" rol_actual !='coordinador' &&  rol_actual!='owner' && (id_usuario_actual != tarea_info.encargado_id && tarea_info.estados_id == '1')"> -->
@@ -162,6 +163,8 @@
 
                   </div>
                 </div>
+
+
 
 
                 <label for=""><strong>Fecha entrega cuentas:</strong></label>
@@ -237,6 +240,78 @@
               <p class="descripcion_tarea" v-html="tarea_info.descripcion"></p>
             </div>
 
+            <div id="seccion_programar" v-if="rol_actual==='coordinador' && estado_solicitud.id == '3' ">
+            <div class="clearfix"></div>
+            <!-- Mensaje de atención -->
+            <div class="box">
+              <div class="box-header with-border bg-aqua-active">
+                <h3 class="box-title bg-aqua-active"><b>Nueva Funcionalidad</b></h3>
+
+                <div class="box-tools pull-right ">
+
+                  <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Cerrar">
+                    <i class="fa fa-times" style="color:white;"></i></button>
+                  </div>
+                  <div>Ya puedes programar directamente en <b> Google Calendar</b>, elije la fecha de inico y final para continuar. Si son dos jornadas o más puedes dar click en <b>Añadir Nuevo</b> y agregar las jornadas que desees.</div>
+                </div>
+
+              </div>
+            <div class="box box-info  collapsed-box">
+              <div class="box-header box-primary">
+                <h3 class="box-title">  <label for="ot">Programar en Calendar</label></h3>
+                <div class="box-tools">
+                  <button type="button" class="btn btn-box-tool btn-info" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
+              </div>
+            <div class="box-body">
+          <section  v-for="(ed,index) in datos_fechas">
+            <div class="same-height col-md-6 col-sm-6 col-xs-12">
+                <div style="height:12px"></div>
+                <label for=""><strong>Fecha y Hora de inicio:</strong></label>
+                <div class="form group input-group date"  v-bind:class="{ 'has-error': errors.has('inicio_programada'+index) }">
+                  <div class="contenedor_fecha">
+                      <div class="input-group-addon" >
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <date-picker   :name="'inicio_programada'+index" :option="timeoption"   @change="CalcularDatos(index)"  :date="ed.inicio_programada" :id="'inicio_programada'+index" ></date-picker>
+                  </div>
+                </div>
+              </div>
+             <div class="same-height  col-md-6  col-sm-6 col-xs-12">
+                <div style="height:12px"></div>
+                <label for=""><strong>Fecha y Hora final:</strong></label>
+                <div class="form group input-group date"  v-bind:class="{ 'has-error': errors.has('fin_programada'+index) }" >
+                  <div class="contenedor_fecha">
+                      <div class="input-group-addon" >
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                     <date-picker  :name="'fin_programada'+index"   :option="timeoption"   @change="CalcularDatos(index)"  :date="ed.fin_programada" :id="'fin_programada'+index" ></date-picker>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12  same-height with-border ">
+                <div class="form-group col-md-6  col-sm-6 col-xs-12">
+                 <label><strong>Tiempo Programado:</strong></label>
+                 <div> {{ed.h_programada}}</div>
+               </div>
+               <div class="col-md-6  col-sm-6 col-xs-12" ><!--v-show="$parent.visualizacion != 'true'" -->
+                   <button type="button" @click="deleteEvento" class="btn btn-danger boton_foro error">Eliminar</button>
+               </div>
+
+              </div>
+              </section>
+
+              <div class="same-height  col-md-6  col-sm-6 col-xs-12" ><!--v-show="$parent.visualizacion != 'true'" -->
+                  <div style="height:22px"></div>
+                  <button type="button" @click="addEvento" class="btn btn-block btn-success boton_foro add_req">Añadir nuevo</button>
+              </div>
+            </div>
+          </div>
+
+
+
+          </div>
+
             <div class="form-group required" >
 
             <div v-bind:class="{ 'hidden': descripcion_requerida }">
@@ -249,8 +324,8 @@
 
             </div>
 
-
           </div>
+
           <!-- /.box-body -->
           <div v-if=" (rol_actual =='owner') || (rol_actual =='desarrollo') || (rol_actual =='cuentas' && tarea_info.estados_id==20)" >
                 <div class="box-footer text-center">
@@ -329,12 +404,60 @@
     </div>
   </div>
 </template>
+<style>
+ .cov-date-caption{
+   padding: 7px 0!important;
+ }
+ .cov-date-caption[_v-d2b48680]{
+      padding: 7px 0!important;
+      margin: -35px 0px !important;
+ }
+ .cov-date-monthly  div[_v-d2b48680] {
+    height: 115px !important;
+}
+.cov-date-monthly{
+   height: 100px !important;
+}
+.checked,.active {
+    background: rgb(0, 46, 96) !important;
+}
+.cov-date-caption span[_v-d2b48680]:hover {
+    color: rgb(21, 172, 202)  !important;
+}
+.hour-item[_v-d2b48680], .min-item[_v-d2b48680] {
+    padding: 0px!important;
+    font-size: 30px!important;
+}
+.hour-box:before {
+    content: 'Horas';
+    background: rgb(21, 172, 202);
+    color: white;
+    width: 50%;
+    position: absolute;
+        border-right: 1px solid #c1c1c1;
+    left: 0px;
+    top: 20%;
+    font-size: 20px;
+}
+.min-box:before {
+    content: 'Minutos';
+    background: rgb(21, 172, 202);
+    color: white;
+    width: 50%;
+    position: absolute;
+    right: 0px;
+    border-left: 1px solid #c1c1c1;
+    top: 20%;
+    font-size: 20px;
+}
+</style>
 <script>
   import Datepicker from 'vuejs-datepicker';
   import VuePaginate from 'vue-paginate';
   import VeeValidate, { Validator } from 'vee-validate';
   import moment from 'moment';
   import VueHtml5Editor from 'vue-html5-editor';
+  import myDatepicker from 'vue-datepicker'
     Vue.use(VueHtml5Editor);
 
   Vue.component('select_estados',require('../herramientas/select_estado.vue'));
@@ -343,7 +466,7 @@
   Vue.use(VeeValidate);
   module.exports = {
     props: ['arraytarea','id_usuario_actual','rol_usuario_actual','destarea'],
-    components: {Datepicker,VeeValidate,Validator},
+    components: {Datepicker,VeeValidate,Validator,'date-picker': myDatepicker},
     data(){
       return{
         rol_actual:'',
@@ -373,7 +496,42 @@
             nombre:''
           }
         },
-        tarea_info:{},
+        datos_fechas:[
+          {
+            inicio_programada: {
+              time:  moment().format('YYYY-MM-DD HH:mm')
+            },
+            fin_programada: {
+              time: ''
+            },
+            h_programada:0
+          }
+        ],
+        tarea_info:{
+        },
+        timeoption: {
+      type: 'min',
+      inputStyle: {
+         'display': 'inline-block',
+         'padding': '6px',
+         'line-height': '22px',
+         'font-size': '16px',
+         'color': '#000',
+       },
+       color: {
+         checked: '#002E60',
+         header: '#002E60',
+         headerText: '#fff'
+       },
+       placeholder:'Elija fecha y hora para continuar',
+       buttons: {
+         ok: 'Ok',
+         cancel: 'Cancel'
+       },
+      week: ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do'],
+      month: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'DIciembre'],
+      format: 'YYYY-MM-DD HH:mm'
+    },
         usuario_actual_comentar:'',
         area:{},
         message:'',
@@ -432,6 +590,34 @@
 
             this.tarea_info.descripcion=this.destarea;
 
+        /*
+            // Editar Fechas Google Calendar
+            var fechas_inicio= obj.fecha_inicio_programar;
+            var fechas_fin= obj.fecha_fin_programar;
+            console.log(fechas_fin,'fechas_fin');
+
+            for (let f in fechas_inicio) {
+              let idx = Number(f)
+              let fecha_inicio = fechas_inicio[idx];
+              let fecha_fin = fechas_fin[idx];
+            console.log(fecha_inicio,'fechas_fin 2');
+                var temp=[
+                {
+                  inicio_programada: {
+                    time: moment(fecha_inicio).format('YYYY-MM-DD HH:mm')
+                  },
+                  fin_programada: {
+                    time: moment(fecha_fin).format('YYYY-MM-DD HH:mm')
+                  },
+                  h_programada: (moment(fecha_inicio).isAfter(fecha_fin))?'La fecha de inicio debe de ser mayor que la incial':moment.duration( fecha_fin - fecha_inicio).humanize()
+                }
+              ];
+
+                  this.datos_fechas.push(temp);
+            }
+
+            console.log(obj,'obj');*/
+
             this.estado = obj.estado;
             //Asignos los comentarios para el v-for
             // this.comentarios_array=obj.comentario;
@@ -467,6 +653,72 @@
             console.log('comentarios',this.comentarios_array);
             this.comentarios_array.reverse();
           });
+
+        CalcularDatos:function (index) {
+          let fecha_inicio = moment(this.datos_fechas[index].inicio_programada.time, "YYYY-MM-DD HH:mm:ss");
+          let fecha_final = moment(this.datos_fechas[index].fin_programada.time, "YYYY-MM-DD HH:mm:ss");
+
+          this.datos_fechas[index].h_programada = (moment(fecha_inicio).isAfter(fecha_final))?'La fecha de inicio debe de ser mayor que la incial':moment.duration( fecha_final - fecha_inicio).humanize();
+        },
+        /*
+        Al darle click en añadir evento la función valida la información y añade una nueva posición al
+        arreglo de requerimientos
+        */
+        addEvento: function(e) {
+          e.preventDefault();
+          if (this.comprobarFechas(this.datos_fechas)) {
+            var temp ={inicio_programada: {time: ''},fin_programada: {time: ''},  h_programada:0};
+                this.datos_fechas.push(temp);
+              }
+        },
+        comprobarFechas: function (arreglo) {
+          if( arreglo != null && arreglo != undefined ){
+        		var index = Object.keys(arreglo).length;
+        	}
+        	if ( index == 0) {
+        		toastr.error("Todos los campos son obligatorios","Error al Guardar Fechas programación",this.option_toast);
+        		return false;
+        	}
+            for (let f in arreglo) {
+              let idx = Number(f)
+              let p = arreglo[idx]
+               if (p.inicio_programada.time =="" || p.fin_programada.time =="") {
+                 toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Fechas programación",this.option_toast);
+             		 return false;
+               }else if(moment(p.inicio_programada.time).isAfter(p.fin_programada.time)){
+                 toastr.error("La fecha final debe de ser mayor que la inicial","Error en Fechas programación",this.option_toast);
+                 return false;
+             	}
+            }
+            return true;
+        },
+        comprobarSiGuardoFechas: function (arreglo) {
+          if( arreglo != null && arreglo != undefined ){
+            var index = Object.keys(arreglo).length;
+          }
+          if ( index == 0 || (arreglo[0].inicio_programada.time=="" || arreglo[0].fin_programada.time=="") ){
+            return true;
+          }else{
+            this.comprobarFechas(arreglo);
+            for (let f in arreglo) {
+              let idx = Number(f)
+              let p = arreglo[idx]
+              p.inicio_programada.time = (moment(p.inicio_programada.time).isValid())?moment(p.inicio_programada.time).format('YYYY-MM-DDTHH:mm:ss'):null;
+              p.fin_programada.time = (moment(p.fin_programada.time).isValid())?moment(p.fin_programada.time).format('YYYY-MM-DDTHH:mm:ss'):null;
+            }
+            return arreglo;
+          }
+        },
+        /*
+        Función la cual se encarga de borrar un requerimiento, lo que hace es que
+        busca el indece el cual se toco y se procede a eliminar del arreglo de
+        requerimientos
+        */
+        deleteEvento: function(e) {
+          e.preventDefault();
+          var index =  this.datos_fechas.indexOf(this.datos_fechas);
+              this.datos_fechas.splice(index, 1);
+          //Realizar el Calculo de las horas.
         },
         setErrors:function(object) {
   		        this.message='';
@@ -505,6 +757,9 @@
           fecha_cuentas=(moment(fecha_cuentas).isValid())?moment(this.tarea_info.fecha_entrega_cuentas).format('YYYY-MM-DD'):null;
           let recurrencia_init = (moment(this.tarea_info.fecha_inicio_recurrencia).isValid())?moment(this.tarea_info.fecha_inicio_recurrencia).format('YYYY-MM-DD HH:mm:ss'):null;
           let recurrencia_final = (moment(this.tarea_info.fecha_inicio_recurrencia).isValid())?moment(this.tarea_info.fecha_final_recurrencia).format('YYYY-MM-DD HH:mm:ss'):null;
+
+          let data_fechas =(this.comprobarSiGuardoFechas(this.datos_fechas)===true)?null:this.comprobarSiGuardoFechas(this.datos_fechas);
+          console.log(data_fechas);
             //Datos a enviar
             let data =
             {
@@ -516,6 +771,7 @@
               fecha_entrega_cuentas:fecha_cuentas,
               usuarios_comentario_id:this.id_usuario_actual,
               tiempo_estimado:this.tarea_info.tiempo_estimado,
+              datos_fechas:data_fechas,
               tareas_id:this.tarea_info.id,
               comentarios:this.descripcion,
               tiempo_real:this.tarea_info.tiempo_real,
@@ -532,7 +788,10 @@
               let that = this;
               that.message ='';
 
-              if (respuesta.status != '200') {
+              if (respuesta.status == '400') {
+                 toastr.error(respuesta.body.error,respuesta.body.msg,this.option_toast);
+                 return false
+               }else if (respuesta.status != '200') {
                  if (Object.keys(respuesta.body.obj).length>0) {
                    this.setErrors(respuesta.body.obj);
                  }
@@ -542,7 +801,8 @@
                   toastr.success(respuesta.body.msg,'',this.option_toast);
                   this.descripcion="";
                   this.comentarios_array.unshift(respuesta.body.user_coment);
-                   setTimeout(function () {location.reload(true);}, 500);
+                  console.log(respuesta);
+                  setTimeout(function () {location.reload(true);}, 500);
                   //setTimeout(function(){ that.errors.clear(); }, 50);
                 }else{
                   $.each(respuesta.body.obj, function(index, value) {
@@ -577,6 +837,8 @@
            this.errors.clear();
            console.log(this.errors);
          });
+
+
         },
         guardarDatos:function () {
           if (this.tarea_info.fecha_entrega_area != null) {

@@ -34,5 +34,10 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
+    'google' => [
+    'client_id' => '794622095377-ip11g6vqf30e22tampmdndvmj96g702p.apps.googleusercontent.com',
+    'client_secret' => 'XaHDWmPpK27-r5OZkiwccSuY',
+    'redirect' => 'http://localhost:3000/home',
+   ],
 
 ];

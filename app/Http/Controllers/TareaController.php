@@ -39,9 +39,14 @@ use Carbon\Carbon;
 use Jenssegers\Date\Date;
 use Illuminate\Support\Facades\Log;
 use Excel;
+use Google_Client;
+use Google_Service_Calendar;
+use Google_Service_Calendar_Event;
+use Google_Service_Calendar_EventDateTime;
 
 class TareaController extends Controller
 {
+    protected $client;
     /*public function __construct()
     {
     $this->middleware('auth');
@@ -359,6 +364,8 @@ public function update(Request $request, $id)
                     ->where('areas_id', $tarea->areas_id)
                     ->first();
                     $tarea->encargado_id = $encargado_area->id;
+
+
                 }else
                 // Atención Cuentas (4)
                 if($tarea->estados_id == 4){
@@ -431,7 +438,7 @@ public function update(Request $request, $id)
                                 ->notify(new OtExcedeTiempo($makerBefore,$horas_area->ots,$area));
                             }
                             $horas_area->tiempo_real +=$tarea->tiempo_real;
-                            $horas_area->save();
+                            //$horas_area->save();
                         }else{
                             return response([
                                 'status' => Response::HTTP_BAD_REQUEST,
@@ -456,7 +463,7 @@ public function update(Request $request, $id)
                 }
 
                 //Guardamos la tarea
-                $tarea->update();
+               $tarea->update();
 
                 //Guardamos el comentario
                 $comentario = new Comentario;
@@ -484,7 +491,7 @@ public function update(Request $request, $id)
                 }
                 $data['editor_id']=Auth::user()->id;
                 $tarea_historico->fill($data);
-                $tarea_historico->save();
+               $tarea_historico->save();
 
                 //Respuesta
                 $respuesta['dato']=$tarea;
@@ -542,6 +549,28 @@ public function update(Request $request, $id)
                     User::findOrFail($tarea->encargado_id)
                     ->notify(new TareaProgramada($makerBefore,$tarea));
                     break;
+                    $email=  User::findOrFail($tarea->encargado_id);
+                    //Programar en Calendar
+                    $calendar= array();
+                    try {
+                        $calendar =$this->programarCalendar($tarea['nombre_tarea'],strip_tags($tarea['descripcion']),$request->datos_fechas,$email->email);
+                        $tarea->id_evento=json_encode($calendar[0]);
+                        $tarea->fecha_inicio_programar=json_encode($calendar[1]);
+                        $tarea->fecha_fin_programar=json_encode($calendar[2]);
+
+                        // return $tarea;
+                        $tarea->save();
+                    } catch (Exception $e) {
+                        return response([
+                            'status' => Response::HTTP_BAD_REQUEST,
+                            'response_time' => microtime(true) - LARAVEL_START,
+                            'msg' => 'Error al actualizar la tarea. No se pudo programar',
+                            'error' => config('constants.ERR_04'),
+                            'tarea' =>$tarea,
+                            'consola' =>$e->getMessage(),
+                            'request' =>$calendar,
+                        ],Response::HTTP_BAD_REQUEST);
+                    }
                     case '4':
                     // Enviar notificacion al nuevo encargado
                     User::findOrFail($tarea->usuarios_id)
@@ -952,6 +981,10 @@ public function showAllTareas($id,Request $request)
 
             $tarea->descripcion="";
             $tarea->comentario="";
+
+            $tarea->fecha_inicio_programar=json_decode($tarea->fecha_inicio_programar);
+            $tarea->fecha_fin_programar=json_decode($tarea->fecha_fin_programar);
+            //return response()->json($tarea);
             return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea)->with('desctarea',$descripcion);
         }
 
@@ -1187,4 +1220,65 @@ public function showAllTareas($id,Request $request)
                 'numeric' => 'El campo <b> :attribute </b> debe ser numerico.',
             ];
         }
+
+        public function programarCalendar($summary,$description,$fechas,$email)
+          {
+              $client = new Google_Client();
+              $client->setAuthConfig('client_secret.json');
+              $client->addScope(Google_Service_Calendar::CALENDAR);
+              $guzzleClient = new \GuzzleHttp\Client(array('curl' => array(CURLOPT_SSL_VERIFYPEER => false)));
+              $client->setHttpClient($guzzleClient);
+              $this->client = $client;
+
+              $retorno_ids =array();
+              $retorno_fechas_inicio =array();
+              $retorno_fechas_final =array();
+              $retorno_final= array();
+
+              session_start();
+              if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+                  $this->client->setAccessToken($_SESSION['access_token']);
+                  $service = new Google_Service_Calendar($this->client);
+                //  $calendarId = 'primary';
+                  $calendarId = $email;
+                  foreach ($fechas as $fecha) {
+                    $event = new Google_Service_Calendar_Event([
+                        'summary' => $summary,
+                        'description' => $description,
+                        'start' => ['dateTime' => $fecha['inicio_programada']['time'], 'timeZone' => 'America/Bogota'],
+                        'end' => ['dateTime' =>  $fecha['fin_programada']['time'], 'timeZone' => 'America/Bogota'],
+                        'reminders' => ['useDefault' => true],
+                        /* 'attendees' => array(
+                           array('email' => $email),
+                            array('email' => 'aborrero@himalayada.com'),
+                       ),*/
+                    ]);
+                    $results = $service->events->insert($calendarId, $event);
+                    if (!$results) {
+                      return false;
+                       //return 'No se pudo crear el evento, por favor intente de nuevo';
+                      //  return response()->json(['status' => 'error', 'message' => 'Something went wrong']);
+                    }else{
+                       array_push($retorno_ids,$results['id']);
+                       array_push($retorno_fechas_inicio,$fecha['inicio_programada']['time']);
+                       array_push($retorno_fechas_final,$fecha['fin_programada']['time']);
+                    }
+                  }
+                  array_push($retorno_final,$retorno_ids);
+                  array_push($retorno_final,$retorno_fechas_inicio);
+                  array_push($retorno_final,$retorno_fechas_final);
+
+                   return $retorno_final;
+                  //return 'Se ha creado el evento correctamente';
+                //  return response()->json(['status' => 'success', 'message' => 'Event Created']);
+              } else {
+                return false;
+                //return 'No posee el api de google';
+                //  return redirect()->route('oauthCallback');
+              }
+
+          }
+
+
+
     }

@@ -16,6 +16,7 @@
   Route::get('/console/{id}','RolController@updatePermisionsbyRole');
 
   Route::resource('gcalendar', 'gCalendarController');
+  Route::get('pedir', 'gCalendarController@pedir');
   Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
 
   //Imprimir Hora
@@ -24,8 +25,8 @@
   });
   Route::group(['middleware' => ['auth','login_estado']], function () {
 
-    Route::get('/home', 'HomeController@index');
-    Route::get('/','HomeController@index');
+    Route::get('/home', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth'])->name('homeview');
+    Route::get('/', [ 'uses' => 'gCalendarController@oauth']);
 
    //Ruta para cargar imagen de perfil
     Route::post('/usuariosuploadimagen','HomeController@SubirImagen');
