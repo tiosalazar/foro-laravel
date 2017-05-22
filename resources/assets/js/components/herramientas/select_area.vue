@@ -81,8 +81,14 @@
               this.$parent.$emit('area_option',respuesta);
               
               }else{
-                this.$parent.$emit('area_option',newSelected);
-                this.$parent.$emit('send-indice-area', {'indice':this.indice,'select':newSelected});
+                if (this.indice==null) {
+                  this.$parent.$emit('area_option',newSelected);
+                }else{
+                  this.$parent.$emit('send-indice-area', {'indice':this.indice,'select':newSelected});
+                }
+                
+                
+
               }
 
            }else {

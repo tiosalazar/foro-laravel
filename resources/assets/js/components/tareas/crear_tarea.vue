@@ -128,8 +128,6 @@
 				</div>
 			</div>
 
-
-
 		</div>
 		
 		<div class="box-footer text-center seccion_mas_tareas" >
@@ -162,7 +160,7 @@
 							<div class="col-md-6">
 								<div class="form-group required">
 									<label><sup>*</sup> Fase del Projecto </label>
-									<select_fase :select="fase" :area="area"></select_fase>
+									<select_fase :select="ed.fase" :area="area" :indice="index"></select_fase>
 								</div>
 							</div>
 						</div>
@@ -177,17 +175,21 @@
 							</div>
 						</div>
 						<div class="col-sm-8">
-							<div class="form-group required" v-bind:class="[errors_return.nombre_tarea,{ 'has-error': errors.has('nombre_tarea+index') }]">
-								<label for="nombre_tarea"><sup>*</sup> Nombre de la Solicitud </label>
-								<input type="text" class="form-control"  id="nombre_tarea+index" v-model="ed.nombre_tarea" name="nombre_tarea" placeholder="Solicitud" v-validate data-vv-rules="required|min:4" required="required">
-								<span  class="help-block" v-show="errors.has('nombre_tarea')">{{ errors.first('nombre_tarea+index') }}</span>
+							<div class="form-group required" v-bind:class="[errors_return.nombre_tarea,{'has-error': errors.has('nombre_tarea') }]">
+								<label :for="ed.nombre_tarea+index"><sup>*</sup> Nombre de la Solicitud </label>
+								<input type="text" class="form-control"  id="nombre_tarea" v-model="ed.nombre_tarea" name="nombre_tarea" placeholder="Solicitud" v-validate data-vv-rules="required|min:4" required="required">
+								<span  class="help-block" v-show="errors.has('nombre_tarea')">{{ errors.first('nombre_tarea') }}</span>
 							</div>
 						</div>
 				   </div>
 
 				   <div class="form-group required" v-bind:class="[errors_return.descripcion,{ 'has-error': errors.has('descripcion+idex') }]">
 					<label for="descripcion"><sup>*</sup> Descripción </label>
-						<vue-html5-editor :content="descripcion_fake" :height="200"  :z-index="0" @change="updateData"></vue-html5-editor>
+						<vue-html5-editor :content="ed.descripcion_fake" :height="200"  :z-index="0" @change="updateDataTareas" ></vue-html5-editor>
+						<span style="display:none;">
+						{{indice_textarea=index}}
+						</span>
+
 						<!-- <textarea  v-model="tarea.descripcion"  name="descripcion"  id="descripcion"  placeholder="Descripción" required="required" v-validate data-vv-rules="required|min:4"></textarea>-->
 						<span  class="has-error" style="color:#DD4B39;" v-show="errors_return.descripcion+index"> Campo Descripcion Obligatorio </span>
 				   </div>
@@ -201,7 +203,7 @@
 						<div class="col-sm-6">
 							<div class="form-group required">
 								<label><sup>*</sup> Estado </label>
-								<select_estados tipo_estado="1"  :select="estado" ></select_estados>
+								<select_estados tipo_estado="1"  :select="ed.estado" :indice="index" ></select_estados>
 							</div>
 						</div>
 						<div class="col-sm-6">
@@ -219,7 +221,7 @@
 		    </form>
 
 		    <!-- Boton Agregar Tareas -->
-		    <button type="button" class="btn btn-success boton_agregar_tareas" v-on:click="form_tarea_nueva=true, agregarMasTareas()">Agregar Más Tareas</button>
+		    <button type="button" class="btn btn-success boton_agregar_tareas" v-on:click="form_tarea_nueva=true, agregarMasTareas(indice_textarea)">Agregar Más Tareas</button>
 			</div>
 
 			<button v-show="!form_tarea_nueva" type="button" class="btn btn-success boton_agregar_tareas" v-on:click="form_tarea_nueva=true, tareas_nuevas=[{}]">Más Tareas</button>
@@ -249,7 +251,6 @@
 					descripcion:'',
 					enlaces_externos:'',
 					recurrente:0,
-
 				},
 				form_tarea_nueva:false,
 				tareas_nuevas:[],
@@ -258,6 +259,7 @@
 				prioridad:'',
 				estado:'',
 				fase:'',
+				indice_textarea:'',
 				ot:{
 					usuario:'',
 					cliente:''
@@ -281,6 +283,7 @@
 		          'email':'',
 				  'descripcion':'',
 		        },
+		        errors_return2:{},
 		        option_toast:{
 		          timeOut: 5000,
 		          "positionClass": "toast-top-center",
@@ -305,18 +308,34 @@
 			});
 			this.$on('send-prioridad', function(obj) {
 				this.prioridad=obj;
-
 			});
 
 			//Eventos para llenar el arreglo de más tareas de los select correspondientes, recibe el id de la prioridad y el item seleccionado
+
+			//On select prioridad
 			this.$on('send-indice-prioridad', function(obj) {
 				this.datos_prioridad_mastareas=obj;
 				this.tareas_nuevas[this.datos_prioridad_mastareas.indice]['prioridad_id']=this.datos_prioridad_mastareas.select.id;				
 			});
 
+			//On select area
 			this.$on('send-indice-area', function(obj) {
 				this.datos_prioridad_mastareas=obj;
 				this.tareas_nuevas[this.datos_prioridad_mastareas.indice]['area_id']=this.datos_prioridad_mastareas.select.id;
+
+			});
+
+			//On select fase
+			this.$on('send-indice-fase', function(obj) {
+				this.datos_prioridad_mastareas=obj;
+				this.tareas_nuevas[this.datos_prioridad_mastareas.indice]['id_fase']=this.datos_prioridad_mastareas.select.id;
+
+			});
+
+			//On select fase
+			this.$on('send-indice-estado', function(obj) {
+				this.datos_prioridad_mastareas=obj;
+				this.tareas_nuevas[this.datos_prioridad_mastareas.indice]['id_estado']=this.datos_prioridad_mastareas.select.id;
 
 			});
 
@@ -350,6 +369,12 @@
 			updateData: function (data) {
                 // sync content to component
                 this.tarea.descripcion = data;
+				this.errors_return.descripcion=false;
+            },
+            updateDataTareas: function (data) {
+                // sync content to component
+                // this.tarea.descripcion = data;
+                this.tareas_nuevas[this.indice_textarea]['descripcion'] = data;
 				this.errors_return.descripcion=false;
             },
 			agregarTarea:function(e) {
@@ -418,16 +443,16 @@
 		        });
 			},
 
-			agregarMasTareas(){
+			agregarMasTareas(ind){
 
-			 // this.$validator.validateAll();
-			 //    if (!this.errors.any()) {
-			    	
-
-			    	this.tareas_nuevas.push(Vue.util.extend({}));
-
-
-	    		// }
+			 console.log("Indice Recibido",ind);
+			 if (this.tareas_nuevas[ind]['nombre_tarea']==null) {
+			 	this.errors_return.nombre_tarea=true;
+			 }
+			 this.$validator.validateAll();
+			    if (!this.errors.any()) {	
+			      this.tareas_nuevas.push(Vue.util.extend({}));
+	    		}
 				
 			},
 		},

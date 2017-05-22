@@ -94,7 +94,12 @@
             var respuesta = {index: this.index, estado: newSelected }//Devuelvo el Index en el que se encuentra junto con el arreglo de datos, para saber en que posición
             this.$parent.$emit('select_estado',respuesta);
           }else{
-              this.$parent.$emit('select_estado',newSelected);
+            if (this.indice==null) {
+               this.$parent.$emit('select_estado',newSelected);
+             }else{
+              this.$parent.$emit('send-indice-estado', {'indice':this.indice,'select':newSelected});
+             }
+             
           }
 
           if (this.cambiar_estado != '' && this.cambiar_estado != null ) {
