@@ -3,6 +3,7 @@
 		<form method="POST" id="exportar" class="form-inline" role="form">
 			<div class="col-md-3 pull-right">
 				<button type="button" @click="exportar_data" class="btn btn-block boton_foro btn-success succes pull-right" >Exportar Datos</button>
+				<button type="button" @click="exportar_tareas" class="btn btn-block boton_foro btn-success succes pull-right" >Exportar Tareas</button>
 			</div>
 		</form>
 		<div class="clearfix"></div>
@@ -11,6 +12,7 @@
 			<table class="table table-striped table-hover datatable-foro table-bordered dataTable no-footer" id="tabla_tareas">
 				<thead>
 					<tr>
+						<th >Seleccionar</th>
 						<th >Num. OT </th>
 						<th >Ejecutivo</th>
 						<th >Cliente</th>
@@ -153,7 +155,8 @@ module.exports={
 				},
 			},
 			columns: [
-				{ data: 'referencia', name: 'referencia' },
+				{ data: 'select', name: 'select', orderable: false, searchable: false },
+				{ data: 'referencia', name: 'referencia',orderable: true, searchable: true },
 				{ data: 'usuario.nombre', name: 'usuario.nombre' },
 				{ data: 'cliente.nombre', name: 'cliente.nombre' },
 				{ data: 'nombre', name: 'nombre' },
@@ -272,8 +275,16 @@ module.exports={
 			};
 			/*console.log(window._baseURL+'/ots/listado/exportar/'+arrayData.fee+'/'+
 			arrayData.f_inicio+'/'+arrayData.f_final);*/
+
 			window.location = window._baseURL+'/ots/listado/exportar/'+arrayData.fee+'/'+
 			arrayData.f_inicio+'/'+arrayData.f_final;
+		},
+		exportar_tareas:function () {
+			var arrayCheck=[];
+			 $('input[type="checkbox"]:checked').each(function(){
+        arrayCheck.push($(this).val());
+			 });
+			 window.location = window._baseURL+'/ots/exportar/tareas/'+arrayCheck;
 		},
 		borrarCliente: function() {
 			let index = $('#id_cliente').val()

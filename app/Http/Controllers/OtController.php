@@ -84,6 +84,12 @@ class OtController extends Controller
 
       $output = collect($ots);
       return Datatables::of($output)
+      ->addColumn('select', function($ots) {
+        return'<div class="checkbox_ots"><div class=" <!--checkbox checkbox-success permisos_check -->" >
+             <input  class="styled" type="checkbox" id="check_'.$ots->id.'" value="'.$ots->id.'" >
+            <!-- <label for="check_'.$ots->id.'"></label>-->
+        </div></div>';
+      })
       ->addColumn('fecha_inicio', function($ots) {
          return  $ots->getFormatFecha($ots->fecha_inicio);
       })
@@ -977,6 +983,80 @@ class OtController extends Controller
 
 
    }
+   /**
+   * Función la cual se encarga de Exportar las tareas de una OT
+   * Guarda el cambio en el historial de modificaciones
+   * Notifica al usuario owner cuando se cambia el estado.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+   public function exportarTareasOts($arrayots){
+
+
+      $ot = new OT;
+      /*
+      $ot->tiempos_x_area;
+      $ot->Cliente;
+      $ot->Usuario;*/
+      $arrayots= (array)$arrayots;
+      $tareas=Tarea::with('area','usuario','estado','usuarioencargado','ot')->whereIn('ots_id',$arrayots)->get();
+      //return response()->json($tareas);
+
+      // Initialize the array which will be passed into the Excel
+      $otsDescripcion = [];
+
+
+
+      //return response()->json( $areasEncabezado2);
+      foreach($tareas as $tarea){
+         array_push( $otsDescripcion, array($tarea['ot']['referencia'],$tarea['area']['nombre'],$tarea['nombre_tarea'],$ot->getFormatFechaShowInfo($tarea['created_at']),$ot->getFormatFechaShowInfo($tarea['fecha_entrega_cuentas']), number_format( $tarea['tiempo_estimado'],2,",","."), number_format($tarea['tiempo_real'],2,",","."), number_format( $tarea['tiempo_mapa_cliente'],2,",","."),$tarea['usuarioencargado']['nombre'].' '.$tarea['usuarioencargado']['apellido']) );
+      }
+
+
+//return response()->json($otsDescripcion);
+      //     return response()->json( $ot->tareas);
+      Excel::create('Resumen de Tareas', function($excel) use($otsDescripcion)  {
+         // Set the spreadsheet title, creator, and description
+         $excel->setTitle('Resumen de Tareas');
+         $excel->setCreator('Gestor de proccesos')->setCompany('Himalaya');
+         $excel->setDescription('Resumen de Tareas');
+
+         $excel->sheet('listado de tareas', function($sheet) use($otsDescripcion)  {
+            $headings = array('Resumen de tareas ');
+            $sheet->prependRow(1, $headings);
+            $headings = array('#OT','ÁREA','REQUERIMIENTOS','FECHA SOLICITUD','FECHA DE ENTREGA','TIEMPO REAL','TIEMPO ESTIMADO JEFE','TIEMPO ESTIMADO MAPA DE CLIENTE','ENCARGADO');
+            $sheet->prependRow(3, $headings);
+            $sheet->fromArray($otsDescripcion, null, 'A4', false, false);
+
+            $sheet->cell('A1', function($cell) {
+               // Set font
+               $cell->setFont(array(
+                  'family'     => 'Calibri',
+                  'size'       => '14',
+                  'bold'       =>  true
+               ));
+            });
+
+            $sheet->cells('A3:I3', function($cells) {$cells->setFontWeight('bold'); $cells->setAlignment('center');});
+
+
+            //$sheet->cells('A2:E10', function($cells) {$cells->setAlignment('center');});
+            // Set border for range
+            $sheet->setBorder('A3:I40', 'thin');
+
+         });
+
+      })->export('xls');
+
+
+
+   }
+
+
+
+
 
    /**
    *

@@ -93,6 +93,8 @@
       });
 
   Route::get('ots/exportar/{id}',['middleware' => ['permission:editar_ots'], 'uses' =>'OtController@exportarTodoslosDatos']);
+  Route::get('ots/exportar/tareas/{arrayots}','OtController@exportarTareasOts');
+
  //Exportar Datatable OTs.
   Route::get('/ots/listado/exportar/{fee}/{f_inicio}/{f_final}','OtController@exportar_listado_ots');
 

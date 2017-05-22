@@ -8414,6 +8414,24 @@ sub, sup {
   margin-bottom: 2%;
 }
 
+.checkbox_ots .checkbox {
+  padding-left: 35%;
+  margin-top: -20% !important;
+}
+
+.checkbox_ots .checkbox label:before {
+  width: 25px;
+  height: 25px;
+}
+
+.checkbox_ots .checkbox label:after {
+  font-size: 17px;
+}
+
+.checkbox_ots .styled {
+  width: 20px;
+}
+
 body {
   font-family: 'Ubuntu', sans-serif;
 }

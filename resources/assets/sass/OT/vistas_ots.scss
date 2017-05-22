@@ -397,3 +397,21 @@ sub, sup {
 
   }
 }
+
+.checkbox_ots{
+  .checkbox {
+      padding-left: 35%;
+      margin-top: -20% !important;
+      label:before{
+        width: 25px;
+        height: 25px;
+      }
+      label:after {
+        font-size: 17px;
+    }
+  }
+.styled{
+  width: 20px;
+}
+
+}
