@@ -56,7 +56,7 @@
                   <p>Horas área: <span>{{areas_info.total_horas}}</span></p>
                   <p>Horas disponible área: <span>{{parseFloat(areas_info.total_horas)-parseFloat(areas_info.horas_consumidas)}}</span></p>
                 </div>
-                <div class="info_content" v-if="switcharea_user == '2'" v-show="this.administrador !='5' || this.administrador !='6'">
+                <div class="info_content" v-if="switcharea_user == '2'" v-show="(this.rol_id !='5' && this.rol_id !='6')">
                   <h3>Horas</h3>
                   <p>Horas usuario mes: <span >{{horas_user}}</span></p>
                   <p >Horas disponibles usuario: <span>{{horas_disponible_user}}</span></p>
@@ -101,7 +101,7 @@ import moment from 'moment';
 
 
    module.exports={
-     props:['administrador'],
+     props:['administrador','rol_id'],
      data(){
         return{
           url:'',

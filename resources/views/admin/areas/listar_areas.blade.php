@@ -6,5 +6,5 @@
 
 
 @section('main-content')
-	<listado_areas administrador="{{Auth::user()->can('editar_usuarios') }}"></listado_areas>
+	<listado_areas administrador="{{Auth::user()->can('editar_usuarios') }}" rol_id="{{Auth::user()->rol->id}}"></listado_areas>
 @endsection

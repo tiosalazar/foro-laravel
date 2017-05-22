@@ -240,7 +240,7 @@
               <p class="descripcion_tarea" v-html="tarea_info.descripcion"></p>
             </div>
 
-            <div id="seccion_programar" v-if="rol_actual==='coordinador' && estado_solicitud.id == '3' ">
+            <div id="seccion_programar" v-if="(rol_actual==='coordinador' || rol_actual==='owner' || rol_actual==='desarrollo' ) && estado_solicitud.id == '3' ">
             <div class="clearfix"></div>
             <!-- Mensaje de atención -->
             <div class="box">
@@ -260,11 +260,11 @@
               <div class="box-header box-primary">
                 <h3 class="box-title">  <label for="ot">Programar en Calendar</label></h3>
                 <div class="box-tools">
-                  <button type="button" class="btn btn-box-tool btn-info" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                  <button type="button" class="btn btn-box-tool btn-info" data-widget="collapse"><i class="fa fa-plus"></i></button>
                 </div>
               </div>
             <div class="box-body">
-          <section  v-for="(ed,index) in datos_fechas">
+          <section  v-for="(ed,index) in datos_fechas" class="seccion_fechas_calendar">
             <div class="same-height col-md-6 col-sm-6 col-xs-12">
                 <div style="height:12px"></div>
                 <label for=""><strong>Fecha y Hora de inicio:</strong></label>
@@ -418,7 +418,7 @@
 .cov-date-monthly{
    height: 100px !important;
 }
-.checked,.active {
+.seccion_fechas_calendar .checked,.seccion_fechas_calendar .active {
     background: rgb(0, 46, 96) !important;
 }
 .cov-date-caption span[_v-d2b48680]:hover {
