@@ -29,7 +29,7 @@
   import Multiselect from 'vue-multiselect'
   module.exports= {
    components: { Multiselect},
-   props: ['select'],
+   props: ['select','indice'],
    data () {
     return {
       estados:[],
@@ -66,7 +66,15 @@
          this.id_prioridad = newSelected.id;
          this.value = newSelected;
              // Creo un evento para enviar el item seleccionado al padre.
-             this.$parent.$emit('send-prioridad', newSelected)
+          console.log(this.indice);
+          if (this.indice==null) {
+            this.$parent.$emit('send-prioridad', newSelected);
+          }else{
+            
+             this.$parent.$emit('send-indice-prioridad', {'indice':this.indice,'select':newSelected});
+          }
+            
+             
            }else {
              this.id_prioridad = 0;
            }

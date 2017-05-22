@@ -29,7 +29,7 @@
   import Multiselect from 'vue-multiselect'
     module.exports= {
        components: { Multiselect},
-          props: ['refresha','index','compras'],
+          props: ['refresha','index','compras','indice'],
       data () {
           return {
             areas:[],
@@ -47,13 +47,18 @@
       },
       created: function(){
         this.fetchTips();
+
         if (this.compras != "true") {
           this.value2={id: this.refresha.id, nombre: this.refresha.id_area};
         }else{
-            this.value2=this.refresha;
+          this.value2=this.refresha;
         }
 
-        this.id_rol=this.refresha.id;
+        
+          if (this.refresha!=null) {
+            this.id_rol=this.refresha.id;
+          }
+      
       },
       watch : {
         refresha : function (value) {
@@ -72,10 +77,12 @@
               this.id_area = newSelected.id;
               this.value = newSelected;
               if(this.index != null ){
-                var respuesta = {index: this.index, area: newSelected }//Devuelvo el Index en el que se encuentra junto con el arreglo de datos, para saber en que posición
+              var respuesta = {index: this.index, area: newSelected }//Devuelvo el Index en el que se encuentra junto con el arreglo de datos, para saber en que posición
               this.$parent.$emit('area_option',respuesta);
+              
               }else{
                 this.$parent.$emit('area_option',newSelected);
+                this.$parent.$emit('send-indice-area', {'indice':this.indice,'select':newSelected});
               }
 
            }else {

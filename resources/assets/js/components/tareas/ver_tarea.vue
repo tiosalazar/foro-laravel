@@ -355,7 +355,7 @@
           name="comentarios_array"
           :list="comentarios_array"
           :per="5"
-          class="paginate-comentarios_array"
+           class="paginate-comentarios_array"
           >
              <div v-for="comentario in paginated('comentarios_array')" style="margin-bottom:20px;margin-top:35px;">
 
@@ -408,6 +408,7 @@
  .cov-date-caption{
    padding: 7px 0!important;
  }
+ 
  .cov-date-caption[_v-d2b48680]{
       padding: 7px 0!important;
       margin: -35px 0px !important;
@@ -418,8 +419,8 @@
 .cov-date-monthly{
    height: 100px !important;
 }
-.checked,.active {
-    background: rgb(0, 46, 96) !important;
+.cov-date-caption .checked,.active {
+    /*background: rgb(0, 46, 96) !important;*/
 }
 .cov-date-caption span[_v-d2b48680]:hover {
     color: rgb(21, 172, 202)  !important;
@@ -436,7 +437,7 @@
     position: absolute;
         border-right: 1px solid #c1c1c1;
     left: 0px;
-    top: 20%;
+    top: 26%;
     font-size: 20px;
 }
 .min-box:before {
@@ -447,7 +448,7 @@
     position: absolute;
     right: 0px;
     border-left: 1px solid #c1c1c1;
-    top: 20%;
+    top: 26%;
     font-size: 20px;
 }
 </style>

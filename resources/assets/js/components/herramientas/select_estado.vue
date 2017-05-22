@@ -34,7 +34,7 @@
 
     module.exports= {
       components: {Multiselect},
-    props: ['tipo_estado','select','cambiar_estado','index'], //en la propiedad select se va a meter la opción por defecto
+    props: ['tipo_estado','select','cambiar_estado','index','indice'], //en la propiedad select se va a meter la opción por defecto
     data () {
       return {
         estados:[],
