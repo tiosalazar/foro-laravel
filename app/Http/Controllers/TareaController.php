@@ -548,7 +548,7 @@ public function update(Request $request, $id)
                     // Enviar notificacion al nuevo encargado
                     User::findOrFail($tarea->encargado_id)
                     ->notify(new TareaProgramada($makerBefore,$tarea));
-                    
+
                     $email=  User::findOrFail($tarea->encargado_id);
                     //Programar en Calendar
                     $calendar= array();
@@ -1067,9 +1067,12 @@ public function showAllTareas($id,Request $request)
       },'estado' => function ($query) {
           $query->where('id', '=',3)->orWhere('id', '=', 2)->orWhere('id', '=',1)->orWhere('id', '=',20);
       },'area','usuario'])
-      ->where('estado_trafico_id',$request->get('estados'))
-      ->whereBetween('fecha_entrega_cuentas',array($f_inicio,$f_final))
-      ->get();
+      ->whereBetween('fecha_entrega_cuentas',array($f_inicio,$f_final));
+
+      if($request->get('estados')) {
+        $tarea->where('estado_trafico_id',$request->get('estados'));
+      }
+       $tarea=$tarea->get();
 
       // selecciona solos los que tiene el area especifico
       foreach ($tarea as $key => $value) {

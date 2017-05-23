@@ -31,6 +31,7 @@
 			</table>
 
 			<form method="POST" id="search-form" class="form-inline" role="form">
+				<input type="hidden" id="arrayCheck" value="">
 				<div class="drop select_fecha_trafico1">
 					<datepicker language="es"
 					id="fecha_inicio"
@@ -243,11 +244,21 @@ module.exports={
 		});
 
 		$(document).ready(function(e) {
+			var arrayCheck=[];
 			$('#tabla_tareas tbody').on('click', 'td .delete_cliente', function (e) {
 				var id = $(this).attr('id');
 				id = id.split('-');
 				$('#id_cliente').val(id[1]);
 			})
+			//Al dar click en un select lo almacena en un arreglo. el cual luego será pasado para exportar.
+			 $('#tabla_tareas tbody').on('click','td input[type="checkbox"]', function (e) {
+				   if($.inArray($(this).val(), arrayCheck) < 0){
+							arrayCheck.push($(this).val());
+					 }else{
+						 arrayCheck.splice( $.inArray($(this).val(), arrayCheck), 1 );
+					 }
+					 $('#arrayCheck').val(arrayCheck);
+			 });
 		});
 		setInterval( function () {
 			oTable.ajax.reload();
@@ -263,7 +274,18 @@ module.exports={
 
 			// Agregar las formulario a datatable
 			$('#search-form').appendTo('.selects');
-		} );
+
+			//Funcion para marcar los checks cuando cargue la tabla.
+      var arrayCheckTemp= $('#arrayCheck').val().split(",");
+			$( "input[type='checkbox']" ).each(function() {
+				if($.inArray($(this).val(), arrayCheckTemp) >= 0){
+					$(this).prop("checked", "checked");
+				}
+			});
+
+		});
+
+
 
 	},
 	methods:{
@@ -280,11 +302,7 @@ module.exports={
 			arrayData.f_inicio+'/'+arrayData.f_final;
 		},
 		exportar_tareas:function () {
-			var arrayCheck=[];
-			 $('input[type="checkbox"]:checked').each(function(){
-        arrayCheck.push($(this).val());
-			 });
-			 window.location = window._baseURL+'/ots/exportar/tareas/'+arrayCheck;
+			 window.location =window._baseURL+'/ots/exportar/tareas/'+ $('#arrayCheck').val();
 		},
 		borrarCliente: function() {
 			let index = $('#id_cliente').val()
