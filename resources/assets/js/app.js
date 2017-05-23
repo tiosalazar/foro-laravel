@@ -54,6 +54,8 @@ Vue.component('compras_asociadas_crear', require('./components/compras/formulari
 Vue.component('listar_compras', require('./components/compras/listar_compras.vue'));
 //Informe Soporte
 Vue.component('informe_soporte', require('./components/soporte/informe_soporte.vue'));
+//Mostrar todas la tareas.
+Vue.component('ver_todas_tareas', require('./components/foro/ver_todas_tareas.vue'));
 //Fin Componentes Dsalazar
 //Componentes Bcaldas
 Vue.component('form_usuarios', require('./components/usuarios/crear_usuario.vue'));

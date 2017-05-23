@@ -63,5 +63,8 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
     // Listar todos los Estados de tareas
     Route::get('estados_x_tareas/{id}', 'EstadoController@listarEstadosTarea');
 
+    //ruta del api todas las tareas
+     Route::get('/ver_all_tareas_trafico','TareaController@getTraficoTareas');
+
 
 });

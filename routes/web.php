@@ -74,6 +74,12 @@
     Route::get('/foro/soporte', function () {
       return view('admin.foro.soporte');
     })->name('soporte');
+    // Todas las tareas
+    Route::get('/foro/visualizar/todas', function () {
+      return view('admin.tareas.ver_todas_tareas');
+    })->name('ver_todas_tareas');
+    
+
   //OTS
     Route::get('ots/editar/{id}', ['middleware' => ['permission:editar_ots'], 'uses' => 'OtController@edit']);
     Route::get('ots/visualizar/{id}', ['middleware' => ['permission:ver_ots'], 'uses' => 'OtController@show']);

@@ -77,6 +77,9 @@
          @if(Auth::user()->can('ver_foro_cuentas'))
          <li><a href="{{route('cuentas')}}">{{ trans('texto_menu.cuentas') }}</a></li>
          @endif
+         @if(Auth::user()->can('ver_foro_cuentas'))
+         <li><a href="{{route('ver_todas_tareas')}}">{{ trans('texto_menu.ver_todas_tareas') }}</a></li>
+         @endif
           @if(Auth::user()->can('ver_foro_soporte'))
         <!-- <li><a href="{{route('soporte')}}">{{ trans('texto_menu.soporte') }}</a></li>-->
          @endif

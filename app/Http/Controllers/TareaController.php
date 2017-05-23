@@ -1128,6 +1128,85 @@ public function showAllTareas($id,Request $request)
       // })
       ->make(true);
     }
+
+
+    public function getTraficoTareas(Request $request)
+    {
+
+    $output= array();
+    // Si no trae fecha de inicio y f_final
+    // toma la semana actual
+    $f_inicio = '';
+    $f_final = '';
+    $now = Carbon::now();
+    if ($request->has('f_inicio')) {
+      $f_inicio = $request->get('f_inicio');
+    }else{
+      $f_inicio = $now->startOfWeek()->format('y-m-d H-m-s');
+    }
+    if ($request->has('f_final')) {
+      $f_final = $request->get('f_final');
+    }else{
+      $f_final = $now->endOfWeek()->format('y-m-d H-m-s');
+    }
+    $tarea = Tarea::with(['ot' => function ($query) {
+      // Tareas activas
+      $query->where('estado', 1);
+    },'ot.cliente','usuarioencargado' => function ($query){
+
+    $query->addselect('*');
+    $query->addselect(DB::raw('CONCAT(nombre," ",apellido) as full_name'));
+
+    },'estado' => function ($query) use ($request) {
+           if ($request->has('estados')) {
+               $query->whereIn('id',$request->get('estados'));
+           }
+
+       },'area','usuario'])
+    ->whereBetween('fecha_entrega_cuentas',array($f_inicio,$f_final))
+    ->get();
+
+    // selecciona solos los que tiene el area especifico
+    foreach ($tarea as $key => $value) {
+      if (!is_null($value->area) && !is_null($value->ot) && !is_null($value->ot->cliente) && !is_null($value->estado) ) {
+          array_push($output, $value);
+      }
+    }
+    // Se conviert en collection para que lo reciba el Datatable
+    $output = collect($output);
+    return Datatables::of($output)
+    ->addColumn('ejecutivo', function ($tarea) {
+    return $tarea->usuario->nombre[0].$tarea->usuario->apellido[0];
+    })
+    ->addColumn('encargado', function ($tarea) {
+    return $tarea->usuarioencargado->full_name;
+    })
+    ->addColumn('estado', function ($tarea) {
+    return '<span class="label label-estado estado-'.$tarea->estado->tipos_estados_id.'-'.$tarea->estado->id.' ">'.$tarea->estado->nombre.'</span>';
+    })
+
+    ->addColumn('actions', function ($tarea) {
+    // Permisos para acciones de trafico
+    $ver_tarea = (Auth::user()->can('ver_trafico') )?'<a href="'.url('/').'/ver_tarea/'.$tarea->id.'" class="btn btn-primary btn-xs btn-flat btn_accion" aria-label="Ver Tarea" title="Ver Tarea"><i class="fa fa-file-text" aria-hidden="true"></i></a>':'';
+    $ver_ot = (Auth::user()->can('ver_ots') )?'<a href="'.url('/').'/ots/visualizar/'.$tarea->ot->id.'" class="btn btn-primary btn-xs btn-flat btn_accion" aria-label="Ver OT"  title="Ver OT"><i class="fa fa-eye" aria-hidden="true"></i></a>':'';
+    return $ver_tarea.$ver_ot;
+    })
+    ->editColumn('created_at', function ($tarea) {
+      return $tarea->created_at->format('d-M-Y');
+    })
+    ->editColumn('fecha_entrega_area', function ($tarea) {
+      return (!is_null($tarea->fecha_entrega_area)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_area) : 'No definida' ;
+    })
+    ->editColumn('fecha_entrega_cuentas', function ($tarea) {
+      return (!is_null($tarea->fecha_entrega_cuentas)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cuentas) : 'No definida' ;
+    })
+    // ->filterColumn('usuarioencargado.nombre', function ($query, $keyword) {
+    //   $query->whereRaw("CONCAT(usuarioencargado.nombre,' ',usuarioencargado.apellido) like ?", ["%{$keyword}%"]);
+    // })
+    ->make(true);
+    }
+
+
             /**
              * Actualizar campos de Trafico.
              *
