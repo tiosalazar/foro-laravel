@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<form method="POST" id="exportar" class="form-inline" role="form">
+		<form method="POST" id="exportar" v-show="userole == 'owner' || userole == 'desarrollo'" class="form-inline" role="form">
 			<div class="col-md-3 pull-right">
 				<button type="button" @click="exportar_data" class="btn btn-block boton_foro btn-success succes pull-right" >Exportar Datos</button>
 				<button type="button" @click="exportar_tareas" class="btn btn-block boton_foro btn-success succes pull-right" >Exportar Tareas</button>
@@ -112,7 +112,7 @@ import moment from 'moment';
 
 module.exports={
 	components: {Datepicker},
-	props: [],
+	props: ['userole'],
 	data(){
 		return{
 			list_usuarios:[],
@@ -171,6 +171,7 @@ module.exports={
 				{ data: 'acciones', name: 'acciones', orderable: false, searchable: false }
 			],
 			columnDefs: [
+
 				{
 					"targets": [8],
 					"data": null,
@@ -211,6 +212,11 @@ module.exports={
 
 					}
 				},
+				{
+						"targets": [0],
+						"visible": false,
+						"searchable": false
+				},
 				{ className: "listar_ot_descripcion", "targets": [ 9 ] }
 
 			],
@@ -250,6 +256,14 @@ module.exports={
 				id = id.split('-');
 				$('#id_cliente').val(id[1]);
 			})
+
+			if (this.userole == 'owner' || this.userole == 'desarrollo') {
+				$('#tabla_tareas tbody tr').each(function() {
+				    $(this).find("td:eq(0)").remove();
+				});
+				$('#tabla_tareas thead th').remove();
+			}
+
 			//Al dar click en un select lo almacena en un arreglo. el cual luego será pasado para exportar.
 			 $('#tabla_tareas tbody').on('click','td input[type="checkbox"]', function (e) {
 				   if($.inArray($(this).val(), arrayCheck) < 0){

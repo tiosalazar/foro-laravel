@@ -17,7 +17,7 @@
 			<!-- box -->
 			<div class="box box-primary">
 				<div class="box-body  table-responsive">
-					<listar_ots></listar_ots>
+					<listar_ots userole="{{Auth::user()->rol->name}}"></listar_ots>
 				</div>
 			</div>
 			<!-- ./ box -->

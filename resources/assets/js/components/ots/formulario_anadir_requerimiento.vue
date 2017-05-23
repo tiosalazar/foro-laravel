@@ -470,7 +470,6 @@
 					compras: this.procesarTodosCompras()
 				};
 				console.log(datos_procesados,'Datos PROCESADOS');
-				return false;
 				if(this.visualizacion != 'true' || this.duplicar=='true'){
 					this.$http.post(window._apiURL+'ots', datos_procesados)
 					.then(function(respuesta){
