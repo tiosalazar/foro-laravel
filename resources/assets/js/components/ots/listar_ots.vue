@@ -155,9 +155,11 @@ module.exports={
 					d.f_final = $('input[name=f_final]').val();
 				},
 			},
+			  order: [[ 1, "asc" ]],
+				Sorting: [[ 1, "asc" ]],
 			columns: [
 				{ data: 'select', name: 'select', orderable: false, searchable: false },
-				{ data: 'referencia', name: 'referencia',orderable: true, searchable: true },
+				{ data: 'referencia', name: 'referencia' },
 				{ data: 'usuario.nombre', name: 'usuario.nombre' },
 				{ data: 'cliente.nombre', name: 'cliente.nombre' },
 				{ data: 'nombre', name: 'nombre' },
@@ -171,9 +173,8 @@ module.exports={
 				{ data: 'acciones', name: 'acciones', orderable: false, searchable: false }
 			],
 			columnDefs: [
-
 				{
-					"targets": [8],
+					"targets": [9],
 					"data": null,
 					"render": function(data, type, full) { // Devuelve el contenido personalizado
 						return  numeral(data).format('$0,0');
@@ -181,7 +182,7 @@ module.exports={
 					}
 				},
 				{
-					"targets": [9],
+					"targets": [10],
 					"render": function(data, type, full) { // Devuelve el contenido personalizado
 
 						if(data!=""){
@@ -196,7 +197,7 @@ module.exports={
 					}
 				},
 				{
-					"targets": [4],
+					"targets": [5],
 					"data": null,
 					"render": function(data, type, full) { // Devuelve el contenido personalizado
 						var checked=(data==1)?'checked':'';
@@ -205,19 +206,14 @@ module.exports={
 					}
 				},
 				{
-					"targets": [6],
+					"targets": [7],
 					"data": null,
 					"render": function(data, type, full) { // Devuelve el contenido personalizado
 						return '<span class="label label-estado estado-'+full.estado.tipos_estados_id+'-'+full.estado.id+' ">'+full.estado.nombre+'</span>';
 
 					}
 				},
-				{
-						"targets": [0],
-						"visible": false,
-						"searchable": false
-				},
-				{ className: "listar_ot_descripcion", "targets": [ 9 ] }
+				{ className: "listar_ot_descripcion", "targets": [ 10 ] }
 
 			],
 			autoWidth: false,
@@ -248,7 +244,7 @@ module.exports={
 			},
 
 		});
-
+    var rol =this.userole;
 		$(document).ready(function(e) {
 			var arrayCheck=[];
 			$('#tabla_tareas tbody').on('click', 'td .delete_cliente', function (e) {
@@ -257,11 +253,12 @@ module.exports={
 				$('#id_cliente').val(id[1]);
 			})
 
-			if (this.userole == 'owner' || this.userole == 'desarrollo') {
+			if (rol != 'owner' && rol != 'desarrollo') {
+				$('#tabla_tareas thead').find("th:eq(0)").remove();
 				$('#tabla_tareas tbody tr').each(function() {
 				    $(this).find("td:eq(0)").remove();
 				});
-				$('#tabla_tareas thead th').remove();
+
 			}
 
 			//Al dar click en un select lo almacena en un arreglo. el cual luego será pasado para exportar.
@@ -273,6 +270,7 @@ module.exports={
 					 }
 					 $('#arrayCheck').val(arrayCheck);
 			 });
+
 		});
 		setInterval( function () {
 			oTable.ajax.reload();

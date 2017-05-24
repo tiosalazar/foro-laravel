@@ -1094,7 +1094,7 @@ public function showAllTareas($id,Request $request)
       })
       ->addColumn('estados_trafico', function ($tarea) {
           // Llenar select con estados del trafico
-          $options ='';
+          $options ='<option value="" >Seleccione un estado</option>';
           $estados = Estado::where('tipos_estados_id',4)->get();
           foreach ($estados as $key => $value) {
             // seleccionar valor de la BD
