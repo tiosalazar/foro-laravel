@@ -129,9 +129,9 @@
 			</div>
 
 		</div>
-		
+
 		<div class="box-footer text-center seccion_mas_tareas" >
-		
+
 			<div v-show="form_tarea_nueva">
 		    <form >
 		    	<div  v-for="(ed,index) tarea_nueva in tareas_nuevas" class="form_tarea_nueva">
@@ -164,7 +164,7 @@
 								</div>
 							</div>
 						</div>
-					    
+
 						<div class="col-sm-4">
 							<label>Fecha entrega cliente</label>
 							<div class="input-group date" >
@@ -222,20 +222,17 @@
 		    </form>
 
 		    <!-- Boton Agregar Tareas -->
-		    
+
 		    	 <button v-show="form_tarea_nueva"  type="button" class="btn btn-success boton_agregar_tareas" v-on:click="agregarMasTareas(indice_textarea)">Agregar Más Tareas</button>
-		  
-		   
+
+
 			</div>
-			
-				<button v-show="!form_tarea_nueva"  type="button" class="btn btn-success boton_agregar_tareas" v-on:click="form_tarea_nueva=true, tareas_nuevas=[{}]">Más Tareas</button>
-			
-			
-			{{tareas_nuevas}}
-		
+
+				<button v-show="!form_tarea_nueva"  type="button" class="btn btn-success boton_agregar_tareas" v-on:click="agregarPrimerTareas()">Más Tareas</button>
+
 		</div>
 
-		<div class="box-footer text-center">		 	
+		<div class="box-footer text-center">
 			<button type="button" class="btn btn-primary" v-on:click="agregarTarea()">Publicar</button>
 		</div>
 	</form>
@@ -321,7 +318,7 @@
 			//On select prioridad
 			this.$on('send-indice-prioridad', function(obj) {
 				this.datos_prioridad_mastareas=obj;
-				this.tareas_nuevas[this.datos_prioridad_mastareas.indice]['prioridad']=this.datos_prioridad_mastareas.select;				
+				this.tareas_nuevas[this.datos_prioridad_mastareas.indice]['prioridad']=this.datos_prioridad_mastareas.select;
 			});
 
 			//On select area
@@ -382,7 +379,7 @@
 				this.errors_return.descripcion=false;
             },
 			agregarTarea:function(e) {
-				
+
 				if(this.tarea.descripcion==""){
 					this.errors_return.descripcion=true;
 					 return false;
@@ -408,7 +405,10 @@
 				this.tarea.areas_id = this.area.id;
 				this.tarea.usuarios_id = this.user;
 				this.tarea.prioridad_id=this.prioridad.id;
+				this.tarea.arreglo_tareas_extra  = this.organizaAntesDeEnviar(this.tareas_nuevas);
 
+				//console.log(this.tarea.arreglo_tareas_extra ,'Tarea Extra');
+//return false;
 				let that = this;
 				this.$http.post(window._apiURL+'tareas',this.tarea)
 		         .then(function(respuesta){
@@ -446,7 +446,46 @@
  		          }
 		        });
 			},
+			organizaAntesDeEnviar: function (arrayTareas) {
 
+       //var arrayTareasFinal=[];
+				for (let f in arrayTareas) {
+					let idx = Number(f)
+					let p = arrayTareas[idx]
+
+				arrayTareas[idx].fecha_entrega_cliente =
+					(this.fecha_entrega_cliente)?moment(this.fecha_entrega_cliente).format('YYYY-MM-DD HH:mm:ss'):null;
+				arrayTareas[idx].tiempo_mapa_cliente =
+					(arrayTareas[idx].tiempo_mapa_cliente)?arrayTareas[idx].tiempo_mapa_cliente:null;
+				 arrayTareas[idx].recurrente = "";
+				arrayTareas[idx].estados_id = arrayTareas[idx].estado.id;
+				arrayTareas[idx].ots_id= this.ot.id;
+				arrayTareas[idx].planeacion_fases_id = arrayTareas[idx].fase.id;
+				arrayTareas[idx].areas_id = arrayTareas[idx].area.id;
+				arrayTareas[idx].usuarios_id = this.user;
+				arrayTareas[idx].prioridad_id=arrayTareas[idx].prioridad.id;
+
+				 }
+
+				 return arrayTareas;
+
+
+			},
+     agregarPrimerTareas: function(){
+			 this.$validator.validateAll();
+			 if (!this.errors.any()) {
+				 this.form_tarea_nueva=true;
+				 this.tareas_nuevas=[{
+				 }];
+	 			 this.tareas_nuevas[0]['prioridad']=this.prioridad;
+	 			 this.tareas_nuevas[0]['area']=this.area;
+	 			 this.tareas_nuevas[0]['fase']=this.fase;
+	 			 this.tareas_nuevas[0]['estado']=this.estado;
+			 }
+
+			 console.log(this.tareas_nuevas);
+
+      },
 			agregarMasTareas: function(ind){
 
 			 this.$validator.validateAll();
@@ -462,15 +501,19 @@
 			 	toastr.error('El Campo Descripción es Obligatorio','Error',this.option_toast);
 			 }else{
 
-			    if (!this.errors.any()) {	
+			    if (!this.errors.any()) {
 			      this.tareas_nuevas.push(Vue.util.extend({}));
+						this.tareas_nuevas[ind+1]['prioridad']=this.prioridad;
+						this.tareas_nuevas[ind+1]['area']=this.area;
+						this.tareas_nuevas[ind+1]['fase']=this.fase;
+						this.tareas_nuevas[ind+1]['estado']=this.estado;
 	    		}
 			 }
-			
-				
+
+
 			},
 			EliminarTarea:function(ind){
-				
+
 				this.tareas_nuevas[ind]['prioridad']='';
 				this.tareas_nuevas[ind]['area']=0;
 				this.tareas_nuevas[ind]['fase']='';
@@ -478,14 +521,14 @@
 				this.tareas_nuevas[ind]['descripcion']='';
 				this.updateDataTareas();
 				this.tareas_nuevas[ind]['fecha_entrega_cliente']='';
-				this.tareas_nuevas.splice(ind,1);									
+				this.tareas_nuevas.splice(ind,1);
 				// }
 				if (this.tareas_nuevas.length==0) {
 					this.form_tarea_nueva=false;
 				}
 			},
 		},
-		
+
 		mounted() {}
 }
 Vue.component('select_estados',require('../herramientas/select_estado.vue'));

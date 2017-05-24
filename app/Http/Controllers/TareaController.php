@@ -128,7 +128,10 @@ public function store(Request $request)
                     'obj' =>$vl->errors()
                     ],Response::HTTP_BAD_REQUEST);
             }else{
+                //Inicio una transacción por si falla algún ingreso no quede registro en ninguna tabla
+                   DB::beginTransaction();
                 try {
+
                     // Obtengo las horas de la OT
                     // segun el area correspondiente a la Tarea
                     $horas_area = Tiempos_x_Area::with('area','ots')
@@ -150,11 +153,10 @@ public function store(Request $request)
                     // Validar si tiene horas suficientes para hacer la Tarea
                     if (!is_null($horas_area->tiempo_estimado_ot) &&
                         $horas_area->tiempo_estimado_ot + $horas_area->tiempo_extra > $horas_area->tiempo_real) {
-
                         $tarea->save();
-                        $maker = User::findOrFail($request->usuarios_id);
-                        User::find($tarea->encargado_id)->notify(new TareaCreada($maker,$tarea));
-
+                        if(count($request->arreglo_tareas_extra) <=0 and $request->arreglo_tareas_extra == null ){
+                            $maker = User::findOrFail($request->usuarios_id);
+                            User::find($tarea->encargado_id)->notify(new TareaCreada($maker,$tarea));
                         return response([
                             'status' => Response::HTTP_OK,
                             'response_time' => microtime(true) - LARAVEL_START,
@@ -164,6 +166,7 @@ public function store(Request $request)
                             'error' => null,
                             'msg' => 'Tarea creada con exito',
                             ],Response::HTTP_OK);
+                        }
                     } else {
                         // Enviar notificacion a los Project Owner
                         // cuando el tiempo se haya acabado para un Área en la OT
@@ -183,9 +186,8 @@ public function store(Request $request)
                             ],Response::HTTP_BAD_REQUEST);
                     }
 
-
-
             } catch (Exception $e) {
+                  DB::rollback();
                return response([
                 'status' => Response::HTTP_BAD_REQUEST,
                 'response_time' => microtime(true) - LARAVEL_START,
@@ -196,6 +198,103 @@ public function store(Request $request)
                 ],Response::HTTP_BAD_REQUEST);
            }
        }
+
+       //DSO Guardar tareas Extra
+       $count=1;
+       foreach ($request->arreglo_tareas_extra as $tarea_extra) {
+           $tarea = new Tarea;
+           $tarea->fill($request->all());
+           $tarea_extra['encargado_id']=$idusuario;
+
+           $vl=$this->validatorCreartarea($tarea_extra);
+           if ($vl->fails()){
+               // return response()->json($vl->errors());
+                 DB::rollback();
+               return response([
+                   'status' => Response::HTTP_BAD_REQUEST,
+                   'response_time' => microtime(true) - LARAVEL_START,
+                   'msg' => 'Error al crear la tarea No '.$count.', campos invalidos',
+                   'error' => config('constants.ERR_01'),
+                   'obj' =>$vl->errors(),
+                   'consola' => $tarea
+                   ],Response::HTTP_BAD_REQUEST);
+           }else{
+               try {
+                   // Obtengo las horas de la OT
+                   // segun el area correspondiente a la Tarea
+                   $horas_area = Tiempos_x_Area::with('area','ots')
+                   ->where('ots_id',$tarea->ots_id)
+                   ->where('areas_id',$tarea->areas_id)
+                   ->first();
+                   $admins='';
+
+                   if (is_null($horas_area)) {
+                         DB::rollback();
+                       return response([
+                           'status' => Response::HTTP_BAD_REQUEST,
+                           'response_time' => microtime(true) - LARAVEL_START,
+                           'error' => config('constants.ERR_02'),
+                           'msg' => 'Ot no posee tiempo en esta area'.' - Tarea No '.$count,
+                           'obj' =>[]
+                           ],Response::HTTP_BAD_REQUEST);
+                   }
+
+                   // Validar si tiene horas suficientes para hacer la Tarea
+                   if (!is_null($horas_area->tiempo_estimado_ot) &&
+                       $horas_area->tiempo_estimado_ot + $horas_area->tiempo_extra > $horas_area->tiempo_real) {
+                       $tarea->save();
+                       $count++;
+                   } else {
+                       // Enviar notificacion a los Project Owner
+                       // cuando el tiempo se haya acabado para un Área en la OT
+                       $admins = User::where('roles_id',1)->get();
+                       $maker = User::findOrFail($tarea->usuarios_id);
+                       foreach ($admins as $key => $admin) {
+                           $admin->notify(new OtSinTiempo($maker,$horas_area));
+                       }
+                        DB::rollback();
+                       return response([
+                           'status' => Response::HTTP_BAD_REQUEST,
+                           'response_time' => microtime(true) - LARAVEL_START,
+                           'obj' => [],
+                           'horas_area ' => $horas_area,
+                           // 'error' => 'ERR_04',
+                           'error' => config('constants.ERR_02'),
+                           'msg' => 'No tienes tiempo suficiente para crear la tarea No '.$count,
+                           ],Response::HTTP_BAD_REQUEST);
+                           $count++;
+                   }
+             } catch (Exception $e) {
+               DB::rollback();
+            return response([
+             'status' => Response::HTTP_BAD_REQUEST,
+             'response_time' => microtime(true) - LARAVEL_START,
+             'error' => config('constants.ERR_04'),
+             'msg' => 'Ocurrio un error, por favor comunicate con soporte',
+             'consola' =>$e->getMessage(),
+             'obj' =>[]
+             ],Response::HTTP_BAD_REQUEST);
+        }
+
+
+
+       }
+   }
+   DB::commit();
+   if(count($request->arreglo_tareas_extra) > 0 and $request->arreglo_tareas_extra != null ){
+       $maker = User::findOrFail($request->usuarios_id);
+       User::find($tarea->encargado_id)->notify(new TareaCreada($maker,$tarea));
+   return response([
+       'status' => Response::HTTP_OK,
+       'response_time' => microtime(true) - LARAVEL_START,
+       'obj' => $tarea,
+       'request' => $request->all(),
+       'horas_area ' => $horas_area,
+       'error' => null,
+       'msg' => 'Tarea creada con exito',
+       ],Response::HTTP_OK);
+   }
+
 
    }else{
         return response([

@@ -19,10 +19,10 @@ class gCalendarController extends Controller
     protected $client;
     public function __construct()
     {
-        
+
 
           // $userauth = Auth::user()->rol->name;
-             
+
           // if ( $userauth !='coordinador') {
           //   return redirect()->action('HomeController@index');
           // }
@@ -32,7 +32,7 @@ class gCalendarController extends Controller
           $guzzleClient = new \GuzzleHttp\Client(array('curl' => array(CURLOPT_SSL_VERIFYPEER => false)));
           $client->setHttpClient($guzzleClient);
           $this->client = $client;
-        
+
     }
     /**
      * Display a listing of the resource.
@@ -64,8 +64,8 @@ class gCalendarController extends Controller
         if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
           return redirect("/home");
         } else {
-            
-        
+
+
          $rurl = action('gCalendarController@oauth');
          $this->client->setRedirectUri($rurl);
 

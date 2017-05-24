@@ -19,10 +19,6 @@
   Route::get('pedir', 'gCalendarController@pedir');
   Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
 
-  //Imprimir Hora
-  Route::get('/hora_actual', function () {
-    echo date("d-m-Y H:m:s");
-  });
   Route::group(['middleware' => ['auth','login_estado']], function () {
 
     Route::get('/home', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
@@ -78,7 +74,7 @@
     Route::get('/foro/visualizar/todas', function () {
       return view('admin.tareas.ver_todas_tareas');
     })->name('ver_todas_tareas');
-    
+
 
   //OTS
     Route::get('ots/editar/{id}', ['middleware' => ['permission:editar_ots'], 'uses' => 'OtController@edit']);
