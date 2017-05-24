@@ -9546,6 +9546,36 @@ body {
   margin-bottom: 30px;
 }
 
+.seccion_mas_tareas .form_tarea_nueva {
+  text-align: left;
+  margin-bottom: 2%;
+  padding-bottom: 6%;
+}
+
+.seccion_mas_tareas .form_tarea_nueva:nth-child(even) {
+  background-color: white;
+  padding: 28px;
+}
+
+.seccion_mas_tareas .form_tarea_nueva:nth-child(odd) {
+  background-color: rgba(181, 181, 181, 0.3);
+  padding: 28px;
+}
+
+.seccion_mas_tareas .form_tarea_nueva .division_tareas_nuevas {
+  margin-top: 2%;
+}
+
+.seccion_mas_tareas .form_tarea_nueva .titulo_tareas_nuevas {
+  margin-top: 3%;
+  margin-bottom: 4%;
+  text-align: center;
+}
+
+.seccion_mas_tareas .boton_agregar_tareas {
+  margin-top: 35px;
+}
+
 .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a > p {
   white-space: normal;
 }

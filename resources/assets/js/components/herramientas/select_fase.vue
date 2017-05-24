@@ -28,7 +28,7 @@
   import Multiselect from 'vue-multiselect'
   module.exports= {
    components: { Multiselect},
-   props: ['select','area'],
+   props: ['select','area','indice'],
    data () {
     return {
       estados:[],
@@ -66,8 +66,16 @@
         if (newSelected != null && newSelected != undefined) {
          this.value = newSelected;
          this.id_fase = newSelected.id;
+
              // Creo un evento para enviar el item seleccionado al padre.
-             this.$parent.$emit('fase_option',newSelected);
+             
+             if (this.indice==null) {
+                this.$parent.$emit('fase_option',newSelected);
+             }else{
+               
+              this.$parent.$emit('send-indice-fase', {'indice':this.indice,'select':newSelected});
+             }
+             
            }else {
              this.id_fase = 0;
            }
