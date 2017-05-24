@@ -171,21 +171,21 @@
 								<div class="input-group-addon">
 									<i class="fa fa-calendar"></i>
 								</div>
-								<datepicker language="es"  id="fecha_entrega_cliente+index" required="required" placeholder="Fecha fin" v-model="ed.fecha_entrega_cliente" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
+								<datepicker language="es"  :id="'fecha_entrega_cliente'+index" required="required" placeholder="Fecha fin" v-model="ed.fecha_entrega_cliente" class="form-control" :disabled="disabled"  :name="'fecha_entrega_cliente'+index" format="dd-MM-yyyy"></datepicker>
 							</div>
 						</div>
 						<div class="col-sm-8">
-							<div class="form-group required" v-bind:class="[errors_return.nombre_tarea,{'has-error': errors.has('nombre_tarea') }]">
-								<label :for="ed.nombre_tarea+index"><sup>*</sup> Nombre de la Solicitud </label>
-								<input type="text" class="form-control"  id="nombre_tarea" v-model="ed.nombre_tarea" name="nombre_tarea" placeholder="Solicitud" v-validate data-vv-rules="required|min:4" required="required">
-								<span  class="help-block" v-show="errors.has('nombre_tarea')">{{ errors.first('nombre_tarea') }}</span>
+							<div class="form-group required" v-bind:class="[errors_return.nombre_tarea,{'has-error': errors.has('nombre_tarea'+index) }]">
+								<label :for="'nombre_tarea'+index"><sup>*</sup> Nombre de la Solicitud </label>
+								<input type="text" class="form-control"  :id="'nombre_tarea'+index" v-model="ed.nombre_tarea" :name="'nombre_tarea'+index" placeholder="Solicitud" v-validate data-vv-rules="required|min:4">
+								<span  class="help-block" v-show="errors.has('nombre_tarea'+index)">{{ errors.first('nombre_tarea'+index) }}</span>
 							</div>
 						</div>
 				   </div>
 
-				   <div class="form-group required" v-bind:class="[errors_return.descripcion,{ 'has-error': errors.has('descripcion+idex') }]">
-					<label for="descripcion"><sup>*</sup> Descripción </label>
-						<vue-html5-editor :content="ed.descripcion_fake" :height="200"  :z-index="0" @change="updateDataTareas" ></vue-html5-editor>
+				   <div class="form-group required" v-bind:class="[errors_return.descripcion,{ 'has-error': errors.has('descripcion+index') }]">
+					<label for="descripcion" :id="'descripcion_borrar'+index"><sup>*</sup> Descripción </label>
+						<vue-html5-editor :content="ed.descripcion" :height="200"  :z-index="0" @change="updateDataTareas" ></vue-html5-editor>
 						<span style="display:none;">
 						{{indice_textarea=index}}
 						</span>
@@ -194,9 +194,9 @@
 						<span  class="has-error" style="color:#DD4B39;" v-show="errors_return.descripcion+index"> Campo Descripcion Obligatorio </span>
 				   </div>
 
-					<div class="form-group" v-bind:class="[errors_return.enlaces_externos,{ 'has-error': errors.has('enlaces_externos+index') }]">
-						<label for="enlaces_externos">Ruta del server</label>
-						<textarea class="form-control" rows="3" name="enlaces_externos"  id="enlaces_externos+index" v-model="ed.enlaces_externos" placeholder="Ruta del server"></textarea>
+					<div class="form-group" v-bind:class="[errors_return.enlaces_externos,{ 'has-error': errors.has('enlaces_externos'+index) }]">
+						<label :for="'enlaces_externos'+index">Ruta del server</label>
+						<textarea class="form-control" rows="3" :name="'enlaces_externos'+index"  id="'enlaces_externos'+index" v-model="ed.enlaces_externos" placeholder="Ruta del server"></textarea>
 					</div>
 
 					<div class="row">
@@ -209,22 +209,28 @@
 						<div class="col-sm-6">
 							<div class="form-group">
 								<label for="tiempo_mapa_cliente">Tiempo estimado mapa del cliente</label>
-								<input type="text" name="tiempo_mapa_cliente" id="tiempo_mapa_cliente+index" v-model="ed.tiempo_mapa_cliente" class="form-control" placeholder="Tiempo mapa del cliente">
+								<input type="text" :name="'tiempo_mapa_cliente'+index" :id="'tiempo_mapa_cliente'+index" v-model="ed.tiempo_mapa_cliente" class="form-control" placeholder="Tiempo mapa del cliente">
 							</div>
 						</div>
 					</div>
 			    	<!-- Fin tareas Nuevas -->
 
 			    	<!--Boton Agregar mas tareas a la lista -->
-			    	
+			    	<button type="button" class="btn btn-danger pull-right" v-on:click="EliminarTarea(index)">Eliminar Tarea</button>
 		    	</div>
+
 		    </form>
 
 		    <!-- Boton Agregar Tareas -->
-		    <button type="button" class="btn btn-success boton_agregar_tareas" v-on:click="form_tarea_nueva=true, agregarMasTareas(indice_textarea)">Agregar Más Tareas</button>
+		    
+		    	 <button v-show="form_tarea_nueva"  type="button" class="btn btn-success boton_agregar_tareas" v-on:click="agregarMasTareas(indice_textarea)">Agregar Más Tareas</button>
+		  
+		   
 			</div>
-
-			<button v-show="!form_tarea_nueva" type="button" class="btn btn-success boton_agregar_tareas" v-on:click="form_tarea_nueva=true, tareas_nuevas=[{}]">Más Tareas</button>
+			
+				<button v-show="!form_tarea_nueva"  type="button" class="btn btn-success boton_agregar_tareas" v-on:click="form_tarea_nueva=true, tareas_nuevas=[{}]">Más Tareas</button>
+			
+			
 			{{tareas_nuevas}}
 		
 		</div>
@@ -315,27 +321,25 @@
 			//On select prioridad
 			this.$on('send-indice-prioridad', function(obj) {
 				this.datos_prioridad_mastareas=obj;
-				this.tareas_nuevas[this.datos_prioridad_mastareas.indice]['prioridad_id']=this.datos_prioridad_mastareas.select.id;				
+				this.tareas_nuevas[this.datos_prioridad_mastareas.indice]['prioridad']=this.datos_prioridad_mastareas.select;				
 			});
 
 			//On select area
 			this.$on('send-indice-area', function(obj) {
 				this.datos_prioridad_mastareas=obj;
-				this.tareas_nuevas[this.datos_prioridad_mastareas.indice]['area_id']=this.datos_prioridad_mastareas.select.id;
-
+				this.tareas_nuevas[this.datos_prioridad_mastareas.indice]['area']=this.datos_prioridad_mastareas.select;
 			});
 
 			//On select fase
 			this.$on('send-indice-fase', function(obj) {
 				this.datos_prioridad_mastareas=obj;
-				this.tareas_nuevas[this.datos_prioridad_mastareas.indice]['id_fase']=this.datos_prioridad_mastareas.select.id;
-
+				this.tareas_nuevas[this.datos_prioridad_mastareas.indice]['fase']=this.datos_prioridad_mastareas.select;
 			});
 
 			//On select fase
 			this.$on('send-indice-estado', function(obj) {
 				this.datos_prioridad_mastareas=obj;
-				this.tareas_nuevas[this.datos_prioridad_mastareas.indice]['id_estado']=this.datos_prioridad_mastareas.select.id;
+				this.tareas_nuevas[this.datos_prioridad_mastareas.indice]['estado']=this.datos_prioridad_mastareas.select;
 
 			});
 
@@ -378,7 +382,7 @@
 				this.errors_return.descripcion=false;
             },
 			agregarTarea:function(e) {
-				console.log('enviar',this.tarea);
+				
 				if(this.tarea.descripcion==""){
 					this.errors_return.descripcion=true;
 					 return false;
@@ -443,19 +447,45 @@
 		        });
 			},
 
-			agregarMasTareas(ind){
+			agregarMasTareas: function(ind){
 
-			 console.log("Indice Recibido",ind);
-			 if (this.tareas_nuevas[ind]['nombre_tarea']==null) {
-			 	this.errors_return.nombre_tarea=true;
-			 }
 			 this.$validator.validateAll();
+			 if (this.tareas_nuevas[ind]['prioridad']==null) {
+			 	toastr.error('El Campo Prioridad es Obligatorio','Error',this.option_toast);
+			 }else if (this.tareas_nuevas[ind]['area']==null) {
+			 	toastr.error('El Campo Area es Obligatorio','Error',this.option_toast);
+			 }else if (this.tareas_nuevas[ind]['fase']==null) {
+			 	toastr.error('El Campo Fase es Obligatorio','Error',this.option_toast);
+			 }else if (this.tareas_nuevas[ind]['estado']==null) {
+			 	toastr.error('El Campo Estado es Obligatorio','Error',this.option_toast);
+			 }else if (this.tareas_nuevas[ind]['descripcion']==null) {
+			 	toastr.error('El Campo Descripción es Obligatorio','Error',this.option_toast);
+			 }else{
+
 			    if (!this.errors.any()) {	
 			      this.tareas_nuevas.push(Vue.util.extend({}));
 	    		}
+			 }
+			
 				
 			},
+			EliminarTarea:function(ind){
+				
+				this.tareas_nuevas[ind]['prioridad']='';
+				this.tareas_nuevas[ind]['area']=0;
+				this.tareas_nuevas[ind]['fase']='';
+				this.tareas_nuevas[ind]['estado']='';
+				this.tareas_nuevas[ind]['descripcion']='';
+				this.updateDataTareas();
+				this.tareas_nuevas[ind]['fecha_entrega_cliente']='';
+				this.tareas_nuevas.splice(ind,1);									
+				// }
+				if (this.tareas_nuevas.length==0) {
+					this.form_tarea_nueva=false;
+				}
+			},
 		},
+		
 		mounted() {}
 }
 Vue.component('select_estados',require('../herramientas/select_estado.vue'));
