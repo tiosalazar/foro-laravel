@@ -199,7 +199,7 @@ class AreaController extends Controller
             $month = $now->month;
         }
         if ($id=='1') {
-            $historico_equipo = Historico_equipo::select(DB::raw('CONCAT(users.nombre," ",users.apellido) as full_name'),'users.nombre','users.apellido','historico_equipos.id','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad','historico_equipos.created_at')->join('users','users.id','=','historico_equipos.entidad_id')->where('tipo_de_entidad',$id)
+            $historico_equipo = Historico_equipo::select(DB::raw('CONCAT(users.nombre," ",users.apellido) as full_name'),'users.nombre','users.apellido','historico_equipos.id','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad','historico_equipos.created_at')->join('areas','areas.id','=','users.areas.id')->join('users','users.id','=','historico_equipos.entidad_id')->where('tipo_de_entidad',$id)
             ->whereYear('historico_equipos.created_at', $year)
             ->whereMonth('historico_equipos.created_at', $month)
             ->get();

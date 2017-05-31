@@ -539,7 +539,7 @@ public function update(Request $request, $id)
                                 ->notify(new OtExcedeTiempo($makerBefore,$horas_area->ots,$area));
                             }
                             $horas_area->tiempo_real +=$tarea->tiempo_real;
-                            //$horas_area->save();
+                            $horas_area->save();
                         }else{
                             return response([
                                 'status' => Response::HTTP_BAD_REQUEST,

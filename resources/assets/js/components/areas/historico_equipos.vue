@@ -5,6 +5,7 @@
 		        <tr>
 		          <th >Id</th>
 		          <th >Nombre</th>
+							<th >Área</th>
 		          <th >Horas Disponibles</th>
 		          <th >Horas Gastadas</th>
 		          <th >Tipo</th>
@@ -78,6 +79,7 @@
 				columns: [
 					{ data: 'id', name: 'id' },
 					{ data: 'full_name', name: 'full_name' },
+					{ data: 'area', name: 'area' },
 					{ data: 'horas_disponibles', name: 'horas_disponibles' },
 					{ data: 'horas_gastadas', name: 'horas_gastadas' },
 					{ data: 'tipo_de_entidad', name: 'tipo_de_entidad' },

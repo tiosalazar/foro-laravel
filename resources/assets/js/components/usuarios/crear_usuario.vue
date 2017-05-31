@@ -118,7 +118,7 @@
     /*Validación Alfa Numerico con ñ*/
     VeeValidate.Validator.extend('alpha_num_spaces', {
       getMessage: field => 'El campo '+field+' solo debe contener letras y números.',
-      validate: value => /^[\u00F1Aa-\u00F1AZ-a-zA-Z0-9_  \u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da]*$/.test(value)
+      validate: value => /^[\u00F1Aa-\u00F1AZ-a-zA-Z0-9_&  \u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da]*$/.test(value)
     });
 
 
