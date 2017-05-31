@@ -135,7 +135,12 @@
   Route::get('/week_of_year', 'TareaController@getWeekYear');
   Route::get('/all_tareas/{id}','TareaController@showAllTareas');
   Route::get('/trafico','TareaController@getTrafico');
+
+  //DSO al ver tarea, Pedir Permisos Google.
+  Route::get('/ver_tarea/*', 'gCalendarController@oauthTarea');
+
   Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
+
   Route::get('/comentarios/{id}','TareaController@getComments');
 
   // Listar Fases de  Planeación

@@ -136,6 +136,7 @@
 		    <form >
 		    	<div  v-for="(ed,index) tarea_nueva in tareas_nuevas" class="form_tarea_nueva">
 			    	<!-- Tareas Nuevas -->
+
 					<div class="row">
 						<div class="col-md-12">
 						<hr class="division_tareas_nuevas">
@@ -143,7 +144,6 @@
 						</div>
 					</div>
 				    <div class="row">
-
 					    <div class="row">
 							<div class="col-md-2">
 								<div class="form-group required">
@@ -153,14 +153,15 @@
 							</div>
 							<div class="col-md-4">
 								<div class="form-group required">
+
 									<label><sup>*</sup> Área </label>
-									<select_area  :refresha="ed.area" :indice="index" compras="true" ></select_area>
+									<select_area  :refresha="ed.area"  :indice="index" compras="true" ></select_area>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group required">
 									<label><sup>*</sup> Fase del Projecto </label>
-									<select_fase :select="ed.fase" :area="area" :indice="index"></select_fase>
+									<select_fase :select="ed.fase" :area="ed.area" :indice="index"></select_fase>
 								</div>
 							</div>
 						</div>
@@ -227,7 +228,9 @@
 
 
 			</div>
-
+			<pre>
+			{{tareas_nuevas}}
+		</pre>
 				<button v-show="!form_tarea_nueva"  type="button" class="btn btn-success boton_agregar_tareas" v-on:click="agregarPrimerTareas()">Más Tareas</button>
 
 		</div>
@@ -457,7 +460,7 @@
 					(this.fecha_entrega_cliente)?moment(this.fecha_entrega_cliente).format('YYYY-MM-DD HH:mm:ss'):null;
 				arrayTareas[idx].tiempo_mapa_cliente =
 					(arrayTareas[idx].tiempo_mapa_cliente)?arrayTareas[idx].tiempo_mapa_cliente:null;
-				 arrayTareas[idx].recurrente = "";
+				 arrayTareas[idx].recurrente = 0;
 				arrayTareas[idx].estados_id = arrayTareas[idx].estado.id;
 				arrayTareas[idx].ots_id= this.ot.id;
 				arrayTareas[idx].planeacion_fases_id = arrayTareas[idx].fase.id;
@@ -475,8 +478,25 @@
 			 this.$validator.validateAll();
 			 if (!this.errors.any()) {
 				 this.form_tarea_nueva=true;
-				 this.tareas_nuevas=[{
-				 }];
+				 this.tareas_nuevas=[					{
+				 				    prioridad: {
+				 				      id: 0,
+				 				      nombre: '',
+				 				    },
+				 				    area: {
+				 				      id: 0,
+				 				      nombre: '',
+				 				    },
+				 				    fase: {
+				 				      id:0,
+				 				      nombre: '',
+				 				    },
+				 				    estado: {
+				 				      id: 0,
+				 				      nombre:'',
+				 				    },
+				 				    nombre_tarea: ''
+				 				  }];
 	 			 this.tareas_nuevas[0]['prioridad']=this.prioridad;
 	 			 this.tareas_nuevas[0]['area']=this.area;
 	 			 this.tareas_nuevas[0]['fase']=this.fase;

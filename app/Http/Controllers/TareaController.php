@@ -111,7 +111,7 @@ public function store(Request $request)
 
             //Agrego al request el id
             $request['encargado_id']=$idusuario;
-
+             DB::beginTransaction();
             $tarea = new Tarea;
             $tarea->fill($request->all());
 
@@ -129,7 +129,7 @@ public function store(Request $request)
                     ],Response::HTTP_BAD_REQUEST);
             }else{
                 //Inicio una transacción por si falla algún ingreso no quede registro en ninguna tabla
-                   DB::beginTransaction();
+
                 try {
 
                     // Obtengo las horas de la OT
@@ -155,6 +155,7 @@ public function store(Request $request)
                         $horas_area->tiempo_estimado_ot + $horas_area->tiempo_extra > $horas_area->tiempo_real) {
                         $tarea->save();
                         if(count($request->arreglo_tareas_extra) <=0 and $request->arreglo_tareas_extra == null ){
+                            DB::commit();
                             $maker = User::findOrFail($request->usuarios_id);
                             User::find($tarea->encargado_id)->notify(new TareaCreada($maker,$tarea));
                         return response([
@@ -202,9 +203,10 @@ public function store(Request $request)
        //DSO Guardar tareas Extra
        $count=1;
        foreach ($request->arreglo_tareas_extra as $tarea_extra) {
-           $tarea = new Tarea;
-           $tarea->fill($request->all());
+           $New_tarea = new Tarea;
            $tarea_extra['encargado_id']=$idusuario;
+           $New_tarea->fill($tarea_extra);
+
 
            $vl=$this->validatorCreartarea($tarea_extra);
            if ($vl->fails()){
@@ -216,15 +218,15 @@ public function store(Request $request)
                    'msg' => 'Error al crear la tarea No '.$count.', campos invalidos',
                    'error' => config('constants.ERR_01'),
                    'obj' =>$vl->errors(),
-                   'consola' => $tarea
+                   'consola' => $New_tarea
                    ],Response::HTTP_BAD_REQUEST);
            }else{
                try {
                    // Obtengo las horas de la OT
                    // segun el area correspondiente a la Tarea
                    $horas_area = Tiempos_x_Area::with('area','ots')
-                   ->where('ots_id',$tarea->ots_id)
-                   ->where('areas_id',$tarea->areas_id)
+                   ->where('ots_id',$New_tarea->ots_id)
+                   ->where('areas_id',$New_tarea->areas_id)
                    ->first();
                    $admins='';
 
@@ -242,7 +244,7 @@ public function store(Request $request)
                    // Validar si tiene horas suficientes para hacer la Tarea
                    if (!is_null($horas_area->tiempo_estimado_ot) &&
                        $horas_area->tiempo_estimado_ot + $horas_area->tiempo_extra > $horas_area->tiempo_real) {
-                       $tarea->save();
+                       $New_tarea->save();
                        $count++;
                    } else {
                        // Enviar notificacion a los Project Owner
@@ -291,7 +293,7 @@ public function store(Request $request)
        'request' => $request->all(),
        'horas_area ' => $horas_area,
        'error' => null,
-       'msg' => 'Tarea creada con exito',
+       'msg' => 'Tareas creadas con exito',
        ],Response::HTTP_OK);
    }
 

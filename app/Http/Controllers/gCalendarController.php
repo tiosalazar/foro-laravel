@@ -83,6 +83,41 @@ class gCalendarController extends Controller
 
 
     }
+    public function oauthTarea($id)
+    {
+      //Id del area del usuario conectado
+       $userauth = Auth::user()->rol->name;
+        if ( $userauth !='coordinador') {
+            return redirect()->action(
+                'TareaController@showOneTarea', [$id]
+            );
+        }
+        session_start();
+
+        if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+            return redirect()->action(
+                'TareaController@showOneTarea', ['id' => $id]
+            );
+        } else {
+         $rurl = action('gCalendarController@oauth');
+         $this->client->setRedirectUri($rurl);
+
+          if (!isset($_GET['code'])) {
+              $auth_url = $this->client->createAuthUrl();
+              $filtered_url = filter_var($auth_url, FILTER_SANITIZE_URL);
+              return redirect($filtered_url);
+          } else {
+              $this->client->authenticate($_GET['code']);
+              $_SESSION['access_token'] = $this->client->getAccessToken();
+              return redirect()->action(
+                  'TareaController@showOneTarea', ['id' => $id]
+              );
+          }
+
+       }
+
+
+    }
     /**
      * Show the form for creating a new resource.
      *
