@@ -2,7 +2,7 @@
 	<form role="form" name="crear_tarea" class="crear_tarea">
 		<div class="box-body">
 			<div class="form-group required">
-				<label for="ot"><sup>*</sup> Nombre el Projecto </label>
+				<label for="ot"><sup>*</sup> Nombre el Proyecto </label>
 				<select_ot :select="select_ot"></select_ot>
 			</div>
 			<div class="row desc-ot with-border">
@@ -73,7 +73,7 @@
 				</div>
 				<div class="col-sm-6">
 					<div class="form-group required">
-						<label><sup>*</sup> Fase del Projecto </label>
+						<label><sup>*</sup> Fase del Proyecto </label>
 						<select_fase :select="fase" :area="area"></select_fase>
 					</div>
 				</div>
@@ -160,7 +160,7 @@
 							</div>
 							<div class="col-md-6">
 								<div class="form-group required">
-									<label><sup>*</sup> Fase del Projecto </label>
+									<label><sup>*</sup> Fase del Proyecto </label>
 									<select_fase :select="ed.fase" :area="ed.area" :indice="index"></select_fase>
 								</div>
 							</div>
@@ -228,9 +228,6 @@
 
 
 			</div>
-			<pre>
-			{{tareas_nuevas}}
-		</pre>
 				<button v-show="!form_tarea_nueva"  type="button" class="btn btn-success boton_agregar_tareas" v-on:click="agregarPrimerTareas()">Más Tareas</button>
 
 		</div>
@@ -457,7 +454,7 @@
 					let p = arrayTareas[idx]
 
 				arrayTareas[idx].fecha_entrega_cliente =
-					(this.fecha_entrega_cliente)?moment(this.fecha_entrega_cliente).format('YYYY-MM-DD HH:mm:ss'):null;
+					(arrayTareas[idx].fecha_entrega_cliente)?moment(arrayTareas[idx].fecha_entrega_cliente).format('YYYY-MM-DD HH:mm:ss'):null;
 				arrayTareas[idx].tiempo_mapa_cliente =
 					(arrayTareas[idx].tiempo_mapa_cliente)?arrayTareas[idx].tiempo_mapa_cliente:null;
 				 arrayTareas[idx].recurrente = 0;
@@ -495,7 +492,8 @@
 				 				      id: 0,
 				 				      nombre:'',
 				 				    },
-				 				    nombre_tarea: ''
+				 				    nombre_tarea: '',
+										fecha_entrega_cliente:'',
 				 				  }];
 	 			 this.tareas_nuevas[0]['prioridad']=this.prioridad;
 	 			 this.tareas_nuevas[0]['area']=this.area;

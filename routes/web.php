@@ -177,6 +177,8 @@
     Route::get('/years_historico_clientes', 'ClienteController@getYearHistorico');
 
     Route::get('/historico_equipos/{id}',['middleware' => ['permission:ver_historico_areas'], 'uses' => 'AreaController@historico_de_equipos']);
+    Route::get('/historico_equipos/listado/exportar/{id_entidad}/{month}/{year}',['middleware' => ['permission:ver_historico_areas'], 'uses' => 'AreaController@exportar_data_historico']);
+
     Route::get('/historico_clientes/{id}',['middleware' => ['permission:ver_historico_clientes'], 'uses' => 'ClienteController@historico_de_clientes']);
 
 

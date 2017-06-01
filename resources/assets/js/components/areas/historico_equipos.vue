@@ -1,4 +1,11 @@
 <template>
+	<div>
+	<form method="POST" id="exportar"  class="form-inline" role="form">
+		<div class="col-md-3 pull-right">
+			<button type="button" @click="exportar_data" class="btn btn-block boton_foro btn-success succes pull-right" >Exportar Datos</button>
+		</div>
+	</form>
+	<div class="clearfix"></div>
 	<div class="tarea  table-responsive">
         <table class="table  table-striped table-hover table-responsive datatable-foro table-bordered dataTable no-footer" role="grid" id="tabla_tareas" cellspacing="0" width="100%">
 		  <thead>
@@ -39,6 +46,7 @@
             <button type="submit" class="btn btn-info btn-flat">Buscar</button>
         </form>
 	</div>
+</div>
 </template>
 <script>
 	import table from 'datatables.net';
@@ -70,7 +78,6 @@
 				ajax: {
 					url: window._baseURL+"/historico_equipos/"+that.area,
 					data: function (d) {
-
 		                d.year = $('select[name=year]').val();
 		                d.month = $('select[name=month]').val();
 		            },
@@ -79,7 +86,7 @@
 				columns: [
 					{ data: 'id', name: 'id' },
 					{ data: 'full_name', name: 'full_name' },
-					{ data: 'area', name: 'area' },
+					{ data: 'nombre_area', name: 'nombre_area' },
 					{ data: 'horas_disponibles', name: 'horas_disponibles' },
 					{ data: 'horas_gastadas', name: 'horas_gastadas' },
 					{ data: 'tipo_de_entidad', name: 'tipo_de_entidad' },
@@ -154,9 +161,26 @@
 
 			} );
 
+		$(document).ready(function(e) {
+			if (that.area == 2) {
+				$('#tabla_tareas thead').find("th:eq(2)").remove();
+				$('#tabla_tareas tbody tr').each(function() {
+				    $(this).find("td:eq(2)").remove();
+				});
+			}
+		});
+
+
 		},
 		methods:{
-
+			exportar_data: function() {
+				var arrayData={
+					mount : ($('select[name=mount]').val() != "")?$('select[name=mount]').val():'null',
+					year : ($('select[name=year]').val() != "")?$('select[name=year]').val():'null'
+				};
+				window.location = window._baseURL+'/historico_equipos/listado/exportar/'+this.area+'/'+
+				arrayData.mount+'/'+arrayData.year;
+			},
 		},
 
 	}

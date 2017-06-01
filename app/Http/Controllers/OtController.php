@@ -919,7 +919,7 @@ class OtController extends Controller
             $sheet->row(10, $areasArray[3]);
             $headings = array('Resumen de tareas de la OT ');
             $sheet->prependRow(12, $headings);
-            $headings = array('ÁREA','REQUERIMIENTOS','FECHA SOLICITUD','FECHA DE ENTREGA','TIEMPO REAL','TIEMPO ESTIMADO JEFE','TIEMPO ESTIMADO MAPA DE CLIENTE','ENCARGADO');
+            $headings = array('ÁREA','REQUERIMIENTOS','FECHA SOLICITUD','FECHA DE ENTREGA','TIEMPO EMPLEADO','TIEMPO ESTIMADO JEFE','TIEMPO ESTIMADO MAPA DE CLIENTE','ENCARGADO');
             $sheet->prependRow(14, $headings);
             $sheet->fromArray($otsArray[2], null, 'A15', false, false);
 
@@ -1014,7 +1014,7 @@ class OtController extends Controller
          $excel->sheet('listado de tareas', function($sheet) use($otsDescripcion)  {
             $headings = array('Resumen de tareas ');
             $sheet->prependRow(1, $headings);
-            $headings = array('#OT','ÁREA','REQUERIMIENTOS','FECHA SOLICITUD','FECHA DE ENTREGA','TIEMPO REAL','TIEMPO ESTIMADO JEFE','TIEMPO ESTIMADO MAPA DE CLIENTE','ENCARGADO');
+            $headings = array('#OT','ÁREA','REQUERIMIENTOS','FECHA SOLICITUD','FECHA DE ENTREGA','TIEMPO EMPLEADO','TIEMPO ESTIMADO JEFE','TIEMPO ESTIMADO MAPA DE CLIENTE','ENCARGADO');
             $sheet->prependRow(3, $headings);
             $sheet->fromArray($otsDescripcion, null, 'A4', false, false);
 

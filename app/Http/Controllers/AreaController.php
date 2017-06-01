@@ -16,6 +16,8 @@ use Exception;
 use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Excel;
+
 
 class AreaController extends Controller
 {
@@ -199,11 +201,12 @@ class AreaController extends Controller
             $month = $now->month;
         }
         if ($id=='1') {
-            $historico_equipo = Historico_equipo::select(DB::raw('CONCAT(users.nombre," ",users.apellido) as full_name'),'users.nombre','users.apellido','historico_equipos.id','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad','historico_equipos.created_at')->join('areas','areas.id','=','users.areas.id')->join('users','users.id','=','historico_equipos.entidad_id')->where('tipo_de_entidad',$id)
+            $historico_equipo = Historico_equipo::select(DB::raw('CONCAT(users.nombre," ",users.apellido) as full_name'),'users.nombre','users.apellido','users.areas_id','areas.nombre as nombre_area','historico_equipos.id','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad','historico_equipos.created_at')->join('users','users.id','=','historico_equipos.entidad_id')->join('areas','areas.id','=','users.areas_id')->where('tipo_de_entidad',$id)
             ->whereYear('historico_equipos.created_at', $year)
             ->whereMonth('historico_equipos.created_at', $month)
             ->get();
-             //$historico_equipo=Historico_equipo::with('usuario')->where('tipo_de_entidad',$id)->get();
+            //return $historico_equipo;
+             //return $historico_equipo=Historico_equipo::with('usuario')->where('tipo_de_entidad',$id)->get();
 
         } else{
           $historico_equipo = Historico_equipo::select(DB::raw('CONCAT(areas.nombre) as full_name'),'historico_equipos.id','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad','historico_equipos.created_at')->join('areas','areas.id','=','historico_equipos.entidad_id')->where('tipo_de_entidad',$id)
@@ -219,6 +222,88 @@ class AreaController extends Controller
           ->editColumn('created_at', function ($historico_equipo) {
               return  $historico_equipo->getFormatFecha($historico_equipo->created_at);
           })->make(true);
+        // return Datatables::of($historico_equipo)->make(true);
+
+    }
+
+    /**
+     * Método historico de equipo de trabajo
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+
+    public function exportar_data_historico($id_entidad,$month,$year)
+    {
+
+        // Si no trae el mes y año en el $request
+        // tomar el mes y el año actual
+        $now = Carbon::now();
+        $headings =($id_entidad=='1')?array('ID','NOMBRE','ÁREA','HORAS DISPONIBLES','HORAS GASTADAS','FECHA'):array('ID','ÁREA','HORAS DISPONIBLES','HORAS GASTADAS','FECHA');
+        $nombre_excel=($id_entidad=='1')?'Usuarios':'Áreas';
+        if ($year !="" && $year != 'null') {
+            $year = $year;
+        }else{
+            $year = $now->year;
+        }
+        if ($month !="" && $month != 'null') {
+            $month = $month;
+        }else{
+            $month = $now->month;
+        }
+        if ($id_entidad=='1') {
+            $historico_equipo = Historico_equipo::select(DB::raw('CONCAT(users.nombre," ",users.apellido) as full_name'),'users.nombre','users.apellido','users.areas_id','areas.nombre as nombre_area','historico_equipos.id','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad','historico_equipos.created_at')->join('users','users.id','=','historico_equipos.entidad_id')->join('areas','areas.id','=','users.areas_id')->where('tipo_de_entidad',$id_entidad)
+            ->whereYear('historico_equipos.created_at', $year)
+            ->whereMonth('historico_equipos.created_at', $month)
+            ->get();
+            //return $historico_equipo;
+             //return $historico_equipo=Historico_equipo::with('usuario')->where('tipo_de_entidad',$id)->get();
+
+        } else{
+          $historico_equipo = Historico_equipo::select(DB::raw('CONCAT(areas.nombre) as full_name'),'historico_equipos.id','historico_equipos.horas_disponibles','historico_equipos.horas_gastadas','historico_equipos.tipo_de_entidad','historico_equipos.created_at')->join('areas','areas.id','=','historico_equipos.entidad_id')->where('tipo_de_entidad',$id_entidad)
+            ->whereYear('historico_equipos.created_at', $year)
+            ->whereMonth('historico_equipos.created_at', $month)
+            ->get();
+        }
+
+         /* return Datatables::of($historico_equipo)
+          ->editColumn('created_at', function ($historico_equipo) {
+              return  $historico_equipo->getFormatFecha($historico_equipo->created_at);
+          })->make(true);*/
+        $descriptions = [];
+        $hist = new Historico_equipo;
+        if ($id_entidad=='1') {
+            foreach($historico_equipo as $historico){
+               array_push( $descriptions, array($historico['id'],$historico['full_name'],$historico['nombre_area'],$historico['horas_disponibles'],$historico['horas_gastadas'],$hist->getFormatFecha($historico['created_at'])) );
+              }
+        }else{
+            foreach($historico_equipo as $historico){
+               array_push( $descriptions, array($historico['id'],$historico['full_name'],$historico['horas_disponibles'],$historico['horas_gastadas'],$hist->getFormatFecha($historico['created_at'])) );
+              }
+        }
+
+       //return $descriptions;
+
+          Excel::create('Historico_'.$nombre_excel.'_mes_'.$month.'_año_'.$year, function($excel) use($descriptions,$nombre_excel,$headings,$historico_equipo)  {
+           // Set the spreadsheet title, creator, and description
+           $excel->setTitle('Histórico '.$nombre_excel);
+           $excel->setCreator('Gestor de proccesos')->setCompany('Himalaya');
+           $excel->setDescription('Histórico '.$nombre_excel);
+
+           $excel->sheet('Histórico', function($sheet) use($descriptions,$historico_equipo,$headings)  {
+
+
+              $sheet->prependRow(1, $headings);
+              $sheet->fromArray($descriptions, null, 'A2', false, false);
+
+              $sheet->cells('A1:F1', function($cells) {$cells->setFontWeight('bold'); $cells->setAlignment('center');});
+              //$sheet->cells('A2:E10', function($cells) {$cells->setAlignment('center');});
+              // Set border for range
+              $sheet->setBorder('A1:F60', 'thin');
+
+           });
+
+        })->export('xls');
         // return Datatables::of($historico_equipo)->make(true);
 
     }

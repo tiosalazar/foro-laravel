@@ -202,9 +202,13 @@ public function store(Request $request)
 
        //DSO Guardar tareas Extra
        $count=1;
+       $arrayIngresadas=[];
        foreach ($request->arreglo_tareas_extra as $tarea_extra) {
            $New_tarea = new Tarea;
-           $tarea_extra['encargado_id']=$idusuario;
+           $userdata= User::where('roles_id',$role[0]->id)
+           ->where('areas_id', $tarea_extra['areas_id'])->get();
+
+           $tarea_extra['encargado_id']=$userdata[0]->id;
            $New_tarea->fill($tarea_extra);
 
 
@@ -245,6 +249,7 @@ public function store(Request $request)
                    if (!is_null($horas_area->tiempo_estimado_ot) &&
                        $horas_area->tiempo_estimado_ot + $horas_area->tiempo_extra > $horas_area->tiempo_real) {
                        $New_tarea->save();
+                       array_push($arrayIngresadas,$New_tarea);
                        $count++;
                    } else {
                        // Enviar notificacion a los Project Owner
@@ -286,6 +291,9 @@ public function store(Request $request)
    if(count($request->arreglo_tareas_extra) > 0 and $request->arreglo_tareas_extra != null ){
        $maker = User::findOrFail($request->usuarios_id);
        User::find($tarea->encargado_id)->notify(new TareaCreada($maker,$tarea));
+       foreach ($arrayIngresadas as $Tingreso) {
+           User::find($Tingreso['encargado_id'])->notify(new TareaCreada($maker,$Tingreso));
+       }
    return response([
        'status' => Response::HTTP_OK,
        'response_time' => microtime(true) - LARAVEL_START,
@@ -1254,17 +1262,14 @@ public function showAllTareas($id,Request $request)
       // Tareas activas
       $query->where('estado', 1);
     },'ot.cliente','usuarioencargado' => function ($query){
-
     $query->addselect('*');
     $query->addselect(DB::raw('CONCAT(nombre," ",apellido) as full_name'));
-
     },'estado' => function ($query) use ($request) {
            if ($request->has('estados')) {
-               $query->whereIn('id',$request->get('estados'));
+               $query->where('id',5);
            }
-
        },'area','usuario'])
-    ->whereBetween('fecha_entrega_cuentas',array($f_inicio,$f_final))
+    ->whereBetween('created_at',array($f_inicio,$f_final))
     ->get();
 
     // selecciona solos los que tiene el area especifico

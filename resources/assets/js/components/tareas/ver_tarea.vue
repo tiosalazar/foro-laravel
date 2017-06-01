@@ -121,7 +121,7 @@
               <div class="col-sm-6 columna2">
 
                 <div class="form-group same-height">
-                  <label><strong>Fase del Projecto:</strong></label>
+                  <label><strong>Fase del Proyecto:</strong></label>
                   <div>{{tarea_info.planeacion_fase.nombre}}</div>
                 </div>
 
