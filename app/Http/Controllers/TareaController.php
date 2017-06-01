@@ -78,7 +78,7 @@ public function index()
     public function create($id=null)
     {
       if (!Auth::user()->can('crear_tareas')) {
-        return Redirect::to('home');
+          return redirect("/home");
       }
       if (!is_null($id) && is_numeric($id)) {
         $area = Area::findOrFail($id);

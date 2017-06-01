@@ -15,7 +15,6 @@
 							<th >Área</th>
 		          <th >Horas Disponibles</th>
 		          <th >Horas Gastadas</th>
-		          <th >Tipo</th>
 		          <th >Fecha</th>
 		        </tr>
 		    </thead>
@@ -89,19 +88,18 @@
 					{ data: 'nombre_area', name: 'nombre_area' },
 					{ data: 'horas_disponibles', name: 'horas_disponibles' },
 					{ data: 'horas_gastadas', name: 'horas_gastadas' },
-					{ data: 'tipo_de_entidad', name: 'tipo_de_entidad' },
 					{ data: 'created_at', name: 'created_at' },
 				],
 				columnDefs: [
-					{
-						"targets": [4],
+					/*{
+						"targets": [5],
 						"data": null,
 						   "render": function(data, type, full) { // Devuelve el contenido personalizado
 						   	return (full.tipo_de_entidad==1)? 'Usuario' : 'Área';
 
 						     }
 
-					},
+					},*/
 
 				],
 				autoWidth: false,
@@ -137,6 +135,12 @@
 		        oTable.draw();
 		        e.preventDefault();
 		    });
+				$(document).ready(function(e) {
+				if (that.area == 2) {
+					$('#tabla_tareas thead').find("th:eq(2)").remove();
+				}
+			});
+
 		    // Agregar Selects al dibujar la tabla
 		    $('#tabla_tareas').on( 'draw.dt', function () {
 		    	// Llamar estados de las taras
@@ -159,16 +163,14 @@
 				// Agregar las formulario a datatable
 				$('#search-form').appendTo('.selects');
 
+				if (that.area == 2) {
+					$('#tabla_tareas tbody tr').each(function() {
+					    $(this).find("td:eq(2)").remove();
+					});
+				}
+
 			} );
 
-		$(document).ready(function(e) {
-			if (that.area == 2) {
-				$('#tabla_tareas thead').find("th:eq(2)").remove();
-				$('#tabla_tareas tbody tr').each(function() {
-				    $(this).find("td:eq(2)").remove();
-				});
-			}
-		});
 
 
 		},

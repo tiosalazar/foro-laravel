@@ -254,10 +254,9 @@ module.exports={
 			})
 
 			if (rol != 'owner' && rol != 'desarrollo') {
+
 				$('#tabla_tareas thead').find("th:eq(0)").remove();
-				$('#tabla_tareas tbody tr').each(function() {
-				    $(this).find("td:eq(0)").remove();
-				});
+
 
 			}
 
@@ -283,7 +282,12 @@ module.exports={
 
 		// Agregar Selects al dibujar la tabla
 		$('#tabla_tareas').on( 'draw.dt', function () {
-
+			if (rol != 'owner' && rol != 'desarrollo') {
+			$('#tabla_tareas tbody tr').each(function() {
+					$(this).find("td:eq(0)").remove();
+					console.log('entre');
+			});
+		}
 			// Agregar las formulario a datatable
 			$('#search-form').appendTo('.selects');
 
