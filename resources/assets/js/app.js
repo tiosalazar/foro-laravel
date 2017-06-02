@@ -64,6 +64,7 @@ Vue.component('roles', require('./components/roles/roles.vue'));
 Vue.component('areas', require('./components/areas/areas.vue'));
 Vue.component('listado_areas', require('./components/areas/listado_areas.vue'));
 Vue.component('historico_equipos', require('./components/areas/historico_equipos.vue'));
+Vue.component('ots_graficas', require('./components/ots/ots_graficas.vue'));
 //Fin Componentes Bcaldas
 
 //Tipos de compra

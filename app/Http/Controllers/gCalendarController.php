@@ -254,8 +254,8 @@ class gCalendarController extends Controller
     public function pedir()
     {
         session_start();
-        $startDateTime = '2017-05-18T10:54:00';
-        $endDateTime = '2017-05-18T14:00:00';
+        $startDateTime = '2017-06-02T10:54:00';
+        $endDateTime = '2017-06-02T14:00:00';
         if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
             $this->client->setAccessToken($_SESSION['access_token']);
             $service = new Google_Service_Calendar($this->client);
