@@ -120,6 +120,8 @@ class gCalendarController extends Controller
               return redirect($filtered_url);
           } else {
               $this->client->authenticate($_GET['code']);
+              $this->client->setAccessType('offline');
+              $this->client->setApprovalPrompt ('force');
               $_SESSION['access_token'] = $this->client->getAccessToken();
               return redirect()->action(
                   'TareaController@showOneTarea', ['id' => $id]
