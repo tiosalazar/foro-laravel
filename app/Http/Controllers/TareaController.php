@@ -43,10 +43,13 @@ use Google_Client;
 use Google_Service_Calendar;
 use Google_Service_Calendar_Event;
 use Google_Service_Calendar_EventDateTime;
+use App\Http\Traits\gCalendarTrait;
+
 
 class TareaController extends Controller
 {
-    protected $client;
+    use gCalendarTrait;
+    //+protected $client;
     /*public function __construct()
     {
     $this->middleware('auth');
@@ -69,7 +72,15 @@ public function index()
     }
     return Datatables::of($output)->make(true);
 }
+public function calendarConsole()
+{
+    //$calendar =new gCalendarController();
+      $calendarClient = $this->getClientGoogle();
+      var_dump($calendarClient);
+    //var_dump($calendar->returnClient());
 
+
+}
     /**
      * Show the form for creating a new resource.
      *
@@ -1420,13 +1431,6 @@ public function showAllTareas($id,Request $request)
 
         public function programarCalendar($summary,$description,$fechas,$email)
           {
-              $client = new Google_Client();
-              $client->setAuthConfig('client_secret.json');
-              $client->addScope(Google_Service_Calendar::CALENDAR);
-              $guzzleClient = new \GuzzleHttp\Client(array('curl' => array(CURLOPT_SSL_VERIFYPEER => false)));
-              $client->setHttpClient($guzzleClient);
-              $this->client = $client;
-
               $retorno_ids =array();
               $retorno_fechas_inicio =array();
               $retorno_fechas_final =array();
@@ -1434,8 +1438,8 @@ public function showAllTareas($id,Request $request)
 
               session_start();
               if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
-                  $this->client->setAccessToken($_SESSION['access_token']);
-                  $service = new Google_Service_Calendar($this->client);
+                  $calendarClient = $this->getClientGoogle();
+                  $service = new Google_Service_Calendar($calendarClient);
                 //  $calendarId = 'primary';
                   $calendarId = $email;
                   foreach ($fechas as $fecha) {

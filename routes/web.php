@@ -26,6 +26,7 @@
 
    //Ruta para cargar imagen de perfil
     Route::post('/usuariosuploadimagen','HomeController@SubirImagen');
+    Route::get('/consolecalendar','TareaController@calendarConsole');
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes

@@ -63,7 +63,7 @@ class gCalendarController extends Controller
 
         if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
           return redirect("/home");
-        } else {
+      } else {
 
 
          $rurl = action('gCalendarController@oauth');
@@ -75,14 +75,26 @@ class gCalendarController extends Controller
               return redirect($filtered_url);
           } else {
               $this->client->authenticate($_GET['code']);
-              $_SESSION['access_token'] = $this->client->getAccessToken();
-          return redirect()->action('HomeController@index');
+              $this->client->setAccessType('offline');
+              $this->client->setApprovalPrompt ('force');
+              //$this->client->refreshToken($_SESSION['access_token']);
+              $_SESSION['access_token']=  $this->client->getAccessToken();
+              return redirect()->action('HomeController@index');
           }
 
        }
 
-
     }
+
+    public function returnClient()
+    {
+        $this->client->setAccessType('offline');
+        $this->client->setApprovalPrompt ('force');
+        $this->client->setAccessToken($_SESSION['access_token']);
+      return  $this->client;
+    }
+
+
     public function oauthTarea($id)
     {
       //Id del area del usuario conectado
@@ -254,12 +266,24 @@ class gCalendarController extends Controller
     public function pedir()
     {
         session_start();
-        $startDateTime = '2017-05-18T10:54:00';
-        $endDateTime = '2017-05-18T14:00:00';
+        $startDateTime = '2017-06-02T10:54:00';
+        $endDateTime = '2017-06-02T14:00:00';
+
+        //return $_SESSION['access_token'];
+
         if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+
+            /*$this->client->refreshToken($_SESSION['access_token']['access_token']);
+
+             $_SESSION['access_token']= $this->client->getAccessToken();
+
+            $this->client->refreshToken($_SESSION['access_token']);
+            $newtoken=$client->getAccessToken();
+            $this->client->setAccessToken($newtoken);*/
             $this->client->setAccessToken($_SESSION['access_token']);
             $service = new Google_Service_Calendar($this->client);
-            $calendarId = 'bcaldas@himalayada.com';
+            $calendarId = 'dsalazar@himalayada.com';
+            //return var_dump($this->client);
             $event = new Google_Service_Calendar_Event([
                 'summary' => 'Evento Prueba',
                 'location'=>'Himalaya Digital Agency, Santa Teresita, Cali - Valle del Cauca, Colombia',
