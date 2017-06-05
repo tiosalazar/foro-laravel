@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
 use Illuminate\Support\Facades\Auth;
+use App\Tarea;
 
 class gCalendarController extends Controller
 {
@@ -32,6 +33,8 @@ class gCalendarController extends Controller
           $guzzleClient = new \GuzzleHttp\Client(array('curl' => array(CURLOPT_SSL_VERIFYPEER => false)));
           $client->setHttpClient($guzzleClient);
           $this->client = $client;
+          $this->client->setAccessType('offline');
+          $this->client->setApprovalPrompt ('force');
 
     }
     /**
@@ -61,12 +64,35 @@ class gCalendarController extends Controller
         }
         session_start();
 
-        if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+    /*    if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
           return redirect("/home");
-      } else {
+      } else {*/
 
 
          $rurl = action('gCalendarController@oauth');
+         $this->client->setRedirectUri($rurl);
+
+          if (!isset($_GET['code'])) {
+              $auth_url = $this->client->createAuthUrl();
+              $filtered_url = filter_var($auth_url, FILTER_SANITIZE_URL);
+              return redirect($filtered_url);
+          } else {
+              $this->client->authenticate($_GET['code']);
+              //$this->client->refreshToken($_SESSION['access_token']);
+              $_SESSION['access_token']=  $this->client->getAccessToken();
+              return redirect()->action('HomeController@index');
+          }
+
+      // }
+
+    }
+    public function oauth_tarea($id)
+    {
+        session_start();
+
+
+
+         $rurl = action('gCalendarController@oauth_tarea');
          $this->client->setRedirectUri($rurl);
 
           if (!isset($_GET['code'])) {
@@ -79,37 +105,101 @@ class gCalendarController extends Controller
               $this->client->setApprovalPrompt ('force');
               //$this->client->refreshToken($_SESSION['access_token']);
               $_SESSION['access_token']=  $this->client->getAccessToken();
-              return redirect()->action('HomeController@index');
+              $tarea = Tarea::with(['ot.cliente','ot.usuario', 'estado', 'estado_prioridad','planeacion_fase','area','usuario','usuarioencargado'])->where('id',$id)->first();
+
+              $descripcion=$tarea->descripcion;
+              $comentario=$tarea->comentario;
+
+              $tarea->descripcion="";
+              $tarea->comentario="";
+
+              $tarea->fecha_inicio_programar=json_decode($tarea->fecha_inicio_programar);
+              $tarea->fecha_fin_programar=json_decode($tarea->fecha_fin_programar);
+            return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea)->with('desctarea',$descripcion);
           }
-
-       }
-
     }
+
+
 
     public function returnClient()
     {
         $this->client->setAccessType('offline');
         $this->client->setApprovalPrompt ('force');
         $this->client->setAccessToken($_SESSION['access_token']);
+    //    $_SESSION['access_token'] = $this->client->getAccessToken();
       return  $this->client;
+    }
+    public function ver_token()
+    {
+        session_start();
+        var_dump($_SESSION['access_token']);
     }
 
 
     public function oauthTarea($id)
     {
+      ///
+      $tarea = Tarea::with(['ot.cliente','ot.usuario', 'estado', 'estado_prioridad','planeacion_fase','area','usuario','usuarioencargado'])->where('id',$id)->first();
+
+      $descripcion=$tarea->descripcion;
+      $comentario=$tarea->comentario;
+
+      $tarea->descripcion="";
+      $tarea->comentario="";
+
+      $tarea->fecha_inicio_programar=json_decode($tarea->fecha_inicio_programar);
+      $tarea->fecha_fin_programar=json_decode($tarea->fecha_fin_programar);
+      //
+
       //Id del area del usuario conectado
        $userauth = Auth::user()->rol->name;
         if ( $userauth !='coordinador') {
-            return redirect()->action(
-                'TareaController@showOneTarea', [$id]
-            );
+            return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea)->with('desctarea',$descripcion);
         }
         session_start();
-
         if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
-            return redirect()->action(
-                'TareaController@showOneTarea', ['id' => $id]
-            );
+        try {
+            $this->client->setAccessType('offline');
+            $this->client->setApprovalPrompt ('force');
+            $this->client->refreshToken($_SESSION['access_token']);
+            $_SESSION['access_token'] = $this->client->getAccessToken();
+            return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea)->with('desctarea',$descripcion);
+        //    return redirect("/home");/ver_tarea/1122
+        } catch (Exception $e) {
+            return $e;
+            $response = $e->getCode();
+            /*$sacar =  array('"','}','{');
+            $response = str_replace ($sacar,"",$response);
+            $error = explode(":",$response);*/
+            if($response == 400){
+               $client = new Google_Client();
+                $client->setAuthConfig('client_secret.json');
+                $client->addScope(Google_Service_Calendar::CALENDAR);
+                $guzzleClient = new \GuzzleHttp\Client(array('curl' => array(CURLOPT_SSL_VERIFYPEER => false)));
+                $client->setHttpClient($guzzleClient);
+                $this->client = $client;
+
+                $rurl = action('gCalendarController@oauth_tarea', ['id' => $id]);
+                //$rurl = action('TareaController@showOneTarea', ['id' => $id]);
+
+                $this->client->setRedirectUri($rurl);
+                $auth_url = $this->client->createAuthUrl();
+
+                 if (!isset($_GET['code'])) {
+                     $auth_url = $this->client->createAuthUrl();
+                     $filtered_url = filter_var($auth_url, FILTER_SANITIZE_URL);
+                     return redirect($filtered_url);
+                 } else {
+                     $this->client->authenticate($_GET['code']);
+                     $this->client->setAccessType('offline');
+                     $this->client->setApprovalPrompt ('force');
+                     $_SESSION['access_token'] = $this->client->getAccessToken();
+                     $this->client->refreshToken($_SESSION['access_token']);
+                     return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea)->with('desctarea',$descripcion);
+                  }
+
+              }
+           }
         } else {
          $rurl = action('gCalendarController@oauth');
          $this->client->setRedirectUri($rurl);
@@ -123,12 +213,12 @@ class gCalendarController extends Controller
               $this->client->setAccessType('offline');
               $this->client->setApprovalPrompt ('force');
               $_SESSION['access_token'] = $this->client->getAccessToken();
-              return redirect()->action(
-                  'TareaController@showOneTarea', ['id' => $id]
-              );
+              $this->client->refreshToken($_SESSION['access_token']);
+            //  return $this->client;
+              return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea)->with('desctarea',$descripcion);
           }
 
-       }
+      }
 
 
     }

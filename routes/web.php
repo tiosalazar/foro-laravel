@@ -17,7 +17,9 @@
 
   Route::resource('gcalendar', 'gCalendarController');
   Route::get('pedir', 'gCalendarController@pedir');
+  Route::get('ver_token', 'gCalendarController@ver_token');
   Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
+  Route::get('oauth_tarea', ['as' => 'oauthCallbackTarea', 'uses' => 'gCalendarController@oauth_tarea']);
 
   Route::group(['middleware' => ['auth','login_estado']], function () {
 
@@ -138,9 +140,11 @@
   Route::get('/trafico','TareaController@getTrafico');
 
   //DSO al ver tarea, Pedir Permisos Google.
-  Route::get('/ver_tarea/*', 'gCalendarController@oauthTarea');
+  Route::get('/ver_tarea/{id}', 'gCalendarController@oauthTarea');
+//  Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
+//  Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
 
-  Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
+ //Route::get('tareas/ver/{id}', ['as' => 'tareaCallback', 'uses' => 'gCalendarController@oauthTarea']);
 
   Route::get('/comentarios/{id}','TareaController@getComments');
 

@@ -367,6 +367,7 @@ public function update(Request $request, $id)
 
     // Valida si es un comentario
     if($request->is_comment==1){
+         DB::beginTransaction();
 
         $tarea=Tarea::findOrFail($id);
 
@@ -377,7 +378,9 @@ public function update(Request $request, $id)
             $maker = User::findOrFail($comentario->usuarios_comentario_id);
             User::findOrFail($tarea->encargado_id)
             ->notify(new ComentarioNuevoTarea($maker,$tarea,$comentario));
+            DB::commit();
         } catch (Exception $e) {
+            DB::rollback();
             return response([
                 'status' => Response::HTTP_BAD_REQUEST,
                 'response_time' => microtime(true) - LARAVEL_START,
@@ -406,7 +409,9 @@ public function update(Request $request, $id)
         $tarea_historico->fill($data);
         try {
             $tarea_historico->save();
+            DB::commit();
         } catch (Exception $e) {
+            DB::rollback();
             return response([
                 'status' => Response::HTTP_BAD_REQUEST,
                 'response_time' => microtime(true) - LARAVEL_START,
@@ -432,6 +437,7 @@ public function update(Request $request, $id)
 
 
         }
+        DB::commit();
         return response([
             'status' => Response::HTTP_OK,
             'response_time' => microtime(true) - LARAVEL_START,
@@ -518,6 +524,7 @@ public function update(Request $request, $id)
 
                         $colaborador->update();
                         $area->update();
+
                       } else {
                         // Restar horas al mes correspondiente
                         $colaborador = User::findOrFail($tarea->encargado_id);
@@ -560,6 +567,7 @@ public function update(Request $request, $id)
                             $horas_area->tiempo_real +=$tarea->tiempo_real;
                             $horas_area->save();
                         }else{
+                            DB::rollback();
                             return response([
                                 'status' => Response::HTTP_BAD_REQUEST,
                                 'response_time' => microtime(true) - LARAVEL_START,
@@ -570,6 +578,7 @@ public function update(Request $request, $id)
                         }
 
                     } catch (Exception $e) {
+                        DB::rollback();
                         return response([
                             'status' => Response::HTTP_BAD_REQUEST,
                             'response_time' => microtime(true) - LARAVEL_START,
@@ -677,18 +686,19 @@ public function update(Request $request, $id)
                         $tarea->id_evento=json_encode($calendar[0]);
                         $tarea->fecha_inicio_programar=json_encode($calendar[1]);
                         $tarea->fecha_fin_programar=json_encode($calendar[2]);
-
                         // return $tarea;
                         $tarea->save();
+                        DB::commit();
                     } catch (Exception $e) {
+                        DB::rollback();
                         return response([
                             'status' => Response::HTTP_BAD_REQUEST,
                             'response_time' => microtime(true) - LARAVEL_START,
-                            'msg' => 'Error al actualizar la tarea. No se pudo programar',
+                            'msg' => 'Error al actualizar la tarea. No se pudo programar en el calendar.',
                             'error' => config('constants.ERR_04'),
                             'tarea' =>$tarea,
                             'consola' =>$e->getMessage(),
-                            'request' =>$calendar,
+                            'calendar' =>$calendar,
                         ],Response::HTTP_BAD_REQUEST);
                     }
                     break;
@@ -725,6 +735,7 @@ public function update(Request $request, $id)
                     break;
 
                     default:
+                    DB::rollback();
                     return response([
                         'status' => Response::HTTP_BAD_REQUEST,
                         'response_time' => microtime(true) - LARAVEL_START,
@@ -741,6 +752,7 @@ public function update(Request $request, $id)
 
             catch(Exception $e)
             {
+                DB::rollback();
                 $respuesta["error"]="Error datos incorrectos";
                 $respuesta["codigo_error"]="Error con la tarea";
                 $respuesta["mensaje"]="Error con la tarea";
@@ -1456,7 +1468,14 @@ public function showAllTareas($id,Request $request)
                     ]);
                     $results = $service->events->insert($calendarId, $event);
                     if (!$results) {
-                      return false;
+                      return response([
+                          'status' => Response::HTTP_BAD_REQUEST,
+                          'response_time' => microtime(true) - LARAVEL_START,
+                          'msg' => 'Error al actualizar la tarea. No se pudo programar en el calendar.',
+                          'error' => 'Ocurrio un error del calendar',
+                          'consola' =>$calendarClient,
+                          'calendar' =>$results,
+                      ],Response::HTTP_BAD_REQUEST);
                        //return 'No se pudo crear el evento, por favor intente de nuevo';
                       //  return response()->json(['status' => 'error', 'message' => 'Something went wrong']);
                     }else{
@@ -1473,7 +1492,12 @@ public function showAllTareas($id,Request $request)
                   //return 'Se ha creado el evento correctamente';
                 //  return response()->json(['status' => 'success', 'message' => 'Event Created']);
               } else {
-                return false;
+                return response([
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'response_time' => microtime(true) - LARAVEL_START,
+                    'msg' => 'Error al actualizar la tarea. No se pudo programar en el calendar.',
+                    'error' => 'Error en Sessión',
+                ],Response::HTTP_BAD_REQUEST);
                 //return 'No posee el api de google';
                 //  return redirect()->route('oauthCallback');
               }
