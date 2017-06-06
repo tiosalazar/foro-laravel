@@ -81,6 +81,7 @@
             if (newSelected != null && newSelected != undefined) {
              this.id_ot = newSelected.id;
              this.value = newSelected;
+             console.log('select',newSelected);
              // Creo un evento para enviar el item seleccionado al padre.
              this.$parent.$emit('send-ot', newSelected)
 

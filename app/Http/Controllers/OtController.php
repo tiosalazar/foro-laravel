@@ -842,8 +842,24 @@ class OtController extends Controller
    {
       // Muestra todas las Ot con el cliente
       // y usuario que la creó
-      $ot=  Ot::with(['cliente','usuario'])
+      $ot=  Ot::with(['cliente','usuario','tiempos_x_area'])
       ->get();
+      /*$ot=OT::findOrFail($id);
+      $ot->fecha_final=$ot->getFormatFechaShow($ot->fecha_final);
+      $ot->fecha_inicio= $ot->getFormatFechaShow( $ot->fecha_inicio);
+      $ot->valor=$this->formatMoney($ot->valor,false);
+      $ot->Tiempos_x_Area;
+      $ot->Usuario;
+      $ot->Cliente;
+      $ot->Estado;
+      $ot->Requerimiento_Ot;
+      $ot->Compras_Ot;
+      $listado_areas=[];
+      foreach ($ot->Tiempos_x_Area as  $value) {
+         array_push($listado_areas, $value->Area);
+      }
+
+      return response()->json($ot);*/
       return response()->json($ot);
    }
    /**
@@ -1090,13 +1106,14 @@ class OtController extends Controller
          select('ots.id','ots.clientes_id','ots.horas_totales','ots.horas_disponibles','ots.total_horas_extra','ots.created_at','ots.estado','ots.estados_id',
          'ots.fecha_final','ots.fecha_inicio','ots.fee','ots.nombre','ots.referencia',
          'ots.usuarios_id','clientes.nombre as cliente_nombre','users.nombre as usuario_nombre',
-         'users.apellido as usuario_apellido')
+         'users.apellido as usuario_apellido','tiempos_x_area.ots_id as id_ot_tiempos')
          ->join('clientes','clientes.id','=','ots.clientes_id')
+         ->leftjoin('tiempos_x_area','tiempos_x_area.ots_id','=','ots.id')
          ->join('users','users.id','=','ots.usuarios_id')
          ->where('ots.estados_id','8')
          ->Where($value, 'like', '%'.$consulta.'%')
-         ->orWhere('clientes.nombre', 'like', '%'.$consulta.'%')
-         ->get();
+         ->orWhere('clientes.nombre', 'like', '%'.$consulta.'%');
+         //->get();
 
          return $ot;
       }
@@ -1110,6 +1127,23 @@ class OtController extends Controller
          //    $subquery->orWhere('nombre','like','%'.$query.'%');
          //  },'usuario'])->where('estados_id', 8)->orWhere('nombre', 'like', '%'.$query.'%')->get();
       }
+
+      /*$ot=  Ot::with(['cliente','usuario','tiempos_x_area'])
+      ->get();
+      $ot=OT::findOrFail($id);
+      $ot->fecha_final=$ot->getFormatFechaShow($ot->fecha_final);
+      $ot->fecha_inicio= $ot->getFormatFechaShow( $ot->fecha_inicio);
+      $ot->valor=$this->formatMoney($ot->valor,false);
+      $ot->Tiempos_x_Area;
+      $ot->Usuario;
+      $ot->Cliente;
+      $ot->Estado;
+      $ot->Requerimiento_Ot;
+      $ot->Compras_Ot;
+      $listado_areas=[];
+      foreach ($ot->Tiempos_x_Area as  $value) {
+         array_push($listado_areas, $value->Area);
+      }*/
       return response()->json($ot);
    }
 

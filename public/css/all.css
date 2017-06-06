@@ -9099,6 +9099,10 @@ body {
   font-size: 27px;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 .descripcion_tarea {
   word-break: break-all;
 }
