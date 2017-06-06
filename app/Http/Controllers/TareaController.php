@@ -525,6 +525,7 @@ public function update(Request $request, $id)
                         $colaborador->update();
                         $area->update();
 
+
                       } else {
                         // Restar horas al mes correspondiente
                         $colaborador = User::findOrFail($tarea->encargado_id);
@@ -620,7 +621,7 @@ public function update(Request $request, $id)
                 }
                 $data['editor_id']=Auth::user()->id;
                 $tarea_historico->fill($data);
-               $tarea_historico->save();
+                $tarea_historico->save();
 
                 //Respuesta
                 $respuesta['dato']=$tarea;
@@ -746,12 +747,8 @@ public function update(Request $request, $id)
                     ],Response::HTTP_BAD_REQUEST);
                     break;
                 }
-
-
-            }
-
-            catch(Exception $e)
-            {
+                DB::commit();
+            }catch(Exception $e){
                 DB::rollback();
                 $respuesta["error"]="Error datos incorrectos";
                 $respuesta["codigo_error"]="Error con la tarea";
