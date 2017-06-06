@@ -1106,14 +1106,13 @@ class OtController extends Controller
          select('ots.id','ots.clientes_id','ots.horas_totales','ots.horas_disponibles','ots.total_horas_extra','ots.created_at','ots.estado','ots.estados_id',
          'ots.fecha_final','ots.fecha_inicio','ots.fee','ots.nombre','ots.referencia',
          'ots.usuarios_id','clientes.nombre as cliente_nombre','users.nombre as usuario_nombre',
-         'users.apellido as usuario_apellido','tiempos_x_area.ots_id as id_ot_tiempos')
+         'users.apellido as usuario_apellido','tiempos_x_area.ots_id as id_tiempos')
          ->join('clientes','clientes.id','=','ots.clientes_id')
-         ->leftjoin('tiempos_x_area','tiempos_x_area.ots_id','=','ots.id')
          ->join('users','users.id','=','ots.usuarios_id')
          ->where('ots.estados_id','8')
          ->Where($value, 'like', '%'.$consulta.'%')
-         ->orWhere('clientes.nombre', 'like', '%'.$consulta.'%');
-         //->get();
+         ->orWhere('clientes.nombre', 'like', '%'.$consulta.'%')
+         ->get();
 
          return $ot;
       }
