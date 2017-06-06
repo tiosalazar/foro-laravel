@@ -432,9 +432,6 @@ class gCalendarController extends Controller
         session_start();
         $startDateTime = '2017-06-02T10:54:00';
         $endDateTime = '2017-06-02T14:00:00';
-
-        //return $_SESSION['access_token'];
-
         if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 
             /*$this->client->refreshToken($_SESSION['access_token']['access_token']);

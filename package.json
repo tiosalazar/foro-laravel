@@ -34,7 +34,9 @@
     "webpack": "^1.14.0"
   },
   "dependencies": {
+    "chart.js": "^2.6.0",
     "datatables.net": "^1.10.13",
+    "hchs-vue-charts": "^1.2.8",
     "laravel-echo": "^1.2.4",
     "moment": "^2.17.1",
     "push.js": "0.0.12",

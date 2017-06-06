@@ -89,6 +89,7 @@
       if (!Auth::user()->can('ver_ots')) {return Redirect::to('home');}
       return view('admin.ots.listado_ot');
     });
+
     Route::get('ots/crear', function()
       {
         if (!Auth::user()->can('crear_ots')) {
@@ -209,6 +210,14 @@
        }
        return view('admin.trafico.trafico');
     })->name('trafico');
+
+    //EXportar Ots Con graficos
+     Route::get('ots_graficas', function () {
+       if (!Auth::user()->can('ver_trafico')) {
+         return Redirect::to('home');
+       }
+       return view('admin.ots.visualizar_ot_graficas');
+    })->name('ots_graficas');
 
     // Informe Soporte
     Route::get('soporte', function () {

@@ -35,6 +35,7 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
      Route::resource('divisas', 'DivisasController');
      // OTs
      Route::resource('ots', 'OtController');
+     Route::get('visualizar_graficas/{id}', 'OtController@ShowOtGraficas');
      Route::put('actualizar_estado_ot/{id}', 'OtController@updateEstadoOT');
      Route::post('solicitarHoras', 'OtController@solicitarHoras');
      Route::get('ots_datatable','OtController@datatable_index');
