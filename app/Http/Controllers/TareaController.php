@@ -682,7 +682,7 @@ public function update(Request $request, $id)
                     //Programar en Calendar
                     $calendar= array();
                     try {
-                        $calendar =$this->programarCalendar($tarea['nombre_tarea'],strip_tags($tarea['descripcion']),$request->datos_fechas,$email->email);
+                        $calendar =$this->programarCalendar(Auth::user(),$tarea['nombre_tarea'],strip_tags($tarea['descripcion']),$request->datos_fechas,$email->email);
                         $tarea->id_evento=json_encode($calendar[0]);
                         $tarea->fecha_inicio_programar=json_encode($calendar[1]);
                         $tarea->fecha_fin_programar=json_encode($calendar[2]);
@@ -1441,7 +1441,7 @@ public function showAllTareas($id,Request $request)
             ];
         }
 
-        public function programarCalendar($summary,$description,$fechas,$email)
+        public function programarCalendar($user,$summary,$description,$fechas,$email)
           {
               $retorno_ids =array();
               $retorno_fechas_inicio =array();
@@ -1450,7 +1450,7 @@ public function showAllTareas($id,Request $request)
 
               session_start();
               if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
-                  $calendarClient = $this->getClientGoogle();
+                  $calendarClient = $this->getClientGoogle($user);
                   $service = new Google_Service_Calendar($calendarClient);
                 //  $calendarId = 'primary';
                   $calendarId = $email;
