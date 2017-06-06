@@ -1,4 +1,5 @@
 <template >
+<div>
     <div class="container box">
       <div class="row box-body ">
         <div class="col-md-12 ">
@@ -30,25 +31,48 @@
         <button class="btn btn-success center-block" v-on:click="GenerarGraficas(ot.id)">Generar Graficas</button>
       </div>
     </div>
+
+    <div class="container box">
+      <div class="row box-body ">
+        <div >
+          <canvas id="myChart" width="990" height="550" count="2" ></canvas>
+
+          <!-- Grafica Tiempo Real -->
+          <chartjs-bar target="myChart" :data="tiempo_real_grafica"  :labels="areas_grafica"   backgroundcolor="#313131" :width="990" :height="550" :bind="true"></chartjs-bar>
+          <!-- Fin grafica Tiempo real -->
+
+          <!-- Grafica Tiempo Estimado -->
+          <chartjs-bar target="myChart" :data="tiempo_estimado_grafica"  :labels="areas_grafica"  backgroundcolor="#ff0000" :width="990" :height="550" :bind="true"></chartjs-bar>
+          <!-- Fin Gráfica Tiempo  Estimado -->
+        </div>
+      </div>
+    </div>
+</div>
 </template>
 
 <script>
 
   import VeeValidate, { Validator } from 'vee-validate';
-
-    Vue.use(VeeValidate);
-
+  import 'chart.js';
+  import 'hchs-vue-charts';
+  // require('hchs-vue-charts');
+ 
+ 
+   Vue.use(VueCharts);
+   Vue.use(VeeValidate);
+   
    module.exports= {
-      components: {VeeValidate,Validator},
+      components: {VeeValidate,Validator,VueCharts},
        data(){
         return{
+          ver_graficas:false,
+          areas_grafica:[],
+          tiempo_real_grafica:[],
+          tiempo_estimado_grafica:[],
           select_ot:'',
           ot:[],
+          tiempos_areas:[],
           message :'',
-          errors_return:{
-            'nombre':'',
-            'extencion_tel':''
-          },
           option_toast:{
             timeOut: 5000,
             "positionClass": "toast-top-center",
@@ -64,11 +88,32 @@
         });
        },
         methods:{
+
           GenerarGraficas:function(id){
-            console.log("Generar Grafica id o "+id);
+            this.$validator.validateAll();
+            if (id==null) {
+              toastr.error('Por Favor Selecciona una OT','Error',this.option_toast);
+              return false;
+            }
+            
             this.$http.get(window._apiURL+'visualizar_graficas/'+id)
             .then(function(respuesta){
+              var arreglo_areas=respuesta.body.tiempos_x__area;
+              console.log("Arreglo Original");
               console.log(respuesta.body);
+              this.areas_grafica=[];
+              this.tiempo_estimado_grafica=[];
+              this.tiempo_real_grafica=[];
+              var that = this;
+              arreglo_areas.forEach(function(element) {
+                  that.areas_grafica.push(element.area.nombre);
+                  that.tiempo_estimado_grafica.push(element.tiempo_estimado_ot);
+                  that.tiempo_real_grafica.push(element.tiempo_real);
+              });
+
+              console.log("Tiempo Real");
+              console.log(this.tiempo_real_grafica);
+
             });
           }
          
