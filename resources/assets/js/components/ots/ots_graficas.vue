@@ -178,6 +178,8 @@
               this.tiempo_extra=respuesta.body.areasarray[3];
               this.tiempo_estimado=respuesta.body.areasarray[1];
               this.descripcion_tarea=respuesta.body.destareas;
+              var nom_areas= this.nombre_areas.splice(1,1);
+              this.areas_grafica=nom_areas;
               /*var arreglo_areas=respuesta.body.tiempos_x__area;
               console.log("Arreglo Original");
               console.log(respuesta.body);
