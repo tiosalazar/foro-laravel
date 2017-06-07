@@ -321,7 +321,59 @@ class OtController extends Controller
    */
    public function ShowOtGraficas($id)
    {
-      $ot=OT::findOrFail($id);
+      $ot = OT::findOrFail($id);
+      $ot->tiempos_x_area;
+      $ot->Cliente;
+      $ot->Usuario;
+      $ot->tareas=Tarea::with('area','usuario','estado','usuarioencargado')->where('estados_id', 1)->where('ots_id',$ot->id)->get();
+      // return response()->json($ot->tareas);
+
+      // Initialize the array which will be passed into the Excel
+      $areasArray =[];
+
+      // Define the Excel spreadsheet headers
+      $otsDescripcion = [];
+
+      $areasEncabezado=['Áreas / Tiempos'];
+      $areasEncabezado2=['Tiempo Estimado'];
+      $areasEncabezado3=['Tiempo Real'];
+      $areasEncabezado4=['Tiempo Extra'];
+      $total_contra=0;
+      $total_real=0;
+      $total_extra=0;
+
+      foreach ($ot->tiempos_x_area as  $tiempo_area) {
+         array_push( $areasEncabezado,Area::findOrFail($tiempo_area['areas_id'])->nombre );
+         array_push( $areasEncabezado2,number_format($tiempo_area['tiempo_estimado_ot'],2,",",".") );
+         array_push( $areasEncabezado3,number_format($tiempo_area['tiempo_real'],2,",",".") );
+         array_push( $areasEncabezado4,number_format($tiempo_area['tiempo_extra'],2,",",".") );
+         $total_contra += $tiempo_area['tiempo_estimado_ot'];
+         $total_real += $tiempo_area['tiempo_real'];
+         $total_extra += $tiempo_area['tiempo_extra'];
+      }
+      array_push( $areasEncabezado,'TOTAL' );
+      array_push( $areasEncabezado2, number_format($total_contra,2,",","."));
+      array_push( $areasEncabezado3,number_format($total_real,2,",",".") );
+      array_push( $areasEncabezado4,number_format($total_extra,2,",",".") );
+      //return response()->json( $areasEncabezado2);
+      foreach($ot->tareas as $tarea){
+         array_push( $otsDescripcion, array($tarea['area']['nombre'],$tarea['nombre_tarea'],$ot->getFormatFechaShowInfo($tarea['created_at']),$ot->getFormatFechaShowInfo($tarea['fecha_entrega_cuentas']), number_format( $tarea['tiempo_estimado'],2,",","."), number_format($tarea['tiempo_real'],2,",","."), number_format( $tarea['tiempo_mapa_cliente'],2,",","."),$tarea['usuarioencargado']['nombre'].' '.$tarea['usuarioencargado']['apellido']) );
+      }
+
+      array_push($areasArray, $areasEncabezado);
+      array_push($areasArray, $areasEncabezado2);
+      array_push($areasArray,  $areasEncabezado3);
+      array_push($areasArray,  $areasEncabezado4);
+
+      $response =[];
+      $response['destareas']=$otsDescripcion;
+      $response['areasarray']=$areasArray;
+
+      return response()->json($response);
+
+
+
+      /*$ot=OT::findOrFail($id);
       $ot->fecha_final=$ot->getFormatFechaShow($ot->fecha_final);
       $ot->fecha_inicio= $ot->getFormatFechaShow( $ot->fecha_inicio);
       $ot->valor=$this->formatMoney($ot->valor,false);
@@ -338,18 +390,8 @@ class OtController extends Controller
 
       $array_temporal=[];
       $ingreso=[];
-      foreach ($ot->Compras_Ot as  $value) {
-         $compra =Compras_Ot::findOrFail($value['id']);
-         $compra->Tipo_Compra;
-         $compra->Divisa;
-         $array_temporal= array('areas_id'=>$value['areas_id'],'tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'descripcion' => $value['descripcion'],
-         'provedor'=> $value['provedor'] , 'valor'=>  $this->formatMoney($value['valor'],false), 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
-         array_push($ingreso,$array_temporal);
-      }
 
-      $ot->Compras_Ot= $ingreso;
-
-      return response()->json($ot);
+      return response()->json($ot);*/
       // return view('admin.ots.visualizar_ot')->with('ot', $ot)->with('listado_areas', $listado_areas);
    }
    /**
@@ -843,6 +885,7 @@ class OtController extends Controller
       // Muestra todas las Ot con el cliente
       // y usuario que la creó
       $ot=  Ot::with(['cliente','usuario','tiempos_x_area'])
+      ->where('estado','=','1')
       ->get();
       /*$ot=OT::findOrFail($id);
       $ot->fecha_final=$ot->getFormatFechaShow($ot->fecha_final);
@@ -1106,10 +1149,11 @@ class OtController extends Controller
          select('ots.id','ots.clientes_id','ots.horas_totales','ots.horas_disponibles','ots.total_horas_extra','ots.created_at','ots.estado','ots.estados_id',
          'ots.fecha_final','ots.fecha_inicio','ots.fee','ots.nombre','ots.referencia',
          'ots.usuarios_id','clientes.nombre as cliente_nombre','users.nombre as usuario_nombre',
-         'users.apellido as usuario_apellido','tiempos_x_area.ots_id as id_tiempos')
+         'users.apellido as usuario_apellido')
          ->join('clientes','clientes.id','=','ots.clientes_id')
          ->join('users','users.id','=','ots.usuarios_id')
          ->where('ots.estados_id','8')
+         ->where('ots.estado','1')
          ->Where($value, 'like', '%'.$consulta.'%')
          ->orWhere('clientes.nombre', 'like', '%'.$consulta.'%')
          ->get();

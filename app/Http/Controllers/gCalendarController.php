@@ -68,7 +68,7 @@ class gCalendarController extends Controller
             $this->client->setAccessToken($access_token);
             // Refresh the token if it's expired.
                if ( $this->client->isAccessTokenExpired()) {
-                 $client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
+                 $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
                  $userauth->access_token= json_encode($this->client->getAccessToken());
                  $userauth->save();
                  return redirect()->action('HomeController@index');
@@ -123,7 +123,7 @@ class gCalendarController extends Controller
               $this->client->setAccessToken($access_token);
               // Refresh the token if it's expired.
                  if ( $this->client->isAccessTokenExpired()) {
-                   $client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
+                  $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
                    $userauth->access_token= json_encode($this->client->getAccessToken());
                    $userauth->save();
                      return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea)->with('desctarea',$descripcion);

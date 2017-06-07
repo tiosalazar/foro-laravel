@@ -31,7 +31,35 @@
         <button class="btn btn-success center-block" v-on:click="GenerarGraficas(ot.id)">Generar Graficas</button>
       </div>
     </div>
-
+    <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Resumen de Áreas de la OT</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table class="table table-bordered tabla_resumen_areas">
+                <tbody><tr  class="text-center">
+                     <th   class="text-center" v-for="(ed,index) in nombre_areas">{{ed}}</th>
+                </tr>
+                <tr class="listado_tiempos text-center">
+                    <td  v-for="(ed,index) in tiempo_estimado">{{ed}}</td>
+                  <!--<td style="font-weight:600;">Tiempo Estimado</td>
+                  <td><span class="badge bg-red">28,00</span></td>
+                  <td><span class="badge bg-yellow">66,00</span></td>
+                  <td><span class="badge bg-blue">93,00</span></td>
+                  <td><span class="badge bg-gray">55,00</span></td>
+                  <td><span class="badge bg-light-blue">55,00</span></td>
+                  <td><span class="badge bg-green">221,75</span></td>-->
+                </tr>
+                <tr class="listado_tiempos text-center">
+                  <td  v-for="(ed,index) in tiempo_real">{{ed}}</td>
+                </tr>
+                <tr class="listado_tiempos text-center">
+                    <td  v-for="(ed,index) in tiempo_extra">{{ed}}</td>
+                </tr>
+              </tbody></table>
+            </div>
+    </div>
     <div class="container box">
       <div class="row box-body ">
         <div >
@@ -44,6 +72,43 @@
           <!-- Fin Gráfica Tiempo  Estimado -->
         </div>
       </div>
+    </div>
+    <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Resumen de Tareas de la OT</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table class="table table-bordered tabla_resumen_areas">
+                <tbody><tr  class="text-center">
+                    <th class="text-center" > ÁREA</th>
+                    <th class="text-center" >  REQUERIMIENTOS</th>
+                    <th class="text-center" >  FECHA SOLICITUD</th>
+                    <th class="text-center" >  FECHA DE ENTREGA</th>
+                    <th class="text-center" >  TIEMPO EMPLEADO</th>
+                    <th class="text-center" >  TIEMPO ESTIMADO JEFE</th>
+                    <th class="text-center" >  TIEMPO ESTIMADO MAPA DE CLIENTE</th>
+                    <th class="text-center" >  ENCARGADO</th>
+                </tr>
+                <tr class="text-center"  v-for="(ed,index) in descripcion_tarea">
+                    <td >{{ed[0]}}</td>
+                    <td >{{ed[1]}}</td>
+                    <td >{{ed[2]}}</td>
+                    <td >{{ed[3]}}</td>
+                    <td >{{ed[4]}}</td>
+                    <td >{{ed[5]}}</td>
+                    <td >{{ed[6]}}</td>
+                    <td >{{ed[7]}}</td>
+                  <!--<td style="font-weight:600;">Tiempo Estimado</td>
+                  <td><span class="badge bg-red">28,00</span></td>
+                  <td><span class="badge bg-yellow">66,00</span></td>
+                  <td><span class="badge bg-blue">93,00</span></td>
+                  <td><span class="badge bg-gray">55,00</span></td>
+                  <td><span class="badge bg-light-blue">55,00</span></td>
+                  <td><span class="badge bg-green">221,75</span></td>-->
+                </tr>
+              </tbody></table>
+            </div>
     </div>
 </div>
 </template>
@@ -74,6 +139,11 @@
           select_ot:'',
           ot:[],
           tiempos_areas:[],
+          nombre_areas:[],
+          tiempo_estimado:[],
+          descripcion_tarea:[],
+          tiempo_real:[],
+          tiempo_extra:[],
           message :'',
           option_toast:{
             timeOut: 5000,
@@ -102,7 +172,13 @@
 
             this.$http.get(window._apiURL+'visualizar_graficas/'+id)
             .then(function(respuesta){
-              var arreglo_areas=respuesta.body.tiempos_x__area;
+              console.log(respuesta);
+              this.nombre_areas=respuesta.body.areasarray[0];
+              this.tiempo_real=respuesta.body.areasarray[2];
+              this.tiempo_extra=respuesta.body.areasarray[3];
+              this.tiempo_estimado=respuesta.body.areasarray[1];
+              this.descripcion_tarea=respuesta.body.destareas;
+              /*var arreglo_areas=respuesta.body.tiempos_x__area;
               console.log("Arreglo Original");
               console.log(respuesta.body);
               this.areas_grafica=[];
@@ -116,7 +192,7 @@
               });
               this.mydatasets1=this.tiempo_real_grafica;
               console.log("Tiempo Real",this.tiempo_real_grafica);
-              console.log("Tiempo estimado",this.tiempo_estimado_grafica);
+              console.log("Tiempo estimado",this.tiempo_estimado_grafica);*/
 
             });
           }

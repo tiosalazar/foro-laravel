@@ -860,6 +860,9 @@ public function showAllTareas($id,Request $request)
     ->editColumn('created_at', function ($tarea) {
         return $tarea->getFormatFecha($tarea->created_at);
     })
+    ->editColumn('ot.referencia', function ($tarea) {
+          return '<span title="'.$tarea->ot->nombre.' " >'.$tarea->ot->referencia.'</span>';
+    })
     ->editColumn('fecha_entrega_cuentas', function ($tarea) {
         return (!is_null($tarea->fecha_entrega_cuentas)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cuentas) : 'No definida' ;
     })
