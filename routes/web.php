@@ -19,11 +19,10 @@
   Route::get('pedir', 'gCalendarController@pedir');
   Route::get('ver_token', 'gCalendarController@ver_token');
   Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
-  Route::get('oauth_tarea', ['as' => 'oauthCallbackTarea', 'uses' => 'gCalendarController@oauth_tarea']);
 
   Route::group(['middleware' => ['auth','login_estado']], function () {
 
-    Route::get('/home', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
+    Route::get('/home', ['uses' => 'gCalendarController@oauth']);
     Route::get('/', [ 'uses' => 'gCalendarController@oauth']);
 
    //Ruta para cargar imagen de perfil
@@ -142,10 +141,7 @@
 
   //DSO al ver tarea, Pedir Permisos Google.
   Route::get('/ver_tarea/{id}', 'gCalendarController@oauthTarea');
-//  Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
-//  Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
-
- //Route::get('tareas/ver/{id}', ['as' => 'tareaCallback', 'uses' => 'gCalendarController@oauthTarea']);
+  //  Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
 
   Route::get('/comentarios/{id}','TareaController@getComments');
 

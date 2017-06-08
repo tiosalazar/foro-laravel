@@ -63,7 +63,7 @@ class gCalendarController extends Controller
             return redirect()->action('HomeController@index');
         }
         session_start();
-        if (isset($_SESSION['access_token']) && $_SESSION['access_token'] && $userauth->access_token != null) {
+        if (isset($_SESSION['access_token']) && $_SESSION['access_token'] != "" && $userauth->access_token != null && $userauth->access_token != "") {
             $access_token=json_decode($userauth->access_token, true);
             $this->client->setAccessToken($access_token);
             // Refresh the token if it's expired.
@@ -86,10 +86,8 @@ class gCalendarController extends Controller
               return redirect($filtered_url);
           } else {
               $this->client->authenticate($_GET['code']);
-              //$this->client->refreshToken($_SESSION['access_token']);
               $_SESSION['access_token']=  $this->client->getAccessToken();
               $userauth->access_token= json_encode($_SESSION['access_token']);
-            //  $userauth->refresh_token=  $_SESSION['access_token']['refresh_token'];
               $userauth->save();
               return redirect()->action('HomeController@index');
           }
@@ -118,7 +116,7 @@ class gCalendarController extends Controller
               return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea)->with('desctarea',$descripcion);
           }
           session_start();
-          if (isset($_SESSION['access_token']) && $_SESSION['access_token'] && $userauth->access_token != null) {
+          if (isset($_SESSION['access_token']) && $_SESSION['access_token'] != "" && $userauth->access_token != null && $userauth->access_token != "") {
               $access_token=json_decode($userauth->access_token, true);
               $this->client->setAccessToken($access_token);
               // Refresh the token if it's expired.
@@ -150,50 +148,16 @@ class gCalendarController extends Controller
          }
     }
 
-
-
-    public function oauth_tarea($id)
-    {
-        session_start();
-
-
-
-         $rurl = action('gCalendarController@oauth_tarea');
-         $this->client->setRedirectUri($rurl);
-
-          if (!isset($_GET['code'])) {
-              $auth_url = $this->client->createAuthUrl();
-              $filtered_url = filter_var($auth_url, FILTER_SANITIZE_URL);
-              return redirect($filtered_url);
-          } else {
-              $this->client->authenticate($_GET['code']);
-              $this->client->setAccessType('offline');
-              $this->client->setApprovalPrompt ('force');
-              //$this->client->refreshToken($_SESSION['access_token']);
-              $_SESSION['access_token']=  $this->client->getAccessToken();
-              $tarea = Tarea::with(['ot.cliente','ot.usuario', 'estado', 'estado_prioridad','planeacion_fase','area','usuario','usuarioencargado'])->where('id',$id)->first();
-
-              $descripcion=$tarea->descripcion;
-              $comentario=$tarea->comentario;
-
-              $tarea->descripcion="";
-              $tarea->comentario="";
-
-              $tarea->fecha_inicio_programar=json_decode($tarea->fecha_inicio_programar);
-              $tarea->fecha_fin_programar=json_decode($tarea->fecha_fin_programar);
-            return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea)->with('desctarea',$descripcion);
-          }
-    }
-
     public function returnClient($user)
     {
-        $access_token=json_decode($user->access_token, true);
+        $usuario = User::findOrFail($user->id);
+        $access_token=json_decode($usuario->access_token, true);
         $this->client->setAccessToken($access_token);
         // Refresh the token if it's expired.
            if ( $this->client->isAccessTokenExpired()) {
-             $client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
-             $userauth->access_token= json_encode($this->client->getAccessToken());
-             $userauth->save();
+             $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
+             $usuario->access_token= json_encode($this->client->getAccessToken());
+             $usuario->save();
              return  $this->client;
        }else {
           return  $this->client;
@@ -205,94 +169,6 @@ class gCalendarController extends Controller
         var_dump($_SESSION['access_token']);
         var_dump($_SESSION['access_token']['refresh_token']);
     }
-
-/*
-    public function oauthTarea($id)
-    {
-      ///
-      $tarea = Tarea::with(['ot.cliente','ot.usuario', 'estado', 'estado_prioridad','planeacion_fase','area','usuario','usuarioencargado'])->where('id',$id)->first();
-
-      $descripcion=$tarea->descripcion;
-      $comentario=$tarea->comentario;
-
-      $tarea->descripcion="";
-      $tarea->comentario="";
-
-      $tarea->fecha_inicio_programar=json_decode($tarea->fecha_inicio_programar);
-      $tarea->fecha_fin_programar=json_decode($tarea->fecha_fin_programar);
-      //
-
-      //Id del area del usuario conectado
-       $userauth = Auth::user()->rol->name;
-        if ( $userauth !='coordinador') {
-            return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea)->with('desctarea',$descripcion);
-        }
-        session_start();
-        if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
-        try {
-            $this->client->setAccessType('offline');
-            $this->client->setApprovalPrompt ('force');
-            $this->client->refreshToken($_SESSION['access_token']);
-            $_SESSION['access_token'] = $this->client->getAccessToken();
-            return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea)->with('desctarea',$descripcion);
-        //    return redirect("/home");/ver_tarea/1122
-        } catch (Exception $e) {
-            return $e;
-            $response = $e->getCode();
-            /*$sacar =  array('"','}','{');
-            $response = str_replace ($sacar,"",$response);
-            $error = explode(":",$response);*/
-        /*    if($response == 400){
-               $client = new Google_Client();
-                $client->setAuthConfig('client_secret.json');
-                $client->addScope(Google_Service_Calendar::CALENDAR);
-                $guzzleClient = new \GuzzleHttp\Client(array('curl' => array(CURLOPT_SSL_VERIFYPEER => false)));
-                $client->setHttpClient($guzzleClient);
-                $this->client = $client;
-
-                $rurl = action('gCalendarController@oauth_tarea', ['id' => $id]);
-                //$rurl = action('TareaController@showOneTarea', ['id' => $id]);
-
-                $this->client->setRedirectUri($rurl);
-                $auth_url = $this->client->createAuthUrl();
-
-                 if (!isset($_GET['code'])) {
-                     $auth_url = $this->client->createAuthUrl();
-                     $filtered_url = filter_var($auth_url, FILTER_SANITIZE_URL);
-                     return redirect($filtered_url);
-                 } else {
-                     $this->client->authenticate($_GET['code']);
-                     $this->client->setAccessType('offline');
-                     $this->client->setApprovalPrompt ('force');
-                     $_SESSION['access_token'] = $this->client->getAccessToken();
-                     $this->client->refreshToken($_SESSION['access_token']);
-                     return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea)->with('desctarea',$descripcion);
-                  }
-
-              }
-           }
-        } else {
-         $rurl = action('gCalendarController@oauth');
-         $this->client->setRedirectUri($rurl);
-
-          if (!isset($_GET['code'])) {
-              $auth_url = $this->client->createAuthUrl();
-              $filtered_url = filter_var($auth_url, FILTER_SANITIZE_URL);
-              return redirect($filtered_url);
-          } else {
-              $this->client->authenticate($_GET['code']);
-              $this->client->setAccessType('offline');
-              $this->client->setApprovalPrompt ('force');
-              $_SESSION['access_token'] = $this->client->getAccessToken();
-              $this->client->refreshToken($_SESSION['access_token']);
-            //  return $this->client;
-              return view('admin.tareas.ver_tarea')->with('tareainfo',$tarea)->with('desctarea',$descripcion);
-          }
-
-      }
-
-
-  }*/
 
     /**
      * Show the form for creating a new resource.

@@ -763,6 +763,9 @@
 
           let data_fechas =(this.comprobarSiGuardoFechas(this.datos_fechas)===true)?null:this.comprobarSiGuardoFechas(this.datos_fechas);
           console.log(data_fechas);
+          if (data_fechas == null) {
+            return false;
+          }
             //Datos a enviar
             let data =
             {
