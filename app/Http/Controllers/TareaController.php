@@ -682,25 +682,28 @@ public function update(Request $request, $id)
                     $email=  User::findOrFail($tarea->encargado_id);
                     //Programar en Calendar
                     $calendar= array();
-                    try {
-                        $calendar =$this->programarCalendar(Auth::user(),$tarea['nombre_tarea'],strip_tags($tarea['descripcion']),$request->datos_fechas,$email->email);
-                        $tarea->id_evento=json_encode($calendar[0]);
-                        $tarea->fecha_inicio_programar=json_encode($calendar[1]);
-                        $tarea->fecha_fin_programar=json_encode($calendar[2]);
-                        // return $tarea;
-                        $tarea->save();
-                        DB::commit();
-                    } catch (Exception $e) {
-                        DB::rollback();
-                        return response([
-                            'status' => Response::HTTP_BAD_REQUEST,
-                            'response_time' => microtime(true) - LARAVEL_START,
-                            'msg' => 'Error al actualizar la tarea. No se pudo programar en el calendar.',
-                            'error' => config('constants.ERR_04'),
-                            'tarea' =>$tarea,
-                            'consola' =>$e->getMessage(),
-                            'calendar' =>$calendar,
-                        ],Response::HTTP_BAD_REQUEST);
+                    $fechas =$request->datos_fechas[0];
+                    if($fechas['fin_programada']['time'] !="" && $fechas['inicio_programada']['time'] != "") {
+                        try {
+                            $calendar =$this->programarCalendar(Auth::user(),$tarea['nombre_tarea'],strip_tags($tarea['descripcion']),$request->datos_fechas,$email->email);
+                            $tarea->id_evento=json_encode($calendar[0]);
+                            $tarea->fecha_inicio_programar=json_encode($calendar[1]);
+                            $tarea->fecha_fin_programar=json_encode($calendar[2]);
+                            // return $tarea;
+                            $tarea->save();
+                            //DB::commit();
+                        } catch (Exception $e) {
+                            DB::rollback();
+                            return response([
+                                'status' => Response::HTTP_BAD_REQUEST,
+                                'response_time' => microtime(true) - LARAVEL_START,
+                                'msg' => 'Error al actualizar la tarea. No se pudo programar en el calendar.',
+                                'error' => config('constants.ERR_04'),
+                                'tarea' =>$tarea,
+                                'consola' =>$e->getMessage(),
+                                'calendar' =>$calendar,
+                            ],Response::HTTP_BAD_REQUEST);
+                        }
                     }
                     break;
                     case '4':
@@ -859,6 +862,9 @@ public function showAllTareas($id,Request $request)
     return Datatables::of($output)
     ->editColumn('created_at', function ($tarea) {
         return $tarea->getFormatFecha($tarea->created_at);
+    })
+    ->editColumn('ot.referencia', function ($tarea) {
+          return '<span title="'.$tarea->ot->nombre.' " >'.$tarea->ot->referencia.'</span>';
     })
     ->editColumn('fecha_entrega_cuentas', function ($tarea) {
         return (!is_null($tarea->fecha_entrega_cuentas)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cuentas) : 'No definida' ;

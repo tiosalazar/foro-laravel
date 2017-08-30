@@ -314,45 +314,6 @@ class OtController extends Controller
       return view('admin.ots.visualizar_ot')->with('ot', $ot)->with('listado_areas', $listado_areas);
    }
    /**
-   * Display the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-   public function ShowOtGraficas($id)
-   {
-      $ot=OT::findOrFail($id);
-      $ot->fecha_final=$ot->getFormatFechaShow($ot->fecha_final);
-      $ot->fecha_inicio= $ot->getFormatFechaShow( $ot->fecha_inicio);
-      $ot->valor=$this->formatMoney($ot->valor,false);
-      $ot->Tiempos_x_Area;
-      $ot->Usuario;
-      $ot->Cliente;
-      $ot->Estado;
-      $ot->Requerimiento_Ot;
-      $ot->Compras_Ot;
-      $listado_areas=[];
-      foreach ($ot->Tiempos_x_Area as  $value) {
-         array_push($listado_areas, $value->Area);
-      }
-
-      $array_temporal=[];
-      $ingreso=[];
-      foreach ($ot->Compras_Ot as  $value) {
-         $compra =Compras_Ot::findOrFail($value['id']);
-         $compra->Tipo_Compra;
-         $compra->Divisa;
-         $array_temporal= array('areas_id'=>$value['areas_id'],'tipo_compra'=>array('id'=>$compra->Tipo_Compra['id'], 'nombre'=>$compra->Tipo_Compra['nombre']),'descripcion' => $value['descripcion'],
-         'provedor'=> $value['provedor'] , 'valor'=>  $this->formatMoney($value['valor'],false), 'divisa'=>array('id'=>$compra->Divisa['id'], 'nombre'=>$compra->Divisa['nombre']));
-         array_push($ingreso,$array_temporal);
-      }
-
-      $ot->Compras_Ot= $ingreso;
-
-      return response()->json($ot);
-      // return view('admin.ots.visualizar_ot')->with('ot', $ot)->with('listado_areas', $listado_areas);
-   }
-   /**
    * Show the form for editing the specified resource.
    *
    * @param  int  $id
@@ -1087,7 +1048,7 @@ class OtController extends Controller
       function consulta_ot($value,$consulta)
       {
          $ot = Ot::
-         select('ots.id','ots.clientes_id','ots.horas_totales','ots.horas_disponibles','ots.total_horas_extra','ots.created_at','ots.estado','ots.estados_id',
+         select('ots.id','ots.clientes_id','ots.created_at','ots.estado','ots.estados_id',
          'ots.fecha_final','ots.fecha_inicio','ots.fee','ots.nombre','ots.referencia',
          'ots.usuarios_id','clientes.nombre as cliente_nombre','users.nombre as usuario_nombre',
          'users.apellido as usuario_apellido')

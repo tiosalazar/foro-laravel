@@ -1,0 +1,143 @@
+.perfil-box{
+	.box_perfil{
+		padding-left: 0;
+		.box_perfil_foto{
+			padding-left: 0;
+			padding-right: 0;
+			.box_perfil_foto_img{
+				padding-left: 0;
+				padding-right: 0;
+			}
+			.box_perfil_foto_img-2{
+				height: 240px; 
+				width: 230px;
+				.editar_foto{
+				    float: right;
+					top: -30px;
+					right: 0px;
+					background-color: #15BAEE;
+					color: white;
+					margin: 5;
+					padding: 8px;
+					cursor: pointer;
+				}
+			}
+			
+		}
+		.header_perfil{
+			padding-top: 0;
+			padding-bottom: 4px;
+		}
+	}
+	border:  none;
+	padding: 4% 0 4% 0;
+	.nombre_user{
+		font-weight: bold;
+		margin-top: 0;
+	}
+	.area_user{
+		margin-top: 15px;
+	}
+	.cargo_user{
+		color: #727272;
+	}
+	.img_perfil{
+		height: 100%;
+	}
+	.info_perfil{
+	display: flex;
+	flex-direction: column;
+		.correo{
+			display: flex;
+		}
+		strong{
+			margin-bottom: 8px;
+			color:#727272;
+			font-weight: normal;
+			i{
+				color: #06ACE2;
+			}
+			span{
+				color: black;
+				margin-left: 2%;
+			}
+		}
+	}
+
+	
+}
+
+#image_upload{
+	.grupo_img_perfil{
+		margin-bottom: 20px;
+		.input_buscar{
+			background-color: #15BAEE;
+			border: none;
+    		height: 28px;
+		}
+	}
+	.boton_accion{
+		text-align: right;
+	}
+	.input_img{
+		margin-bottom: 20px;
+	}
+	.img_cerrar{
+		background-color: $estado-alta;
+		border: none;
+	}
+	.img_cambiar{
+		background-color: #15BAEE;
+		border: none;
+	}
+	.btn-file {
+	  position: relative;
+	  overflow: hidden;
+	  }
+	.btn-file input[type=file] {
+	    position: absolute;
+	    top: 0;
+	    right: 0;
+	    min-width: 100%;
+	    min-height: 100%;
+	    font-size: 100px;
+	    text-align: right;
+	    filter: alpha(opacity=0);
+	    opacity: 0;
+	    outline: none;
+	    background: white;
+	    cursor: inherit;
+	    display: block;
+	}
+}
+
+.ver_mas{
+	text-align:center;
+	.ver_mas_texto{
+		cursor: pointer;
+		font-size: 16px;
+		color:#06ACE2;
+		font-weight: bold;
+	}
+}
+
+@media (max-width: 1250px) {
+  .box_perfil_foto{
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    .box_perfil_foto_img{
+    	width: 50%;
+    }
+  }
+
+  	.info_perfil{
+		.correo{
+			display: inherit !important;
+		}
+	}
+}
+
+    
+

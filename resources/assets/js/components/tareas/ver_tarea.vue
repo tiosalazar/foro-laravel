@@ -787,7 +787,7 @@
             //Método que envia los datos al api rest
             this.$http.put(window._apiURL+'tareas/'+this.tarea_info.id, data)
             .then(function (respuesta) {
-              console.log('Respuesta',respuesta);
+              console.log(respuesta);
               let that = this;
               that.message ='';
 
@@ -825,12 +825,8 @@
                 }
             }
           }, (err) => {
-            console.log('Error',err);
             if (err.status == 404) {
              toastr.error('No se encontraron resultados, verfique la informacion','Error',this.option_toast);
-           }if (err.status == 400) {
-             toastr.error(err.error,err.msg,this.option_toast);
-             return false;
            } else {
              if (Object.keys(err.body.obj).length>0) {
                this.setErrors(err.body.obj);
