@@ -18,3 +18,5 @@
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 </IfModule>
+
+AddHandler application/x-httpd-php56 .php .php5 .php4 .php3
