@@ -313,6 +313,8 @@ class OtController extends Controller
       //return response()->json( $ot);
       return view('admin.ots.visualizar_ot')->with('ot', $ot)->with('listado_areas', $listado_areas);
    }
+
+   
    /**
    * Display the specified resource.
    *
@@ -394,6 +396,8 @@ class OtController extends Controller
       return response()->json($ot);*/
       // return view('admin.ots.visualizar_ot')->with('ot', $ot)->with('listado_areas', $listado_areas);
    }
+
+
    /**
    * Show the form for editing the specified resource.
    *
@@ -1146,7 +1150,7 @@ class OtController extends Controller
       function consulta_ot($value,$consulta)
       {
          $ot = Ot::
-         select('ots.id','ots.clientes_id','ots.horas_totales','ots.horas_disponibles','ots.total_horas_extra','ots.created_at','ots.estado','ots.estados_id',
+         select('ots.id','ots.clientes_id','ots.created_at','ots.estado','ots.estados_id',
          'ots.fecha_final','ots.fecha_inicio','ots.fee','ots.nombre','ots.referencia',
          'ots.usuarios_id','clientes.nombre as cliente_nombre','users.nombre as usuario_nombre',
          'users.apellido as usuario_apellido')

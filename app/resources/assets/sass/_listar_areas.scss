@@ -1,0 +1,174 @@
+
+
+.listar_areas_modulo{
+	width: 90%;
+
+	@media screen and (max-width: 1300px) {
+		width: auto;
+	}
+
+	/* mixin centrado, fuente y alto titulo de las columnas */
+	@mixin center_text() {
+		-ms-display: flex;
+		display: flex;
+		/* alineacion vertical */
+		align-items: center;
+		/* alineacion horizontal */
+		justify-content: center;
+		height: 50px;
+		font-size: 14px;
+		margin-top: 0;
+	}
+
+	.columnas_listar_areas{
+		padding-right: 0;
+		padding-left: 0;
+		height: 550px;
+		background-color: #EDEDED;
+        .active{
+        	background-color: #15BAEE;
+			color: white;
+        }
+		//ul areas
+		&:nth-child(1){
+			ul{
+				margin-top: 15%;
+			    list-style: none;
+			    padding: 0;
+			    text-align: center;
+			    li{
+			    	min-height: 35px;
+			    	padding-top: 7px;
+			    	cursor: pointer;
+			    	&:hover{
+			    		background-color: #15BAEE;
+			    		color: white;
+			    		text-decoration: none;
+			    	}
+
+			    }
+			    a{
+		    		&:focus{
+		    			display: block;
+						background-color:#15BAEE;
+						color:white;
+						text-decoration: none;
+		    		 }
+			    }
+
+			}
+
+		}
+		//ul listado de usuarios
+		&:nth-child(2){
+			background-color: #E8E8E8;
+			ul{
+				margin-top: 5%;
+				list-style: none;
+				list-style: none;
+			    padding: 0;
+			    overflow: auto;
+			    height: 325px;
+			    border-top: 1px dashed gray;
+				&::-webkit-scrollbar {
+				   width: 10px;
+				   background-color: #8c8c8c;
+				}
+				&::-webkit-scrollbar-thumb {
+				  background-color: #003A81;
+				  outline: 1px solid #003A81;
+				}
+				a{
+		    		&:focus{
+		    			display: block;
+						background-color:#15BAEE;
+						color:white;
+						text-decoration: none;
+		    		 }
+			    }
+			    li{
+			    	height: 80px;
+			    	border-bottom: 1px dashed gray;
+			    	display: flex;
+			    	line-height: 8px;
+
+			    	.text_user_listado{
+			    		padding-top: 17px;
+    					padding-left: 5%;
+    					strong{
+    						color: #626262;
+    					}
+			    	}
+			    	img{
+			    		width: 60px;
+			    		height: 60px;
+			    		margin-top: 10px;
+			    		margin-left: 10px;
+			    	}
+			    	&:hover{
+			    		background-color: #15BAEE;
+			    		color: white;
+			    		cursor:pointer;
+			    		text-decoration: none;
+			    	}
+
+			    }
+			}
+		}
+		.info_content{
+			width: 300px;
+			margin: 0 auto;
+			h3{
+				color: #15BAEE;
+				font-weight: bold;
+			}
+			.editar_usuarios_area{
+				background-color: #15BAEE;
+				border:none;
+				margin-top: 35px;
+				&:hover{
+					background-color: #025e7b;
+				}
+			}
+			.eliminar_usuario_area{
+				background-color: #FE0101;
+				border:none;
+				margin-top: 35px;
+				&:hover{
+					background-color: #8c0000;
+				}
+			}
+			@media screen and (max-width: 992px) {
+				text-align: center;
+			}
+		}
+
+	}
+	.titulo_listar_area{
+		background-color: #003A81;
+		color: white;
+		@include center_text();
+
+
+	}
+	.titulo_listar_user{
+		background-color: #0053A8;
+		color: white;
+		@include center_text();
+	}
+	.titulo_listar_info{
+		background-color: #006ED4;
+		color: white;
+		margin-bottom: 8%;
+		@include center_text();
+	}
+}
+
+//Transiciones de listar tarea
+
+.v-enter {
+  transition: opacity .5s
+}
+.v-leave /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
+}

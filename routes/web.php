@@ -17,9 +17,13 @@
 
   Route::resource('gcalendar', 'gCalendarController');
   Route::get('pedir', 'gCalendarController@pedir');
-  Route::get('ver_token', 'gCalendarController@ver_token');
+  Route::get('destroygoogle', 'gCalendarController@destroySession');
   Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
 
+  //Imprimir Hora
+  Route::get('/hora_actual', function () {
+    echo date("d-m-Y H:m:s");
+  });
   Route::group(['middleware' => ['auth','login_estado']], function () {
 
     Route::get('/home', ['uses' => 'gCalendarController@oauth']);
@@ -27,7 +31,6 @@
 
    //Ruta para cargar imagen de perfil
     Route::post('/usuariosuploadimagen','HomeController@SubirImagen');
-    Route::get('/consolecalendar','TareaController@calendarConsole');
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
@@ -76,7 +79,7 @@
     Route::get('/foro/visualizar/todas', function () {
       return view('admin.tareas.ver_todas_tareas');
     })->name('ver_todas_tareas');
-
+    
 
   //OTS
     Route::get('ots/editar/{id}', ['middleware' => ['permission:editar_ots'], 'uses' => 'OtController@edit']);
@@ -88,7 +91,6 @@
       if (!Auth::user()->can('ver_ots')) {return Redirect::to('home');}
       return view('admin.ots.listado_ot');
     });
-
     Route::get('ots/crear', function()
       {
         if (!Auth::user()->can('crear_ots')) {
@@ -143,6 +145,7 @@
   Route::get('/ver_tarea/{id}', 'gCalendarController@oauthTarea');
   //  Route::get('/ver_tarea/{id}','TareaController@showOneTarea');
 
+
   Route::get('/comentarios/{id}','TareaController@getComments');
 
   // Listar Fases de  Planeación
@@ -179,8 +182,6 @@
     Route::get('/years_historico_clientes', 'ClienteController@getYearHistorico');
 
     Route::get('/historico_equipos/{id}',['middleware' => ['permission:ver_historico_areas'], 'uses' => 'AreaController@historico_de_equipos']);
-    Route::get('/historico_equipos/listado/exportar/{id_entidad}/{month}/{year}',['middleware' => ['permission:ver_historico_areas'], 'uses' => 'AreaController@exportar_data_historico']);
-
     Route::get('/historico_clientes/{id}',['middleware' => ['permission:ver_historico_clientes'], 'uses' => 'ClienteController@historico_de_clientes']);
 
 
@@ -206,14 +207,6 @@
        }
        return view('admin.trafico.trafico');
     })->name('trafico');
-
-    //EXportar Ots Con graficos
-     Route::get('ots_graficas', function () {
-       if (!Auth::user()->can('ver_trafico')) {
-         return Redirect::to('home');
-       }
-       return view('admin.ots.visualizar_ot_graficas');
-    })->name('ots_graficas');
 
     // Informe Soporte
     Route::get('soporte', function () {

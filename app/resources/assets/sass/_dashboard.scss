@@ -1,0 +1,264 @@
+body{
+	font-family: 'Ubuntu', sans-serif;
+
+}
+
+
+
+.fuente-icon{
+	font-family: 'iconforo';
+	font-size: 18px;
+	font-style: normal;
+}
+.login-logo{
+    padding: 10px 0px 25px;
+    margin-bottom: 0px;
+    background: white;
+}
+.login-box-body{
+	background: rgba(0, 46, 96, 0.75);
+	//opacity: 0.8;
+	color: white;
+	h2{
+		text-align: center;
+		color: $azul-claro;
+	}
+	 .checkbox label {
+     padding-left: 0px; 
+    }
+    .checkbox {
+     margin-top: 0px; 
+    }
+	.span_check{
+		margin-left: 5px;
+	}
+	/*.glyphicon{
+		color: $azul-claro;
+	}*/
+}
+.slimScrollDiv{
+	    cursor: pointer;
+}
+.login-page{
+	background: #003675;
+}
+.logo_sherpa{
+    background: url(../images/Sherpa.png) no-repeat;
+    width: 100%;
+    margin-top: -5%;
+    background-position: 0% 0%;
+    position: absolute;
+    height: 100%;
+
+}
+.login-box{
+    position: relative;
+    z-index: 99999;
+}
+@media screen and (min-width: 1680px) {
+.logo_sherpa{
+    height: 80%;
+    
+}	
+}
+@media screen and (min-width: 1024px) and (max-width: 1360px) {
+.logo_sherpa{
+    margin-top: -7%;
+    background-position: -24% 0%;
+    
+}	
+}
+
+@media screen and (max-width: 768px) {
+.logo_sherpa{
+    background-position: 60% 24%;
+    margin-top: 0%;
+ }	
+}
+.sidebar-menu .treeview.active .fa-caret-left {
+	 margin-right: 9px;
+    transition-timing-function: linear;
+	-webkit-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+}
+
+.skin-blue{
+	.main-header{
+	
+	width: 100%;
+		.navbar{
+			background-color: #004EA4;
+		}
+		.logo{
+			background-color: #003A81;
+		}
+		.logo-lg{
+			padding-right: 16%;
+			img{
+				width: 107px;
+
+			}
+		}
+	}
+.skin-blue .main-sidebar .sidebar-menu li a {
+    color: white;
+    font-weight: 300;
+    font-size: 1.1em;
+    text-decoration: none;
+}
+	.main-sidebar{
+		background-color: #002E60;
+		color: white;
+		font-size: 14px;
+
+		.user-panel{
+			margin-top: 15%;
+			margin-bottom: 10%;
+			padding: 20px 10px;
+		}
+		.sidebar-menu {
+			li{
+				a{
+					text-decoration: none;
+					color: white;
+
+				}
+				&:hover > a{
+					background-color: #002143;
+					color: white;
+
+					i{
+						color:#15BAEE; 
+					}
+				}
+				&:active > a{
+					background-color: #002143;
+					color: white;
+				}
+
+				ul{
+					padding-left: 0;
+					background-color: #002143;
+					li{
+						color: #15BAEE;
+						a{	
+							color:#15BAEE;
+							height: 40px;
+   						    padding-top: 5%; 
+							&:hover{
+								background-color: #15BAEE;
+								color: white;
+							}
+							&:hover>i{
+							
+								color: white;
+							}
+									
+						}
+						
+					}
+				}
+
+			}
+			.treeview{
+				span{
+					margin-left: 5%;
+				}
+			}
+			
+		}
+		
+	}
+	.main-footer{
+		background-color: #15BAEE;
+		color: white;
+		font-weight: normal;
+		a{
+			color: white;	
+		}
+	}
+
+}
+
+//Listado de tareas en el perfil
+
+.tarea_perfil{
+	.tarea_perfil_box{
+		width: 44%;    
+		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); 
+		background-color: white; height: 200px; 
+		display:  inline-table;
+		margin-left: 4%;
+		 margin-top: 2%;
+		 @media screen and (max-width: 1190px) {
+			width: 90%;
+			display: block;				
+		 }	
+		 .box-header-tittle{
+		 	display: flex;
+		 	 .img-circle{
+		 	 	margin-top: 4%;
+   				font-size: 20px;
+			 	font-style: 25px; 
+			 	background: #002E60;
+			 	color: white;
+			 	-ms-display: flex;
+				display: flex;
+				/* alineacion vertical */
+				align-items: center;
+				/* alineacion horizontal */
+				justify-content: center;
+				height: 60px;
+		        min-width: 60px;
+		        margin-right: 7px;
+
+			 }
+			 .box-header-content{
+			 	line-height: 10px;
+			 	p{
+			 		word-break: break-all;
+					 line-height: 15px;
+			 	}
+			 	
+			 }
+
+		 }
+		
+		 .box-body{
+				word-break: break-all;
+		 }
+		 .box-footer{
+		 	padding: 0;
+		 	.button_tarea{
+		 		width: 100%; 
+		 		height: 100%;
+		 		border:none; 
+		 		border-radius: 0;
+		 		 background-color: #15BAEE;
+		 	}
+		 }
+	}
+}  
+
+ .img-circle-arriba{
+	
+	font-size: 20px;
+	font-style: 25px; 
+	background: #002E60;
+	color: white;
+	-ms-display: flex;
+	display: flex;
+	/* alineacion vertical */
+	align-items: center;
+	/* alineacion horizontal */
+	justify-content: center;
+	height: 60px;
+	min-width: 60px;
+	margin-right: 7px;
+	width: 65px;
+	border-radius: 50%;
+	float: right;
+	margin-top: -50px;
+
+
+}
