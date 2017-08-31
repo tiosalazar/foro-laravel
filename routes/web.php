@@ -298,5 +298,13 @@
    return view('admin.tipos_compras.crear_tipo_compra');
   });
 
+  //Ruta clientes.
+    Route::get('/solicitud/crear',function ($value=''){
+      /* if (!Auth::user()->can('ver_permisos')) {
+          return Redirect::to('home');
+        }*/
+      return view('admin.clientes.crear_solicitudes');
+    });
+
 
 });

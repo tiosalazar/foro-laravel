@@ -95,6 +95,27 @@ class EstadosTableClientes extends Seeder {
 
 }
 
+// class Tipos_Proridad_Clientes extends Seeder {
+
+//     public function run()
+//     {
+//         App\Tipos_prioridad::create(array('nombre' => 'Prioridad Clientes'));
+//     }
+
+// }
+
+// class PrioridadTableClientes extends Seeder {
+
+//     public function run()
+//     {
+//           App\Prioridad::create(array('nombre' => 'Alta','tipos_prioridad_id'=> 6));
+//           App\Prioridad::create(array('nombre' => 'Media cliente','tipos_prioridad_id'=> 6));
+//           App\Prioridad::create(array('nombre' => 'Normal','tipos_prioridad_id'=> 6));
+
+//     }
+
+// }
+
 class AreasTableClientes extends Seeder {
 
     public function run()
