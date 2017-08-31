@@ -12,7 +12,7 @@ class Comentario extends Model
    * @var array
    */
   protected $fillable = [
-      'comentarios', 'usuarios_comentario_id', 'tareas_id', 'estados_id',
+      'comentarios', 'usuarios_comentario_id', 'tareas_id', 'estados_id','requerimientos_clientes_id'
   ];
   /**
   * Obtiene el Usuario que esta asociado a un comentario
@@ -27,6 +27,13 @@ class Comentario extends Model
   public function Tarea()
     {
        return $this->belongsTo('App\Tarea','tareas_id','id');
+    }
+    /**
+    * Obtiene el requerimiento a la que esta asociada el comentario
+    */
+  public function Requerimientos_cliente()
+    {
+       return $this->belongsTo('App\Requerimientos_cliente','requerimientos_clientes_id','id');
     }
     /**
     * Obtiene los Historicos que estan asociados a un Comentario

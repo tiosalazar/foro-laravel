@@ -19,7 +19,7 @@ class User extends Authenticatable
   * @var array
   */
   protected $fillable = [
-    'nombre', 'apellido', 'cargo', 'telefono', 'email','api_token','horas_disponible','horas_gastadas', 'password', 'roles_id', 'areas_id','estado','fecha_nacimiento','img_perfil'
+    'nombre', 'apellido', 'cargo', 'telefono', 'email','api_token','horas_disponible','horas_gastadas', 'password','clientes_id','roles_id', 'areas_id','estado','fecha_nacimiento','img_perfil'
   ];
 
   /**
@@ -59,6 +59,13 @@ class User extends Authenticatable
   public function Comentario()
   {
     return $this->hasMany('App\Comentario','usuarios_comentario_id','id');
+  }
+  /**
+  * Obtiene los Requerimientos que posee el usuario
+  */
+  public function Requerimientos_cliente()
+  {
+    return $this->hasMany('App\Requerimientos_cliente','usuarios_id','id');
   }
   /**
   * Obtiene los Tareas que posee el usuario

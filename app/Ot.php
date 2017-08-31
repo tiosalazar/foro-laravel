@@ -51,6 +51,13 @@ class Ot extends Model
     return $this->belongsTo('App\User','usuarios_id','id');
   }
   /**
+  * Obtiene el Requerimiento que esta asociada a una OT
+  */
+  public function Requerimientos_cliente()
+  {
+    return $this->belongsTo('App\Requerimientos_cliente','ots_id','id');
+  }
+  /**
   * Obtiene el Estado que esta asociada a una OT
   */
   public function Estado()

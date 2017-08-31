@@ -24,6 +24,14 @@ class Cliente extends Model
   }
 
   /**
+  * Obtiene los requerimientos que posee el cliente
+  */
+  public function Requerimientos_cliente()
+  {
+      return $this->hasMany('App\Requerimientos_cliente','clientes_id','id');
+  }
+
+  /**
   * Obtiene el usuario que posee el cliente
   */
   public function usuario()
