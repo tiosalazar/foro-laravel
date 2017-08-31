@@ -64,6 +64,13 @@ class Estado extends Model
   {
     return $this->hasMany('App\Comentario','estados_id','id');
   }
+  /**
+ * Obtiene los Requerimientos solicitados  de requerimientos asociados a un estado
+ */
+ public function Requerimientos_cliente()
+ {
+   return $this->hasMany('App\Requerimientos_cliente','estados_id','id');
+ }
 
   /**
   * Obtiene los roles asociados a un estado

@@ -18,7 +18,8 @@ class Tarea extends Model
   */
   protected $fillable = [
     'nombre_tarea', 'fecha_entrega_area','fecha_entrega_cuentas','tiempo_mapa_cliente', 'descripcion', 'enlaces_externos', 'tiempo_estimado', 'tiempo_real', 'fecha_entrega_cliente', 'estados_id', 'areas_id',
-    'usuarios_id', 'ots_id', 'planeacion_fases_id', 'encargado_id','prioridad_id','fecha_inicio_recurrencia', 'fecha_final_recurrencia','recurrente',
+    'usuarios_id', 'ots_id', 'planeacion_fases_id', 'encargado_id','prioridad_id','fecha_inicio_recurrencia', 'fecha_final_recurrencia','recurrente','requerimientos_clientes_id',
+    'mostrar_cliente'
   ];
   /**
   * The attributes that should be mutated to dates.
@@ -91,6 +92,13 @@ public function getFormatMes($fecha_ingreso)
   public function Ot()
   {
     return $this->belongsTo('App\Ot','ots_id','id');
+  }
+  /**
+  * Obtiene el Requerimientos_cliente que esta asociada a la Tarea
+  */
+  public function Requerimientos_cliente()
+  {
+    return $this->belongsTo('App\Requerimientos_cliente','requerimientos_clientes_id','id');
   }
   /**
   * Obtiene la Fase de Planeacion que esta asociado a una Tarea
