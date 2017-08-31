@@ -22,7 +22,7 @@
 	<form role="form" name="crear_solicitudes" class="crear_solicitudes">
 		<div class="box-body">
 			<div class="row">
-				<div class="col-sm-6">
+				<div class="col-sm-12 col-md-6">
 					<div class="form-group required" v-bind:class="[errors_return.nombre_solicitud,{ 'has-error': errors.has('nombre_solicitud') }]">
 						<label for="nombre_solicitud"><sup>*</sup> Nombre de la Solicitud </label>
 						<input id="nombre_solicitud" type="text" class="form-control" name="nombre_solicitud" v-validate data-vv-rules="required|min:4" required="required" v-model="solicitud.nombre_solicitud">
@@ -32,7 +32,7 @@
 					</div>
 				</div>
 
-				<div class="col-md-4">
+				<div class="col-md-4 col-sm-6">
 					<label>Fecha entrega deseada</label>
 					<div class="input-group date" >
 						<div class="input-group-addon">
@@ -42,9 +42,9 @@
 					</div>
 				</div>
 
-				<div class="col-sm-2">
+				<div class="col-md-2 col-sm-6">
 					<div class="form-group required">
-						<label><sup>*</sup> Prioridad </label>
+						<label><sup>*</sup>Prioridad</label>
 						<select_prioridad :select="prioridad"></select_prioridad>
 					</div>
 				</div>

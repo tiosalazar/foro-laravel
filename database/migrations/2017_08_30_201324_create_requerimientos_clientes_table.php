@@ -20,6 +20,7 @@ class CreateRequerimientosClientesTable extends Migration
         $table->longText('archivos_adjuntos')->nullable();
         $table->dateTime('fecha_ideal_entrega')->nullable();
         $table->integer('estados_id')->unsigned();
+        $table->integer('prioridad_id')->unsigned();
         $table->integer('clientes_id')->unsigned();
         $table->integer('encargado_id')->nullable();
         $table->integer('usuarios_id')->unsigned();
