@@ -41,7 +41,7 @@
     /*
      * Foro por Área
      */
-    // Lista todas las áreas
+    // Lista todas las áreas         
     Route::get('/foro', function () {
       return view('admin.foro.general');
     })->name('foro');
@@ -77,6 +77,8 @@
     Route::get('/foro/visualizar/todas', function () {
       return view('admin.tareas.ver_todas_tareas');
     })->name('ver_todas_tareas');
+
+
 
 
   //OTS

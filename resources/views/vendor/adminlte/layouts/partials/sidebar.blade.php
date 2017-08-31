@@ -43,6 +43,8 @@
       <!-- <li class="header">Menú</li> -->
       <!-- Optionally, you can add icons to the links -->
 
+     
+
       <!--Home -->
       <li class="treeview {{ Request::is('home') ? 'active' : '' }}"  ><a href="{{ url('home') }}"><i class='fuente-icon'>p</i> <span>{{ trans('texto_menu.perfil') }}</span></a></li>
 
@@ -51,8 +53,19 @@
       <li class="treeview {{ Request::is('roles') ? 'active' : '' }}"><a href="{{ url('roles') }}"><i class='fuente-icon'>c</i><span>{{  trans('texto_menu.crear_roles') }}</span></a></li>
       @endif
 
+       @if(Auth::user()->hasRole('cliente'))
+       <li class="treeview">
+        <a href="#"><i class='fuente-icon'>o</i> <span>{{ trans('texto_menu.requerimientos_cliente') }}</span> <i class="fa fa-caret-left  fa-lg pull-right"></i></a>
+        <ul class="treeview-menu">
+          <li><a href="">{{  trans('texto_menu.crear_requerimientos_cliente') }}</a></li>
+          <li><a href="">{{  trans('texto_menu.listar_requerimientos_cliente') }}</a></li>
+        </ul>
+      </li>
+      @endif
+
 
       <!--Foro -->
+      @if(!Auth::user()->hasRole('cliente'))
       <li class="treeview {{ Request::is('foro/*') ? 'active' : '' }}">
         <a href="#"><i class='fuente-icon'>f</i> <span>{{ trans('texto_menu.foro') }}</span> <i class="fa fa-caret-left  fa-lg pull-right"></i></a>
         <ul class="treeview-menu">
@@ -88,6 +101,7 @@
           @endif
         </ul>
       </li>
+      @endif
 
        <!--Ots-->
       @if(Auth::user()->can('ver_ots'))
@@ -115,6 +129,7 @@
       </li>
       @endif
      <!-- Equipo -->
+     @if(!Auth::user()->hasRole('cliente'))
       <li class="treeview {{ Request::is('equipo/*') ? 'active' : '' }}">
         <a href="#"><i class='fuente-icon'>e</i> <span>{{ trans('texto_menu.usuarios') }}</span> <i class="fa fa-caret-left pull-right fa-lg"></i></a>
         <ul class="treeview-menu">
@@ -129,6 +144,7 @@
           @endif
         </ul>
       </li>
+      @endif
       <!-- .Equipo -->
 
 

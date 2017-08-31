@@ -54,5 +54,8 @@ return [
     'compras_asociadas_crear'=>'Crear Compra',
     'compras_asociadas_listar'=>'Listar Compra',
     'ver_todas_tareas' => 'Tráfico de tareas',
+    'requerimientos_cliente' => 'Requeriemientos',
+    'crear_requerimientos_cliente' => 'Crear Requeriemientos',
+    'listar_requerimientos_cliente' => 'Listar Requeriemientos',
 
 ];
