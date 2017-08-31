@@ -4,20 +4,20 @@
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group date required">
-				<label for="nombre_solicitud">Nombre de la Solicitud </label>
+				<label for="nombre_solicitud">Nombre de la Solicitud: {{info_requerimiento.nombre}}  </label>
 				<!-- <input id="nombre_solicitud" class="form-control" type="text" name="nombre_solicitud"> -->
 				</div>
 			</div>
 
 			<div class="col-md-4">
-				<label>Fecha entrega deseada</label>
+				<label>Fecha entrega deseada {{info_requerimiento.fecha_ideal_entrega}}</label>
 			</div>
 
 
 			<div class="col-sm-2">
 				<div class="form-group required">
-				<label>Prioridad </label>
-				<select_prioridad></select_prioridad>
+				<label>Prioridad:</label>
+					<!-- <select_prioridad></select_prioridad> -->
 				</div>
 			</div>
 		</div>
@@ -26,6 +26,9 @@
 			<div class="col-sm-12">
 				<div class="form-group required">
 					<label> Descripción</label>
+					<textarea readonly >
+						{{info_requerimiento.descripcion}}
+					</textarea>
 				</div>
 			</div>
 		</div>
@@ -52,7 +55,9 @@ module.exports = {
 },
 	created: function(){
 
-			this.info_requerimiento=this.requerimientoarray;
+			
+			this.info_requerimiento= JSON.parse(this.requerimientoarray);
+			console.log(this.info_requerimiento);
 
 	}
 }

@@ -99,8 +99,8 @@ class RequerimientosClientesController extends Controller
     public function ShowOneRequerimiento($id)
     {
         $requerimiento = Requerimientos_cliente::findOrFail($id);
-        return response()->json($requerimiento);
-        // return view('admin.clientes.ver_solicitud')->with('requerimientoinfo',$requerimiento);
+        // return response()->json($requerimiento);
+        return view('admin.clientes.ver_solicitud')->with('requerimientoinfo',$requerimiento);
         
     }
 
