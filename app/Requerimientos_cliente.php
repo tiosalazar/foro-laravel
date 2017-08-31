@@ -44,7 +44,7 @@ class Requerimientos_cliente extends Model
     */
     public function Ot()
     {
-      return $this->hasOne('App\Ot','ots_id','id');
+      return $this->hasOne('App\Ot','id','ots_id');
     }
     /**
     * Obtiene el cliente  que esta asociada al Requerimiento solicitado

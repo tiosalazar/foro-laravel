@@ -16,9 +16,9 @@
 		<div class="col-md-12 ">
 			<!-- box -->
 			<div class="box box-primary">
-				<div class="box-body  table-responsive">
-					
-				</div>
+				
+					<listar_solicitudes></listar_solicitudes>
+				
 			</div>
 			<!-- ./ box -->
 		</div>
