@@ -41,8 +41,9 @@
 <script>
 
 module.exports = {
-data(){
-	 props: ['requerimientoarray'],
+	props: ['requerimientoarray'],
+    data(){
+	
 	return{
 		comentarios_array:[],
 		info_requerimiento:[],
