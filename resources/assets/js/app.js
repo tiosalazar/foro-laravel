@@ -58,6 +58,7 @@ Vue.component('informe_soporte', require('./components/soporte/informe_soporte.v
 Vue.component('ver_todas_tareas', require('./components/foro/ver_todas_tareas.vue'));
 //Mostrar todas la tareas.
 Vue.component('formulario_solicitudes', require('./components/clientes/crear_solicitudes.vue'));
+Vue.component('ver_solicitud', require('./components/clientes/ver_solicitud.vue'));
 Vue.component('listar_solicitudes', require('./components/clientes/listar_solicitudes.vue'));
 //Fin Componentes Dsalazar
 //Componentes Bcaldas

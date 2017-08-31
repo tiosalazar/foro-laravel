@@ -72,7 +72,10 @@ class RequerimientosClientesController extends Controller
           $requerimiento=new Requerimientos_cliente;
           $requerimiento->fill($request->all());
           $requerimiento->save();
-       }
+       }catch (Exception $e)
+        {
+          print "something went wrong\n";
+        }
      }
     }
 
@@ -84,7 +87,21 @@ class RequerimientosClientesController extends Controller
      */
     public function show($id)
     {
-        //
+       
+    }    
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function ShowOneRequerimiento($id)
+    {
+        $requerimiento = Requerimientos_cliente::findOrFail($id);
+        return response()->json($requerimiento);
+        // return view('admin.clientes.ver_solicitud')->with('requerimientoinfo',$requerimiento);
+        
     }
 
     /**
