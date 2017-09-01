@@ -3,7 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Jenssegers\Date\Date;
+use Carbon\Carbon;
 class Requerimientos_cliente extends Model
 {
     public $table = "requerimientos_clientes";
@@ -14,9 +15,15 @@ class Requerimientos_cliente extends Model
     * @var array
     */
     protected $fillable = [
-       'nombre', 'descripcion','fecha_ideal_entrega', 'estados_id','clientes_id','encargado_id','usuarios_id','ots_id'
+       'nombre', 'descripcion','fecha_ideal_entrega', 'estados_id','clientes_id','encargado_id','usuarios_id','ots_id','prioridad_id'
     ];
 
+
+    public function getFormatFecha($fecha_ingreso)
+   {
+        $fecha= new Date($fecha_ingreso);
+       return ucwords($fecha->format('d-M-Y'), "-");
+   }
 
     /**
     * Obtiene el Estado que esta asociado a una Tarea

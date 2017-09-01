@@ -43,7 +43,7 @@
       <!-- <li class="header">Menú</li> -->
       <!-- Optionally, you can add icons to the links -->
 
-     
+
 
       <!--Home -->
       <li class="treeview {{ Request::is('home') ? 'active' : '' }}"  ><a href="{{ url('home') }}"><i class='fuente-icon'>p</i> <span>{{ trans('texto_menu.perfil') }}</span></a></li>
@@ -53,12 +53,12 @@
       <li class="treeview {{ Request::is('roles') ? 'active' : '' }}"><a href="{{ url('roles') }}"><i class='fuente-icon'>c</i><span>{{  trans('texto_menu.crear_roles') }}</span></a></li>
       @endif
 
-       @if(Auth::user()->hasRole('cliente'))
+       @if(Auth::user()->hasRole('cliente') || Auth::user()->hasRole('cuentas'))
        <li class="treeview">
         <a href="#"><i class="fa fa-ticket" aria-hidden="true"></i> <span>{{ trans('texto_menu.requerimientos_cliente') }}</span> <i class="fa fa-caret-left  fa-lg pull-right"></i></a>
         <ul class="treeview-menu">
-          <li><a href="{{url('/crear_requerimiento')}}">{{  trans('texto_menu.crear_requerimientos_cliente') }}</a></li>
-          <li><a href="">{{  trans('texto_menu.listar_requerimientos_cliente') }}</a></li>
+          <li><a href="{{url('/solicitud/crear')}}">{{  trans('texto_menu.crear_requerimientos_cliente') }}</a></li>
+          <li><a href="{{url('/solicitud/listar')}}">{{  trans('texto_menu.listar_requerimientos_cliente') }}</a></li>
         </ul>
       </li>
       @endif

@@ -87,9 +87,11 @@ class EstadosTableClientes extends Seeder {
 
     public function run()
     {
-          App\Estado::create(array('nombre' => 'En espera','tipos_estados_id'=> 6));
+          App\Estado::create(array('nombre' => 'En revisión','tipos_estados_id'=> 6));
+          App\Estado::create(array('nombre' => 'Aceptado','tipos_estados_id'=> 6));
           App\Estado::create(array('nombre' => 'Atención cliente','tipos_estados_id'=> 6));
-          App\Estado::create(array('nombre' => 'Archivado','tipos_estados_id'=> 6));
+          App\Estado::create(array('nombre' => 'Invalidado','tipos_estados_id'=> 6));
+          App\Estado::create(array('nombre' => 'Finalizado','tipos_estados_id'=> 6));
 
     }
 
