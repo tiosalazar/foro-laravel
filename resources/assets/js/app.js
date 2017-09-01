@@ -60,6 +60,8 @@ Vue.component('ver_todas_tareas', require('./components/foro/ver_todas_tareas.vu
 Vue.component('formulario_solicitudes', require('./components/clientes/crear_solicitudes.vue'));
 Vue.component('ver_solicitud', require('./components/clientes/ver_solicitud.vue'));
 Vue.component('listar_solicitudes', require('./components/clientes/listar_solicitudes.vue'));
+Vue.component('listar_solicitudes_tareas', require('./components/clientes/listar_tareas_solicitudes.vue'));
+Vue.component('ver_resumen_solicitud', require('./components/clientes/ver_resumen_solicitud.vue'));
 //Fin Componentes Dsalazar
 //Componentes Bcaldas
 Vue.component('form_usuarios', require('./components/usuarios/crear_usuario.vue'));

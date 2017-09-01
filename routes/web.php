@@ -40,13 +40,6 @@
       return view('admin.roles.crear_roles');
     });
 
-     //Rutas Requerimientos Clientes
-    Route::get('/crear_requerimiento', function () {
-      return view('admin.clientes.crear_solicitudes');
-    });
-    Route::get('/ver_requerimiento/{id}','RequerimientosClientesController@ShowOneRequerimiento');
-    Route::get('/listar_requerimientos','RequerimientosClientesController@ShowDatatbleRequerimiento');
-
     /*
      * Foro por Área
      */
@@ -328,15 +321,26 @@
             }*/
             return view('admin.clientes.listar_solicitudes');
         });
+        Route::get('/ver/{id}','RequerimientosClientesController@ShowOneRequerimiento');
+        Route::get('/tareas/{id}','RequerimientosClientesController@ShowOneRequerimientoTareas');
+
 
 
     });
-     Route::get('/solicitud/{id}',function ($value=''){
+
+  /*   Route::get('/solicitud/{id}',function ($value=''){
       /* if (!Auth::user()->can('ver_permisos')) {
           return Redirect::to('home');
         }*/
-      return view('admin.clientes.ver_solicitud');
-    });
+  /*    return view('admin.clientes.ver_solicitud');
+    });*/
+
+    //Rutas Requerimientos Clientes
+  /* Route::get('/crear_requerimiento', function () {
+     return view('admin.clientes.crear_solicitudes');
+   });*/
+  /* Route::get('/ver_requerimiento/{id}','RequerimientosClientesController@ShowOneRequerimiento');
+   Route::get('/listar_requerimientos','RequerimientosClientesController@ShowDatatbleRequerimiento');*/
 
 
 });

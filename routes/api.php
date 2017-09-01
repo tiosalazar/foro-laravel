@@ -73,5 +73,8 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
     Route::post('comentarios', 'RequerimientosClientesController@agregarComentario');
     Route::get('comentarios/{id}', 'RequerimientosClientesController@getComentario');
 
+    //ruta del api todas las tareas de los requerimientos
+     Route::get('/ver_all_tareas_requerimiento','RequerimientosClientesController@ShowDatatbleTareasRequerimiento');
+
 
 });
