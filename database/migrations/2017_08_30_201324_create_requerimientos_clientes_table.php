@@ -36,6 +36,9 @@ class CreateRequerimientosClientesTable extends Migration
 
          $table->foreign('clientes_id')->references('id')->on('clientes')
          ->onUpdate('cascade')->onDelete('cascade');
+
+          $table->foreign('prioridad_id')->references('id')->on('estados')
+         ->onUpdate('cascade')->onDelete('cascade');
     });
   }
 
