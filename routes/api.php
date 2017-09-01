@@ -67,4 +67,7 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
      Route::get('/ver_all_tareas_trafico','TareaController@getTraficoTareas');
 
 
+     Route::resource('clientes_requerimiento', 'RequerimientosClientesController');
+
+
 });

@@ -76,6 +76,14 @@
                     <select_area  :refresha="area"></select_area>
                  </div>
                   </div>
+
+                   <div class="col-md-6 same-height" v-show="show_clienteSelect.show">
+                    <div class="form-group">
+                    <label for="area_usuario"><sup>*</sup> Cliente </label>
+                    <select_clientes ></select_clientes>
+                 </div>
+                  </div>
+
                  <!-- Campo estado que solo se muestra cuando vamos a actualizar el usuario -->
                   <div class="col-md-6 same-height" v-bind:class="{ 'hidden': botonEditar }">
                     <div class="form-group" >
@@ -103,6 +111,7 @@
 <script>
   Vue.component('select_area',require('../herramientas/select_area.vue'));
   Vue.component('select_rol',require('../herramientas/select_rol.vue'));
+  Vue.component('select_clientes',require('../herramientas/select_clientes.vue'));
   import VeeValidate, { Validator } from 'vee-validate';
   import Datepicker from 'vuejs-datepicker';
   import moment from 'moment';
@@ -127,6 +136,10 @@
       props: ['titulor','comando','edituserdata','visualizar'],
       data(){
         return{
+        show_clienteSelect: {
+          show: false,
+          data: '',
+        },
          usuarios:{
           nombre:'',
           apellido:'',
@@ -169,10 +182,16 @@
     created: function(){
       this.$on('rol_option', function(v) {
         this.usuarios.roles_id=v.id;
+        this.show_clienteSelect.show = (v.name=="cliente")? true:false;
       });
       this.$on('area_option', function(b) {
         this.usuarios.areas_id=b.id;
       });
+      this.$on('select_clientes', function(v) {
+        this.usuarios.clientes_id=v.id
+        console.log(v);
+      });
+
           //Valido la opcion de editar o guardar para mostrar el boton correspondiente con su función
           if (this.comando==1) {
             this.botonEditar=true;
@@ -188,6 +207,7 @@
             this.usuarios.fecha_nacimiento=moment(obj.fecha_nacimiento).toDate();
             this.rol=obj;
             this.area=obj;
+            this.show_clienteSelect.data = obj;
           }
 
 
@@ -226,6 +246,7 @@
               this.usuarios={};
               this.rol={};
               this.area={};
+              this.show_clienteSelect.data={};
               if($('#tabla_usuarios') ){
                 $('#tabla_usuarios').DataTable().ajax.reload();
               }
@@ -277,7 +298,9 @@
               fecha_nacimiento:moment(this.usuarios.fecha_nacimiento).format('YYYY-MM-DD'),
               estado:estado_user,
               roles_id:this.usuarios.roles_id,
-              areas_id:this.usuarios.areas_id};
+              areas_id:this.usuarios.areas_id,
+              clientes_id:this.usuarios.clientes_id
+            };
           }else{
             var datos = {
               nombre:this.usuarios.nombre,
@@ -290,7 +313,8 @@
               fecha_nacimiento:moment(this.usuarios.fecha_nacimiento).format('YYYY-MM-DD'),
               estado:estado_user,
               roles_id:this.usuarios.roles_id,
-              areas_id:this.usuarios.areas_id
+              areas_id:this.usuarios.areas_id,
+              clientes_id:this.usuarios.clientes_id
             };
           }
 
