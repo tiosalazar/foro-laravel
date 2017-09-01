@@ -169,7 +169,7 @@ class RequerimientosClientesController extends Controller
        $query->addselect('*');
        $query->addselect(DB::raw('CONCAT(nombre," ",apellido) as full_name'));
 
-     },'estado' => function ($query) use ($request,$id) {
+     },'estado' => function ($query) use ($request) {
             if ($request->has('estados')) {
                 $query->whereIn('id',$request->get('estados'));
             }else {
@@ -240,8 +240,23 @@ class RequerimientosClientesController extends Controller
     {
         $requerimiento = Requerimientos_cliente::findOrFail($id);
         $requerimiento->estado_prioridad;
-        // return response()->json($requerimiento);
+    //return response()->json($requerimiento);
         return view('admin.clientes.ver_solicitud')->with('requerimientoinfo',$requerimiento);
+
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function ShowOneRequerimientoTareas($id)
+    {
+        $requerimiento = Requerimientos_cliente::findOrFail($id);
+        $requerimiento->estado_prioridad;
+        // return response()->json($requerimiento);
+        return view('admin.clientes.ver_solicitud_tareas')->with('requerimientoinfo',$requerimiento);
 
     }
 
@@ -287,7 +302,7 @@ class RequerimientosClientesController extends Controller
               return Datatables::of($output)
               ->addColumn('action', function($cliente_requerimiento) {
                 $ver_requerimiento=(Auth::user()->hasRole('cliente'))?'<a href="/solicitud/ver'.'/'.$cliente_requerimiento->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Ver</a>':'';
-                $ver_tareas_requerimiento=(Auth::user()->hasRole('cliente'))?'<button type="button" id="Ver_tareas" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente">Ver tareas</button>':'';
+                $ver_tareas_requerimiento=(Auth::user()->hasRole('cliente'))?'<a href="/solicitud/tareas'.'/'.$cliente_requerimiento->id.'"  id="Ver_tareas" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente">Ver tareas</a>':'';
                 $crear_tareas_requerimiento=(Auth::user()->hasRole('cliente'))?'<button type="button" id="Ver_tareas" class="btn btn-info btn-xs btn-flat btn-block delete_cliente">Crear Tareas</button>':'';
                 return $ver_requerimiento.$ver_tareas_requerimiento.$crear_tareas_requerimiento;
               })

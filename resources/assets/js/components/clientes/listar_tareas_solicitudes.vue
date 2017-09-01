@@ -25,37 +25,28 @@
 						<select name="estados2" class="js-example-basic-multiple" multiple="multiple" id="estados2">
 						</select>
 					</div>
-					<div class="drop select_fecha_trafico1">
-						<datepicker language="es"
-							id="fecha_inicio"
-							required="required" v-validate data-vv-rules="required"
-							@input="guardarDatos"
-							:disabled="disabled"
-							data-vv-as="Fecha de Inicio"
-							placeholder="Fecha Inicio"
-							v-model="fechas.to"
-							name="fecha_inicio"
-							class="form-control"
-							format="dd-MM-yyyy">
-						</datepicker>
-						<input type="hidden" name="f_inicio" v-model="start">
-					</div>
-					<div class="drop select_fecha_trafico2">
-						<datepicker language="es"
-							id="fecha_final"
-							required="required" v-validate data-vv-rules="required"
-							@input="guardarDatos"
-							:disabled="disabled"
-							data-vv-as="Fecha Final"
-							placeholder="Fecha Final"
-							v-model="fechas.from"
-							name="fecha_final"
-							class="form-control"
-							format="dd-MM-yyyy">
-						</datepicker>
-						<input type="hidden" name="f_final" v-model="end">
-					</div>
-
+					<div class="drop">
+					 <select name="year" id="year"  class="form-control multiselect">
+						 <option value="">Año</option>
+					 </select>
+				 </div>
+				 <div class="drop">
+					 <select name="month" id="month"  class="form-control multiselect">
+						 <option value="">Mes</option>
+						 <option value="01">Enero</option>
+						 <option value="02">Febrero</option>
+						 <option value="03">Marzo</option>
+						 <option value="04">Abril</option>
+						 <option value="05">Mayo</option>
+						 <option value="06">Junio</option>
+						 <option value="07">Julio</option>
+						 <option value="08">Agosto</option>
+						 <option value="09">Septiembre</option>
+						 <option value="10">Octubre</option>
+						 <option value="11">Noviembre</option>
+						 <option value="12">Diciembre</option>
+					 </select>
+				 </div>
             <button type="submit" class="btn btn-info btn-flat">Buscar</button>
         </form>
 	</div>
@@ -108,7 +99,7 @@
 				deferRender: true,
 				stateSave: true,
 				ajax: {
-					url: window._apiURL+"ver_all_tareas_trafico/",
+					url: window._apiURL+"ver_all_tareas_requerimiento/",
 					type: 'GET',
 					beforeSend: function (request) {
 						request.setRequestHeader("Authorization", 'Bearer '+Laravel.api_token);
