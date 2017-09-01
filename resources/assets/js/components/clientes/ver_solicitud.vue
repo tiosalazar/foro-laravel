@@ -46,8 +46,9 @@
 				</div>
 			</div>
 		</div>
-		<select_estados tipo_estado="6"  :select="info_requerimiento.estado_prioridad"></select_estados>
-		<div v-if=" (rol_actual =='owner') || (rol_actual =='desarrollo') || (rol_actual =='cuentas') " >
+		
+		    <div v-if=" (rol_actual =='owner') || (rol_actual =='desarrollo') || (rol_actual =='cuentas') " >
+		          <select_estados tipo_estado="6"  :select="info_requerimiento.estado_prioridad"></select_estados>
                   <button type="button" class="btn btn-primary" v-on:click="asignar_estado()">Publicar</button>
                   <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Comentar</button>
            </div> 
@@ -134,6 +135,7 @@ module.exports = {
 
 			if (typeof(this.requerimientoarray)!= 'undefined') {
 				this.info_requerimiento= JSON.parse(this.requerimientoarray);
+				// this.info_requerimiento= JSON.parse(JSON.stringify(this.requerimientoarray));
 				console.log(this.info_requerimiento);
 			}
 			this.rol_actual=this.rol_usuario_actual;

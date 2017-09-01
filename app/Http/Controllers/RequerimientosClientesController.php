@@ -302,10 +302,10 @@ class RequerimientosClientesController extends Controller
               return Datatables::of($output)
               ->addColumn('action', function($cliente_requerimiento) {
 
-                 $ver_requerimiento=(Auth::user()->hasRole('cliente') || Auth::user()->hasRole('cuentas'))?'<a href="/solicitud/ver'.'/'.$cliente_requerimiento->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Ver</a>':'';
-                 $ver_tareas_requerimiento=(Auth::user()->hasRole('cliente') || Auth::user()->hasRole('cuentas'))?'<a href="/solicitud/tareas'.'/'.$cliente_requerimiento->id.'"  id="Ver_tareas" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente">Ver tareas</a>':'';
+                 $ver_requerimiento=(Auth::user()->hasRole('cliente') || Auth::user()->hasRole('cuentas') || Auth::user()->hasRole('owner') || Auth::user()->hasRole('desarrollo'))?'<a href="/solicitud/ver'.'/'.$cliente_requerimiento->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Ver</a>':'';
+                 $ver_tareas_requerimiento=(Auth::user()->hasRole('cliente') || Auth::user()->hasRole('cuentas') || Auth::user()->hasRole('owner') || Auth::user()->hasRole('desarrollo'))?'<a href="/solicitud/tareas'.'/'.$cliente_requerimiento->id.'"  id="Ver_tareas" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente">Ver tareas</a>':'';
 
-                $crear_tareas_requerimiento=(Auth::user()->hasRole('cuentas'))?'<a href="/crear_tarea_requerimiento'.'/'.$cliente_requerimiento->id.'" class="btn btn-info btn-xs btn-flat btn-block usuario_edit">Crear Tarea</a>':'';
+                $crear_tareas_requerimiento=(Auth::user()->hasRole('cuentas') || Auth::user()->hasRole('owner') || Auth::user()->hasRole('desarrollo'))?'<a href="/crear_tarea_requerimiento'.'/'.$cliente_requerimiento->id.'" class="btn btn-info btn-xs btn-flat btn-block usuario_edit">Crear Tarea</a>':'';
 
                 return $ver_requerimiento.$ver_tareas_requerimiento.$crear_tareas_requerimiento;
               })
