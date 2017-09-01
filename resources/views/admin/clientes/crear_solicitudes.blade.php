@@ -17,7 +17,7 @@
 				<div class="panel panel-default">
 				<div class="padding_ots">
 					<div class="panel-body"  >
-						<formulario_solicitudes></formulario_solicitudes>
+						<formulario_solicitudes  rol_usuario_actual="{{Auth::user()->rol->name}}"></formulario_solicitudes>
 					</div>
 				</div>
               </div>

@@ -15,6 +15,7 @@ class UpdateTareasV150 extends Migration
     {
       Schema::table('tareas', function (Blueprint $table) {
           $table->integer('requerimientos_clientes_id')->unsigned()->nullable();
+          $table->dateTime('fecha_tentativa_cliente')->nullable();
           $table->tinyInteger('mostrar_cliente')->default(1);
 
           $table->foreign('requerimientos_clientes_id')->references('id')->on('requerimientos_clientes')

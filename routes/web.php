@@ -307,18 +307,29 @@
    return view('admin.tipos_compras.crear_tipo_compra');
   });
 
-  //Ruta clientes.
-    Route::get('/solicitud/crear',function ($value=''){
-      /* if (!Auth::user()->can('ver_permisos')) {
-          return Redirect::to('home');
-        }*/
-      return view('admin.clientes.crear_solicitudes');
-    });
-     Route::get('/solicitud/listar',function ($value=''){
-      /* if (!Auth::user()->can('ver_permisos')) {
-          return Redirect::to('home');
-        }*/
-      return view('admin.clientes.listar_solicitudes');
+
+    Route::group(['prefix' => 'solicitud'], function () {
+        Route::get('/', function ()    {
+            // Uses Auth Middleware
+        });
+
+        // Divisas
+        Route::get('/crear',function ($value=''){
+          /* if (!Auth::user()->can('ver_fases_planeacion')) {
+              return Redirect::to('home');
+            }*/
+          return view('admin.clientes.crear_solicitudes');
+        });
+
+        // Fases del Proyecto
+        Route::get('/listar',function ($value=''){
+           /*if (!Auth::user()->can('ver_fases_planeacion')) {
+              return Redirect::to('home');
+            }*/
+            return view('admin.clientes.listar_solicitudes');
+        });
+
+
     });
      Route::get('/solicitud/{id}',function ($value=''){
       /* if (!Auth::user()->can('ver_permisos')) {
