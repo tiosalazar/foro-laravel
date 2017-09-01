@@ -1,5 +1,5 @@
 <template>
-	<div class="tarea  table-responsive">
+	<div class="tarea  table-responsive trafico">
         <table class="table  table-striped table-hover table-responsive datatable-foro table-bordered dataTable no-footer" role="grid" id="tabla_tareas" cellspacing="0" width="100%">
 		  <thead>
 		        <tr>
@@ -84,21 +84,23 @@
 									stateSave: true,
 				// ajax: "/api/v1/tareas",
 				ajax: {
-					url: window._baseURL+"/listar_requerimientos",
+					url: window._apiURL+"listar_requerimientos/",
+					type: 'GET',
+					beforeSend: function (request) {
+						request.setRequestHeader("Authorization", 'Bearer '+Laravel.api_token);
+					},
 					data: function (d) {
-
-		                d.year = $('select[name=year]').val();
-		                d.month = $('select[name=month]').val();
-										d.estados = $('select[name=estados2]').val();
-		            },
-
+						d.year = $('select[name=year]').val();
+						d.month = $('select[name=month]').val();
+						d.estados = $('select[name=estados2]').val();
+					},
 				},
 				columns: [
 		          { data: 'id', name: 'id' },
 		          { data: 'nombre', name: 'nombre' },
 		          { data: 'descripcion', name: 'descripcion' },
 		          { data: 'fecha_ideal_entrega', name: 'fecha_ideal_entrega' },
-		          { data: 'estado', name: 'estado' },
+		          { data: 'estado', name: 'estado.nombre' },
 		          { data: 'usuarioencargado.full_name', name: 'usuarioencargado.full_name' },
 		          { data: 'action', name: 'action', searchable: false },
           // {data: 'action', name: 'action', orderable: false, searchable: false}
@@ -133,6 +135,11 @@
 			    },
 
 			});
+
+			setInterval( function () {
+				oTable.ajax.reload();
+			}, 300000 );
+
 			// Enviar los datos del filtro personalizado
 			$('#search-form').on('submit', function(e) {
 		        oTable.draw();
