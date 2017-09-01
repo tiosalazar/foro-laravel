@@ -113,7 +113,7 @@
 				columns: [
 				{ data: 'ot.referencia', name: 'ot.referencia' },
 				{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre' },
-				{ data: 'ejecutivo', name: 'usuario.nombre' },
+				{ data: 'ejecutivo', name: 'ejecutivo.full_name' },
 				{ data: 'encargado', name: 'usuarioencargado.full_name' },
 				{ data: 'area.nombre', name: 'area.nombre' },
 				{ data: 'created_at', name: 'created_at' },
