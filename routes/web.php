@@ -320,6 +320,12 @@
         }*/
       return view('admin.clientes.listar_solicitudes');
     });
+     Route::get('/solicitud/{id}',function ($value=''){
+      /* if (!Auth::user()->can('ver_permisos')) {
+          return Redirect::to('home');
+        }*/
+      return view('admin.clientes.ver_solicitud');
+    });
 
 
 });

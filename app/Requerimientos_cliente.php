@@ -14,7 +14,7 @@ class Requerimientos_cliente extends Model
     * @var array
     */
     protected $fillable = [
-       'nombre', 'descripcion','fecha_ideal_entrega', 'estados_id','clientes_id','encargado_id','usuarios_id','ots_id'
+       'nombre', 'descripcion','fecha_ideal_entrega', 'estados_id','clientes_id','encargado_id','usuarios_id','ots_id','prioridad_id'
     ];
 
 
@@ -25,6 +25,13 @@ class Requerimientos_cliente extends Model
     {
       return $this->belongsTo('App\Estado','estados_id','id');
     }
+    /**
+      * Obtiene el Estado que esta asociado a una Tarea
+      */
+      public function Estado_prioridad()
+      {
+        return $this->belongsTo('App\Estado','prioridad_id','id');
+      }
     /**
     * Obtiene el Usuario que esta asociada al Requerimiento solicitado
     */

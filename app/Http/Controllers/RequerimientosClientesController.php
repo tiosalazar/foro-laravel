@@ -8,6 +8,7 @@ use App\Cliente;
 use App\User;
 use App\Role;
 use App\Tarea;
+use App\Comentario;
 use App\Requerimientos_cliente;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -98,6 +99,7 @@ class RequerimientosClientesController extends Controller
     public function ShowOneRequerimiento($id)
     {
         $requerimiento = Requerimientos_cliente::findOrFail($id);
+        $requerimiento->estado_prioridad;
         // return response()->json($requerimiento);
         return view('admin.clientes.ver_solicitud')->with('requerimientoinfo',$requerimiento);
         
@@ -166,6 +168,17 @@ class RequerimientosClientesController extends Controller
     {
         //
     }
+
+/**
+ * Agregar Comentario al Requerimiento
+ */
+public function agregarComentario(Request $request)
+{
+  //Guardamos el comentario
+  $comentario = new Comentario;
+  $comentario->fill($request->all());
+  $comentario->save();
+}
 
 /*DSO 30-08-2017 Funcion para validar los campos al crear un requerimiento
  * entra el arreglo de datos

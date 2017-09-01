@@ -85,6 +85,50 @@
   background-color: #56C716;
 }
 
+.estado-4-14 {
+  background-color: #15BAEE;
+}
+
+.estado-4-15 {
+  background-color: #FABC00;
+}
+
+.estado-4-16 {
+  background-color: #C1AD16;
+}
+
+.estado-4-17 {
+  background-color: #FF1A1A;
+}
+
+.estado-4-18 {
+  background-color: #FABC00;
+}
+
+.estado-4-19 {
+  background-color: #56C716;
+}
+
+.estado-5-21 {
+  background-color: #BABABA;
+}
+
+.estado-5-22 {
+  background-color: #61B100;
+}
+
+.estado-6-23 {
+  background-color: #674EA7;
+}
+
+.estado-6-24 {
+  background-color: #FABC00;
+}
+
+.estado-6-25 {
+  background-color: #56C716;
+}
+
 .box .border-right {
   border-right: 1px solid #d8d8d8;
 }
@@ -7969,6 +8013,7 @@ label sup {
 }
 
 .fade-enter-active, .fade-leave-active {
+  -webkit-transition: opacity 2s;
   transition: opacity 2s;
 }
 
@@ -8516,6 +8561,7 @@ body {
 
 .sidebar-menu .treeview.active .fa-caret-left {
   margin-right: 9px;
+  -webkit-transition-timing-function: linear;
   transition-timing-function: linear;
   -webkit-transform: rotate(-90deg);
   transform: rotate(-90deg);
@@ -8907,6 +8953,7 @@ body {
 }
 
 .v-enter {
+  -webkit-transition: opacity .5s;
   transition: opacity .5s;
 }
 
@@ -9442,53 +9489,64 @@ body {
   vertical-align: top;
 }
 
-.ver_tarea {
+.ver_tarea,
+.ver_solicitud_seccion {
   padding: 70px;
 }
 
-.ver_tarea img {
+.ver_tarea img,
+.ver_solicitud_seccion img {
   max-width: 100%;
 }
 
-.ver_tarea .contenedor_fecha {
+.ver_tarea .contenedor_fecha,
+.ver_solicitud_seccion .contenedor_fecha {
   display: -webkit-box;
   display: flex;
 }
 
-.ver_tarea .contenedor_fecha .input-group-addon {
+.ver_tarea .contenedor_fecha .input-group-addon,
+.ver_solicitud_seccion .contenedor_fecha .input-group-addon {
   width: 50px;
 }
 
-.ver_tarea .alert_ups {
+.ver_tarea .alert_ups,
+.ver_solicitud_seccion .alert_ups {
   background-color: #E94800 !important;
   text-align: center;
   font-size: 16px;
   font-weight: bold;
 }
 
-.ver_tarea .comentario_box {
+.ver_tarea .comentario_box,
+.ver_solicitud_seccion .comentario_box {
   box-shadow: none;
 }
 
-.ver_tarea .comentario_box .caja_comentarios {
+.ver_tarea .comentario_box .caja_comentarios,
+.ver_solicitud_seccion .comentario_box .caja_comentarios {
   margin-top: 20px;
 }
 
-.ver_tarea .comentario_box .caja_comentarios p {
+.ver_tarea .comentario_box .caja_comentarios p,
+.ver_solicitud_seccion .comentario_box .caja_comentarios p {
   word-wrap: break-word;
   white-space: pre-wrap;
 }
 
-.ver_tarea .comentario_box .comentario_box_container {
+.ver_tarea .comentario_box .comentario_box_container,
+.ver_solicitud_seccion .comentario_box .comentario_box_container {
   display: -webkit-box;
   display: flex;
 }
 
-.ver_tarea .comentario_box .comentario_box_container .img_comentario_src {
+.ver_tarea .comentario_box .comentario_box_container .img_comentario_src,
+.ver_solicitud_seccion .comentario_box .comentario_box_container .img_comentario_src {
   width: 65px;
 }
 
-.ver_tarea .comentario_box .comentario_box_container .info_comentarios {
+.ver_tarea .comentario_box .comentario_box_container .info_comentarios,
+.ver_solicitud_seccion .comentario_box .comentario_box_container .info_comentarios {
   display: -webkit-box;
   display: flex;
   -webkit-box-orient: vertical;
@@ -9497,25 +9555,30 @@ body {
   margin-left: 10px;
 }
 
-.ver_tarea .comentario_box .comentario_box_container .info_comentarios span {
+.ver_tarea .comentario_box .comentario_box_container .info_comentarios span,
+.ver_solicitud_seccion .comentario_box .comentario_box_container .info_comentarios span {
   color: #a7a7a7;
 }
 
-.ver_tarea .comentario_box .comentario_box_container .info_comentarios .comentario_created {
+.ver_tarea .comentario_box .comentario_box_container .info_comentarios .comentario_created,
+.ver_solicitud_seccion .comentario_box .comentario_box_container .info_comentarios .comentario_created {
   margin-top: 5px;
 }
 
-.ver_tarea .text_alert {
+.ver_tarea .text_alert,
+.ver_solicitud_seccion .text_alert {
   color: #E94800;
   text-align: center;
 }
 
-.ver_tarea .estado_comentario {
+.ver_tarea .estado_comentario,
+.ver_solicitud_seccion .estado_comentario {
   position: absolute;
   right: 25px;
 }
 
-.ver_tarea .estado_comentario .estado_comentario_circle {
+.ver_tarea .estado_comentario .estado_comentario_circle,
+.ver_solicitud_seccion .estado_comentario .estado_comentario_circle {
   width: 15px;
   height: 15px;
   position: absolute;
@@ -9524,59 +9587,72 @@ body {
   margin-top: 3px;
 }
 
-.ver_tarea .ruta_server {
+.ver_tarea .ruta_server,
+.ver_solicitud_seccion .ruta_server {
   margin-bottom: 35px;
 }
 
-.ver_tarea .ruta_server p {
+.ver_tarea .ruta_server p,
+.ver_solicitud_seccion .ruta_server p {
   word-wrap: break-word;
 }
 
-.ver_tarea .columna2 {
+.ver_tarea .columna2,
+.ver_solicitud_seccion .columna2 {
   padding-bottom: 30px;
 }
 
-.ver_tarea .desc-ot {
+.ver_tarea .desc-ot,
+.ver_solicitud_seccion .desc-ot {
   padding-bottom: 15px;
 }
 
-.ver_tarea textarea {
+.ver_tarea textarea,
+.ver_solicitud_seccion textarea {
   min-height: 200px;
 }
 
-.ver_tarea label {
+.ver_tarea label,
+.ver_solicitud_seccion label {
   color: #15baee;
 }
 
-.ver_tarea .prioridad_btn {
+.ver_tarea .prioridad_btn,
+.ver_solicitud_seccion .prioridad_btn {
   display: block;
   width: 100px;
   color: white;
   border: none;
 }
 
-.ver_tarea .prioridad_btn:disabled {
+.ver_tarea .prioridad_btn:disabled,
+.ver_solicitud_seccion .prioridad_btn:disabled {
   color: white;
   opacity: 1;
 }
 
-.ver_tarea .multiselect__select {
+.ver_tarea .multiselect__select,
+.ver_solicitud_seccion .multiselect__select {
   min-height: 33px !important;
 }
 
-.ver_tarea .multiselect__tags {
+.ver_tarea .multiselect__tags,
+.ver_solicitud_seccion .multiselect__tags {
   height: 35px !important;
 }
 
-.ver_tarea .multiselect__input {
+.ver_tarea .multiselect__input,
+.ver_solicitud_seccion .multiselect__input {
   height: 30px !important;
 }
 
-.ver_tarea .multiselect__single {
+.ver_tarea .multiselect__single,
+.ver_solicitud_seccion .multiselect__single {
   padding-top: 5px !important;
 }
 
-.ver_tarea .tiempo_estimado {
+.ver_tarea .tiempo_estimado,
+.ver_solicitud_seccion .tiempo_estimado {
   height: 35px;
   width: 90px;
 }
@@ -9621,10 +9697,6 @@ body {
 
 .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a > p {
   white-space: normal;
-}
-
-.ver_solicitud_seccion {
-  padding: 2%;
 }
 
 .ver_solicitud_seccion textarea {

@@ -69,5 +69,8 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
 
      Route::resource('clientes_requerimiento', 'RequerimientosClientesController');
 
+    // Agregar comentario al requerimiento
+    Route::post('comentarios', 'RequerimientosClientesController@agregarComentario');
+
 
 });
