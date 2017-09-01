@@ -327,7 +327,10 @@ class RequerimientosClientesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $requerimiento = Requerimientos_cliente::findOrFail($id);
+        $requerimiento->estados_id = $request->estados_id;
+        $requerimiento->save();
+        return response()->json($requerimiento);
     }
 
     /**
@@ -342,14 +345,38 @@ class RequerimientosClientesController extends Controller
     }
 
 /**
+ * Trae Comentario al Requerimiento
+ */
+public function getComentario(Request $request, $id)
+{
+  $comentarios = Comentario::with(['user','estados'])->where('requerimientos_clientes_id',$id)->get();
+          return ($comentarios);
+}
+/**
  * Agregar Comentario al Requerimiento
  */
 public function agregarComentario(Request $request)
 {
+  $requerimiento = Requerimientos_cliente::findOrFail($request->requerimientos_clientes_id);
+
   //Guardamos el comentario
   $comentario = new Comentario;
   $comentario->fill($request->all());
   $comentario->save();
+  //Respuesta
+        $respuesta['user_coment']='';
+        $respuesta["error"]=0;
+        $respuesta["mensaje"]="OK";
+        $respuesta["msg"]="Comentario agregado con exito";
+        foreach ($requerimiento->comentario as $key => $value) {
+            if ($value->user->id==$request->usuarios_comentario_id) {
+                $respuesta['user_coment']=$value;
+                $value->estados;
+            }
+
+
+        }
+         return response()->json($respuesta);
 }
 
 /*DSO 30-08-2017 Funcion para validar los campos al crear un requerimiento

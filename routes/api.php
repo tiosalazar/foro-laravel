@@ -71,6 +71,7 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
 
     // Agregar comentario al requerimiento
     Route::post('comentarios', 'RequerimientosClientesController@agregarComentario');
+    Route::get('comentarios/{id}', 'RequerimientosClientesController@getComentario');
 
 
 });
