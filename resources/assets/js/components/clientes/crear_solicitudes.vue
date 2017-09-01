@@ -38,12 +38,12 @@
 						<div class="input-group-addon">
 							<i class="fa fa-calendar"></i>
 						</div>
-						<datepicker language="es"  id="fecha_deseada_entrega" placeholder="Fecha entrega" class="form-control" name="fecha_deseada_entrega" format="dd-MM-yyyy" :disabled="disable_days"></datepicker>
+						<datepicker language="es"  id="fecha_deseada_entrega" placeholder="Fecha entrega" class="form-control" name="fecha_deseada_entrega" format="dd-MM-yyyy" :disabled="disable_days" v-model="fecha_deseada_cliente"></datepicker>
 					</div>
 				</div>
 
 				<div class="col-md-2 col-sm-6">
-					<div class="form-group required">
+					<div class="form-group required" v-bind:class="{ 'has-error': (errors_return.prioridad) }">
 						<label><sup>*</sup>Prioridad</label>
 						<select_prioridad :select="prioridad"></select_prioridad>
 					</div>
@@ -51,11 +51,14 @@
 
 			</div>
 			<div class="row">
-					<div class="col-sm-12">
+					<div class="col-sm-12" v-bind:class="{ 'has-error': (errors_return.prioridad) }">
 						<div class="form-group required">
 							<label><sup>*</sup> Descripción</label>
-							<vue-html5-editor :content="solicitud.descripcion" :height="200" :z-index="0" @change="updateData"></vue-html5-editor>
+							<vue-html5-editor required="required" :content="solicitud.descripcion" :height="200" :z-index="0" @change="updateData"></vue-html5-editor>
 						</div>
+						<span class="help-block" v-show="errors_return.descripcion">
+							{{ error_msg.descripcion }}
+						</span>
 					</div>
 			</div>
 			<!-- <div class="row">
@@ -88,31 +91,58 @@
 				},
 				prioridad: '',
 				fecha_deseada_cliente: '',
+				solicitud_nueva: [],
 				disable_days: {
 					days: [0, 6],
 				},
 				errors_return: {
 					nombre_solicitud: '',
 					descripcion: '',
+					prioridad: '',
+				},
+				error_msg: {
+					prioridad: 'El campo prioridad es obligatorio.',
+					descripcion: 'El campo descripcion es obligatorio.'
 				}
+
 			}
 		},
 		created: function(){
 			this.$on('send-prioridad', function(obj) {
 				this.prioridad=obj;
+				console.log("sad");
 			});
 
 		},
 		computed:{},
+
 		watch: {},
 		methods:{	
 			updateData: function (data) {
-                this.tarea.descripcion = data;
+                this.solicitud.descripcion = data;
 				this.errors_return.descripcion=false;
             },
-			agregarInit: ()=>{
+			agregarInit: function(){
 				this.$validator.validateAll();
+				console.log(this.solicitud);
+				console.log(this.errors_return);
+				if(this.prioridad==''){
+					this.errors_return.prioridad = true;
+					return false;
+				}
+				if(this.solicitud.descripcion==''){
+					this.errors_return.descripcion = true;
+					return false;
+				}
+				 if (!this.errors.any()) {
+						this.solicitud_nueva['nombre'] = this.solicitud.nombre_solicitud;
+						this.solicitud_nueva['descripcion'] = this.solicitud.descripcion;
+						this.solicitud_nueva['fecha_ideal_entrega'] = this.fecha_deseada_cliente;
+						this.solicitud_nueva['prioridad_id'] = this.prioridad;
+						this.solicitud_nueva['estados_id'] = 23;
+				 }
 
+				 console.log(this.solicitud_nueva);
 
 			}
 
@@ -121,4 +151,8 @@
 
 
 	Vue.component('select_prioridad',require('../herramientas/select_prioridad.vue'));
+	
+
+	//toastr.success("respuesta.body.msg",'',"this.option_toast");
 </script>
+
