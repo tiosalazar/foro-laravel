@@ -30,8 +30,7 @@ class RequerimientosClientesController extends Controller
     public function index()
     {
         $requerimiento = Ot::with('cliente','usuario','estado')->get();
-
-         return response()->json($requerimiento);
+        return response()->json($requerimiento);
     }
 
     /**
@@ -99,8 +98,38 @@ class RequerimientosClientesController extends Controller
     public function ShowOneRequerimiento($id)
     {
         $requerimiento = Requerimientos_cliente::findOrFail($id);
-        return response()->json($requerimiento);
-        // return view('admin.clientes.ver_solicitud')->with('requerimientoinfo',$requerimiento);
+        // return response()->json($requerimiento);
+        return view('admin.clientes.ver_solicitud')->with('requerimientoinfo',$requerimiento);
+        
+    }
+
+    /**
+     * Método para listar requerimiento en el datatable
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function ShowDatatbleRequerimiento()
+    {
+           $Requerimientos_cliente = Requerimientos_cliente::with(['estado','usuario'=> function ($query){
+
+               $query->addselect('*');
+               $query->addselect(DB::raw('CONCAT(nombre," ",apellido) as full_name'));
+
+             }])->get();
+              // return response()->json($clientes);
+              return Datatables::of($Requerimientos_cliente)
+              ->addColumn('action', function($cliente_requerimiento) {
+                $ver_requerimiento=(Auth::user()->hasRole('cliente'))?'<a href="/ver_requerimiento'.'/'.$cliente_requerimiento->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Ver</a>':'';
+                $ver_tareas_requerimiento=(Auth::user()->hasRole('cliente'))?'<button type="button" id="Ver_tareas" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente">Ver tareas</button>':'';
+                $crear_tareas_requerimiento=(Auth::user()->hasRole('cliente'))?'<button type="button" id="Ver_tareas" class="btn btn-info btn-xs btn-flat btn-block delete_cliente">Crear Tareas</button>':'';
+                return $ver_requerimiento.$ver_tareas_requerimiento.$crear_tareas_requerimiento;
+              })
+              // ->addColumn('ejecutivo', function($cliente) {
+              //   $crear_tarea=(Auth::user()->hasRole('cuentas'))?'<a href="#" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Crear Tarea</a>':'';
+              //    return $crear_tarea;
+              // })
+              ->make(true);
         
     }
 

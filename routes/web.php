@@ -44,8 +44,8 @@
     Route::get('/crear_requerimiento', function () {
       return view('admin.clientes.crear_solicitudes');
     });
-
     Route::get('/ver_requerimiento/{id}','RequerimientosClientesController@ShowOneRequerimiento');
+    Route::get('/listar_requerimientos','RequerimientosClientesController@ShowDatatbleRequerimiento');
 
     /*
      * Foro por Área
@@ -313,6 +313,12 @@
           return Redirect::to('home');
         }*/
       return view('admin.clientes.crear_solicitudes');
+    });
+     Route::get('/solicitud/listar',function ($value=''){
+      /* if (!Auth::user()->can('ver_permisos')) {
+          return Redirect::to('home');
+        }*/
+      return view('admin.clientes.listar_solicitudes');
     });
 
 

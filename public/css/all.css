@@ -9627,6 +9627,12 @@ body {
   padding: 2%;
 }
 
+.ver_solicitud_seccion textarea {
+  width: 100%;
+  resize: none;
+  min-height: 250px;
+}
+
 /*# sourceMappingURL=app.css.map */
 
 /*
