@@ -30,8 +30,7 @@
 			<div class="col-sm-12">
 				<div class="form-group required">
 					<label> Descripción</label>
-					<textarea readonly  >{{info_requerimiento.descripcion}}
-					</textarea>
+					<p style="min-height: 150px;" v-html="info_requerimiento.descripcion"></p>
 				</div>
 			</div>
 		</div>
@@ -42,7 +41,7 @@
 			<div class="col-sm-12">
 				<div class="form-group required">
 					<label> Comentario</label>
-					<textarea v-model="comentario_texto"></textarea>
+          <vue-html5-editor required="required" :content="comentario_texto" :height="200" :z-index="0" @change="updateData"></vue-html5-editor>
 				</div>
 			</div>
 		</div>
@@ -146,6 +145,9 @@ module.exports = {
 			
 	},
 	methods:{
+    updateData: function (data) {
+      this.comentario_texto = data;
+    },
 		setComments:function () {
           this.$http.get(window._apiURL+'comentarios/'+this.info_requerimiento.id)
           .then(function(respuesta){

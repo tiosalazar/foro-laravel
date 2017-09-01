@@ -158,8 +158,6 @@
             },
 			agregarInit: function(){
 				this.$validator.validateAll();
-				console.log(this.solicitud);
-				console.log(this.errors_return);
 				if(this.prioridad==''){
 					this.errors_return.prioridad = true;
 					return false;
@@ -172,7 +170,8 @@
 						 this.solicitud_nueva ={
 							nombre: this.solicitud.nombre_solicitud,
 							descripcion: this.solicitud.descripcion,
-							fecha_ideal_entrega: moment(this.fecha_deseada_cliente).format('YYYY-MM-DD') ,
+							fecha_ideal_entrega: (this.fecha_deseada_cliente)? 
+							moment(this.fecha_deseada_cliente).format('YYYY-MM-DD') : null,
 							prioridad_id: this.prioridad.id,
 							clientes_id: this.solicitud.cliente,
 							encargado_id:this.solicitud.encargado,
@@ -197,6 +196,8 @@
 							}
 				 });
 
+			}else{
+				console.log(moment().format('YYYY-MM-DD'))
 			}
 
 		},

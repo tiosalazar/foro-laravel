@@ -80,7 +80,7 @@
                    <div class="col-md-6 same-height" v-show="show_clienteSelect.show">
                     <div class="form-group">
                     <label for="area_usuario"><sup>*</sup> Cliente </label>
-                    <select_clientes ></select_clientes>
+                    <select_clientes :clear="show_clienteSelect.clear_select" ></select_clientes>
                  </div>
                   </div>
 
@@ -139,6 +139,7 @@
         show_clienteSelect: {
           show: false,
           data: '',
+          clear_select: false,
         },
          usuarios:{
           nombre:'',
@@ -188,8 +189,7 @@
         this.usuarios.areas_id=b.id;
       });
       this.$on('select_clientes', function(v) {
-        this.usuarios.clientes_id=v.id
-        console.log(v);
+        this.usuarios.clientes_id=v.id;
       });
 
           //Valido la opcion de editar o guardar para mostrar el boton correspondiente con su función
@@ -226,6 +226,7 @@
             });
           },
           addUser:function(user) {
+            this.show_clienteSelect.clear_select = !this.show_clienteSelect.clear_select;
             this.$validator.validateAll();
             if (this.errors.any()) {
               return false
@@ -247,6 +248,7 @@
               this.rol={};
               this.area={};
               this.show_clienteSelect.data={};
+              this.show_clienteSelect.clear_select = true;
               if($('#tabla_usuarios') ){
                 $('#tabla_usuarios').DataTable().ajax.reload();
               }

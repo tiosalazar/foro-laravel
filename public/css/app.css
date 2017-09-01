@@ -8013,7 +8013,6 @@ label sup {
 }
 
 .fade-enter-active, .fade-leave-active {
-  -webkit-transition: opacity 2s;
   transition: opacity 2s;
 }
 
@@ -8561,7 +8560,6 @@ body {
 
 .sidebar-menu .treeview.active .fa-caret-left {
   margin-right: 9px;
-  -webkit-transition-timing-function: linear;
   transition-timing-function: linear;
   -webkit-transform: rotate(-90deg);
   transform: rotate(-90deg);
@@ -8953,7 +8951,6 @@ body {
 }
 
 .v-enter {
-  -webkit-transition: opacity .5s;
   transition: opacity .5s;
 }
 
@@ -9697,12 +9694,6 @@ body {
 
 .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a > p {
   white-space: normal;
-}
-
-.ver_solicitud_seccion textarea {
-  width: 100%;
-  resize: none;
-  min-height: 250px;
 }
 
 /*# sourceMappingURL=app.css.map */
