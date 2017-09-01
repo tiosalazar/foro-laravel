@@ -341,8 +341,8 @@
   /* Route::get('/crear_requerimiento', function () {
      return view('admin.clientes.crear_solicitudes');
    });*/
-  /* Route::get('/ver_requerimiento/{id}','RequerimientosClientesController@ShowOneRequerimiento');
-   Route::get('/listar_requerimientos','RequerimientosClientesController@ShowDatatbleRequerimiento');*/
+   // Route::get('/ver_requerimiento/{id}','RequerimientosClientesController@ShowOneRequerimiento');
+   Route::get('/listar_requerimientos','RequerimientosClientesController@ShowDatatbleRequerimiento');
 
 
 });

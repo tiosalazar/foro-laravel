@@ -13,7 +13,7 @@ use App\Requerimientos_cliente;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use App\Notifications\RequerimientoCerado;
+use App\Notifications\RequerimientoCreado;
 use Validator;
 use Illuminate\Http\Response;
 use Exception;
@@ -92,7 +92,7 @@ class RequerimientosClientesController extends Controller
           //Notificar al usuario Owner cuando se cree una OT
 
             $encargado= User::findOrFail($requerimiento->encargado_id);
-            $encargado->notify(new RequerimientoCerado($encargado,$requerimiento));
+            $encargado->notify(new RequerimientoCreado($encargado,$requerimiento));
 
               DB::commit();
               return response([
@@ -298,12 +298,12 @@ class RequerimientosClientesController extends Controller
                  ->get();
 
               // return response()->json($clientes);
-                $output = collect($Requerimientos_cliente);
+             $output = collect($Requerimientos_cliente);
               return Datatables::of($output)
               ->addColumn('action', function($cliente_requerimiento) {
 
-                 $ver_requerimiento=(Auth::user()->hasRole('cliente'))?'<a href="/solicitud/ver'.'/'.$cliente_requerimiento->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Ver</a>':'';
-                 $ver_tareas_requerimiento=(Auth::user()->hasRole('cliente'))?'<a href="/solicitud/tareas'.'/'.$cliente_requerimiento->id.'"  id="Ver_tareas" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente">Ver tareas</a>':'';
+                 $ver_requerimiento=(Auth::user()->hasRole('cliente') || Auth::user()->hasRole('cuentas'))?'<a href="/solicitud/ver'.'/'.$cliente_requerimiento->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Ver</a>':'';
+                 $ver_tareas_requerimiento=(Auth::user()->hasRole('cliente') || Auth::user()->hasRole('cuentas'))?'<a href="/solicitud/tareas'.'/'.$cliente_requerimiento->id.'"  id="Ver_tareas" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente">Ver tareas</a>':'';
 
                 $crear_tareas_requerimiento=(Auth::user()->hasRole('cuentas'))?'<a href="/crear_tarea_requerimiento'.'/'.$cliente_requerimiento->id.'" class="btn btn-info btn-xs btn-flat btn-block usuario_edit">Crear Tarea</a>':'';
 
