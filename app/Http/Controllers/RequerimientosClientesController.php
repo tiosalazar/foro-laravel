@@ -120,9 +120,9 @@ class RequerimientosClientesController extends Controller
               // return response()->json($clientes);
               return Datatables::of($Requerimientos_cliente)
               ->addColumn('action', function($cliente_requerimiento) {
-                $ver_requerimiento=(Auth::user()->hasRole('cliente'))?'<a href="/ver_requerimiento'.'/'.$cliente_requerimiento->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Ver</a>':'';
-                $ver_tareas_requerimiento=(Auth::user()->hasRole('cliente'))?'<button type="button" id="Ver_tareas" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente">Ver tareas</button>':'';
-                $crear_tareas_requerimiento=(Auth::user()->hasRole('cliente'))?'<button type="button" id="Ver_tareas" class="btn btn-info btn-xs btn-flat btn-block delete_cliente">Crear Tareas</button>':'';
+                $ver_requerimiento=(Auth::user()->hasRole('cliente')  or Auth::user()->hasRole('cuentas') )?'<a href="/ver_requerimiento'.'/'.$cliente_requerimiento->id.'" class="btn btn-primary btn-xs btn-flat btn-block usuario_edit">Ver</a>':'';
+                $ver_tareas_requerimiento=(Auth::user()->hasRole('cliente') or Auth::user()->hasRole('cuentas'))?'<button type="button" id="Ver_tareas" class="btn btn-danger btn-xs btn-flat btn-block delete_cliente">Ver tareas</button>':'';
+                $crear_tareas_requerimiento=(Auth::user()->hasRole('cuentas'))?'<a href="/crear_tarea_requerimiento'.'/'.$cliente_requerimiento->id.'" class="btn btn-info btn-xs btn-flat btn-block usuario_edit">Crear Tarea</a>':'';
                 return $ver_requerimiento.$ver_tareas_requerimiento.$crear_tareas_requerimiento;
               })
               // ->addColumn('ejecutivo', function($cliente) {

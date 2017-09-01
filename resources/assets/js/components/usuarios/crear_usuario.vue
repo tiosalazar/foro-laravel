@@ -169,6 +169,7 @@
     created: function(){
       this.$on('rol_option', function(v) {
         this.usuarios.roles_id=v.id;
+        
       });
       this.$on('area_option', function(b) {
         this.usuarios.areas_id=b.id;
