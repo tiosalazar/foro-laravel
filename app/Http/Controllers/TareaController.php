@@ -30,6 +30,7 @@ use App\Comentario;
 use App\Historico_Tarea;
 use App\Planeacion_fase;
 use App\Planeacion_tipo;
+use App\Requerimientos_cliente;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Validator;
@@ -97,6 +98,21 @@ public function calendarConsole()
       }
       return view('admin.tareas.crear_tarea')->with('area',0);
 
+    }
+
+     public function create_requerimiento($id)
+    { 
+
+      if (!Auth::user()->can('crear_tareas')) {
+          return redirect("/home");
+      }
+      // if (!is_null($id) && is_numeric($id)) {
+      //   $area = Area::findOrFail($id);
+      //   return view('admin.tareas.crear_tarea')->with('area',$area);
+      // }
+     
+      $requerimientos_cliente = Requerimientos_cliente::findOrFail($id);
+      return view('admin.tareas.crear_tarea_requerimiento')->with('requerimiento_cliente',$requerimientos_cliente);
     }
 
 /**

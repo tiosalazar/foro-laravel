@@ -20,6 +20,7 @@ Vue.component('historico_clientes', require('./components/clientes/historico_cli
 
 // Tarea
 Vue.component('tarea', require('./components/tareas/tarea.vue'));
+Vue.component('tarea_requerimiento', require('./components/tareas/crear_tarea_requerimiento.vue'));
 Vue.component('ver_tareas', require('./components/tareas/ver_tareas.vue'));
 Vue.component('ver_tarea', require('./components/tareas/ver_tarea.vue'));
 Vue.component('tareas_perfil', require('./components/tareas/tareas_perfil.vue'));

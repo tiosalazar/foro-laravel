@@ -134,6 +134,8 @@
 
   Route::get('/crear_tarea/{id?}', 'TareaController@create');
 
+  Route::get('/crear_tarea_requerimiento/{id?}', 'TareaController@create_requerimiento');
+
   Route::get('/listar_tareas', function () {
     return view('admin.tareas.listar_tareas');
   });
