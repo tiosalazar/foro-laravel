@@ -40,38 +40,38 @@
             </div>
             <!-- /.row -->
             <div class="row">
-      				<div class="" v-if="tarea_info.recurrente=='1'">
-      					<div class="col-md-6">
+              <div class="" v-if="tarea_info.recurrente=='1'">
+                <div class="col-md-6">
                   <label><strong>Fecha inicio de recurrencia</strong></label>
-      						<div class="" v-if="rol_actual==='owner' || rol_actual==='desarrollo' || id_usuario_actual == tarea_info.usuarios_id">
-        						<div class="input-group date" >
-        							<div class="input-group-addon">
-        								<i class="fa fa-calendar"></i>
-        							</div>
-        							<datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="tarea_info.fecha_inicio_recurrencia" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
-        						</div>
-      						</div>
+                  <div class="" v-if="rol_actual==='owner' || rol_actual==='desarrollo' || id_usuario_actual == tarea_info.usuarios_id">
+                    <div class="input-group date" >
+                      <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                      </div>
+                      <datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="tarea_info.fecha_inicio_recurrencia" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
+                    </div>
+                  </div>
                   <div class="" v-else>
                     <center>{{tarea_info.fecha_inicio_recurrencia| date_format}}</center>
                   </div>
                   <br>
-      					</div>
-      					<div class="col-md-6">
-      						<label><strong>Fecha final de recurrencia</strong></label>
+                </div>
+                <div class="col-md-6">
+                  <label><strong>Fecha final de recurrencia</strong></label>
                   <div class="" v-if="rol_actual==='owner' || rol_actual==='desarrollo' || id_usuario_actual == tarea_info.usuarios_id">
-        						<div class="input-group date" >
-        							<div class="input-group-addon">
-        								<i class="fa fa-calendar"></i>
-        							</div>
-        							<datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="tarea_info.fecha_final_recurrencia" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
-        						</div>
-      						</div>
+                    <div class="input-group date" >
+                      <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                      </div>
+                      <datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="tarea_info.fecha_final_recurrencia" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
+                    </div>
+                  </div>
                   <div class="" v-else>
                     <center>{{tarea_info.fecha_final_recurrencia| date_format}}</center>
                   </div>
-      					</div>
-      				</div>
-      			</div>
+                </div>
+              </div>
+            </div>
             <!-- /.row -->
             <div class="row">
               <div class="col-sm-6">
@@ -539,8 +539,8 @@
         message:'',
         fecha_entrega_cliente:'',
         disabled:{
-				  "to": moment().subtract(1, 'days').toDate(),
-				},
+          "to": moment().subtract(1, 'days').toDate(),
+        },
         errors_return:{
           'nombre':'',
           'horas_estimadas':'',
@@ -676,22 +676,22 @@
         },
         comprobarFechas: function (arreglo) {
           if( arreglo != null && arreglo != undefined ){
-        		var index = Object.keys(arreglo).length;
-        	}
-        	if ( index == 0) {
-        		toastr.error("Todos los campos son obligatorios","Error al Guardar Fechas programación",this.option_toast);
-        		return false;
-        	}
+            var index = Object.keys(arreglo).length;
+          }
+          if ( index == 0) {
+            toastr.error("Todos los campos son obligatorios","Error al Guardar Fechas programación",this.option_toast);
+            return false;
+          }
             for (let f in arreglo) {
               let idx = Number(f)
               let p = arreglo[idx]
                if (p.inicio_programada.time =="" || p.fin_programada.time =="") {
                  toastr.error("Recuerde que todos los campos son obligatorios, no puede dejar campos en blanco","Error en Fechas programación",this.option_toast);
-             		 return false;
+                 return false;
                }else if(moment(p.inicio_programada.time).isAfter(p.fin_programada.time)){
                  toastr.error("La fecha final debe de ser mayor que la inicial","Error en Fechas programación",this.option_toast);
                  return false;
-             	}
+              }
             }
             return true;
         },
@@ -724,16 +724,16 @@
           //Realizar el Calculo de las horas.
         },
         setErrors:function(object) {
-  		        this.message='';
-  		        let that = this;
-  		        $.each(object, function(index, value) {
-  							let campo = index.replace(/_id/g, '');
-  							campo = campo.replace(/_/g, ' ');
-  							value = value[0].replace(/ id /g, '');
-  							that.message += '<strong>'+campo + '</strong>: '+value+ '</br>';
-  		          that.errors_return[index] = 'has-warning';
-  		        });
-  		    },
+              this.message='';
+              let that = this;
+              $.each(object, function(index, value) {
+                let campo = index.replace(/_id/g, '');
+                campo = campo.replace(/_/g, ' ');
+                value = value[0].replace(/ id /g, '');
+                that.message += '<strong>'+campo + '</strong>: '+value+ '</br>';
+                that.errors_return[index] = 'has-warning';
+              });
+          },
           updateData: function (data) {
                 // sync content to component
                 this.descripcion = data;
@@ -763,9 +763,6 @@
 
           let data_fechas =(this.comprobarSiGuardoFechas(this.datos_fechas)===true)?null:this.comprobarSiGuardoFechas(this.datos_fechas);
           console.log(data_fechas);
-          if (data_fechas == null) {
-            return false;
-          }
             //Datos a enviar
             let data =
             {

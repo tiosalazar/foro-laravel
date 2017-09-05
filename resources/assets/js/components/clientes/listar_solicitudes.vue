@@ -8,6 +8,7 @@
               <th>Descripcion</th>
               <th>Fecha Ideal Entrega</th>
               <th>Estado</th>
+              <th>Fecha Solicitud</th>
               <th>Encargado</th>
               <th>Acciones</th>
 		        </tr>
@@ -101,6 +102,7 @@
 		          { data: 'descripcion', name: 'descripcion' },
 		          { data: 'fecha_ideal_entrega', name: 'fecha_ideal_entrega' },
 		          { data: 'estado', name: 'estado.nombre' },
+		          { data: 'created_at', name: 'created_at' },
 		          { data: 'usuarioencargado.full_name', name: 'usuarioencargado.full_name' },
 		          { data: 'action', name: 'action', searchable: false },
           // {data: 'action', name: 'action', orderable: false, searchable: false}

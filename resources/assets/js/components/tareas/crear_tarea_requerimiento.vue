@@ -2,6 +2,26 @@
 	<form role="form" name="crear_tarea" class="crear_tarea">
 		<div class="box-body">
 			<div class="form-group required">
+				<label for="ot"><sup>*</sup> Nombre del requerimiento </label>
+				<select_requerimiento :select="select_requerimiento_obj" :id_requerimiento="requerimiento_id"></select_requerimiento>
+			</div>
+			<div class="row desc-ot with-border">
+				<div class="col-sm-12 border-right">
+					<ul>
+						<li><strong>Id Requerimiento:  </strong><span>{{select_requerimiento_obj.id}}</span></li>
+						<li><strong>Cliente:  </strong><span>{{select_requerimiento_obj.nombre}}</span></li>
+						<li><strong>Fecha Solicitud: </strong><span>{{select_requerimiento_obj.updated_at}} </span></li>
+					</ul>
+				</div>
+				<div class="col-sm-12">
+					<ul>
+						<li><strong>Descripción:</strong></li>
+						<textarea name="descripcion" id="descripcion" style="width:100%; height:200px; resize: none;" readonly>{{select_requerimiento_obj.descripcion}}</textarea>
+					</ul>
+			     </div>
+				<!-- /.col -->
+			</div>
+			<div class="form-group required">
 				<label for="ot"><sup>*</sup> Nombre el Proyecto </label>
 				<select_ot :select="select_ot"></select_ot>
 			</div>
@@ -74,7 +94,7 @@
 				<div class="col-sm-6">
 					<div class="form-group required">
 						<label><sup>*</sup> Fase del Proyecto </label>
-						<select_fase :select="fase" :area="area"></select_fase>
+						<!-- <select_fase :select="fase" :area="area"></select_fase> -->
 					</div>
 				</div>
 			</div>
@@ -247,8 +267,10 @@
   	Vue.use(VeeValidate);
 	module.exports = {
 		components: {Datepicker,VeeValidate,Validator},
+		props: ['requerimiento_id'],
 		data(){
 			return{
+				reque_id:'',
 				tarea:{
 					nombre_tarea:'',
 					descripcion:'',
@@ -263,11 +285,15 @@
 				estado:'',
 				fase:'',
 				indice_textarea:'',
+				requerimiento:{},
+				select_requerimiento_obj:{},
 				ot:{
 					usuario:'',
 					cliente:''
 				},
-				area:{},
+				area:{
+					id:0,
+				},
 				current_date:'',
 				user:'',
 				descripcion_fake:'',
@@ -295,13 +321,16 @@
 			}
 		},
 		created: function() {
-			this.$on('send-ot', function(obj) {
-				this.ot= obj;
-				// console.log('cliente',obj.cliente.nombre)
-				this.select_ot= obj;
+			// this.reque_id = this.requerimiento_id;
+			this.select_requerimiento_obj=this.requerimiento_id;
+
+			this.$on('send-requerimiento', function(obj) {
+				this.requerimiento= obj;
+				this.select_requerimiento_obj= obj;
 			});
 			this.$on('area_option', function(obj) {
 				this.area=obj;
+				console.log(this.area);
 			});
 			this.$on('select_estado', function(v) {
 				this.estado=v;
@@ -347,7 +376,7 @@
 			if (this.$parent.area != 0) {
 				this.area = this.$parent.area;
 			}
-			console.log('area',this.area);
+		
 		},
 		computed:{},
 		watch: {},
@@ -556,4 +585,5 @@ Vue.component('select_prioridad',require('../herramientas/select_prioridad.vue')
 Vue.component('select_ot',require('../herramientas/select_ot.vue'));
 Vue.component('select_area',require('../herramientas/select_area.vue'));
 Vue.component('select_rol',require('../herramientas/select_rol.vue'));
+Vue.component('select_requerimiento',require('../herramientas/select_requerimientos.vue'));
 </script>

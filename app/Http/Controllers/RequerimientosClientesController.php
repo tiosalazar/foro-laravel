@@ -245,7 +245,7 @@ class RequerimientosClientesController extends Controller
     {
         $requerimiento = Requerimientos_cliente::findOrFail($id);
         $requerimiento->estado_prioridad;
-    //return response()->json($requerimiento);
+        //return response()->json($requerimiento);
         return view('admin.clientes.ver_solicitud')->with('requerimientoinfo',$requerimiento);
 
     }
@@ -289,6 +289,10 @@ class RequerimientosClientesController extends Controller
         }else{
             $month = $now->month;
         }
+
+        if ( Auth::user()->hasRole('desarrollo') || Auth::user()->hasRole('owner')) {
+
+       
            $Requerimientos_cliente = Requerimientos_cliente::with(['estado' => function ($query) use ($request) {
                  if ($request->has('estados')) {
                      $query->whereIn('id',$request->get('estados'));
@@ -301,13 +305,45 @@ class RequerimientosClientesController extends Controller
              }])->whereYear('created_at', $year)
                  ->whereMonth('created_at', $month)
                  ->get();
+        }else{
+
+
+             $id_user_actual = Auth::id();
+
+                 $Requerimientos_cliente = Requerimientos_cliente::with(['estado' => function ($query) use ($request) {
+                       if ($request->has('estados')) {
+                           $query->whereIn('id',$request->get('estados'));
+                       }
+                   },'usuario','usuarioencargado'=> function ($query){
+
+                     $query->addselect('*');
+                     $query->addselect(DB::raw('CONCAT(nombre," ",apellido) as full_name'));
+
+                   }])->whereYear('created_at', $year)
+                       ->whereMonth('created_at', $month)
+                         ->where('usuarios_id', '=', $id_user_actual)
+                         ->orWhere('encargado_id','=', $id_user_actual)
+                       ->get();
+
+        }
+
+    
+
+                    
 
               // return response()->json($clientes);
+              foreach($Requerimientos_cliente as $value){
+                  $value->descripcion = substr($value->descripcion, 0, 120);
+                  $value->descripcion = $value->descripcion."...";
+              }
 
               // selecciona solos los que tiene el area especifico
                 foreach ($Requerimientos_cliente as $key => $value) {
+
+                      // Mostramos solo los 11 primeros caracteres por ejemplo: "En un lugar"
                         if ($value->estado && $value->usuario) {
-                         array_push($output, $value);
+                           array_push($output, $value);
+                           
                         }
                 }
                 $output = collect($output);
@@ -381,7 +417,7 @@ class RequerimientosClientesController extends Controller
 public function getComentario(Request $request, $id)
 {
   $comentarios = Comentario::with(['user','estados'])->where('requerimientos_clientes_id',$id)->get();
-          return ($comentarios);
+   return response()->json($comentarios);
 }
 /**
  * Agregar Comentario al Requerimiento
@@ -409,6 +445,71 @@ public function agregarComentario(Request $request)
         }
          return response()->json($respuesta);
 }
+
+/*DSO 01-09-2017 Metodo para el select de requerimientos en crear tarea
+ */
+   public function showRequerimientosEnTareas()
+   {
+      // Muestra todos los requerimientos
+    
+        $requerimientos_list=  Requerimientos_cliente::with(['cliente','usuario'])->get();
+        foreach ($requerimientos_list as $key => $requerimiento_list) {
+          $requerimiento_list['cliente_nombre']=$requerimiento_list['cliente']['nombre'];
+        }
+      
+      return response()->json($requerimientos_list);
+   }
+
+   public function showRequerimientosEnTareasByQuery($query)
+   {
+      // Si empieza con valor numerico buscar por referencia
+      // de lo contrario por nombre
+
+      //Función que consulta las ot recibe dos valores el primero referencia o nombre el segundo el query que se envia desde el componente select
+      function consulta_requerimiento($value,$consulta)
+      {
+         $requerimientos = Requerimientos_cliente::
+         select('requerimientos_clientes.id','requerimientos_clientes.clientes_id','requerimientos_clientes.created_at','requerimientos_clientes.estados_id','requerimientos_clientes.nombre','requerimientos_clientes.descripcion',
+         'requerimientos_clientes.usuarios_id','clientes.nombre as cliente_nombre','users.nombre as usuario_nombre',
+         'users.apellido as usuario_apellido')
+         ->join('clientes','clientes.id','=','requerimientos_clientes.clientes_id')
+         ->join('users','users.id','=','requerimientos_clientes.usuarios_id')
+         ->where('requerimientos_clientes.estados_id','24')
+         ->Where($value, 'like', '%'.$consulta.'%')
+         ->orWhere('clientes.nombre', 'like', '%'.$consulta.'%')
+         ->get();
+
+         return $requerimientos;
+      }
+      if (is_numeric($query)) {
+         //  $ot = Ot::with(['cliente','usuario'])->where('estados_id', 8)->where('referencia', 'like', '%'.$query.'%')->get();
+         $requerimientos=consulta_requerimiento('id',$query);
+      } else {
+         $requerimientos= consulta_requerimiento('requerimientos_clientes.nombre',$query);
+         //  $ot = Ot::with(['cliente'=> function ($subquery) use ($query)
+         //  {
+         //    $subquery->orWhere('nombre','like','%'.$query.'%');
+         //  },'usuario'])->where('estados_id', 8)->orWhere('nombre', 'like', '%'.$query.'%')->get();
+      }
+
+      /*$ot=  Ot::with(['cliente','usuario','tiempos_x_area'])
+      ->get();
+      $ot=OT::findOrFail($id);
+      $ot->fecha_final=$ot->getFormatFechaShow($ot->fecha_final);
+      $ot->fecha_inicio= $ot->getFormatFechaShow( $ot->fecha_inicio);
+      $ot->valor=$this->formatMoney($ot->valor,false);
+      $ot->Tiempos_x_Area;
+      $ot->Usuario;
+      $ot->Cliente;
+      $ot->Estado;
+      $ot->Requerimiento_Ot;
+      $ot->Compras_Ot;
+      $listado_areas=[];
+      foreach ($ot->Tiempos_x_Area as  $value) {
+         array_push($listado_areas, $value->Area);
+      }*/
+      return response()->json($requerimientos);
+   }
 
 /*DSO 30-08-2017 Funcion para validar los campos al crear un requerimiento
  * entra el arreglo de datos

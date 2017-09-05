@@ -54,12 +54,14 @@
       },
       methods:{
         fetchTips: function(){
+      
           if (typeof this.area.id == 'undefined') {
             this.area.id = 0;
           }
          this.$http.get(window._baseURL+'/list_fases/'+this.area.id)
          .then(function(respuesta){
           this.estados=respuesta.body;
+          console.log(this.estados)
         }.bind(this));
        },
        updateSelected (newSelected) {

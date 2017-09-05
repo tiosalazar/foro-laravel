@@ -110,6 +110,11 @@
   Route::get('/show_ots_tareas','OtController@showOtEnTareas');
   Route::get('/show_ots_tareas_query/{query}','OtController@showOtEnTareasByQuery');
 
+//Rutas para el select de requerimientos
+
+  Route::get('/show_requerimientos_tareas','RequerimientosClientesController@showRequerimientosEnTareas');
+  Route::get('/show_requerimientos_tareas/{query}','RequerimientosClientesController@showRequerimientosEnTareasByQuery');
+
 
   // Clientes
   Route::get('clientes/crear', function()

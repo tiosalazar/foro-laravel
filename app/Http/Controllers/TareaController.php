@@ -110,9 +110,13 @@ public function calendarConsole()
       //   $area = Area::findOrFail($id);
       //   return view('admin.tareas.crear_tarea')->with('area',$area);
       // }
+      // return view('admin.tareas.crear_tarea')->with('area',0);
      
       $requerimientos_cliente = Requerimientos_cliente::findOrFail($id);
-      return view('admin.tareas.crear_tarea_requerimiento')->with('requerimiento_cliente',$requerimientos_cliente);
+      $area=['id'=> 0];
+      $area1=json_encode($area);
+      $requerimiento_client=json_encode($requerimientos_cliente);
+      return view('admin.tareas.crear_tarea_requerimiento')->with('requerimiento_cliente',$requerimiento_client)->with('area',$area1);
     }
 
 /**
