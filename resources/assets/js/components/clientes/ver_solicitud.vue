@@ -18,9 +18,11 @@
 
 			<div class="col-sm-5">
 				<div class="form-group required">
-				<label>Estado:</label>
+				<label>Estado: {{info_requerimiento.estado.nombre}}</label>
 				 <div v-if="info_requerimiento.estado_prioridad!=null">
-                 <span   v-bind:class="'label label-estado estado-'+[info_requerimiento.estado_prioridad.tipos_estados_id]+'-'+[info_requerimiento.estado_prioridad.id]">{{info_requerimiento.estado_prioridad.nombre}}</span>
+
+                <span>Prioridad</span>
+                 <span  v-bind:class="'label label-estado estado-'+[info_requerimiento.estado_prioridad.tipos_estados_id]+'-'+[info_requerimiento.estado_prioridad.id]">{{info_requerimiento.estado_prioridad.nombre}}</span>
                 </div>
 				</div>
 			</div>
@@ -132,16 +134,17 @@ module.exports = {
 	}
 },
 	created: function(){
-
 			if (typeof(this.requerimientoarray)!= 'undefined') {
-				this.info_requerimiento= JSON.parse(this.requerimientoarray);
-				// this.info_requerimiento= JSON.parse(JSON.stringify(this.requerimientoarray));
+				var info_requerimiento_json = JSON.parse(this.requerimientoarray);
+				this.info_requerimiento= info_requerimiento_json[0];
+        console.log("Solicitud info"); 
 				console.log(this.info_requerimiento);
 			}
 			this.rol_actual=this.rol_usuario_actual;
 			this.setComments();
 			this.$on('select_estado', function(v) {
-				this.info_requerimiento.estado_prioridad = v;
+				this.info_requerimiento.estado = v;
+        console.log(v);
 			});
 			
 	},
@@ -156,16 +159,17 @@ module.exports = {
           });
           },
           asignar_estado:function () {
-          	this.$http.put(window._apiURL+'clientes_requerimiento/'+this.info_requerimiento.id, {estados_id:this.info_requerimiento.estado_prioridad.id})
+          	this.$http.put(window._apiURL+'clientes_requerimiento/'+this.info_requerimiento.id, {estados_id:this.info_requerimiento.estado.id})
 	          .then(function(respuesta){
 	          });
 
           	let data = {
-            comentarios:this.comentario_texto,
-            usuarios_comentario_id:this.id_usuario_actual,
-            is_comment:1,
-            requerimientos_clientes_id:this.info_requerimiento.id
-          }
+              comentarios:this.comentario_texto,
+              usuarios_comentario_id:this.id_usuario_actual,
+              is_comment:1,
+              requerimientos_clientes_id:this.info_requerimiento.id,
+              estados_id:this.info_requerimiento.estado.id
+            }
 
           this.$http.post(window._apiURL+'comentarios/', data)
           .then(function(respuesta){

@@ -129,6 +129,14 @@
   background-color: #56C716;
 }
 
+.estado-6-26 {
+  background-color: red;
+}
+
+.estado-6-27 {
+  background-color: #36b715;
+}
+
 .box .border-right {
   border-right: 1px solid #d8d8d8;
 }
@@ -9703,6 +9711,8 @@ body {
   width: 100%;
   resize: none;
   min-height: 250px;
+  padding: 15px;
+  text-align: justify;
 }
 
 /*# sourceMappingURL=app.css.map */

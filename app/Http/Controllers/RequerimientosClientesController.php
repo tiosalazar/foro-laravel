@@ -243,9 +243,10 @@ class RequerimientosClientesController extends Controller
      */
     public function ShowOneRequerimiento($id)
     {
-        $requerimiento = Requerimientos_cliente::findOrFail($id);
-        $requerimiento->estado_prioridad;
-        //return response()->json($requerimiento);
+        // $requerimiento = Requerimientos_cliente::findOrFail($id);
+        $requerimiento = Requerimientos_cliente::with(['estado','estado_prioridad'])->where('id',$id)->get();
+        // $requerimiento->estado_prioridad;
+        // return response()->json($requerimiento);
         return view('admin.clientes.ver_solicitud')->with('requerimientoinfo',$requerimiento);
 
     }

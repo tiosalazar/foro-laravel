@@ -93,6 +93,13 @@
 .estado-6-25{
 	background-color: $estado-archivado;
 }
+.estado-6-26{
+	background-color: $estado_invalido_requerimiento;
+}
+
+.estado-6-27{
+	background-color: $estado_finalizado_requerimiento;
+}
 
 // Bordes
 .box {
