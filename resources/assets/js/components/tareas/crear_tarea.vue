@@ -82,7 +82,7 @@
 
 			<div class="row">
 				<div class="col-sm-4">
-					<label>Fecha entrega cliente</label>
+					<label>Fecha Ideal entrega cliente</label>
 					<div class="input-group date" >
 						<div class="input-group-addon">
 							<i class="fa fa-calendar"></i>

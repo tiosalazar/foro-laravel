@@ -95,23 +95,26 @@
                 </div>
 
 
-
+              <div class="" v-if="rol_actual!='cliente'">
                  <label for=""><strong>Fecha entrega Área:</strong></label>
-                <div class="form group input-group date" v-bind:class="{ 'has-error': errors.has('fecha_entrega_area') }">
+                  <div class="form group input-group date" v-bind:class="{ 'has-error': errors.has('fecha_entrega_area') }">
 
-                      <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id != '3'">
-                           {{tarea_info.fecha_entrega_area | date_format}}
-                        </div>
-                       <div class="contenedor_fecha" v-else>
+                        <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id != '3'">
+                            
+                             {{tarea_info.fecha_entrega_area | date_format}}
+                            
+                          </div>
+                         <div class="contenedor_fecha" v-else>
 
-                         <div class="input-group-addon" >
-                          <i class="fa fa-calendar"></i>
-                        </div>
+                           <div class="input-group-addon" >
+                            <i class="fa fa-calendar"></i>
+                          </div>
 
-                          <datepicker  style="height:26px;" language="es"  id="fecha_entrega_area" required="required"   v-validate data-vv-rules="required" data-vv-as="Fecha Entrega Área" placeholder="Fecha Entrega Area" @input="guardarDatos"  :disabled="state.disabled" v-model="tarea_info.fecha_entrega_area" class="form-control"  name="fecha_entrega_area" format="dd-MM-yyyy"></datepicker>
+                            <datepicker  style="height:26px;" language="es"  id="fecha_entrega_area" required="required"   v-validate data-vv-rules="required" data-vv-as="Fecha Entrega Área" placeholder="Fecha Entrega Area" @input="guardarDatos"  :disabled="state.disabled" v-model="tarea_info.fecha_entrega_area" class="form-control"  name="fecha_entrega_area" format="dd-MM-yyyy"></datepicker>
 
-                       </div>
-                    <span  class="help-block" v-show="errors.has('fecha_entrega_area')">{{ errors.first('fecha_entrega_area') }}</span>
+                         </div>
+                      <span  class="help-block" v-show="errors.has('fecha_entrega_area')">{{ errors.first('fecha_entrega_area') }}</span>
+                  </div>
                 </div>
 
 
@@ -124,25 +127,27 @@
                   <label><strong>Fase del Proyecto:</strong></label>
                   <div>{{tarea_info.planeacion_fase.nombre}}</div>
                 </div>
+              
+               <div id="seccion_programar" v-if="(rol_actual==='coordinador' || rol_actual==='owner' || rol_actual==='desarrollo' )">
+                  <div class="form-group same-height">
+                     <label><strong>Fecha ideal  de entrega al cliente:</strong></label>
+                     <div class="contenedor_fecha">
+                       {{tarea_info.fecha_entrega_cliente | date_format}}
+                     </div>
+                     <br>
+                     <div v-if="rol_actual=='owner' || rol_actual=='desarrollo'">
 
-                <div class="form-group same-height">
-                   <label><strong>Fecha de entrega al cliente:</strong></label>
-                   <div class="contenedor_fecha">
-                     {{tarea_info.fecha_entrega_cliente | date_format}}
-                   </div>
-                   <br>
-                   <div v-if="rol_actual=='owner' || rol_actual=='desarrollo'">
-
-                     <div class="input-group date" >
-                       <div class="input-group-addon">
-                         <i class="fa fa-calendar"></i>
+                       <div class="input-group date" >
+                         <div class="input-group-addon">
+                           <i class="fa fa-calendar"></i>
+                         </div>
+                         <datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="fecha_entrega_cliente" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
                        </div>
-                       <datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="fecha_entrega_cliente" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente" format="dd-MM-yyyy"></datepicker>
-                     </div>
-                     </div>
+                       </div>
 
 
-                  <!-- <div>{{tarea_info.fecha_entrega_cliente | date_format}}</div> -->
+                    <!-- <div>{{tarea_info.fecha_entrega_cliente | date_format}}</div> -->
+                  </div>
                 </div>
 
 
@@ -165,22 +170,24 @@
                 </div>
 
 
+              <div class="" v-if="rol_actual!='cliente'">
 
-
-                <label for=""><strong>Fecha entrega cuentas:</strong></label>
-                <div class="form group input-group date" v-bind:class="{ 'has-error': errors.has('fecha_entrega_cuentas') }">
-                    <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id != '3'">
-                           {{tarea_info.fecha_entrega_cuentas | date_format}}
-                    </div>
-                  <div class="contenedor_fecha" v-else>
-                      <div class="input-group-addon" >
-                        <i class="fa fa-calendar"></i>
+                  <label for=""><strong>Fecha entrega cuentas:</strong></label>
+                  <div class="form group input-group date" v-bind:class="{ 'has-error': errors.has('fecha_entrega_cuentas') }">
+                      <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id != '3'">
+                             {{tarea_info.fecha_entrega_cuentas | date_format}}
                       </div>
+                    <div class="contenedor_fecha" v-else>
+                        <div class="input-group-addon" >
+                          <i class="fa fa-calendar"></i>
+                        </div>
 
-                      <datepicker   language="es"  id="fecha_entrega_cuentas" required="required"   v-validate data-vv-rules="required" data-vv-as="Fecha Entrega Area" placeholder="Fecha Entrega Cuentas"   :disabled="state.disabled_cuentas" v-model="tarea_info.fecha_entrega_cuentas" class="form-control"  name="fecha_entrega_cuentas" format="dd-MM-yyyy"></datepicker>
+                        <datepicker   language="es"  id="fecha_entrega_cuentas" required="required"   v-validate data-vv-rules="required" data-vv-as="Fecha Entrega Area" placeholder="Fecha Entrega Cuentas"   :disabled="state.disabled_cuentas" v-model="tarea_info.fecha_entrega_cuentas" class="form-control"  name="fecha_entrega_cuentas" format="dd-MM-yyyy"></datepicker>
 
+                    </div>
+                      <span  class="help-block" v-show="errors.has('fecha_entrega_cuentas')">{{ errors.first('fecha_entrega_cuentas') }}</span>
                   </div>
-                    <span  class="help-block" v-show="errors.has('fecha_entrega_cuentas')">{{ errors.first('fecha_entrega_cuentas') }}</span>
+
                 </div>
 
 
@@ -188,53 +195,57 @@
               </div>
 
               <div class="col-sm-12">
+               <div class="" v-if="rol_actual!='cliente'">
                 <div class="form-group ruta_server">
                   <label><strong>Ruta server:</strong></label>
                   <p>{{tarea_info.enlaces_externos}}</p>
                 </div>
-              </div>
-
-            </div>
-            <div class="row">
-              <div class="col-sm-4">
-                <div class="form-group">
-                  <label for="tiempo_mapa_cliente"><strong>Tiempo estimado cliente</strong></label>
-                  <div v-show="tarea_info.tiempo_mapa_cliente">{{tarea_info.tiempo_mapa_cliente}} Horas</div>
                 </div>
               </div>
 
-              <div class="col-sm-4">
-                <div class="form-group" v-bind:class="{ 'has-error': errors.has('fecha_entrega_cuentas') }">
-                  <label for=""><strong>Tiempo estimado Jefe:</strong></label>
-                  <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id != '3' ">
-                      {{tarea_info.tiempo_estimado}} Horas
-                  </div>
-                  <div v-else>
-                    <input type="text" placeholder="horas estimadas" name="horas_estimadas" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_estimado" required="required|numeric">
-                  </div>
+            </div>
+            <div class="" v-if="rol_actual!='cliente'">
+              <div class="row">
 
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="tiempo_mapa_cliente"><strong>Tiempo estimado cliente</strong></label>
+                    <div v-show="tarea_info.tiempo_mapa_cliente">{{tarea_info.tiempo_mapa_cliente}} Horas</div>
+                  </div>
                 </div>
-                <span  class="help-block" v-show="errors.has('fecha_entrega_cuentas')">{{ errors.first('fecha_entrega_cuentas') }}</span>
-              </div>
 
-              <div class="col-sm-4">
-               <div v-if="(rol_actual==='colaborador' && tarea_info.estados_id == '3') || (rol_actual==='coordinador'  && estado_solicitud.id == '2' ) || (rol_actual==='desarrollo'  && estado_solicitud.id == '2' )">
-                  <div class="form-group" v-bind:class="{ 'has-error': errors.has('tiempo_real') }">
-                      <label for=""><strong>Tiempo Real:</strong></label>
-                      <input type="text" placeholder="Tiempo Real" name="tiempo_real" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_real" required="required" v-validate data-vv-rules="required|decimal">
-                      <span  class="help-block" v-show="errors.has('tiempo_real')">{{ errors.first('tiempo_real') }}</span>
+                <div class="col-sm-4">
+                  <div class="form-group" v-bind:class="{ 'has-error': errors.has('fecha_entrega_cuentas') }">
+                    <label for=""><strong>Tiempo estimado Jefe:</strong></label>
+                    <div v-if="rol_actual==='colaborador' || rol_actual==='cuentas' || estado_solicitud.id != '3' ">
+                        {{tarea_info.tiempo_estimado}} Horas
+                    </div>
+                    <div v-else>
+                      <input type="text" placeholder="horas estimadas" name="horas_estimadas" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_estimado" required="required|numeric">
+                    </div>
+
                   </div>
-              </div>
-              <div v-else>
-                  <div class="form-group" >
-                      <label for=""><strong>Tiempo Real:</strong></label>
-                      <!-- <br> -->
-                      <div>{{tarea_info.tiempo_real}} Horas</div>
-                  </div>
-              </div>
+                  <span  class="help-block" v-show="errors.has('fecha_entrega_cuentas')">{{ errors.first('fecha_entrega_cuentas') }}</span>
+                </div>
+
+                <div class="col-sm-4">
+                 <div v-if="(rol_actual==='colaborador' && tarea_info.estados_id == '3') || (rol_actual==='coordinador'  && estado_solicitud.id == '2' ) || (rol_actual==='desarrollo'  && estado_solicitud.id == '2' )">
+                    <div class="form-group" v-bind:class="{ 'has-error': errors.has('tiempo_real') }">
+                        <label for=""><strong>Tiempo Real:</strong></label>
+                        <input type="text" placeholder="Tiempo Real" name="tiempo_real" class="form-control tiempo_estimado" v-model="tarea_info.tiempo_real" required="required" v-validate data-vv-rules="required|decimal">
+                        <span  class="help-block" v-show="errors.has('tiempo_real')">{{ errors.first('tiempo_real') }}</span>
+                    </div>
+                </div>
+                <div v-else>
+                    <div class="form-group" >
+                        <label for=""><strong>Tiempo Real:</strong></label>
+                        <!-- <br> -->
+                        <div>{{tarea_info.tiempo_real}} Horas</div>
+                    </div>
+                </div>
+                </div>
               </div>
             </div>
-
             <div class="form-group">
               <label><strong >Descripción de la tarea :</strong></label>
               <p class="descripcion_tarea" v-html="tarea_info.descripcion"></p>
@@ -311,19 +322,19 @@
 
 
           </div>
+             <div class="" v-if="rol_actual!='cliente'">
+                    <div class="form-group required" >
 
-            <div class="form-group required" >
+                      <div v-bind:class="{ 'hidden': descripcion_requerida }">
+                      <div class="alert alert-danger alert_ups"> Ups, ¿Que sucedio? </div>
+                      <p class="text_alert">*Escribre que sucedió en el campo de observaciones, recuerda que es obligatorio</p>
+                      </div>
+                        <label for="descripcion">Comentario:</label>
 
-            <div v-bind:class="{ 'hidden': descripcion_requerida }">
-            <div class="alert alert-danger alert_ups"> Ups, ¿Que sucedio? </div>
-            <p class="text_alert">*Escribre que sucedió en el campo de observaciones, recuerda que es obligatorio</p>
+                        <vue-html5-editor :content="descripcion_fake" :height="150"  :z-index="0" @change="updateData"></vue-html5-editor>
+
+                    </div>
             </div>
-              <label for="descripcion">Comentario:</label>
-
-              <vue-html5-editor :content="descripcion_fake" :height="150"  :z-index="0" @change="updateData"></vue-html5-editor>
-
-            </div>
-
           </div>
 
           <!-- /.box-body -->
@@ -345,66 +356,77 @@
            </div>
            <div v-else>
                 <div class="box-footer text-center">
+                 <div class="" v-if="rol_actual!='cliente'">
                   <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Comentar</button>
+                </div>
               </div>
            </div>
        </form>
           <!-- Comentarios -->
-         <div class="box box-widget comentario_box">
-         <paginate
-          name="comentarios_array"
-          :list="comentarios_array"
-          :per="5"
-           class="paginate-comentarios_array"
-          >
-             <div v-for="comentario in paginated('comentarios_array')" style="margin-bottom:20px;margin-top:35px;">
+   
+                
+           <div class="box box-widget comentario_box">
+            <div class="text-center" v-if="rol_actual=='cliente'">
+              <h4><strong class="titulo_comentarios">Listado de comentarios y cambios de estado</strong></h4>
+              <hr>
+            </div>
+           <paginate
+            name="comentarios_array"
+            :list="comentarios_array"
+            :per="5"
+             class="paginate-comentarios_array"
+            >
+               <div v-for="comentario in paginated('comentarios_array')" style="margin-bottom:20px;margin-top:35px;">
 
-                <div  class="comentario_box_container">
-                  <div class="img_comentario">
-                    <div v-if="comentario.user.img_perfil==null"><img   :src="_baseURL+'/images/perfil.jpg'" class="img_comentario_src"></div>
-                    <div v-else><img   v-bind:src="_baseURL+comentario.user.img_perfil" class="img_comentario_src"></div>
-                  </div>
-
-                  <div class="info_comentarios">
-                    <label><strong>{{comentario.user.nombre}} &nbsp {{comentario.user.apellido}}</strong></label>
-                    <span >({{comentario.user.email}})</span>
-                    <p class="comentario_created" >{{comentario.created_at}}</p>
-                    <div v-if="comentario.estados!=null" class="estado_comentario">
-                      <p >{{comentario.estados.nombre}}<span :class="'estado_comentario_circle estado-'+comentario.estados.tipos_estados_id+'-'+comentario.estados.id"></span></p>
+                  <div  class="comentario_box_container">
+                    <div class="img_comentario">
+                      <div v-if="comentario.user.img_perfil==null"><img   :src="_baseURL+'/images/perfil.jpg'" class="img_comentario_src"></div>
+                      <div v-else><img   v-bind:src="_baseURL+comentario.user.img_perfil" class="img_comentario_src"></div>
                     </div>
-                  </div>
+
+                    <div class="info_comentarios">
+                      <label><strong>{{comentario.user.nombre}} &nbsp {{comentario.user.apellido}}</strong></label>
+                      <span >({{comentario.user.email}})</span>
+                      <p class="comentario_created" >{{comentario.created_at}}</p>
+                      <div v-if="comentario.estados!=null" class="estado_comentario">
+                        <p >{{comentario.estados.nombre}}<span :class="'estado_comentario_circle estado-'+comentario.estados.tipos_estados_id+'-'+comentario.estados.id"></span></p>
+                      </div>
+                    </div>
+
+                   </div>
+                    <div class="caja_comentarios">
+                      <p v-html="comentario.comentarios"></p>
+                    </div>
+
 
                  </div>
-                  <div class="caja_comentarios">
-                    <p v-html="comentario.comentarios"></p>
-                  </div>
-
-
-               </div>
-           </paginate>
-           <!-- Paginacion, paginate link tiene sus propiedades del componente instalado de vue js -->
-           <div class="link_paginador">
-             <paginate-links for="comentarios_array"
-             :show-step-links="true"
-             :step-links="{
-                next: 'Siguiente',
-                prev: 'Atrás'
-              }"
-            :classes="{
-              'ul': 'pagination',
-              '.next > a': 'next-link',
-              '.prev > a': ['prev-link']
-            }" :hide-single-page="true" >
-             </paginate-links>
+             </paginate>
+             <!-- Paginacion, paginate link tiene sus propiedades del componente instalado de vue js -->
+             <div class="link_paginador">
+               <paginate-links for="comentarios_array"
+               :show-step-links="true"
+               :step-links="{
+                  next: 'Siguiente',
+                  prev: 'Atrás'
+                }"
+              :classes="{
+                'ul': 'pagination',
+                '.next > a': 'next-link',
+                '.prev > a': ['prev-link']
+              }" :hide-single-page="true" >
+               </paginate-links>
+             </div>
            </div>
-         </div>
 
-
+       
       </div>
     </div>
   </div>
 </template>
 <style>
+.titulo_comentarios{
+  color: #15baee;
+}
  .cov-date-caption{
    padding: 7px 0!important;
  }
