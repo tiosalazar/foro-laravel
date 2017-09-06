@@ -57,5 +57,6 @@ return [
     'requerimientos_cliente' => 'Requeriemientos',
     'crear_requerimientos_cliente' => 'Crear Requeriemientos',
     'listar_requerimientos_cliente' => 'Listar Requeriemientos',
+    'foro_cliente' => 'Ver Foro Clientes',
 
 ];

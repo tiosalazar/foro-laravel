@@ -66,6 +66,9 @@
 
         </ul>
       </li>
+         @if(Auth::user()->hasRole('cliente'))
+          <li><a href="{{route('solicitud_foro')}}"><i class='fuente-icon'>f</i> &nbsp {{ trans('texto_menu.foro_cliente') }}</a></li>
+         @endif
       @endif
 
 

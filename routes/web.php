@@ -148,6 +148,7 @@
   Route::get('/years_tarea', 'TareaController@getYearTarea');
   Route::get('/week_of_year', 'TareaController@getWeekYear');
   Route::get('/all_tareas/{id}','TareaController@showAllTareas');
+  Route::get('/all_tareas_cliente/{id}','TareaController@showAllTareasbyCliente');
   Route::get('/trafico','TareaController@getTrafico');
 
   //DSO al ver tarea, Pedir Permisos Google.
@@ -331,7 +332,9 @@
         Route::get('/ver/{id}','RequerimientosClientesController@ShowOneRequerimiento');
         Route::get('/tareas/{id}','RequerimientosClientesController@ShowOneRequerimientoTareas');
 
-
+       Route::get('/foro', function () {
+        return view('admin.foro.clientes');
+      })->name('solicitud_foro');
 
     });
 
