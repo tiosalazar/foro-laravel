@@ -32,12 +32,12 @@
     import Multiselect from 'vue-multiselect'
     module.exports= {
       components: { Multiselect},
-    props:['select'], //en la propiedad select se va a meter la opción por defecto
+    props:['select', 'clear'], //en la propiedad select se va a meter la opción por defecto
     data () {
       return {
         clientes:[],
         id_cliente:0,
-        isTouched: false
+        isTouched: false,
       }
     },
     computed:{
@@ -51,6 +51,14 @@
     created: function(){
       this.fetchTips();
     },
+    watch : {
+        clear : function (v) {
+          console.log('limpiaghdgfraaa');
+          this.id_cliente = 0;
+          this.value = "";
+          this.$parent.$emit('select_clientes','');
+        }
+      },
     methods:{
       fetchTips: function(){
         this.$http.get(window._apiURL+'select_clientes') //realizo la consulta de todos los clientes
@@ -69,12 +77,12 @@
          */
          updateSelected (newSelected) {
           if (newSelected != null && newSelected != undefined) {
-            this.id_cliente = newSelected.id;
+            this.id_cliente =newSelected.id;
             this.value=newSelected;
             this.$parent.$emit('select_clientes',newSelected);
           }else {
             this.id_cliente = 0;
-          this.$parent.$emit('select_clientes','');//emito la variable vasia para comprobar en el padre
+          this.$parent.$emit('select_clientes','');//emito la variable vacia para comprobar en el padre
         }
       },
       /*
@@ -82,14 +90,15 @@
         */
         removeSelected () {
           this.id_cliente = 0;
-        this.$parent.$emit('select_clientes','');//emito la variable vasia para comprobar en el padre
+        this.$parent.$emit('select_clientes','');//emito la variable vacia para comprobar en el padre
       },
+    
       /*
         esta función se ejecuta cuando se da click fuera del cuadro de Dialogo
         */
         onTouch () {
         this.isTouched =(this.value=="" )?true:false ; //Compruebo de que haya selecionado algo
       }
-    }
+    },
   }
   </script>

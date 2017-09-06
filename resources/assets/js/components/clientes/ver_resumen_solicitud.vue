@@ -28,8 +28,7 @@
 			<div class="col-sm-12">
 				<div class="form-group required">
 					<label> Descripción</label>
-					<textarea readonly  >{{info_requerimiento.descripcion}}
-					</textarea>
+					<p v-html="info_requerimiento.descripcion"  ></p>
 				</div>
 			</div>
 		</div>
