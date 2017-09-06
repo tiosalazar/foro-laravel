@@ -127,6 +127,29 @@
                   <label><strong>Fase del Proyecto:</strong></label>
                   <div>{{tarea_info.planeacion_fase.nombre}}</div>
                 </div>
+
+              <div id="seccion_programar" v-if="rol_actual!='cliente'">
+                  <div class="form-group same-height">
+                     <label><strong>Fecha real de entrega al cliente:</strong></label>
+                     <div class="contenedor_fecha">
+                       {{tarea_info.fecha_entrega_cliente_real | date_format}}
+                     </div>
+                     <br>
+                      <div v-if="rol_actual=='owner' || rol_actual=='desarrollo' || rol_actual=='cuentas' && tarea_info.estados_id == '3' ">
+                       <div class="input-group date" >
+                         <div class="input-group-addon">
+                           <i class="fa fa-calendar"></i>
+                         </div>
+                         <datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="fecha_entrega_cliente_real" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente_real" format="dd-MM-yyyy"></datepicker>
+                       </div>
+                       &nbsp
+                       <div class="text-center">
+                         <button type="button" class="btn btn-primary" v-on:click="guardarFechaRealEntrega()">Actualizar Fecha</button>
+                       </div>
+                       </div>
+                    <!-- <div>{{tarea_info.fecha_entrega_cliente | date_format}}</div> -->
+                  </div>
+              </div>
               
                <div id="seccion_programar" v-if="(rol_actual==='coordinador' || rol_actual==='owner' || rol_actual==='desarrollo' )">
                   <div class="form-group same-height">
@@ -560,6 +583,7 @@
         area:{},
         message:'',
         fecha_entrega_cliente:'',
+        fecha_entrega_cliente_real:'',
         disabled:{
           "to": moment().subtract(1, 'days').toDate(),
         },
@@ -863,6 +887,15 @@
            console.log(this.errors);
          });
 
+
+        },
+        guardarFechaRealEntrega:function () {
+          if (this.fecha_entrega_cliente_real==null || this.fecha_entrega_cliente_real=="") {
+            toastr.error('Debe seleccionar una fecha para Fecha real de entrega al cliente','Error',this.option_toast);
+            return false;
+          }
+           console.log(this.tarea_info.id);
+           console.log(this.fecha_entrega_cliente_real);
 
         },
         guardarDatos:function () {
