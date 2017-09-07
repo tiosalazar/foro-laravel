@@ -7,21 +7,23 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class RequerimientoComentado extends Notification
+class RequerimientoFinalizado extends Notification
 {
     use Queueable;
+
+    public $user;
+    public $requerimiento;
 
     /**
      * Create a new notification instance.
      * @param App/User $user
-     * @param App/Tarea $tarea
+     * @param App/Tarea $requerimiento
      * @return void
      */
-    public function __construct($user,$requerimiento,$comentario)
+    public function __construct($user,$requerimiento)
     {
         $this->user = $user;
         $this->requerimiento = $requerimiento;
-        $this->comentario = $comentario;
     }
 
     /**
@@ -57,16 +59,16 @@ class RequerimientoComentado extends Notification
      */
     public function toArray($notifiable)
     {
-      //7 Cliente
-      $cliente =($this->user->roles_id==7)?$this->requerimiento->cliente->nombre: 'Ejecutiva Himalaya';
         return [
             'id_tarea'      => $this->requerimiento->id,
             'nombre'        => $this->user->nombre,
             'cargo'         => $this->user->cargo,
-            'descripcion'   =>  $this->user->nombre.' - '.$cliente.', ha agregado un comentario en el Requerimiento: '.$this->requerimiento->nombre.' "'.substr($this->comentario->comentarios, 0, 15).'..."',
+            'descripcion'   => $this->user->nombre.' - Ejecutiva Himalaya'.' ha pasado a Finalizado el requerimiento.
+        En el detalle del requerimiento encontrará los comentarios sobre este. Nombre de Requerimiento: '.$this->requerimiento->nombre.' ',
             'created_at'    => date('Y-m-d H:i:s'),
             'img_perfil'    => $this->user->img_perfil,
             'link'          => '/solicitud/ver/'.$this->requerimiento->id,
         ];
     }
+
 }

@@ -12,18 +12,18 @@ class RequerimientoAtencionCliente extends Notification
     use Queueable;
 
     public $user;
-    public $tarea;
+    public $requerimiento;
 
     /**
      * Create a new notification instance.
      * @param App/User $user
-     * @param App/Tarea $tarea
+     * @param App/Tarea $requerimiento
      * @return void
      */
-    public function __construct($user,$tarea)
+    public function __construct($user,$requerimiento)
     {
         $this->user = $user;
-        $this->tarea = $tarea;
+        $this->requerimiento = $requerimiento;
     }
 
     /**
@@ -60,13 +60,15 @@ class RequerimientoAtencionCliente extends Notification
     public function toArray($notifiable)
     {
         return [
-            'id_tarea'      => $this->tarea->id,
+            'id_tarea'      => $this->requerimiento->id,
             'nombre'        => $this->user->nombre,
             'cargo'         => $this->user->cargo,
-            'descripcion'   => $this->user->nombre. ' ha devuelto la Tarea: "'.$this->tarea->nombre.'" a Atención Cuentas',
+            'descripcion'   => $this->user->nombre.' - Ejecutiva Himalaya'.', tiene una duda sobre el requerimiento en revisión.
+        En el detalle del requerimiento encontrará los comentarios sobre este. Nombre de Requerimiento: '.$this->requerimiento->nombre.' ',
             'created_at'    => date('Y-m-d H:i:s'),
             'img_perfil'    => $this->user->img_perfil,
-            'link'          => '/solicitud/ver/'.$this->tarea->id,
+            'link'          => '/solicitud/ver/'.$this->requerimiento->id,
         ];
     }
+
 }

@@ -32,7 +32,7 @@
           <div  class="ver_mas" ><span class="ver_mas_texto" v-show="cargar_ok"  @click="cargar_mas" >Ver mas</span></div>
         </div>
 
-        <div class="row tarea_perfil">
+        <div class="row tarea_perfil" v-if="this.lista_requerimiento != ''">
           <!-- <h4>Requerimientos</h4>-->
           <div v-for="(lista_requerimiento, key, index) in listado_requerimientos"  class="box tarea_perfil_box" v-if="key<=variable">
 
@@ -52,7 +52,7 @@
               <p class="descripcion_tarea_perfil">{{lista_requerimiento.descripcion | long_tarea_descripcion }}<br>
                <span>Fecha ideal de entrega: {{lista_requerimiento.fecha_ideal_entrega | date_format}} </span>
               </p>
-               
+
             </div>
             <div class="box-footer footer_tarea" >
              <a v-bind:href="_baseURL+lista_requerimiento.url"> <button class="btn btn-primary button_tarea" >Ver requerimiento</button></a>
@@ -60,6 +60,7 @@
 
           </div>
           <div  class="ver_mas" ><span class="ver_mas_texto" v-show="cargar_ok"  @click="cargar_mas" >Ver mas</span></div>
+          <div  class="ver_mas" ><span class="ver_mas_texto" v-show="cargar_req_ok"  @click="cargar_mas_req" >Ver mas Requerimientos</span></div>
         </div>
       </div>
 </template>
@@ -71,6 +72,7 @@
     data(){
       return{
         cargar_ok:false,
+		cargar_req_ok:false,
         listado_tareas:[],
         listado_requerimientos:[],
         inicial_cliente:'',
@@ -98,17 +100,21 @@
       }
     },
     created: function() {
-     
+
       let datos= JSON.parse(this.lista_tareas);
       this.listado_tareas=datos;
+      if (this.lista_requerimiento != '') {
+				let datos_req= JSON.parse(this.lista_requerimiento);
+	      this.listado_requerimientos=datos_req;
+      }
 
-      let datos_req= JSON.parse(this.lista_requerimiento);
-      this.listado_requerimientos=datos_req;
-      console.log(this.listado_requerimientos);
-		
+
       //Si el listado de tareas es mayor que 4 muestro el ver mas
       if (this.listado_tareas.length>3) {
         this.cargar_ok=true;
+      }
+			if (this.listado_requerimientos.length>3) {
+        this.cargar_req_ok=true;
       }
     },
     methods:{
@@ -120,7 +126,15 @@
         }else{
           this.variable=this.variable+4;
         }
+    },
+    cargar_mas_req: function(){
+     var  numero_datos_array=this.listado_requerimientos.length;
+      if (numero_datos_array<=this.variable) {
+         toastr.warning('No hay mas tareas por cargar',this.option_toast);
+      }else{
+        this.variable=this.variable+4;
       }
+    }
     }
 
 
