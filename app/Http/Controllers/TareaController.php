@@ -972,7 +972,7 @@ public function showAllTareasbyCliente($id,Request $request)
     // selecciona solos los que tiene el area especifico
     foreach ($tarea as $key => $value) {
         if ($value->area && $value->ot && $value->ot->cliente && $value->estado ) {
-            if ( !is_null(Auth::user()->clientes_id) && Auth::user()->clientes_id == $value->ot->cliente->user_id) {
+            if ( !is_null(Auth::user()->clientes_id) && Auth::user()->clientes_id == $value->ot->cliente->id) {
               array_push($output, $value);
             }
         }
