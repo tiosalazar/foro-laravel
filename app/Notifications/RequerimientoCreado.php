@@ -62,8 +62,9 @@ class RequerimientoCreado extends Notification
         return [
             'id_tarea' => $this->requerimiento->id,
             'nombre' => $this->user->nombre,
+            'cliente' => $this->requerimiento->cliente->nombre,
             'cargo' => $this->user->cargo,
-            'descripcion' => $this->user->nombre. ' ha creado un Requerimiento. Nombre Cliente : '.$this->requerimiento->cliente->nombre.', Nombre Requerimiento : '.$this->requerimiento->nombre.'',
+            'descripcion' => $this->user->nombre.' - '.$this->requerimiento->cliente->nombre.' ha creado un Requerimiento. Para revisión de ejecutiva. Nombre Requerimiento: '.$this->requerimiento->nombre.'',
             'created_at' => date('Y-m-d H:i:s'),
             'img_perfil' => $this->user->img_perfil,
             'link'          => '/solicitud/ver/'.$this->requerimiento->id,

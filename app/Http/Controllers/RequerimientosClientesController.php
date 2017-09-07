@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Notifications\RequerimientoCreado;
+use App\Notifications\RequerimientoAtencionCliente;
+use App\Notifications\RequerimientoComentado;
 use Validator;
 use Illuminate\Http\Response;
 use Exception;
@@ -109,6 +111,7 @@ class RequerimientosClientesController extends Controller
                  'response_time' => microtime(true) - LARAVEL_START,
                  'consola' =>$e->getMessage(),
                  'request' => $request->all(),
+                 'consolita'=>$maker,
                  'error' => config('constants.ERR_04'),
                  'msg' => 'Ocurrio un error, por favor comunicate con soporte',
                  'consola' =>$e->getMessage(),
@@ -245,8 +248,10 @@ class RequerimientosClientesController extends Controller
     {
         // $requerimiento = Requerimientos_cliente::findOrFail($id);
         $requerimiento = Requerimientos_cliente::with(['estado','estado_prioridad'])->where('id',$id)->get();
+        $req= new Requerimientos_cliente;
+        $requerimiento[0]['fecha_ideal_entrega']=$req->getFormatFecha($requerimiento[0]['fecha_ideal_entrega']);
         // $requerimiento->estado_prioridad;
-        // return response()->json($requerimiento);
+       //  return response()->json($requerimiento);
         return view('admin.clientes.ver_solicitud')->with('requerimientoinfo',$requerimiento);
 
     }
@@ -298,7 +303,7 @@ class RequerimientosClientesController extends Controller
                  if ($request->has('estados')) {
                      $query->whereIn('id',$request->get('estados'));
                  }
-             },'usuario','usuarioencargado'=> function ($query){
+             },'usuario','prioridad','usuarioencargado'=> function ($query){
 
                $query->addselect('*');
                $query->addselect(DB::raw('CONCAT(nombre," ",apellido) as full_name'));
@@ -315,7 +320,7 @@ class RequerimientosClientesController extends Controller
                        if ($request->has('estados')) {
                            $query->whereIn('id',$request->get('estados'));
                        }
-                   },'usuario','usuarioencargado'=> function ($query){
+                   },'usuario','estado_prioridad','usuarioencargado'=> function ($query){
 
                      $query->addselect('*');
                      $query->addselect(DB::raw('CONCAT(nombre," ",apellido) as full_name'));
@@ -362,6 +367,12 @@ class RequerimientosClientesController extends Controller
               ->addColumn('estado', function ($cliente_requerimiento) {
                   return '<span class="label label-estado estado-'. $cliente_requerimiento->estado->tipos_estados_id.'-'. $cliente_requerimiento->estado->id.' ">'. $cliente_requerimiento->estado->nombre.'</span>';
               })
+                ->addColumn('prioridad', function ($cliente_requerimiento) {
+                    return '<span class="label label-estado estado-'.$cliente_requerimiento->estado_prioridad->tipos_estados_id.'-'.$cliente_requerimiento->estado_prioridad->id.' ">'.$cliente_requerimiento->estado_prioridad->nombre.'</span>';
+                })
+                ->addColumn('created_at', function ($cliente_requerimiento) {
+                  return (!is_null($cliente_requerimiento->created_at)) ? $cliente_requerimiento->getFormatFechaSolicitud( $cliente_requerimiento->created_at) : 'No definida' ;
+              })
               ->addColumn('fecha_ideal_entrega', function ($cliente_requerimiento) {
                   return (!is_null($cliente_requerimiento->fecha_ideal_entrega)) ? $cliente_requerimiento->getFormatFecha( $cliente_requerimiento->fecha_ideal_entrega) : 'No definida' ;
               })
@@ -397,6 +408,7 @@ class RequerimientosClientesController extends Controller
     {
         $requerimiento = Requerimientos_cliente::findOrFail($id);
         $requerimiento->estados_id = $request->estados_id;
+        $requerimiento->encargado_id = $requerimiento->usuarios_id;
         $requerimiento->save();
         return response()->json($requerimiento);
     }
@@ -426,11 +438,25 @@ public function getComentario(Request $request, $id)
 public function agregarComentario(Request $request)
 {
   $requerimiento = Requerimientos_cliente::findOrFail($request->requerimientos_clientes_id);
+  $requerimiento->cliente;
 
   //Guardamos el comentario
   $comentario = new Comentario;
   $comentario->fill($request->all());
   $comentario->save();
+  //notificación
+  if (Auth::user()->hasRole('cuentas')) {
+     $encargado= User::findOrFail($request->usuarios_comentario_id);
+     $encargado->notify(new RequerimientoAtencionCliente($encargado,$requerimiento));
+  }else{
+     $ejecutiva=$requerimiento->cliente->user_id;
+   // return response()->json($cliente);
+     $encargado= User::findOrFail($ejecutiva);
+     $encargado->notify(new RequerimientoComentado($encargado,$requerimiento,$comentario));
+  }
+
+
+           
   //Respuesta
         $respuesta['user_coment']='';
         $respuesta["error"]=0;

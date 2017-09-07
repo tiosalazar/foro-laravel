@@ -64,7 +64,7 @@ class ComentarioNuevoRequerimiento extends Notification
             'descripcion'   => $this->user->nombre. ' ha comentado en la Tarea: '.$this->requerimiento->nombre.' "'.substr($this->comentario->comentarios, 0, 15).'..."',
             'created_at'    => date('Y-m-d H:i:s'),
             'img_perfil'    => $this->user->img_perfil,
-            'link'          => 'solicitudes/ver/'.$this->requerimiento->id,
+            'link'          => '/solicitud/ver/'.$this->requerimiento->id,
         ];
     }
 }

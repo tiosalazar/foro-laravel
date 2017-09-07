@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Input;
 use Intervention\Image\ImageManagerStatic as Image;
 use Storage;
 use Carbon\Carbon;
+use App\Requerimientos_cliente;
 
 setlocale(LC_TIME, 'es_CO');
 
@@ -55,6 +56,7 @@ class HomeController extends Controller
 
         $userdata= User::where('roles_id',$role[0]->id)
                     ->where('areas_id', $userauth)->get();
+        $requerimiento= array();            
 
         //Si encuentra al encargado de area lo muestro, si no; no asignado
         if ( isset($userdata[0])) {
@@ -82,11 +84,23 @@ class HomeController extends Controller
 
           }
 
-
-        }else{
+   
+          }else{
 
           //Si No es un coordinador muestro las tareas del area si el id del encargado es igual al usuario logeado
            $tareas = Tarea::where('estados_id','!=', 2)->where('estados_id','!=', 1)->where('estados_id','!=', 20)->where('encargado_id', Auth::user()->id)->orderBy('fecha_entrega_area', 'asc')->get();
+
+           if (Auth::user()->rol->name=='cliente' || Auth::user()->rol->name=='cuentas') {
+              $requerimientos = Requerimientos_cliente::where('estados_id','!=', 27)/*->where('estados_id','!=', 24)*/->where('encargado_id', Auth::user()->id)->orderBy('fecha_ideal_entrega', 'asc')->get();
+
+              foreach ( $requerimientos as $key => $value) {
+                $value->Cliente;
+                $value['url']="/solicitud/ver/".$value->id;
+                $value->Cliente['cliente_inicial']=substr($value->Cliente->nombre, 0,1); // Devuelvo la
+                $value['descripcion']= strip_tags($value['descripcion']);
+              }
+
+           }
 
            foreach ($tareas as $key => $value) {
             $value->ot->cliente;
@@ -99,7 +113,7 @@ class HomeController extends Controller
 
         }
 
-        return view('adminlte::home')->with('user_encargado',$user)->with('tareas',$tareas);
+        return view('adminlte::home')->with('user_encargado',$user)->with('tareas',$tareas)->with('requerimientos',$requerimientos);
 
     }
 

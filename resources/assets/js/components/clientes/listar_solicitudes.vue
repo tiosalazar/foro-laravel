@@ -5,10 +5,10 @@
 		        <tr>
               <th>ID</th>
               <th>Nombre</th>
-              <th>Descripcion</th>
+              <th>Prioridad</th>
+              <th>Fecha Solicitud</th>
               <th>Fecha Ideal Entrega</th>
               <th>Estado</th>
-              <th>Fecha Solicitud</th>
               <th>Encargado</th>
               <th>Acciones</th>
 		        </tr>
@@ -99,10 +99,10 @@
 				columns: [
 		          { data: 'id', name: 'id' },
 		          { data: 'nombre', name: 'nombre' },
-		          { data: 'descripcion', name: 'descripcion' },
+		          { data: 'prioridad', name: 'estado_prioridad.nombre' },
+		          { data: 'created_at', name: 'created_at' },
 		          { data: 'fecha_ideal_entrega', name: 'fecha_ideal_entrega' },
 		          { data: 'estado', name: 'estado.nombre' },
-		          { data: 'created_at', name: 'created_at' },
 		          { data: 'usuarioencargado.full_name', name: 'usuarioencargado.full_name' },
 		          { data: 'action', name: 'action', searchable: false },
           // {data: 'action', name: 'action', orderable: false, searchable: false}
