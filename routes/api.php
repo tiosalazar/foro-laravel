@@ -76,6 +76,7 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
     //ruta del api todas las tareas de los requerimientos
      Route::get('/ver_all_tareas_requerimiento','RequerimientosClientesController@ShowDatatbleTareasRequerimiento');
       Route::get('/listar_requerimientos','RequerimientosClientesController@ShowDatatbleRequerimiento');
+    Route::post('/actualizar_fecha_real_tarea/{id}','TareaController@ActualizarFechaRealTarea');
 
 
 });

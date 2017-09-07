@@ -128,7 +128,7 @@
                   <div>{{tarea_info.planeacion_fase.nombre}}</div>
                 </div>
 
-              <div id="seccion_programar" v-if="rol_actual!='cliente'">
+           
                   <div class="form-group same-height">
                      <label><strong>Fecha real de entrega al cliente:</strong></label>
                      <div class="contenedor_fecha">
@@ -136,20 +136,22 @@
                      </div>
                      <br>
                       <div v-if="rol_actual=='owner' || rol_actual=='desarrollo' || rol_actual=='cuentas' && tarea_info.estados_id == '3' ">
-                       <div class="input-group date" >
-                         <div class="input-group-addon">
-                           <i class="fa fa-calendar"></i>
-                         </div>
-                         <datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="fecha_entrega_cliente_real" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente_real" format="dd-MM-yyyy"></datepicker>
-                       </div>
-                       &nbsp
-                       <div class="text-center">
-                         <button type="button" class="btn btn-primary" v-on:click="guardarFechaRealEntrega()">Actualizar Fecha</button>
-                       </div>
+                      
+                           <div class="input-group date" >
+                             <div class="input-group-addon">
+                               <i class="fa fa-calendar"></i>
+                             </div>
+                             <datepicker language="es"  id="fecha_entrega_cliente" required="required" placeholder="Fecha fin" v-model="fecha_entrega_cliente_real" class="form-control" :disabled="disabled"  name="fecha_entrega_cliente_real" format="dd-MM-yyyy"></datepicker>
+                           </div>
+                           &nbsp
+                           <div class="text-center">
+                             <button type="button" class="btn btn-primary" v-on:click="guardarFechaRealEntrega()">Actualizar Fecha</button>
+                           </div>
+                       
                        </div>
                     <!-- <div>{{tarea_info.fecha_entrega_cliente | date_format}}</div> -->
                   </div>
-              </div>
+             
               
                <div id="seccion_programar" v-if="(rol_actual==='coordinador' || rol_actual==='owner' || rol_actual==='desarrollo' )">
                   <div class="form-group same-height">
@@ -615,6 +617,8 @@
 
     },
         created: function() {
+
+         
           this.$on('select_ejecutivo', function(v) {
             this.encargado=v;
           });
@@ -896,6 +900,16 @@
           }
            console.log(this.tarea_info.id);
            console.log(this.fecha_entrega_cliente_real);
+             let data = {
+              fecha_entrega_cliente_real:(typeof(this.fecha_entrega_cliente_real) =='undefined' || this.fecha_entrega_cliente_real=='' )? this.fecha_entrega_cliente_real : moment(this.fecha_entrega_cliente_real).format('YYYY-MM-DD'),
+             }
+           this.$http.post(window._apiURL+'actualizar_fecha_real_tarea/'+this.tarea_info.id, data)
+           .then(function(respuesta){
+              toastr.success('Se actualizo Correctamente','',this.option_toast);
+               setTimeout(function () {location.reload(true);}, 500);
+           },(err) => {
+            toastr.error('Ocurrio un Error al actualizar la fecha','Error',this.option_toast);
+           });
 
         },
         guardarDatos:function () {
