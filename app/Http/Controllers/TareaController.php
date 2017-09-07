@@ -962,7 +962,7 @@ public function showAllTareasbyCliente($id,Request $request)
         }
     },'area','requerimientos_cliente' => function ($query) use ($id) {
         if($id != -1){
-            $query->where('clientes_id', '=', $id);
+            $query->where('usuarios_id', $id);
         }
     }])
     ->whereYear('created_at', $year)
@@ -1019,6 +1019,8 @@ public function showAllTareasbyCliente($id,Request $request)
             return $ver_tarea.$editar_ot;
         })
         ->make(true);
+
+      
 
     }
     /**
