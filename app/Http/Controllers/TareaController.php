@@ -972,7 +972,9 @@ public function showAllTareasbyCliente($id,Request $request)
     // selecciona solos los que tiene el area especifico
     foreach ($tarea as $key => $value) {
         if ($value->area && $value->ot && $value->ot->cliente && $value->estado ) {
-            array_push($output, $value);
+            if ( !is_null(Auth::user()->clientes_id) && Auth::user()->clientes_id == $value->ot->cliente->user_id) {
+              array_push($output, $value);
+            }
         }
     }
     // Se conviert en collection para que lo reciba el Datatable
@@ -984,11 +986,14 @@ public function showAllTareasbyCliente($id,Request $request)
     ->editColumn('ot.referencia', function ($tarea) {
           return '<span title="'.$tarea->ot->nombre.' " >'.$tarea->ot->referencia.'</span>';
     })
-    ->editColumn('fecha_entrega_cuentas', function ($tarea) {
-        return (!is_null($tarea->fecha_entrega_cuentas)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cuentas) : 'No definida' ;
-    })
-    ->editColumn('fecha_entrega_cliente', function ($tarea) {
-        return (!is_null($tarea->fecha_entrega_cliente)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cliente) : 'No definida' ;
+    // ->editColumn('fecha_entrega_cuentas', function ($tarea) {
+    //     return (!is_null($tarea->fecha_entrega_cuentas)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cuentas) : 'No definida' ;
+    // })
+    // ->editColumn('fecha_entrega_cliente', function ($tarea) {
+    //     return (!is_null($tarea->fecha_entrega_cliente)) ? $tarea->getFormatFecha( $tarea->fecha_entrega_cliente) : 'No definida' ;
+    // })
+    ->editColumn('updated_at', function ($tarea) {
+        return $tarea->getFormatFecha($tarea->updated_at);
     })
     ->addColumn('encargado', function ($tarea) {
           return $tarea->usuarioencargado->full_name;

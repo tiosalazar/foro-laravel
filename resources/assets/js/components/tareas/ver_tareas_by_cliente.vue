@@ -7,11 +7,13 @@
 		          <th >OT</th>
 		          <th >Cliente</th>
 		          <th >Requerimiento</th>
-							<th >Prioridad</th>
+					<th >Prioridad</th>
 		          <th >Fecha de solicitud</th>
-							<th >Fecha de entrega a cuentas</th>
-							<th >Fecha de entrega al cliente</th>
+		          <th >Área</th>
+							<!-- <th >Fecha de entrega a cuentas</th> -->
+							<!-- <th >Fecha de entrega al cliente</th> -->
 		          <th >Encargado</th>
+		          <th >Actualización</th>
 		          <th >Estado</th>
 		          <th >Acciones</th>
 		        </tr>
@@ -122,14 +124,16 @@
 
 				},
 				columns: [
-				{ data: 'ot.referencia', name: 'ot.referencia' },
-				{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre' },
+				{ data: 'ot.referencia', name: 'ot.referencia', searchable:true },
+				{ data: 'ot.cliente.nombre', name: 'ot.cliente.nombre', searchable:true },
 				{ data: 'nombre_tarea', name: 'nombre_tarea' },
 				{ data: 'prioridad', name: 'prioridad' },
 				{ data: 'created_at', name: 'created_at' },
-				{ data: 'fecha_entrega_cuentas', name: 'fecha_entrega_cuentas' },
-				{ data: 'fecha_entrega_cliente', name: 'fecha_entrega_cliente' },
+				{ data: 'area.nombre', name: 'area.nombre', searchable:true },
+				// { data: 'fecha_entrega_cuentas', name: 'fecha_entrega_cuentas' },
+				// { data: 'fecha_entrega_cliente', name: 'fecha_entrega_cliente' },
 				{ data: 'encargado', name: 'usuarioencargado.full_name', searchable:true  },
+				{ data: 'updated_at', name: 'updated_at'  },
 				{ data: 'estado', name: 'estado.nombre' },
 				{ data: 'acciones', name: 'acciones', searchable:false },
 				],
