@@ -57,11 +57,13 @@ class RequerimientoComentado extends Notification
      */
     public function toArray($notifiable)
     {
+      //7 Cliente
+      $cliente =($this->user->roles_id==7)?$this->requerimiento->cliente->nombre: 'Ejecutiva Himalaya';
         return [
             'id_tarea'      => $this->requerimiento->id,
             'nombre'        => $this->user->nombre,
             'cargo'         => $this->user->cargo,
-            'descripcion'   =>  $this->user->nombre.' - '.$this->requerimiento->cliente->nombre.' ha agregado un comentario en el Requerimiento: '.$this->requerimiento->nombre.' "'.substr($this->comentario->comentarios, 0, 15).'..."',
+            'descripcion'   =>  $this->user->nombre.' - '.$cliente.', ha agregado un comentario en el Requerimiento: '.$this->requerimiento->nombre.' "'.substr($this->comentario->comentarios, 0, 15).'..."',
             'created_at'    => date('Y-m-d H:i:s'),
             'img_perfil'    => $this->user->img_perfil,
             'link'          => '/solicitud/ver/'.$this->requerimiento->id,

@@ -48,8 +48,8 @@
     <button type="button" class="btn btn-primary" v-on:click="asignar_estado()">Publicar</button>
     <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Comentar</button>
   </div>
-</div> 
-<div v-else> 
+</div>
+<div v-else>
   <button type="button" class="btn btn-primary" v-on:click="enviarcomentarios()">Comentar</button>
 </div>
 
@@ -131,7 +131,7 @@
    if (typeof(this.requerimientoarray)!= 'undefined') {
     var info_requerimiento_json = JSON.parse(this.requerimientoarray);
     this.info_requerimiento= info_requerimiento_json[0];
-    console.log("Solicitud info"); 
+    console.log("Solicitud info");
     console.log(this.info_requerimiento);
   }
   this.rol_actual=this.rol_usuario_actual;
@@ -163,7 +163,7 @@ methods:{
    let data = {
     comentarios:this.comentario_texto,
     usuarios_comentario_id:this.id_usuario_actual,
-    is_comment:1,
+    is_comment:0,
     requerimientos_clientes_id:this.info_requerimiento.id,
     estados_id:this.info_requerimiento.estado.id
   }

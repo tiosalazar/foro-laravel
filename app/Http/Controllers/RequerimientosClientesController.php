@@ -16,6 +16,9 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Notifications\RequerimientoCreado;
 use App\Notifications\RequerimientoAtencionCliente;
 use App\Notifications\RequerimientoComentado;
+use App\Notifications\RequerimientoAcetado;
+use App\Notifications\RequerimientoFinalizado;
+use App\Notifications\RequerimientoNoAdmitido;
 use Validator;
 use Illuminate\Http\Response;
 use Exception;
@@ -264,10 +267,10 @@ class RequerimientosClientesController extends Controller
      */
     public function ShowOneRequerimientoTareas($id)
     {
-        $requerimiento = Requerimientos_cliente::findOrFail($id);
-        $requerimiento->estado_prioridad;
+        $requerimiento = Requerimientos_cliente::with(['estado','estado_prioridad'])->where('id',$id)->get();
+        //$requerimiento->estado_prioridad;
         // return response()->json($requerimiento);
-        return view('admin.clientes.ver_solicitud_tareas')->with('requerimientoinfo',$requerimiento);
+        return view('admin.clientes.ver_solicitud_tareas')->with('requerimientoinfo',$requerimiento[0]);
 
     }
 
@@ -298,7 +301,7 @@ class RequerimientosClientesController extends Controller
 
         if ( Auth::user()->hasRole('desarrollo') || Auth::user()->hasRole('owner')) {
 
-       
+
            $Requerimientos_cliente = Requerimientos_cliente::with(['estado' => function ($query) use ($request) {
                  if ($request->has('estados')) {
                      $query->whereIn('id',$request->get('estados'));
@@ -333,9 +336,9 @@ class RequerimientosClientesController extends Controller
 
         }
 
-    
 
-                    
+
+
 
               // return response()->json($clientes);
               foreach($Requerimientos_cliente as $value){
@@ -349,7 +352,7 @@ class RequerimientosClientesController extends Controller
                       // Mostramos solo los 11 primeros caracteres por ejemplo: "En un lugar"
                         if ($value->estado && $value->usuario) {
                            array_push($output, $value);
-                           
+
                         }
                 }
                 $output = collect($output);
@@ -445,18 +448,51 @@ public function agregarComentario(Request $request)
   $comentario->fill($request->all());
   $comentario->save();
   //notificación
-  if (Auth::user()->hasRole('cuentas')) {
-     $encargado= User::findOrFail($request->usuarios_comentario_id);
-     $encargado->notify(new RequerimientoAtencionCliente($encargado,$requerimiento));
-  }else{
-     $ejecutiva=$requerimiento->cliente->user_id;
-   // return response()->json($cliente);
-     $encargado= User::findOrFail($ejecutiva);
-     $encargado->notify(new RequerimientoComentado($encargado,$requerimiento,$comentario));
+
+  if ($request->is_comment==1) {
+    $ejecutiva=$requerimiento->cliente->user_id;
+  $requerimiento->encargado_id= ( Auth::user()->hasRole('cuentas'))?$requerimiento->usuarios_id:$ejecutiva ;
+  // return response()->json($cliente);
+    $encargado= User::findOrFail($requerimiento->encargado_id);
+    $maker = User::findOrFail($request->usuarios_comentario_id);
+    $encargado->notify(new RequerimientoComentado($maker,$requerimiento,$comentario));
+  }else {
+    switch ($comentario->estados_id) {
+      /*
+         24 Aceptado
+         25 Atención cliente
+         26 No admitido
+         27 Finalizado
+      */
+      case 24:
+      $encargado= User::findOrFail($requerimiento->usuarios_id);
+       $maker = User::findOrFail($request->usuarios_comentario_id);
+      $encargado->notify(new RequerimientoAcetado($maker,$requerimiento));
+        break;
+      case 25:
+      $encargado= User::findOrFail($requerimiento->encargado_id);
+      $maker = User::findOrFail($request->usuarios_comentario_id);
+      $encargado->notify(new RequerimientoAtencionCliente($maker,$requerimiento));
+        break;
+      case 26:
+      $encargado= User::findOrFail($requerimiento->usuarios_id);
+       $maker = User::findOrFail($request->usuarios_comentario_id);
+      $encargado->notify(new RequerimientoNoAdmitido($maker,$requerimiento));
+        break;
+      case 27:
+      $encargado= User::findOrFail($requerimiento->usuarios_id);
+       $maker = User::findOrFail($request->usuarios_comentario_id);
+      $encargado->notify(new RequerimientoFinalizado($maker,$requerimiento));
+          break;
+
+      default:
+        # code...
+        break;
+    }
   }
 
 
-           
+
   //Respuesta
         $respuesta['user_coment']='';
         $respuesta["error"]=0;
@@ -478,12 +514,12 @@ public function agregarComentario(Request $request)
    public function showRequerimientosEnTareas()
    {
       // Muestra todos los requerimientos
-    
+
         $requerimientos_list=  Requerimientos_cliente::with(['cliente','usuario'])->get();
         foreach ($requerimientos_list as $key => $requerimiento_list) {
           $requerimiento_list['cliente_nombre']=$requerimiento_list['cliente']['nombre'];
         }
-      
+
       return response()->json($requerimientos_list);
    }
 

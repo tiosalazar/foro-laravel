@@ -56,7 +56,7 @@ class HomeController extends Controller
 
         $userdata= User::where('roles_id',$role[0]->id)
                     ->where('areas_id', $userauth)->get();
-        $requerimiento= array();            
+        $requerimientos= "";
 
         //Si encuentra al encargado de area lo muestro, si no; no asignado
         if ( isset($userdata[0])) {
@@ -84,7 +84,7 @@ class HomeController extends Controller
 
           }
 
-   
+
           }else{
 
           //Si No es un coordinador muestro las tareas del area si el id del encargado es igual al usuario logeado
