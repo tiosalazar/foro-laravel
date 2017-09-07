@@ -248,6 +248,7 @@ class RequerimientosClientesController extends Controller
     {
         // $requerimiento = Requerimientos_cliente::findOrFail($id);
         $requerimiento = Requerimientos_cliente::with(['estado','estado_prioridad'])->where('id',$id)->get();
+        $requerimiento[0]['descripcion'] = strip_tags($requerimiento[0]['descripcion'] );
         $req= new Requerimientos_cliente;
         $requerimiento[0]['fecha_ideal_entrega']=$req->getFormatFecha($requerimiento[0]['fecha_ideal_entrega']);
         // $requerimiento->estado_prioridad;
