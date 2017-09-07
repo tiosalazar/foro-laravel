@@ -1389,7 +1389,33 @@ public function showAllTareasbyCliente($id,Request $request)
       ->make(true);
     }
 
+         public function ActualizarFechaRealTarea(Request $request, $id)
+            {
+              $tarea  = Tarea::findOrFail($id);
+                if ($request->has('fecha_entrega_cliente_real')) {
+                $tarea->fecha_entrega_cliente_real = $request->input('fecha_entrega_cliente_real');
+               }
+              try {
+                $tarea->save();
+                return response([
+                    'status' => Response::HTTP_OK,
+                    'response_time' => microtime(true) - LARAVEL_START,
+                    'msg' => 'Tarea actualizada.',
+                    'tarea' =>$tarea,
+                    ],Response::HTTP_OK);
+              } catch (Exception $e) {
+                return response([
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'response_time' => microtime(true) - LARAVEL_START,
+                    'msg' => 'Error al actualizar la tarea.',
+                    'error' => config('constants.ERR_04'),
+                    'consola' =>$e->getMessage(),
+                    'tarea' =>$tarea,
+                    'request' =>$request,
+                    ],Response::HTTP_BAD_REQUEST);
+              }
 
+            }
     public function getTraficoTareas(Request $request)
     {
 
@@ -1508,7 +1534,13 @@ public function showAllTareasbyCliente($id,Request $request)
                     ],Response::HTTP_BAD_REQUEST);
               }
 
-            }
+            } 
+
+
+
+         
+
+
 
         /**
         * Validar Crear Tarea
