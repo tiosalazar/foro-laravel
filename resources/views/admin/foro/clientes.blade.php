@@ -9,7 +9,7 @@
 
 	<section>
 		<!-- Listar todas las tareas -->
-	   	<ver_tareas_by_cliente :area="{{Auth::user()->clientes_id}}" ></ver_tareas_by_cliente>
+	   	<ver_tareas_by_cliente area="{{Auth::user()->clientes_id}}" ></ver_tareas_by_cliente>
 			
 	</section>
 @endsection

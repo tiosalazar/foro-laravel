@@ -10,7 +10,7 @@
 <div class="container-fluid spark-screen">
 	<div class="row">
 		<div class="titulos_foro">
-			<h3 class="box-title"><span class="span_descripcion1">Listado de</span> <span class="span_descripcion2"> Solicitudes</span></h3>
+			<h3 class="box-title"><span class="span_descripcion1">Listado de</span> <span class="span_descripcion2"> Requerimientos</span></h3>
 		</div>
 		<!-- col-md-8 -->
 		<div class="col-md-12 ">

@@ -24,6 +24,11 @@ class Requerimientos_cliente extends Model
         $fecha= new Date($fecha_ingreso);
        return ucwords($fecha->format('d-M-Y'), "-");
    }
+   public function getFormatFechaSolicitud($fecha_ingreso)
+   {
+        $fecha= new Date($fecha_ingreso);
+       return ucwords($fecha->format('d-M-Y H:m:s'), "-");
+   }
 
     /**
     * Obtiene el Estado que esta asociado a una Tarea

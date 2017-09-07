@@ -6,12 +6,22 @@
 
 
 @section('main-content')
-<div class="row">
-
-<div class="ver_solicitud_seccion spark-screen box col-md-8 col-md-offset-2">
-		<ver_solicitud requerimientoarray="{{$requerimientoinfo}}" rol_usuario_actual="{{Auth::user()->rol->name}}" id_usuario_actual="{{Auth::user()->id}}"></ver_solicitud>	
-		<!-- <ver_solicitud requerimientoarray="{{-- $requerimientoinfo --}}"></ver_solicitud> -->
-	
-</div>
+<div class="container-fluid spark-screen">
+	<div class="row">
+		<div class="titulos_foro">
+			<h3 class="box-title"><span class="span_descripcion1"> Detalle del</span> <span class="span_descripcion2">Requerimiento</span></h3>
+		</div>
+		<!-- col-md-8 -->
+		<div class="col-md-11 col-md-offset-1 col-lg-9 col-lg-offset-2 ">
+			<!-- box -->
+			<div class="box box-primary">
+				<div class="box-body  table-responsive ver_solicitud_seccion spark-screen">
+					<ver_solicitud requerimientoarray="{{$requerimientoinfo}}" rol_usuario_actual="{{Auth::user()->rol->name}}" id_usuario_actual="{{Auth::user()->id}}"></ver_solicitud>	
+				</div>
+			</div>
+			<!-- ./ box -->
+		</div>
+		<!-- ./ col-md-8 -->
+	</div>
 </div>
 @endsection

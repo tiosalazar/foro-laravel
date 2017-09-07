@@ -80,7 +80,11 @@
 					              	 <strong ><i class="fuente-icon margin-r-5">p</i> Encargado &nbsp| <span>{{$user_encargado}}</span> </strong>
 					              	 <strong class="correo"><i class="fuente-icon margin-r-5">b</i> Correo<span> |&nbsp{{Auth::user()->email}}</span> </strong>
 					              	 <strong><i class="fuente-icon margin-r-5">t</i> Teléfono &nbsp|  <span>{{Auth::user()->telefono}}</span></strong>
+
+					              	 @if(Auth::user()->rol->name !='cliente')
 					              	 <strong><i class="fuente-icon margin-r-5">d</i> Cumpleaños &nbsp| <span> {{Auth::user()->getFechaNacimiento(Auth::user()->fecha_nacimiento) }}</span> </strong>
+					              	 @endif
+
 					               </div>
 					            </div>
 					            <!-- /.box-body -->
@@ -94,7 +98,7 @@
 					</div>
 				</div>
 		 <!--Listado de tareas con un componente vuejs-->
-		    <tareas_perfil lista_tareas="{{$tareas}}"></tareas_perfil>
+		    <tareas_perfil lista_tareas="{{$tareas}}"  lista_requerimiento="{{$requerimientos}}"></tareas_perfil>
 
 			</div>
 		</div>
