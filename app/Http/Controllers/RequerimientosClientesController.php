@@ -97,7 +97,7 @@ class RequerimientosClientesController extends Controller
           //Notificar al usuario Owner cuando se cree una OT
 
             $encargado= User::findOrFail($requerimiento->encargado_id);
-            $encargado->notify(new RequerimientoCreado($encargado,$requerimiento));
+            $encargado->notify(new RequerimientoCreado($maker,$requerimiento));
 
               DB::commit();
               return response([
@@ -141,7 +141,7 @@ class RequerimientosClientesController extends Controller
        * @param  int  $id
        * @return \Illuminate\Http\Response
        */
-      public function ShowDatatbleTareasRequerimiento(Request $request)
+      public function ShowDatatbleTareasRequerimiento(Request $request,$id)
       {
           $output= array();
           // Si no trae el mes y año en el $request
@@ -188,6 +188,7 @@ class RequerimientosClientesController extends Controller
               }
 
           }])
+          ->where('requerimientos_clientes_id', $id)
           ->whereYear('created_at', $year)
           ->whereMonth('created_at', $month)
           ->get();

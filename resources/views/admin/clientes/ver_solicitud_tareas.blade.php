@@ -45,7 +45,7 @@
 					<h3 class="box-title">Listado de tareas</h3>
 				</div>
 				<div class="box-body table-responsive">
-  <listar_solicitudes_tareas></listar_solicitudes_tareas>
+  <listar_solicitudes_tareas requerimientoarray="{{$requerimientoinfo}}"></listar_solicitudes_tareas>
 				</div>
 			</div>
 			<!-- ./ box -->

@@ -59,9 +59,9 @@
             </div>
 
           </div>
-          <div  class="ver_mas" ><span class="ver_mas_texto" v-show="cargar_ok"  @click="cargar_mas" >Ver mas</span></div>
-          <div  class="ver_mas" ><span class="ver_mas_texto" v-show="cargar_req_ok"  @click="cargar_mas_req" >Ver mas Requerimientos</span></div>
+            <div  class="ver_mas" ><span class="ver_mas_texto" v-show="cargar_req_ok"  @click="cargar_mas_req" >Ver mas Requerimientos</span></div>
         </div>
+         
       </div>
 </template>
 <script>
@@ -72,7 +72,7 @@
     data(){
       return{
         cargar_ok:false,
-		cargar_req_ok:false,
+		    cargar_req_ok:false,
         listado_tareas:[],
         listado_requerimientos:[],
         inicial_cliente:'',

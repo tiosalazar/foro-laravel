@@ -58,13 +58,14 @@
 	import select2 from 'select2';
 	module.exports={
 		components: {Datepicker,select2},
-		props: [],
+		props: ['requerimientoarray'],
 		data(){
 			return{
 				list_tareas:[],
 				tareas:[],
 				estado:{},
 				boton_hidden:false,
+				info_requerimiento:[],
 				disabled:{
 					// from:moment().toDate(),
 					from:'',
@@ -84,6 +85,10 @@
 			this.$on('select_estado', function(v) {
 				this.estado=v;
 			});
+			if (typeof(this.requerimientoarray)!= 'undefined') {
+				this.info_requerimiento= JSON.parse( this.requerimientoarray);
+			}
+
 		},
 		watch:{},
 		computed:{},
@@ -99,7 +104,7 @@
 				deferRender: true,
 				stateSave: true,
 				ajax: {
-					url: window._apiURL+"ver_all_tareas_requerimiento/",
+					url: window._apiURL+"ver_all_tareas_requerimiento/"+this.info_requerimiento.id,
 					type: 'GET',
 					beforeSend: function (request) {
 						request.setRequestHeader("Authorization", 'Bearer '+Laravel.api_token);
