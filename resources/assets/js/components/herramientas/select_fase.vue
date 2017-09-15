@@ -34,6 +34,7 @@
       estados:[],
       id_fase: '',
       isTouched: false,
+      area2:{id:0},
     }
   },
   computed:{
@@ -54,11 +55,13 @@
       },
       methods:{
         fetchTips: function(){
-      
-          if (typeof this.area.id == 'undefined') {
-            this.area.id = 0;
+
+          if (typeof this.areas == 'undefined') {
+            this.area2.id = 0;
+          }else{
+            this.area2 = this.area;
           }
-         this.$http.get(window._baseURL+'/list_fases/'+this.area.id)
+         this.$http.get(window._baseURL+'/list_fases/'+this.area2.id)
          .then(function(respuesta){
           this.estados=respuesta.body;
           console.log(this.estados)

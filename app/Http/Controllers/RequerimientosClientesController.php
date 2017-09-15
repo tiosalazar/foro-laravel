@@ -332,7 +332,7 @@ class RequerimientosClientesController extends Controller
 
                    }])->whereYear('created_at', $year)
                        ->whereMonth('created_at', $month)
-                         ->where('usuarios_id', '=', $id_user_actual)
+                         ->orWhere('usuarios_id', '=', $id_user_actual)
                          ->orWhere('encargado_id','=', $id_user_actual)
                        ->get();
 
