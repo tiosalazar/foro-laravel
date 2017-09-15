@@ -94,7 +94,7 @@
 				<div class="col-sm-6">
 					<div class="form-group required">
 						<label><sup>*</sup> Fase del Proyecto </label>
-						<!-- <select_fase :select="fase" :area="area"></select_fase> -->
+						<select_fase :select="fase" :area="area"></select_fase>
 					</div>
 				</div>
 			</div>
@@ -267,7 +267,7 @@
   	Vue.use(VeeValidate);
 	module.exports = {
 		components: {Datepicker,VeeValidate,Validator},
-		props: ['requerimiento_id'],
+		props: ['requerimiento_id','id_user'],
 		data(){
 			return{
 				reque_id:'',
@@ -323,7 +323,11 @@
 		created: function() {
 			// this.reque_id = this.requerimiento_id;
 			this.select_requerimiento_obj=this.requerimiento_id;
-
+			this.$on('send-ot', function(obj) {
+				this.ot= obj;
+				// console.log('cliente',obj.cliente.nombre)
+				this.select_ot= obj;
+			});
 			this.$on('send-requerimiento', function(obj) {
 				this.requerimiento= obj;
 				this.select_requerimiento_obj= obj;
@@ -372,7 +376,7 @@
 			//Fin de los eventos más tareas
 
 			this.current_date=this.getCurrentDate();
-			this.user = this.$parent.id_user;
+			this.user = this.id_user;
 			if (this.$parent.area != 0) {
 				this.area = this.$parent.area;
 			}
@@ -434,6 +438,7 @@
 				this.tarea.areas_id = this.area.id;
 				this.tarea.usuarios_id = this.user;
 				this.tarea.prioridad_id=this.prioridad.id;
+				this.tarea.requerimientos_clientes_id=this.select_requerimiento_obj.id;
 				this.tarea.arreglo_tareas_extra  = this.organizaAntesDeEnviar(this.tareas_nuevas);
 
 				//console.log(this.tarea.arreglo_tareas_extra ,'Tarea Extra');

@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Tarea;
+use App\Cliente;
 use App\Ot;
 use App\Tiempos_x_Area;
 use App\Area;
@@ -113,6 +114,8 @@ public function calendarConsole()
       // return view('admin.tareas.crear_tarea')->with('area',0);
      
       $requerimientos_cliente = Requerimientos_cliente::findOrFail($id);
+      $nombre_cliente = Cliente::findOrFail($requerimientos_cliente['clientes_id']);
+      $requerimientos_cliente->cliente_nombre = $nombre_cliente['nombre'];   
       $area=['id'=> 0];
       $area1=json_encode($area);
       $requerimiento_client=json_encode($requerimientos_cliente);
