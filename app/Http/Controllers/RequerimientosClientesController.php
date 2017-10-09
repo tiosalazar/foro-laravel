@@ -303,12 +303,11 @@ class RequerimientosClientesController extends Controller
 
         if ( Auth::user()->hasRole('desarrollo') || Auth::user()->hasRole('owner')) {
 
-
            $Requerimientos_cliente = Requerimientos_cliente::with(['estado' => function ($query) use ($request) {
                  if ($request->has('estados')) {
                      $query->whereIn('id',$request->get('estados'));
                  }
-             },'usuario','prioridad','usuarioencargado'=> function ($query){
+             },'usuario','estado_prioridad','usuarioencargado'=> function ($query){
 
                $query->addselect('*');
                $query->addselect(DB::raw('CONCAT(nombre," ",apellido) as full_name'));
@@ -337,8 +336,6 @@ class RequerimientosClientesController extends Controller
                        ->get();
 
         }
-
-
 
 
 
@@ -411,11 +408,30 @@ class RequerimientosClientesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $requerimiento = Requerimientos_cliente::findOrFail($id);
-        $requerimiento->estados_id = $request->estados_id;
-        $requerimiento->encargado_id = $requerimiento->usuarios_id;
-        $requerimiento->save();
-        return response()->json($requerimiento);
+
+        //Si es estado es aceptado pongo como encargado a la ejecutiva encargada del cliente
+        if ($request->estados_id == 24) {
+         //Tomo el cliente y saco a la ejecutiva encargada
+          $requerimiento = Requerimientos_cliente::findOrFail($id);
+          $requerimiento->estados_id = $request->estados_id;
+          $id_cilente = $requerimiento->clientes_id;
+          $cliente = Cliente::find($id_cilente); 
+          $usuario_encargado = $cliente->user_id;
+          $requerimiento->encargado_id = $usuario_encargado;
+          $requerimiento->save();
+          return response()->json($requerimiento);
+       }else{
+          $requerimiento = Requerimientos_cliente::findOrFail($id);
+          $requerimiento->estados_id = $request->estados_id;
+          $requerimiento->encargado_id = $requerimiento->usuarios_id;
+          $requerimiento->save();
+          return response()->json($requerimiento);
+       }
+        // $requerimiento->encargado_id = $requerimiento->usuarios_id;
+        //   $requerimiento->save();
+        //   return response()->json($requerimiento);
+        
+      
     }
 
     /**

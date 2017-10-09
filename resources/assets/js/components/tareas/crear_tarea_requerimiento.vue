@@ -8,7 +8,7 @@
 			<div class="row desc-ot with-border">
 				<div class="col-sm-12 border-right">
 					<ul>
-						<li><strong>Id Requerimiento:  </strong><span>{{select_requerimiento_obj.id}}</span></li>
+						<!-- <li><strong>Id Requerimiento:  </strong><span>{{select_requerimiento_obj.id}}</span></li> -->
 						<li><strong>Cliente:  </strong><span>{{select_requerimiento_obj.nombre}}</span></li>
 						<li><strong>Fecha Solicitud: </strong><span>{{select_requerimiento_obj.updated_at}} </span></li>
 					</ul>

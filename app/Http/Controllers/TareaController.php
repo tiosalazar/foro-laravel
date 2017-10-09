@@ -116,6 +116,8 @@ public function calendarConsole()
       $requerimientos_cliente = Requerimientos_cliente::findOrFail($id);
       $nombre_cliente = Cliente::findOrFail($requerimientos_cliente['clientes_id']);
       $requerimientos_cliente->cliente_nombre = $nombre_cliente['nombre'];   
+      $descripcion_requerimiento_sin_html =  strip_tags( $requerimientos_cliente->descripcion);
+      $requerimientos_cliente->descripcion =  $descripcion_requerimiento_sin_html;
       $area=['id'=> 0];
       $area1=json_encode($area);
       $requerimiento_client=json_encode($requerimientos_cliente);

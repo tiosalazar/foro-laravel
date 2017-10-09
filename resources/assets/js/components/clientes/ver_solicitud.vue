@@ -158,6 +158,8 @@ methods:{
   asignar_estado:function () {
    this.$http.put(window._apiURL+'clientes_requerimiento/'+this.info_requerimiento.id, {estados_id:this.info_requerimiento.estado.id})
    .then(function(respuesta){
+    console.log("Respuesta de actualziacion ");
+    console.log(respuesta);
    });
 
    let data = {
